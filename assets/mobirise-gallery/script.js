@@ -66,7 +66,7 @@
         };
     }
 
-    function updateMasonry(event){
+    function updateMasonry(event) {
         var $section = $(event.target);
         if (typeof $.fn.masonry !== 'undefined') {
             $section.outerFind('.mbr-gallery').each(function() {
@@ -157,7 +157,7 @@
             $section.find('.mbr-gallery-filter ul li:not(li:eq(0))').remove();
 
             filterList.map(function(el) {
-                filterHtml += '<li><a class="' + classAttr + '" href>' + el + '</a></li>';
+                filterHtml += '<li><a class="' + classAttr + '" style="font-weight:bold;font-size:14px" href>' + el + '</a></li>';
             });
             $section.find('.mbr-gallery-filter ul').append(filterHtml);
 
