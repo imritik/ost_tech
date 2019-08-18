@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 
+    <?php 
+    include '../dbConfig.php';
+    session_start();
+    $sid=$_SESSION['stud_id'];
+    $jpi=$_REQUEST['jpi'];
+    ?>
+
 <!-- Mirrored from www.cssigniter.com/themeforest/specialty/single-job.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:11 GMT -->
 <!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -29,6 +36,9 @@
 
 <body>
 
+
+
+
     <div id="page">
         <header class="header">
             <div class="container">
@@ -36,64 +46,16 @@
                     <div class="col-xs-12">
                         <div class="mast-head">
                             <h1 class="site-logo">
-                                <a href="index.html">
+                                <a href="index.php">
                                     <img src="images/logo-light.png" alt="">
                                 </a>
                             </h1>
                             <nav class="nav">
                                 <ul class="navigation-main">
                                     <li class="menu-item-home current-menu-item">
-                                        <a href="index.html">Home</a>
+                                        <a href="index.php">Home</a>
                                     </li>
-                                    <!-- <li>
-											<a href="landing.html">Landing Page</a>
-										</li>
-										<li class="menu-item-has-children">
-											<a href="blog.html">Listings</a>
-											<ul class="sub-menu">
-												<li>
-													<a href="index.html">Job Listing</a>
-												</li>
-												<li>
-													<a href="index-fullwidth.html">Job Listing Full</a>
-												</li>
-												<li>
-													<a href="index-left-sidebar.html">Job Listing Left</a>
-												</li>
-												<li>
-													<a href="blog.html">Blog</a>
-												</li>
-											</ul>
-										</li>
-										<li class="menu-item-has-children">
-											<a href="#">Templates</a>
-											<ul class="sub-menu">
-												<li>
-													<a href="single.html">Single Article</a>
-												</li>
-												<li>
-													<a href="single-job.html">Single Job</a>
-												</li>
-												<li>
-													<a href="page.html">Page Default</a>
-												</li>
-												<li>
-													<a href="page-centered.html">Page Centered</a>
-												</li>
-												<li>
-													<a href="page-fullwidth.html">Page Fullwidth</a>
-												</li>
-												<li>
-													<a href="submit.html">Submit Listing</a>
-												</li>
-												<li>
-													<a href="dashboard.html">Dashboard</a>
-												</li>
-												<li> -->
-                                    <!-- <a href="auth.html">Login / Register</a>
-                                    </li>
-                                </ul>
-                                </li> -->
+                                   
                                     <li class="menu-item-btn">
                                         <a href="#">Sign Up</a>
                                     </li>
@@ -114,16 +76,28 @@
                 </div>
             </div>
         </header>
+
+        <!-- ======php=============== -->
+
+<?php
+
+$query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jpi'");
+            
+if($query ->num_rows ==1){
+    $row1 = $query->fetch_assoc();
+   ?>
+
+
         <div class="page-hero" style="background-image: url(images/hero-1.jpg);">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="page-hero-content">
-                            <h1 class="page-title">User Experience Designer</h1>
+                            <h1 class="page-title"><?php echo $row1['job_title']; ?>  </h1>
                             <div class="page-hero-details">
-                                <span class="item-badge job-type-full-time">Full time</span>
-                                <span class="entry-location">Richmond, VA</span>
-                                <span class="entry-company">Google inc.</span>
+                                <span class="item-badge job-type-full-time"><?php echo $row1['Job_type']; ?> </span>
+                                <span class="entry-location"><?php echo $row1['Job_location']; ?> </span>
+                                <span class="entry-company"><?php echo $row1['company_name']; ?> </span>
                             </div>
                         </div>
                     </div>
@@ -138,32 +112,24 @@
                         <div class="content-wrap">
                             <article class="entry">
                                 <div class="entry-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid animi delectus deleniti dicta dolor ducimus excepturi facere in, inventore ipsa iste nemo neque nulla odio officia pariatur, perspiciatis quia quis
-                                        quos rerum, sunt tenetur! Ad dolore earum ipsum unde.</p>
+                                    <p><?php echo $row1['job_description']; ?></p>
 
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis cupiditate eaque est fuga impedit libero, magnam nesciunt obcaecati recusandae rerum soluta, ut. Assumenda cum error libero numquam, quod tenetur vel.</p>
+                                   
 
                                     <h2>How to Join the Team:</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur blanditiis corporis cumque cupiditate dignissimos, dolor dolorem eaque eligendi error et ex exercitationem expedita facere facilis ipsum iste laboriosam
                                         magni minus, modi mollitia obcaecati officia optio quo repellat repellendus temporibus totam unde. Alias assumenda iste libero ullam. Aspernatur perspiciatis rem voluptatum?</p>
 
-                                    <h3>Duties include but are not limited to:</h3>
-                                    <ul>
-                                        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, ex!</li>
-                                        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor dolore doloremque eius expedita, fuga fugit obcaecati perferendis possimus quas quasi quidem quisquam reprehenderit sequi!</li>
-                                        <li>
-                                            <strong>Lorem ipsum</strong> sit amet, consectetur adipisicing elit. A, natus.</li>
-                                    </ul>
-
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto assumenda autem beatae cum debitis dolore doloremque doloribus eveniet excepturi ipsa, maiores mollitia porro quidem rem repudiandae rerum sint soluta
-                                        suscipit!
-                                    </p>
                                 </div>
                             </article>
 
-                            <a href="#" class="btn btn-block btn-apply-content">Apply for this job</a>
+                            <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob" onclick="applyforjob();">Apply for this job</a>
                         </div>
 
+
+
+
+   
                         <!-- <div class="content-wrap-footer">
                             <div class="row">
                                 <div class="col-md-8 col-xs-12">
@@ -186,11 +152,7 @@
 
                     <div class="col-xl-3 col-lg-4 col-xs-12">
                         <div class="sidebar">
-                            <aside class="widget widget_ci-apply-button-widget">
-                                <a href="#" target="_blank" class="btn btn-block">
-										Apply for this job
-									</a>
-                            </aside>
+                            
                             <aside class="widget widget_ci-company-info-widget">
                                 <h3 class="widget-title">Company Information</h3>
 
@@ -201,12 +163,12 @@
                                         </figure>
 
                                         <div class="card-info-details">
-                                            <p class="card-info-title">Google Inc.</p>
+                                            <p class="card-info-title"><?php echo $row1['company_name']; ?> </p>
                                             <p class="card-info-link">
-                                                <a href="#">https://www.google.com</a>
+                                                <a href="#"><?php echo $row1['company_url']; ?> </a>
                                             </p>
 
-                                            <div class="card-info-socials">
+                                            <!-- <div class="card-info-socials">
                                                 <a href="#">
                                                     <i class="fa fa-facebook"></i>
                                                 </a>
@@ -219,7 +181,7 @@
                                                 <a href="#">
                                                     <i class="fa fa-google-plus"></i>
                                                 </a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
 
@@ -233,6 +195,10 @@
                     </div>
                 </div>
             </div>
+
+<?php 
+}
+?>
         </main>
 
         <footer class="footer">

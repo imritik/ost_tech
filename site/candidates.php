@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+<?php
+session_start();
+$cname=$_SESSION['company'];
+include '../dbConfig.php';
+?>
 <html>
 
 <head>
@@ -20,8 +26,48 @@
     <!--[if lt IE 9]>
 		<script src="js/html5shiv.js"></script>
 		<script src="js/respond.min.js"></script>
-		<![endif]-->
+        <![endif]-->
+        
 
+
+         <style>
+        .filterable {
+            margin-top: 15px;
+        }
+        
+        .filterable .panel-heading .pull-right {
+            margin-top: -20px;
+        }
+        
+        .filterable .filters input[disabled] {
+            background-color: transparent;
+            border: none;
+            cursor: auto;
+            box-shadow: none;
+            padding: 0;
+            height: auto;
+        }
+        
+        .filterable .filters input[disabled]::-webkit-input-placeholder {
+            color: #333;
+        }
+        
+        .filterable .filters input[disabled]::-moz-placeholder {
+            color: #333;
+        }
+        
+        .filterable .filters input[disabled]:-ms-input-placeholder {
+            color: #333;
+        }
+
+        #posted_jobs{
+            color: black;
+            font-size: 16px;
+            background: transparent;
+            box-shadow: 2px 2px lightgrey;
+            border: 2px solid lightgray;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,9 +91,9 @@
             <ul class="nav">
                 <li><a href="#home">Home</a></li>
                 <!-- <li><a href="jobs.html">Jobs</a></li> -->
-                <li><a href="post-a-job.html">Post a job</a></li>
-                <li class="active"><a href="jobs.html">Jobs</a></li>
-                <li class="active"><a href="candidates.html">Candidates</a></li>
+                <li><a href="post-a-job.php">Post a job</a></li>
+                <li class="active"><a href="jobs.php">Jobs</a></li>
+                <li class="active"><a href="candidates.php">Candidates</a></li>
                 <!-- <li><a href="post-a-resume.html">Post a Resume</a></li> -->
 
 
@@ -101,9 +147,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <h2>Candidates</h2>
+                    <!-- <h2>Candidates</h2> -->
 
-                    <iframe id="myIframe" src="../table.html" frameborder="0" style="height:100%;border: none;position: absolute" height="100%" width="100%"></iframe>
+                    <!-- <iframe id="myIframe" src="../table.html" frameborder="0" style="height:100%;border: none;position: absolute" height="100%" width="100%"></iframe> -->
 
                     <div class="jobs">
 
@@ -112,6 +158,194 @@
 
                         <div id="wrap">
                             <div class="container" style="min-height:200px;height: auto">
+                            <div class="row" style="display:contents">
+                                <h3>Select Job to shortlist candidates</h3>
+
+                                <select id="posted_jobs" name="posted_jobs" style="color:black">
+
+                                                <option value="" >Select Job</option>
+
+                                        <!-- -------php code to gather posted jobs---- -->
+                                        <?php
+
+                                        $query = $db->query("SELECT * FROM Job_Posting WHERE company_name='$cname'");
+                                                    
+                                        if($query ->num_rows >0){
+                                            while($row = $query->fetch_assoc()){
+
+                                                echo '<option value="' . $row['posting_id'] . '">' . $row['job_title'] .' ('.$row['Job_type'].')' . '</option>';
+                                        ?>
+                                            <?php }} ?>
+
+                                </select>
+                                
+
+   
+    
+
+
+
+
+
+</div>
+
+                            <!-- ======== -->
+
+<div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Candidates</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="College ID#" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="College Name" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="College location" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Student ID#" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Student Name" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Student Contact" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Student Email" disabled></th>
+                        <!-- <th><input type="text" class="form-control" placeholder="Student resume" disabled></th> -->
+                        <!-- <th><input type="text" class="form-control" placeholder="Action" disabled></th> -->
+                        <th style="color:black">Resume</th>
+                        <th style="color:black">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+
+
+                    <!-- -------php code to fetch data from two tables---- -->
+
+                         
+<?php
+$sql = "SELECT College.*,Student.* FROM College,Student where College.id = Student.college_id";
+$result = $db->query($sql);
+
+if ($result ->num_rows >0) {
+   
+    while($row1 = $result->fetch_assoc()) {
+        ?>
+        <tr >
+
+        <td > <?php echo $row1["id"];?> </td>
+        <td  > <?php echo $row1["name"];?></td>
+        <td ><?php echo $row1["loc"];?></td>
+        <td ><?php echo $row1["student_id"];?></td>
+        <td  ><?php echo $row1["stud_name"];?></td>
+        <td  ><?php echo $row1["contact"];?></td>
+        <td  ><?php echo $row1["email"];?></td>
+        <td  >resume</td>
+        <td  ><button id="<?php echo $row1['student_id'];?>" onclick="shortlist(this.id);" style="background:transparent;color:black">Shortlist</button></td>
+
+
+
+        </tr>
+
+     <?php   
+    }
+} else {
+    echo "0 results";
+}
+
+
+// $conn->close();
+?>
+
+
+
+                    <!-- ----------------- -->
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+    /*
+                                            Please consider that the JS part isn't production ready at all, I just code it to show the concept of merging filters and titles together !
+                                            */
+    $(document).ready(function() {
+        $('.filterable .btn-filter').click(function() {
+            var $panel = $(this).parents('.filterable'),
+                $filters = $panel.find('.filters input'),
+                $tbody = $panel.find('.table tbody');
+            if ($filters.prop('disabled') == true) {
+                $filters.prop('disabled', false);
+                $filters.first().focus();
+            } else {
+                $filters.val('').prop('disabled', true);
+                $tbody.find('.no-result').remove();
+                $tbody.find('tr').show();
+            }
+        });
+
+        $('.filterable .filters input').keyup(function(e) {
+            /* Ignore tab key */
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            /* Useful DOM data and selectors */
+            var $input = $(this),
+                inputContent = $input.val().toLowerCase(),
+                $panel = $input.parents('.filterable'),
+                column = $panel.find('.filters th').index($input.parents('th')),
+                $table = $panel.find('.table'),
+                $rows = $table.find('tbody tr');
+            /* Dirtiest filter function ever ;) */
+            var $filteredRows = $rows.filter(function() {
+                var value = $(this).find('td').eq(column).text().toLowerCase();
+                return value.indexOf(inputContent) === -1;
+            });
+            /* Clean previous no-result if exist */
+            $table.find('tbody .no-result').remove();
+            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+            $rows.show();
+            $filteredRows.hide();
+            /* Prepend no-result row if all rows are filtered */
+            if ($filteredRows.length === $rows.length) {
+                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+            }
+        });
+    });
+</script>
+<script>
+
+    function shortlist(studid){
+        // alert(studid);
+        // alert($('#posted_jobs').val());
+        if($('#posted_jobs').val()==""){
+            alert("Please select job to continue");
+        }
+
+            else{
+
+                $.ajax({
+                                url: 'shortlist.php',
+                                type: 'POST',
+                            
+                                data: {param1: $("#posted_jobs").val(),param2:studid},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                //do something with the response
+                                $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
+                               
+                            })
+                            .fail(function() {
+                                alert("error in shortlisting");
+                            });
+
+            }
+                
+            }
+
+</script>
+
+
+                            <!-- ============== -->
 
                                 <!-- <iframe src="../table.html"></iframe> -->
                                 <!-- <iframe id="myIframe" src="../table.html" frameborder="0" style="height:100%;border: none;position: absolute" height="100%" width="100%"></iframe> -->

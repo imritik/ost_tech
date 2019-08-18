@@ -1,4 +1,13 @@
 <!doctype html>
+
+<?php
+
+
+include '../dbConfig.php';
+session_start();
+$_SESSION['stud_id']=1;
+$_SESSION['stud_name']="ritik verma";
+?>
 <html lang="en">
 
 <!-- Mirrored from www.cssigniter.com/themeforest/specialty/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:01 GMT -->
@@ -29,6 +38,21 @@
 
 <body>
 
+      <?php
+                // echo $_REQUEST['category'];
+                $studentid=$_SESSION['stud_id'];
+
+                // Get images from the database
+                $querycat = $db->query("SELECT * FROM Offer_table WHERE student_id='$studentid'");
+$jobcount=$querycat ->num_rows;
+                if($querycat ->num_rows >0){
+                    $jobids=array();
+                    while($row = $querycat->fetch_assoc()){
+                        array_push($jobids,$row['posting_id']);
+                    }
+                }
+                        ?>
+
     <div id="page">
         <header class="header">
             <div class="container">
@@ -36,14 +60,14 @@
                     <div class="col-xs-12">
                         <div class="mast-head">
                             <h1 class="site-logo">
-                                <a href="index.html">
+                                <a href="index.php">
                                     <img src="images/logo-light.png" alt="">
                                 </a>
                             </h1>
                             <nav class="nav">
                                 <ul class="navigation-main">
                                     <li class="menu-item-home current-menu-item">
-                                        <a href="index.html">Home</a>
+                                        <a href="index.php">Home</a>
                                     </li>
                                     <!-- <li>
 											<a href="landing.html">Landing Page</a>
@@ -122,7 +146,7 @@
                                 <br> you’ve always wanted.
                             </h2>
                             <p class="page-subtitle">
-                                <span class="text-theme">45</span> new jobs in the last
+                                <span class="text-theme"><?php echo $jobcount; ?></span> new jobs in the last
                                 <!-- <span class="text-theme">7</span> days. Search now. -->
                             </p>
                         </div>
@@ -166,51 +190,80 @@
             </form>
         </div>
 
+
+        <!-- ------php code for storing jobs id and getting jobs count---- -->
+
+
+<!-- ------------- -->
+
+                          
+
+              
+
+
+
+
+        <!-- ------------------------------------------ -->
+
         <main class="main">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-xs-12">
                         <h3 class="section-title">
-                            <b>45</b> Jobs Found</h3>
+                            <b><?php echo $jobcount; ?></b> Jobs Found</h3>
 
                         <div class="item-listing">
-                            <div class="list-item list-item-featured">
-                                <div class="list-item-main-info">
-                                    <p class="list-item-title-eyebrow">Featured</p>
+                            
 
-                                    <p class="list-item-title">
-                                        <a href="single-job.html">Hardware Design Lead Engineer</a>
-                                    </p>
+                            <!-- ----fetching jobs offered---- -->
 
-                                    <div class="list-item-meta">
-                                        <a href="#" class="list-item-tag item-badge job-type-full-time">Full Time</a>
-                                        <span class="list-item-company">Alpha, Inc</span>
-                                    </div>
-                                </div>
 
-                                <div class="list-item-secondary-info">
-                                    <p class="list-item-location">Vienna</p>
-                                    <time class="list-item-time" datetime="2017-01-01">3 hours ago</time>
-                                </div>
-                            </div>
+                              <?php
+                            
+if(sizeof($jobids)){
 
-                            <div class="list-item">
-                                <div class="list-item-main-info">
-                                    <p class="list-item-title">
-                                        <a href="single-job.html">User Experience Designer</a>
-                                    </p>
+    $arrlength = count($jobids);
 
-                                    <div class="list-item-meta">
-                                        <a href="#" class="list-item-tag item-badge job-type-contract">Contract</a>
-                                        <span class="list-item-company">McIntire Solutions, LLC</span>
-                                    </div>
-                                </div>
+    for($x = 0; $x < $arrlength; $x++) {
+    
 
-                                <div class="list-item-secondary-info">
-                                    <p class="list-item-location">Richmond, VA</p>
-                                    <time class="list-item-time" datetime="2017-01-01">3 hours ago</time>
-                                </div>
-                            </div>
+    // Get images from the database
+    $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jobids[$x]'");
+
+    if($query ->num_rows ==1){
+        $row1 = $query->fetch_assoc();
+       ?>
+  
+
+
+    <div class="list-item">
+        <div class="list-item-main-info">
+            <p class="list-item-title">
+                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>" ><?php echo $row1['job_title']; ?> </a>
+            </p>
+
+            <div class="list-item-meta">
+                <a href="#" class="list-item-tag item-badge job-type-contract"><?php echo $row1['Job_type']; ?></a>
+                <span class="list-item-company"><?php echo $row1['company_name']; ?></span>
+            </div>
+        </div>
+
+        <div class="list-item-secondary-info">
+            <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
+            <time class="list-item-time" datetime="2017-01-01"><?php echo $row1['posting_time']; ?></time>
+        </div>
+    </div>
+
+
+<?php 
+}}
+?>
+<?php
+}
+else{
+    echo "No job offered";
+}
+?>
 
 
                         </div>

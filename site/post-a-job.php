@@ -1,7 +1,21 @@
 <!DOCTYPE html>
+<?php
+session_start();
+$_SESSION['email']="ritikvverma@gmail.com";
+$_SESSION['company']="XYZ";
+$_SESSION['url']="abc.com";
+if(isset($_SESSION)){
+    // echo "alert('session exist')";
+  }
+  else{
+    // echo "alert('no session exist')";
+  }
+  ?>
+
+
 <html>
 
-<!-- Mirrored from www.coffeecreamthemes.com/themes/jobseek/site/jobs.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:32:44 GMT -->
+<!-- Mirrored from www.coffeecreamthemes.com/themes/jobseek/site/post-a-job.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:32:44 GMT -->
 
 <head>
     <meta charset="utf-8">
@@ -9,7 +23,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="Jobseek - Job Board Responsive HTML Template">
     <meta name="author" content="Coffeecream Themes, info@coffeecream.eu">
-    <title> Job Board </title>
+    <title> Job Board
+    </title>
     <link rel="shortcut icon" href="images/favicon.png">
 
     <!-- Main Stylesheet -->
@@ -43,8 +58,8 @@
             </div>
             <ul class="nav">
                 <!-- <li><a href="#home">Home</a></li> -->
-                <li class="active"><a href="jobs.html">Jobs</a></li>
-                <li><a href="post-a-job.html">Post a job</a></li>
+                <li class="active"><a href="post-a-job.html">Post a job</a></li>
+                <li class="active"><a href="jobs.php">Jobs</a></li>
                 <li><a href="candidates.html">Candidates</a></li>
 
                 <!-- <li><a class="link-register">Register</a></li> -->
@@ -75,99 +90,124 @@
 
     <!-- ============ HEADER END ============ -->
 
-    <!-- ============ TITLE START ============ -->
-
-    <section id="title">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <h1>Job Posted</h1>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============ TITLE END ============ -->
-
     <!-- ============ JOBS START ============ -->
 
     <section id="jobs">
         <div class="container">
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-sm-12">
-
-                    <div class="jobs">
-
-                        <!-- Job offer 1 -->
-                        <a href="#" class="featured applied">
-                            <div class="row">
-                                <div class="col-md-1 hidden-sm hidden-xs">
-                                    <img src="images/logo-amazon.jpg" alt="" class="img-responsive" />
-                                </div>
-                                <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12 job-title">
-                                    <h5>Web Designer</h5>
-                                    <p><strong>Amazon Inc.</strong> Company slogan goes here</p>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 job-location">
-                                    <p><strong>New York City, NY, USA</strong></p>
-                                    <!-- <p class="hidden-xs">126.3 miles away</p> -->
-                                </div>
-                                <div class="col-lg-2 col-md-2 hidden-sm hidden-xs job-type text-center">
-                                    <p class="job-salary"><strong>$128,000</strong></p>
-                                    <p class="badge full-time">Full time</p>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Job offer 2 -->
-                        <a href="#" class="featured">
-                            <div class="row">
-                                <div class="col-md-1 hidden-sm hidden-xs">
-                                    <img src="images/logo-ebay.jpg" alt="" class="img-responsive" />
-                                </div>
-                                <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12 job-title">
-                                    <h5>Front End Developer</h5>
-                                    <p><strong>Ebay Inc.</strong> Company slogan goes here</p>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 job-location">
-                                    <p><strong>Chicago, IL, USA</strong></p>
-                                    <!-- <p class="hidden-xs">792.1 miles away</p> -->
-                                </div>
-                                <div class="col-lg-2 col-md-2 hidden-sm hidden-xs job-type text-center">
-                                    <p class="job-salary"><strong>$142,000</strong></p>
-                                    <p class="badge part-time">Part time</p>
-                                </div>
-                            </div>
-                        </a>
-
-
-
-                    </div>
-
-                    <nav>
-                        <ul class="pagination">
-                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-                        </ul>
-                    </nav>
+                    <h1>Post a Job</h1>
+                    <h4>Find a Right Candidate</h4>
 
                 </div>
-
             </div>
+            <br>
+
+            <form  action="post.php" method="post">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <h2>Job Details</h2>
+                        <div class="form-group" id="job-email-group">
+                            <label for="job-email">Email</label>
+                            <input type="email" class="form-control" name="email" id="job-email" placeholder="you@yourdomain.com" value=<?php echo $_SESSION['email'] ;?> required>
+                        </div>
+                        <div class="form-group" id="job-title-group">
+                            <label for="job-title">Title</label>
+                            <input type="text" name="title" class="form-control" id="job-title" placeholder="e.g. Web Designer" required>
+                        </div>
+                        <div class="form-group" id="job-location-group">
+                            <label for="job-location">Location (Optional)</label>
+                            <input type="text" name="location" class="form-control" id="job-location" placeholder="e.g. New York" required>
+                        </div>
+                        <!-- <div class="form-group" id="job-region-group">
+                            <label for="job-region">Region</label>
+                            <select class="form-control" id="job-region">
+									<option>Choose a region</option>
+									<option>New York</option>
+									<option>Los Angeles</option>
+									<option>Chicago</option>
+									<option>Boston</option>
+									<option>San Francisco</option>
+								</select>
+                        </div> -->
+                        <div class="form-group" id="job-type-group">
+                            <label for="job-type">Job Type</label>
+                            <select class="form-control" name="type" id="job-type" required>
+									<option>Choose a job type</option>
+									<option>Freelance</option>
+									<option>Part Time</option>
+									<option>Full Time</option>
+									<option>Internship</option>
+									<option>Volunteer</option>
+								</select>
+                        </div>
+                        <div class="form-group" id="job-category-group">
+                            <label for="job-category">Job Category</label>
+                            <select class="form-control" name="category" id="job-category" required>
+									<option>Choose a job category</option>
+									<option>Internet Services</option>
+									<option>Banking</option>
+									<option>Financial</option>
+									<option>Marketing</option>
+									<option>Management</option>
+								</select>
+                        </div>
+                        <div class="form-group" id="job-description-group">
+                            <label for="job-description">Description</label>
+                            <textarea class="textarea form-control" name="description" id="job-description" required></textarea>
+                        </div>
+                        <!-- <div class="form-group" id="job-url-group">
+                            <label for="job-url">Application Email/URL</label>
+                            <input type="text" class="form-control" id="job-url" placeholder="Email or Website URL">
+                        </div> -->
+                    </div>
+                    <!-- <div class="col-sm-6">
+                        <h2>Company Details</h2>
+                        <div class="form-group" id="company-name-group">
+                            <label for="company-name">Company Name</label>
+                            <input type="text" class="form-control" id="company-name" placeholder="Enter company name" value= <?php echo $_SESSION['company'] ;?> readonly>
+                        </div>
+
+                        <div class="form-group" id="company-description-group">
+                            <label for="company-description">Description (Optional)</label>
+                            <div class="textarea form-control" id="company-description"></div>
+                        </div>
+
+                        <div class="form-group" id="company-website-group">
+                            <label for="company-website">Website (Optional)</label>
+                            <input type="text" class="form-control" id="company-website" placeholder="http://">
+                        </div>
+
+                        <div class="form-group" id="company-email-group">
+                            <label for="company-email">Official Mail</label>
+                            <input type="email" class="form-control" id="company-email" placeholder="abc@company.com">
+                        </div>
+
+
+                        <div class="form-group" id="company-linkedin-group">
+                            <label for="company-linkedin">LinkedIn Username (Optional)</label>
+                            <input type="text" class="form-control" id="company-linkedin" placeholder="yourcompany">
+                        </div>
+
+                        <div class="form-group" id="company-logo-group">
+                            <label for="company-logo">Logo (Optional)</label>
+                            <input type="file" id="company-logo">
+                        </div>
+                    </div> -->
+                </div>
+                <div class="row text-center">
+                    <p>&nbsp;</p>
+                    <button type="submit" name="submit" class="btn btn-primary btn-lg">Post <i class="fa fa-arrow-right"></i></button>
+                </div>
+            </form>
+
         </div>
     </section>
 
     <!-- ============ JOBS END ============ -->
 
+    <!-- ============ CONTACT START ============ -->
 
-
-    <!-- ============ CONTACT END ============ -->
 
     <!-- ============ FOOTER START ============ -->
 
@@ -175,17 +215,7 @@
         <div id="prefooter">
             <div class="container">
                 <div class="row">
-                    <!-- 
-                    <div class="col-sm-6" id="social-networks">
-                        <h2>Get in touch</h2>
-                        <a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-google-plus-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-youtube-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-vimeo-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-pinterest-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                    </div> -->
+
                 </div>
             </div>
         </div>
@@ -193,7 +223,7 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col-sm-12">
-                        &copy; Job Board
+                        &copy; 2019 job Board
                     </div>
                 </div>
             </div>
@@ -214,8 +244,8 @@
 
                 <hr>
                 <div class="form-group">
-                    <label for="login-username">email</label>
-                    <input type="type" class="form-control" id="login-username">
+                    <label for="login-username">Username</label>
+                    <input type="text" class="form-control" id="login-username">
                 </div>
                 <div class="form-group">
                     <label for="login-password">Password</label>
@@ -237,11 +267,6 @@
                 <h2>Register</h2>
             </div>
             <form>
-                <ul class="social-login">
-                    <li><a class="btn btn-facebook"><i class="fa fa-facebook"></i>Register with Facebook</a></li>
-                    <li><a class="btn btn-google"><i class="fa fa-google-plus"></i>Register with Google</a></li>
-                    <li><a class="btn btn-linkedin"><i class="fa fa-linkedin"></i>Register with LinkedIn</a></li>
-                </ul>
                 <hr>
                 <div class="form-group">
                     <label for="register-name">Name</label>
@@ -328,6 +353,5 @@
 
 </body>
 
-<!-- Mirrored from www.coffeecreamthemes.com/themes/jobseek/site/jobs.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:32:44 GMT -->
 
 </html>
