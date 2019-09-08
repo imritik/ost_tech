@@ -3,6 +3,13 @@
 <?php
 session_start();
 
+if(isset($_SESSION['emailemp'])){
+    // echo $_SESSION['company'];
+  }
+  else{
+    // echo "alert('no session exist')";
+    header("location: ../index.php");
+  }
 include '../dbConfig.php';
   ?>
 <html>
@@ -54,7 +61,7 @@ include '../dbConfig.php';
                 <li><a href="candidates.php">Candidates</a></li>
 
                 <!-- <li><a class="link-register">Register</a></li> -->
-                <li><a class="link-login">Login</a></li>
+                <li><a class="link-login" href="../logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->
@@ -119,10 +126,11 @@ if($querycat ->num_rows >0){
     while($row = $querycat->fetch_assoc()){
         ?>
                         <!-- Job offer 1 -->
-                        <a href="#" class="featured applied">
+                        <a href="showcandidates.php?jid=<?php echo $row['posting_id']; ?>" target="blank" class="featured applied">
                             <div class="row">
                                 <div class="col-md-1 hidden-sm hidden-xs">
-                                    <img src="images/logo-amazon.jpg" alt="" class="img-responsive" />
+                                <!-- <i class="fa fa-link" aria-hidden="true"></i> -->
+
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12 job-title">
                                     <h5> <?php echo $row['job_title']; ?></h5>
@@ -147,7 +155,7 @@ if($querycat ->num_rows >0){
                     </div>
 
                     <nav>
-                        <ul class="pagination">
+                        <!-- <ul class="pagination">
                             <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                             <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
                             <li><a href="#">2</a></li>
@@ -155,7 +163,7 @@ if($querycat ->num_rows >0){
                             <li><a href="#">4</a></li>
                             <li><a href="#">5</a></li>
                             <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-                        </ul>
+                        </ul> -->
                     </nav>
 
                 </div>

@@ -2,6 +2,13 @@
 
 <?php
 session_start();
+if(isset($_SESSION['emailemp'])){
+    // echo $_SESSION['company'];
+  }
+  else{
+    // echo "alert('no session exist')";
+    header("location: ../index.php");
+  }
 $cname=$_SESSION['company'];
 include '../dbConfig.php';
 ?>
@@ -67,6 +74,14 @@ include '../dbConfig.php';
             box-shadow: 2px 2px lightgrey;
             border: 2px solid lightgray;
         }
+        #checkspan{
+            float: right;
+    margin-right: 80px;
+    font-size: 17px;
+        }
+        #btnshortlistall:hover{
+            color:black;
+        }
     </style>
 </head>
 
@@ -98,7 +113,7 @@ include '../dbConfig.php';
 
 
                 <!-- <li><a class="link-register">Register</a></li> -->
-                <li><a class="link-login">Login</a></li>
+                <li><a  href="../logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->
@@ -178,6 +193,12 @@ include '../dbConfig.php';
                                             <?php }} ?>
 
                                 </select>
+
+<span id="checkspan">
+                               
+                    
+                                <button id="btnshortlistall" class="btn btn-sm" style="background:aliceblue;display:none">Shortlist All</button>
+                                </span>
                                 
 
    
@@ -202,6 +223,7 @@ include '../dbConfig.php';
             <table class="table">
                 <thead>
                     <tr class="filters">
+                    <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
                         <th><input type="text" class="form-control" placeholder="College ID#" disabled></th>
                         <th><input type="text" class="form-control" placeholder="College Name" disabled></th>
                         <th><input type="text" class="form-control" placeholder="College location" disabled></th>
@@ -231,7 +253,7 @@ if ($result ->num_rows >0) {
     while($row1 = $result->fetch_assoc()) {
         ?>
         <tr >
-
+        <td><input type="checkbox" class="studentcheckbox" value="<?php echo $row1['student_id']; ?>" name="id[]"></td>
         <td > <?php echo $row1["id"];?> </td>
         <td  > <?php echo $row1["name"];?></td>
         <td ><?php echo $row1["loc"];?></td>
@@ -309,6 +331,35 @@ if ($result ->num_rows >0) {
                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
             }
         });
+    });
+
+
+    // -----for selecting all student at once---
+    $("#selectall").click(function () {
+        $('#btnshortlistall').toggle();
+        if($('tr').is(":visible")) {
+            // alert('hi');
+
+             $(".studentcheckbox").prop('checked', $(this).prop('checked'));
+    console.log($(".studentcheckbox"));
+    //It's visible
+        }
+   
+    });
+// ------------------------------
+
+$('#btnshortlistall').click(function(){
+    var idss=$('.studentcheckbox:checked').map(function(){
+        return $(this).val()
+    }).get().join(',');
+
+    alert(idss);
+    idarray=idss.split(',');
+
+idarray.forEach(function(stid){
+    shortlist(stid);
+})
+
     });
 </script>
 <script>

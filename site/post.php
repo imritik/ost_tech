@@ -26,7 +26,7 @@ if(isset($_POST["submit"]) ){
                 $statusMsg = "The job has been uploaded successfully.";
 
                 echo "<SCRIPT type='text/javascript'> 
-                alert('image uploaded !');
+                // alert('image uploaded !');
                 // window.location.replace(\"http://campuschords.com/index_Admin.php\");
             </SCRIPT>";
             }else{

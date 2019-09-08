@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <?php
 session_start();
-$_SESSION['email']="ritikvverma@gmail.com";
-$_SESSION['company']="XYZ";
-$_SESSION['url']="abc.com";
-if(isset($_SESSION)){
-    // echo "alert('session exist')";
+// $_SESSION['email']="ritikvverma@gmail.com";
+// $_SESSION['company']="XYZ";
+// $_SESSION['url']="abc.com";
+if(isset($_SESSION['emailemp'])){
+    // echo $_SESSION['company'];
   }
   else{
     // echo "alert('no session exist')";
+    header("location: ../index.php");
   }
   ?>
 
@@ -60,10 +61,10 @@ if(isset($_SESSION)){
                 <!-- <li><a href="#home">Home</a></li> -->
                 <li class="active"><a href="post-a-job.html">Post a job</a></li>
                 <li class="active"><a href="jobs.php">Jobs</a></li>
-                <li><a href="candidates.html">Candidates</a></li>
+                <li><a href="candidates.php">Candidates</a></li>
 
                 <!-- <li><a class="link-register">Register</a></li> -->
-                <li><a class="link-login">Login</a></li>
+                <li><a class="link-login" href="../logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->
@@ -109,7 +110,7 @@ if(isset($_SESSION)){
                         <h2>Job Details</h2>
                         <div class="form-group" id="job-email-group">
                             <label for="job-email">Email</label>
-                            <input type="email" class="form-control" name="email" id="job-email" placeholder="you@yourdomain.com" value=<?php echo $_SESSION['email'] ;?> required>
+                            <input type="email" class="form-control" name="email" id="job-email" placeholder="you@yourdomain.com" value=<?php echo $_SESSION['emailemp'] ;?> required>
                         </div>
                         <div class="form-group" id="job-title-group">
                             <label for="job-title">Title</label>

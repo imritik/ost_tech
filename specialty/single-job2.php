@@ -4,16 +4,8 @@
     <?php 
     include '../dbConfig.php';
     session_start();
-    if(isset($_SESSION['stud_id'])){
-        // echo $_SESSION['company'];
-      }
-      else{
-        // echo "alert('no session exist')";
-        header("location: ../index.php");
-      }
     $sid=$_SESSION['stud_id'];
     $jpi=$_REQUEST['jpi'];
-    $haveapplied=$_REQUEST['apl'];
     ?>
 
 <!-- Mirrored from www.cssigniter.com/themeforest/specialty/single-job.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:11 GMT -->
@@ -40,8 +32,8 @@
     <link rel="apple-touch-icon" href="#">
     <link rel="apple-touch-icon" sizes="72x72" href="#">
     <link rel="apple-touch-icon" sizes="114x114" href="#">
-
-    <style>
+</head>
+<style>
 #myModal {
     position: fixed;
   display: none;
@@ -73,8 +65,6 @@
     cursor: pointer;
 }
 </style>
-</head>
-
 <body>
 
 
@@ -126,16 +116,10 @@ $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jpi'");
             
 if($query ->num_rows ==1){
     $row1 = $query->fetch_assoc();
-
-   
-
    ?>
-
-   
 
 
         <div class="page-hero" style="background-image: url(images/hero-1.jpg);">
-    
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -169,16 +153,9 @@ if($query ->num_rows ==1){
 
                                 </div>
                             </article>
-                <?php if($haveapplied=='4hvt'){?>
-                    <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob" onclick="applyforjob(this.id,<?php echo $sid; ?>);">Apply for this job</a>
-                <?php }  ?>
 
-                 <?php if($haveapplied=='5a'){?>
-                    <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob">Applied !</a>
-                <?php }  ?>
-                          
+                            <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob" onclick="applyforjob(<?php echo $jpi; ?>,<?php echo $sid; ?>);">Apply for this job</a>
                         </div>
-
 
 
 <!-- ----modal to be shown before applying ------ -->
@@ -228,19 +205,17 @@ function off() {
 }
 
 function applyforjob(x,y){
-    // alert(x);
-    // alert(y);
+    alert(x);
+    alert(y);
                             $.ajax({
                                 url: 'applyforjob.php',
                                 type: 'POST',
-                            
                                 data: {param1: x,param2:y},
                                 dataType:"json"
                             })
                             .done(function(response) {
                                 console.log(response[0]);
                                 //do something with the response
-                                // $('#<?php echo $jpi; ?>').html('Applied');
                                 // $("#myBtn").trigger('click');
                                 $('#myModal').show();
                                 $('#det1').val(response[0]['curr_company']);
@@ -306,7 +281,6 @@ function applyafteredit(arg){
                     }
 
 </script>
-   
    
                         <!-- <div class="content-wrap-footer">
                             <div class="row">

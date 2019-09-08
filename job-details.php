@@ -2,24 +2,16 @@
 <html lang="en">
 
     <?php 
-    include '../dbConfig.php';
-    session_start();
-    if(isset($_SESSION['stud_id'])){
-        // echo $_SESSION['company'];
-      }
-      else{
-        // echo "alert('no session exist')";
-        header("location: ../index.php");
-      }
-    $sid=$_SESSION['stud_id'];
+    include 'dbConfig.php';
+    // session_start();
+    // if(isset($_SESSION['stud_id'])){
+    //   }
+    //   else{
+    //   }
     $jpi=$_REQUEST['jpi'];
-    $haveapplied=$_REQUEST['apl'];
     ?>
 
-<!-- Mirrored from www.cssigniter.com/themeforest/specialty/single-job.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:11 GMT -->
-<!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<!-- /Added by HTTrack -->
 
 <head>
     <meta charset="utf-8">
@@ -29,50 +21,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/base.css">
-    <link rel="stylesheet" type="text/css" href="css/mmenu.css">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="css/magnific.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="specialty/css/base.css">
+    <link rel="stylesheet" type="text/css" href="specialty/css/mmenu.css">
+    <link rel="stylesheet" type="text/css" href="specialty/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="specialty/css/magnific.css">
+    <link rel="stylesheet" type="text/css" href="specialty/css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="specialty/style.css">
 
     <link rel="shortcut icon" href="#">
     <link rel="apple-touch-icon" href="#">
     <link rel="apple-touch-icon" sizes="72x72" href="#">
     <link rel="apple-touch-icon" sizes="114x114" href="#">
-
-    <style>
-#myModal {
-    position: fixed;
-  display: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 2;
-  cursor: pointer;
-}
-#text{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 20px;
-  color: white;
-  transform: translate(-50%,-50%);
-  background:cadetblue;
-  -ms-transform: translate(-50%,-50%);
-}
-.editbtn{
-    /* float: right; */
-    background: transparent;
-    border: 2px solid white;
-    /* box-shadow: 2px 2px white; */
-    cursor: pointer;
-}
-</style>
 </head>
 
 <body>
@@ -97,17 +56,15 @@
                                         <a href="index.php">Home</a>
                                     </li>
                                    
-                                    <li class="menu-item-btn">
+                                    <!-- <li class="menu-item-btn">
                                         <a href="../logout.php">Logout</a>
-                                    </li>
+                                    </li> -->
 
 
                                 </ul>
                                 <!-- #navigation -->
 
-                                <a href="#mobilemenu" class="mobile-nav-trigger">
-                                    <i class="fa fa-navicon"></i> Menu
-                                </a>
+                              
                             </nav>
                             <!-- #nav -->
 
@@ -152,6 +109,13 @@ if($query ->num_rows ==1){
             </div>
         </div>
 
+<script>
+function redirectlogin(){
+    alert("Please login to apply");
+
+}
+</script>
+
         <main class="main main-elevated">
             <div class="container">
                 <div class="row">
@@ -169,88 +133,42 @@ if($query ->num_rows ==1){
 
                                 </div>
                             </article>
-                <?php if($haveapplied=='4hvt'){?>
-                    <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob" onclick="applyforjob(this.id,<?php echo $sid; ?>);">Apply for this job</a>
-                <?php }  ?>
 
-                 <?php if($haveapplied=='5a'){?>
-                    <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob">Applied !</a>
-                <?php }  ?>
+                            <?php if(isset($_SESSION['stud_id'])){
+                                ?>
+                    <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyforjob" onclick="applyforjob(this.id,<?php echo $sid; ?>);">Apply for this job</a>
+
+
+                        <?php    }
+                            else{
+                                ?>
+                                <a id="<?php echo $jpi; ?>" class="btn btn-block btn-apply-content" name="applyafterogin" onclick="redirectlogin();">Login to Apply</a>
+
+                        <?php    }
+                ?>
+                
+
+              
                           
                         </div>
-
-
-
-<!-- ----modal to be shown before applying ------ -->
-<!-- <button id="myBtn" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button> -->
-<div  id="myModal" style="display:none" >
-    <div  id="text">
-        <div  style="padding:20px">
-            <div >
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
-                 <h4 class="text-center" id="myModalLabel">Your details &nbsp;<br><small>(Last updated on: <span id="last_updated1"></span>)</small></h4>
-
-            </div>
-            <div >
-            <div>
-            <form class="form-control">
-            Company name
-            <input  id="det1" type="text" required>
-            Current CTC
-            <input id="det2" type="text" required>
-            Experience (in years)
-            <input id="det3" type="text" required>
-            <!-- Resume
-            <input id="det4" type="file" required> -->
-
-            
-            <br>
-            <br>
-            
-           
-                <button  type="button" class="btn editbtn btn-default" onclick="off();" >Close</button>
-                <button id='<?php echo $sid; ?>' type="button" class="btn editbtn btn-primary" style="float:right" onclick="applyafteredit(this.id);">Save changes and Apply</button>
-            
-            </form>
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ------------- -->
 
 
 <script>
 
 
-function off() {
-  document.getElementById("myModal").style.display = "none";
-}
-
 function applyforjob(x,y){
-    // alert(x);
-    // alert(y);
+    alert(x);
+    alert(y);
                             $.ajax({
                                 url: 'applyforjob.php',
                                 type: 'POST',
                             
                                 data: {param1: x,param2:y},
-                                dataType:"json"
                             })
                             .done(function(response) {
-                                console.log(response[0]);
+                                alert(response);
                                 //do something with the response
-                                // $('#<?php echo $jpi; ?>').html('Applied');
-                                // $("#myBtn").trigger('click');
-                                $('#myModal').show();
-                                $('#det1').val(response[0]['curr_company']);
-                                $('#det2').val(response[0]['curr_ctc']);
-                                $('#det3').val(response[0]['experience']);
-                                // $('#det4').val(response[0]['resume']);
-                                // alert(response[0]['last_updated']);
-                                $('#last_updated1').html(response[0]['last_updated'].slice(0, 10));
-
-                                
+                                $('#'+x).html('Applied');
                                
                             })
                             .fail(function() {
@@ -258,55 +176,7 @@ function applyforjob(x,y){
                             });
 }
 
-
-function applyafteredit(arg){
-    alert(arg);
-
-
-// -------for updating in db------
-
-
-
-                     $.ajax({
-                                url: 'updateafteredit.php',
-                                type: 'POST',
-                            
-                                data: {param1: $('#det1').val(),param2:arg,param3:$('#det2').val(),param4:$('#det3').val()},
-                               
-                            })
-                            .done(function(response) {
-                    alert(response);
-
-                    // ------------for applying----
-                    $.ajax({
-                                url: 'applyafteredit.php',
-                                type: 'POST',
-                            
-                                data: {param1: <?php echo $jpi; ?>,param2:arg},
-                               
-                            })
-                            .done(function(response) {
-                    alert(response);   
-                    off();
-                    $('#<?php echo $jpi; ?>').html('Applied');
-                            })
-                            .fail(function() {
-                                alert("error while applying");
-                            });   
-                            })
-                            .fail(function() {
-                                alert("error while saving details");
-                            });
-
-
-                            
-
-                     
-
-                    }
-
 </script>
-   
    
                         <!-- <div class="content-wrap-footer">
                             <div class="row">
@@ -499,13 +369,13 @@ function applyafteredit(arg){
     </div>
     <!-- #page -->
 
-    <script src="js/jquery-1.12.3.min.js"></script>
-    <script src="js/jquery.mmenu.min.all.js"></script>
-    <script src="js/jquery.fitvids.js"></script>
-    <script src="js/jquery.magnific-popup.js"></script>
-    <script src="js/jquery.matchHeight.js"></script>
-    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="specialty/js/jquery-1.12.3.min.js"></script>
+    <script src="specialty/js/jquery.mmenu.min.all.js"></script>
+    <script src="specialty/js/jquery.fitvids.js"></script>
+    <script src="specialty/js/jquery.magnific-popup.js"></script>
+    <script src="specialty/js/jquery.matchHeight.js"></script>
+    <script src="specialty/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="specialty/js/scripts.js"></script>
 
 </body>
 

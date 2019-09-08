@@ -5,8 +5,18 @@
 
 include '../dbConfig.php';
 session_start();
-$_SESSION['stud_id']=1;
-$_SESSION['stud_name']="ritik verma";
+
+if(isset($_SESSION['stud_id'])){
+    // echo $_SESSION['company'];
+
+  }
+  else{
+    // echo "alert('no session exist')";
+    header("location: ../index.php");
+  }
+  
+// $_SESSION['stud_id']=1;
+// $_SESSION['stud_name']="ritik verma";
 ?>
 <html lang="en">
 
@@ -39,6 +49,8 @@ $_SESSION['stud_name']="ritik verma";
 <body>
 
       <?php
+      $notapplied=0;
+      $applied=0;
                 // echo $_REQUEST['category'];
                 $studentid=$_SESSION['stud_id'];
 
@@ -66,60 +78,19 @@ $jobcount=$querycat ->num_rows;
                             </h1>
                             <nav class="nav">
                                 <ul class="navigation-main">
-                                    <li class="menu-item-home current-menu-item">
+                                    <li  id="getappliedjobs" class="menu-item-btn">
+                                        <a href="#">Applied Jobs</a>
+                                    </li>
+                                    <li  id="getnotappliedjobs" class="menu-item-btn" style="display:none">
                                         <a href="index.php">Home</a>
                                     </li>
-                                    <!-- <li>
-											<a href="landing.html">Landing Page</a>
-										</li> -->
-                                    <!-- <li class="menu-item-has-children">
-											<a href="blog.html">Listings</a>
-											<ul class="sub-menu">
-												<li>
-													<a href="index.html">Job Listing</a>
-												</li>
-												<li>
-													<a href="index-fullwidth.html">Job Listing Full</a>
-												</li>
-												<li>
-													<a href="index-left-sidebar.html">Job Listing Left</a>
-												</li>
-												<li>
-													<a href="blog.html">Blog</a>
-												</li>
-											</ul>
-										</li> -->
-                                    <!-- <li class="menu-item-has-children">
-											<a href="#">Templates</a>
-											<ul class="sub-menu">
-												<li>
-													<a href="single.html">Single Article</a>
-												</li>
-												<li>
-													<a href="single-job.html">Single Job</a>
-												</li>
-												<li>
-													<a href="page.html">Page Default</a>
-												</li>
-												<li>
-													<a href="page-centered.html">Page Centered</a>
-												</li>
-												<li>
-													<a href="page-fullwidth.html">Page Fullwidth</a>
-												</li>
-												<li>
-													<a href="submit.html">Submit Listing</a>
-												</li>
-												<li>
-													<a href="dashboard.html">Dashboard</a>
-												</li>
-												<li>
-													<a href="auth.html">Login / Register</a>
-												</li>
-											</ul>
-										</li> -->
+                                    <!-- <button id="getappliedjobs">Applied Jobs</button> -->
+                                   
                                     <li class="menu-item-btn">
-                                        <a href="#">Logged in as ritik</a>
+                                        <a href="#"><?php echo $_SESSION['stud_name']; ?></a>
+                                    </li>
+                                    <li class="menu-item-btn">
+                                        <a href="../logout.php">Logout</a>
                                     </li>
                                 </ul>
                                 <!-- #navigation -->
@@ -146,7 +117,7 @@ $jobcount=$querycat ->num_rows;
                                 <br> you’ve always wanted.
                             </h2>
                             <p class="page-subtitle">
-                                <span class="text-theme"><?php echo $jobcount; ?></span> new jobs in the last
+                                <span class="text-theme"><?php echo $jobcount; ?></span>  jobs offered in the last
                                 <!-- <span class="text-theme">7</span> days. Search now. -->
                             </p>
                         </div>
@@ -159,34 +130,7 @@ $jobcount=$querycat ->num_rows;
                     <a href="#" class="form-filter-dismiss">&times;</a>
                 </div>
 
-                <!-- <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-xs-12">
-                            <label for="job-description" class="sr-only">Job Description</label>
-                            <input type="text" id="job-description" placeholder="Description">
-                        </div>
-                        <div class="col-lg-3 col-xs-12">
-                            <label for="job-location" class="sr-only">Job Location</label>
-                            <input type="text" id="job-location" placeholder="Location">
-                        </div>
-                        <div class="col-lg-3 col-xs-12">
-                            <label for="job-category" class="sr-only">Job Category</label>
-                            <div class="ci-select">
-                                <select id="job-category">
-										<option value="0">Category</option>
-										<option value="1">Full Time</option>
-										<option value="2">Part Time</option>
-										<option value="3">Internship</option>
-										<option value="4">Freelance</option>
-										<option value="5">Contract</option>
-									</select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xs-12">
-                            <button class="btn btn-block" type="submit">Search</button>
-                        </div>
-                    </div>
-                </div> -->
+                
             </form>
         </div>
 
@@ -207,10 +151,10 @@ $jobcount=$querycat ->num_rows;
 
         <main class="main">
             <div class="container">
-                <div class="row">
+                <div class="row notappliedjobsdiv">
                     <div class="col-xl-12 col-lg-12 col-xs-12">
                         <h3 class="section-title">
-                            <b><?php echo $jobcount; ?></b> Jobs Found</h3>
+                            <b><span id="newjob"></span></b>&nbsp;New Job(s) Found</h3>
 
                         <div class="item-listing">
                             
@@ -228,10 +172,15 @@ if(sizeof($jobids)){
     
 
     // Get images from the database
-    $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jobids[$x]'");
+    $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jobids[$x]' and NOT EXISTS
+    (SELECT *
+     FROM   applied_table
+     WHERE  posting_id ='$jobids[$x]' and student_id='$studentid')");
 
     if($query ->num_rows ==1){
         $row1 = $query->fetch_assoc();
+        $notapplied=$notapplied+1;
+        
        ?>
   
 
@@ -239,7 +188,7 @@ if(sizeof($jobids)){
     <div class="list-item">
         <div class="list-item-main-info">
             <p class="list-item-title">
-                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>" ><?php echo $row1['job_title']; ?> </a>
+                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
             </p>
 
             <div class="list-item-meta">
@@ -268,100 +217,96 @@ else{
 
                         </div>
                     </div>
-                    <!-- 
-                    <div class="col-xl-3 col-lg-4 col-xs-12">
-                        <div class="sidebar-wrap">
-                            <div class="sidebar-wrap-header">
-                                <a href="#" class="sidebar-wrap-dismiss">&times;</a>
-                            </div>
-                            <div class="sidebar">
-                                <div class="widget widget_ci-filters-widget">
-                                    <h3 class="widget-title">Job Type</h3>
-                                    <ul class="item-filters-array">
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-1" class="checkbox-filter">
-                                            <label class="checkbox-filter-label" for="filter-1">
-													<span class="item-filter-tag item-filter-tag-badge">
-														Full Time
-														<span class="item-filter-tag-bg job-type-full-time"></span>
-													</span>
-												</label>
-                                        </li>
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-2" class="checkbox-filter" checked>
-                                            <label class="checkbox-filter-label" for="filter-2">
-													<span class="item-filter-tag item-filter-tag-badge">
-														Part Time
-														<span class="item-filter-tag-bg job-type-part-time"></span>
-													</span>
-												</label>
-                                        </li>
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-3" class="checkbox-filter">
-                                            <label class="checkbox-filter-label" for="filter-3">
-													<span class="item-filter-tag item-filter-tag-badge">
-														Freelance
-														<span class="item-filter-tag-bg job-type-freelance"></span>
-													</span>
-												</label>
-                                        </li>
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-4" class="checkbox-filter">
-                                            <label class="checkbox-filter-label" for="filter-4">
-													<span class="item-filter-tag item-filter-tag-badge">
-														Contract
-														<span class="item-filter-tag-bg job-type-contract"></span>
-													</span>
-												</label>
-                                        </li>
-                                    </ul>
-                                </div> -->
-                    <!-- <div class="widget widget_ci-filters-widget">
-                                    <h3 class="widget-title">Compensation</h3>
-                                    <ul class="item-filters-array">
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-11" class="checkbox-filter">
-                                            <label class="checkbox-filter-label" for="filter-11">
-													<span class="item-filter-tag">Under $50,000</span>
-												</label>
-                                        </li>
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-22" class="checkbox-filter" checked>
-                                            <label class="checkbox-filter-label" for="filter-22">
-													<span class="item-filter-tag">$50,001 - $75,000</span>
-												</label>
-                                        </li>
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-33" class="checkbox-filter">
-                                            <label class="checkbox-filter-label" for="filter-33">
-													<span class="item-filter-tag">$75,001 - $100,000</span>
-												</label>
-                                        </li>
-                                        <li class="item-filter">
-                                            <input type="checkbox" id="filter-44" class="checkbox-filter">
-                                            <label class="checkbox-filter-label" for="filter-44">
-													<span class="item-filter-tag">Over $100,000</span>
-												</label>
-                                        </li>
-                                    </ul>
-                                </div> -->
+                    
 
                 </div>
             </div>
     </div>
     </div>
+
+
+    <!-- --------------------------------------------------------------------------- -->
+<div class="container">
+    <div class="row appliedjobsdiv" style="display:none;margin-top:-50px" >
+
+
+    <div class="col-xl-12 col-lg-12 col-xs-12">
+                        <h3 class="section-title">
+                            <b><span id="appliedjob"></span></b>&nbsp;Applied Job(s) Found.</h3>
+
+                        <div class="item-listing">
+                            
+
+                            <!-- ----fetching jobs offered---- -->
+
+
+                              <?php
+                            
+if(sizeof($jobids)){
+
+    $arrlength = count($jobids);
+
+    for($x = 0; $x < $arrlength; $x++) {
+    
+
+    // Get images from the database
+    $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jobids[$x]' and EXISTS
+    (SELECT *
+     FROM   applied_table
+     WHERE  posting_id ='$jobids[$x]' and student_id='$studentid')");
+
+    if($query ->num_rows ==1){
+        $row1 = $query->fetch_assoc();
+        $applied=$applied+1;
+        
+       ?>
+  
+
+
+    <div class="list-item">
+        <div class="list-item-main-info">
+            <p class="list-item-title">
+                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=5a" target="blank" ><?php echo $row1['job_title']; ?> </a>
+            </p>
+
+            <div class="list-item-meta">
+                <a href="#" class="list-item-tag item-badge job-type-contract"><?php echo $row1['Job_type']; ?></a>
+                <span class="list-item-company"><?php echo $row1['company_name']; ?></span>
+            </div>
+        </div>
+
+        <div class="list-item-secondary-info">
+            <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
+            <time class="list-item-time" datetime="2017-01-01"><?php echo $row1['posting_time']; ?></time>
+        </div>
+    </div>
+
+
+<?php 
+}}
+?>
+<?php
+}
+else{
+    echo "You have not applied for any job yet!";
+}
+?>
+
+
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+    </div>
+    
+    
+    </div>
+    </div>
     </div>
     </main>
 
-    <!-- <div class="mobile-triggers">
-        <a href="#" class="mobile-trigger form-filter-trigger">
-            <i class="fa fa-search"></i> Search
-        </a>
-
-        <a href="#" class="mobile-trigger sidebar-wrap-trigger">
-            <i class="fa fa-navicon"></i> Filters
-        </a>
-    </div> -->
     <footer class="footer">
         <div class="container">
             <!-- <div class="row">
@@ -482,6 +427,7 @@ else{
     </div>
     <!-- #page -->
 
+
     <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/jquery.mmenu.min.all.js"></script>
     <script src="js/jquery.fitvids.js"></script>
@@ -489,6 +435,40 @@ else{
     <script src="js/jquery.matchHeight.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/scripts.js"></script>
+
+
+    <script>
+    $(document).ready(function(){
+        $('#newjob').html(<?php echo $notapplied; ?>);
+        $('#appliedjob').html(<?php echo $applied; ?>);
+
+        $('#getappliedjobs').click(function(){
+
+            // alert("jjjjjj");
+
+            $('.notappliedjobsdiv').hide();
+            $('.appliedjobsdiv').show();
+            $('#getappliedjobs').hide();
+            $('#getnotappliedjobs').show();
+
+
+        });
+
+
+        $('#getnotappliedjobs').click(function(){
+
+            // alert("jjjjjj");
+
+            // $('.notappliedjobsdiv').hide();
+            // $('.appliedjobsdiv').show();
+            $('#getappliedjobs').show();
+            $('#getnotappliedjobs').hide();
+
+
+            });
+    });
+    
+    </script>
 
 </body>
 
