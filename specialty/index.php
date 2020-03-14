@@ -1,23 +1,23 @@
-<!doctype html>
-
 <?php
-
-
-include '../dbConfig.php';
 session_start();
-
+include '../dbConfig.php';
+error_reporting(E_ALL & ~E_NOTICE);
 if(isset($_SESSION['stud_id'])){
     // echo $_SESSION['company'];
-
   }
   else{
     // echo "alert('no session exist')";
     header("location: ../index.php");
   }
-  
+  if(isset($_COOKIE['recentjid']) && $_COOKIE['firsttime']=='yes' && !$_COOKIE['firsttimevisit']=='no'){
+setcookie("firsttimevisit", "no");
+    header("location: single-job.php?jpi=".$_COOKIE['recentjid']."&apl=4hvt");
+    
+  }
 // $_SESSION['stud_id']=1;
 // $_SESSION['stud_name']="ritik verma";
 ?>
+<!doctype html>
 <html lang="en">
 
 <!-- Mirrored from www.cssigniter.com/themeforest/specialty/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:01 GMT -->
@@ -55,15 +55,41 @@ if(isset($_SESSION['stud_id'])){
                 $studentid=$_SESSION['stud_id'];
 
                 // Get images from the database
-                $querycat = $db->query("SELECT * FROM Offer_table WHERE student_id='$studentid'");
+                $querycat = $db->query("SELECT * FROM applied_table WHERE student_id='$studentid'");
 $jobcount=$querycat ->num_rows;
                 if($querycat ->num_rows >0){
                     $jobids=array();
+                    // $statusarr=array();
+                    // $notearr=array();
                     while($row = $querycat->fetch_assoc()){
                         array_push($jobids,$row['posting_id']);
+                        // array_push($statusarr,$row['Status']);
+                        // array_push($notearr,$row['Note']);
                     }
                 }
                         ?>
+
+<!-- -=============collect the status of applied jobs======== -->
+<?php
+ $statusarr=array();
+ $notearr=array();
+ $applieddate=array();
+                $querycat1 = $db->query("SELECT * FROM applied_table WHERE student_id='$studentid' and Status!='Offer'");
+$jobcount1=$querycat1 ->num_rows;
+                if($querycat1 ->num_rows >0){
+                    // $jobids=array();
+                   
+                    while($row1 = $querycat1->fetch_assoc()){
+                        // array_push($jobids,$row['posting_id']);
+                        array_push($statusarr,$row1['Status']);
+                        array_push($notearr,$row1['Note']);
+                        array_push($applieddate,$row1['applied_at']);
+                    }
+                }
+                // var_dump($statusarr[0]);
+                        ?>
+
+
 
     <div id="page">
         <header class="header">
@@ -87,10 +113,10 @@ $jobcount=$querycat ->num_rows;
                                     <!-- <button id="getappliedjobs">Applied Jobs</button> -->
                                    
                                     <li class="menu-item-btn">
-                                        <a href="#"><?php echo $_SESSION['stud_name']; ?></a>
+                                        <a href="auth.php"><?php echo $_SESSION['stud_name']; ?></a>
                                     </li>
                                     <li class="menu-item-btn">
-                                        <a href="../logout.php">Logout</a>
+                                        <a href="../logoutstud.php">Logout</a>
                                     </li>
                                 </ul>
                                 <!-- #navigation -->
@@ -125,7 +151,7 @@ $jobcount=$querycat ->num_rows;
                 </div>
             </div>
 
-            <form action="https://www.cssigniter.com/" class="form-filter">
+            <form action="" class="form-filter">
                 <div class="form-filter-header">
                     <a href="#" class="form-filter-dismiss">&times;</a>
                 </div>
@@ -171,11 +197,9 @@ if(sizeof($jobids)){
     for($x = 0; $x < $arrlength; $x++) {
     
 
-    // Get images from the database
-    $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jobids[$x]' and NOT EXISTS
-    (SELECT *
-     FROM   applied_table
-     WHERE  posting_id ='$jobids[$x]' and student_id='$studentid')");
+    // Get offers from the database
+    $query = $db->query("SELECT *
+    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Offer'");
 
     if($query ->num_rows ==1){
         $row1 = $query->fetch_assoc();
@@ -237,7 +261,7 @@ else{
                         <div class="item-listing">
                             
 
-                            <!-- ----fetching jobs offered---- -->
+                            <!-- ----fetching jobs applied---- -->
 
 
                               <?php
@@ -245,19 +269,19 @@ else{
 if(sizeof($jobids)){
 
     $arrlength = count($jobids);
-
+    // var_dump($jobids);
+    $i=0;
     for($x = 0; $x < $arrlength; $x++) {
-    
+       
 
     // Get images from the database
-    $query = $db->query("SELECT * FROM Job_Posting WHERE posting_id='$jobids[$x]' and EXISTS
-    (SELECT *
-     FROM   applied_table
-     WHERE  posting_id ='$jobids[$x]' and student_id='$studentid')");
+    $query =  $db->query("SELECT *
+    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status!='Offer'");
 
-    if($query ->num_rows ==1){
+    if($query ->num_rows==1){
         $row1 = $query->fetch_assoc();
         $applied=$applied+1;
+        // $i=$i+1;
         
        ?>
   
@@ -276,14 +300,21 @@ if(sizeof($jobids)){
         </div>
 
         <div class="list-item-secondary-info">
+       
             <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
-            <time class="list-item-time" datetime="2017-01-01"><?php echo $row1['posting_time']; ?></time>
+            <time class="list-item-time" datetime="2017-01-01"><?php echo $applieddate[$i]; ?></time>
+            <br>
+            <a href="#" class="list-item-tag item-badge" style="font-size:13px;"><b> <?php echo $statusarr[$i]; ?></b></a>
         </div>
     </div>
 
 
 <?php 
-}}
+$i=$i+1;
+}
+
+
+}
 ?>
 <?php
 }
@@ -309,112 +340,14 @@ else{
 
     <footer class="footer">
         <div class="container">
-            <!-- <div class="row">
-                <div class="col-xs-12">
-
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-xs-12">
-                            <aside class="widget widget_text group">
-                                <h3 class="widget-title">Text Widget</h3>
-                                <p>Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante. Nulla at nulla justo, eget luctus tortor.
-                                    Nulla facilisi. Duis aliquet egestas purus.</p>
-                            </aside>
-                             /widget
-        </div>
-
-        <div class="col-lg-3 col-md-6 col-xs-12">
-            <aside class="widget widget_categories group">
-                <h3 class="widget-title">Widget Title</h3>
-                <ul>
-                    <li>
-                        <a href="#">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#">Terms &amp; Conditions</a>
-                    </li>
-                    <li>
-                        <a href="#">Careers</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
-                    </li>
-                    <li>
-                        <a href="#">Disclaimer</a>
-                    </li>
-                </ul>
-            </aside>
-        </div>
-
-        <div class="col-lg-3 col-md-6 col-xs-12">
-            <aside class="widget widget_categories group">
-                <h3 class="widget-title">Widget Title</h3>
-                <ul>
-                    <li>
-                        <a href="#">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#">Terms &amp; Conditions</a>
-                    </li>
-                    <li>
-                        <a href="#">Careers</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
-                    </li>
-                    <li>
-                        <a href="#">Disclaimer</a>
-                    </li>
-                </ul>
-            </aside>
-        </div>
-
-        <div class="col-lg-3 col-md-6 col-xs-12">
-
-            <aside class="widget widget_ci_social_widget ci-socials group">
-                <h3 class="widget-title">Socials</h3>
-
-                <ul class="list-social-icons">
-                    <li>
-                        <a class="social-icon" href="#">
-                            <i class="fa fa-rss"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="social-icon" href="#">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="social-icon" href="#">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="social-icon" href="#">
-                            <i class="fa fa-pinterest-p"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="social-icon" href="#">
-                            <i class="fa fa-vimeo"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="social-icon" href="#">
-                            <i class="fa fa-medium"></i>
-                        </a>
-                    </li>
-                </ul>
-            </aside>
-        </div>
-        </div> -->
+         
 
             <div class="footer-copy">
                 <div class="row">
                     <div class="col-sm-6 col-xs-12">
                         <p>
                             <a href="#">Specialty</a> &ndash; Job Board
-                            <a href="https://www.cssigniter.com/ignite" target="_blank"></a>
+                            <!-- <a href="https://www.cssigniter.com/ignite" target="_blank"></a> -->
                         </p>
                     </div>
 

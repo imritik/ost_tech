@@ -21,7 +21,7 @@ $querylocation1=$db->query("SELECT * FROM Student WHERE student_id='$stud_id'");
 if($querylocation1 ->num_rows == 1){
     // $ids=array();
     while($row = $querylocation1->fetch_assoc()){
-        $return_arr[] = array("curr_company" => $row['curr_company'],"curr_ctc" => $row['curr_ctc'],"experience" => $row['experience'],"resume" => $row['resume'],"last_updated" => $row['updated_on']);
+        $return_arr[] = array("curr_company" => $row['curr_company'],"curr_ctc" => $row['curr_ctc'],"experience" => $row['experience'],"resume" => $row['resume'],"last_updated" => $row['modified_on']);
 
     }
 

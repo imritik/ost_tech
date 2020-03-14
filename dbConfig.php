@@ -1,9 +1,5 @@
 <?php
-// Database configuration
-// $dbHost     = "localhost";
-// $dbUsername = "id10181295_ritik";
-// $dbPassword = "phpintern";
-// $dbName     = "id10181295_resume";
+
 
 $dbHost     = "localhost";
 $dbUsername = "root";

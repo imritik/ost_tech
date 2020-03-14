@@ -1,15 +1,9 @@
-<!doctype html>
-<html lang="en">
 <?php
-
-
 include 'dbConfig.php';
   ?>
-
-<!-- Mirrored from www.cssigniter.com/themeforest/specialty/index-fullwidth.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:29:26 GMT -->
-<!-- Added by HTTrack -->
+  <!doctype html>
+<html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<!-- /Added by HTTrack -->
 
 <head>
     <meta charset="utf-8">
@@ -329,88 +323,7 @@ include 'dbConfig.php';
 <body>
 
     <div id="page">
-        <!-- <header class="header">
-				<div class="container">
-					<div class="row">
-						<div class="col-xs-12">
-							<div class="mast-head">
-								<h1 class="site-logo">
-									<a href="index.html">
-										<img src="images/logo-light.png" alt="">
-									</a>
-								</h1>
-								<nav class="nav">
-									<ul class="navigation-main">
-										<li class="menu-item-home current-menu-item">
-											<a href="index.html">Home</a>
-										</li>
-										<li>
-											<a href="landing.html">Landing Page</a>
-										</li>
-										<li class="menu-item-has-children">
-											<a href="blog.html">Listings</a>
-											<ul class="sub-menu">
-												<li>
-													<a href="index.html">Job Listing</a>
-												</li>
-												<li>
-													<a href="index-fullwidth.html">Job Listing Full</a>
-												</li>
-												<li>
-													<a href="index-left-sidebar.html">Job Listing Left</a>
-												</li>
-												<li>
-													<a href="blog.html">Blog</a>
-												</li>
-											</ul>
-										</li>
-										<li class="menu-item-has-children">
-											<a href="#">Templates</a>
-											<ul class="sub-menu">
-												<li>
-													<a href="single.html">Single Article</a>
-												</li>
-												<li>
-													<a href="single-job.html">Single Job</a>
-												</li>
-												<li>
-													<a href="page.html">Page Default</a>
-												</li>
-												<li>
-													<a href="page-centered.html">Page Centered</a>
-												</li>
-												<li>
-													<a href="page-fullwidth.html">Page Fullwidth</a>
-												</li>
-												<li>
-													<a href="submit.html">Submit Listing</a>
-												</li>
-												<li>
-													<a href="dashboard.html">Dashboard</a>
-												</li>
-												<li>
-													<a href="auth.html">Login / Register</a>
-												</li>
-											</ul>
-										</li>
-										<li class="menu-item-btn">
-											<a href="auth.html">Sign Up</a>
-										</li>
-									</ul>
-								
-
-									<a href="#mobilemenu" class="mobile-nav-trigger">
-										<i class="fa fa-navicon"></i> Menu
-									</a>
-								</nav>
-								
-
-								<div id="mobilemenu"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</header> -->
+        
 
 
         <nav class="navbar navbar-default navbar-expand-lg navbar-light">
@@ -444,16 +357,11 @@ include 'dbConfig.php';
 
                 <ul class="nav navbar-nav navbar-right ml-auto">
                     <li class="nav-item">
-                        <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Employer</a>
+                        <!-- <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Employer</a> -->
                         <ul class="dropdown-menu form-wrapper">
                             <li>
                                 <form action="login/emp.php" method="post">
-                                    <!-- <p class="hint-text">Sign in with your social media account</p>
-											<div class="form-group social-btn clearfix">
-												<a href="#" class="btn btn-primary pull-left"><i class="fa fa-facebook"></i> Facebook</a>
-												<a href="#" class="btn btn-info pull-right"><i class="fa fa-twitter"></i> Twitter</a>
-											</div>
-											<div class="or-seperator"><b>or</b></div> -->
+                                   
                                     <div class="form-group">
                                         <input type="email" class="form-control" name="emailemp" placeholder="email" value="abc@company.com" required="required">
                                     </div>
@@ -462,7 +370,6 @@ include 'dbConfig.php';
                                     </div>
                                     <input type="submit" class="btn btn-primary btn-block" value="Login">
                                     <div class="form-footer">
-                                        <!-- <a href="#">Forgot Your password?</a> -->
                                     </div>
                                 </form>
                             </li>
@@ -561,7 +468,7 @@ include 'dbConfig.php';
 
                             <?php
                         
-                                $querycat = $db->query("SELECT * FROM Job_Posting");
+                                $querycat = $db->query("SELECT * FROM Job_Posting order by posting_time DESC");
 
                                 if($querycat ->num_rows >0){
                                     while($row = $querycat->fetch_assoc()){
@@ -579,26 +486,30 @@ include 'dbConfig.php';
                                     </div>
                                 </div>
 
+                           
+
                                 <div class="list-item-secondary-info">
                                     <p class="list-item-location"><?php echo $row['Job_location']; ?></p>
                                     <?php $pt=strtotime(substr($row['posting_time'],0,10));
                                     $ct=strtotime(date("Y-m-d")); 
+                                    $tdiff=($ct-$pt)/60/60/24;
+                                    $toshow='';
+                                    if($tdiff<1){
+$toshow='Today';
+                                    }
+                                    else{
+                                        $toshow=number_format($tdiff).' days ago';
+                                    }
                                     ?>
-                                    <time class="list-item-time" datetime="2017-01-01"><?php echo ($ct-$pt)/60/60/24; ?> days ago</time>
+                                    <time class="list-item-time" datetime="2017-01-01"><?php echo $toshow; ?> </time>
                                 </div>
                                     
                             </div>
 
-                           
-
                             <?php }}
                                 ?>
 
-                           
-                           
-                            
-                           
-
+                          
                             <div class="list-item-secondary-wrap">
                                 <button id="loadMore" class="btn btn-round btn-white btn-transparent">Load More Jobs</button>
                             </div>

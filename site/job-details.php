@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	
-<!-- Mirrored from www.coffeecreamthemes.com/themes/jobseek/site/job-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:32:50 GMT -->
 <head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">

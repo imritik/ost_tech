@@ -1,6 +1,3 @@
-<!doctype html>
-<html lang="en">
-
     <?php 
     include '../dbConfig.php';
     session_start();
@@ -14,13 +11,11 @@
     $sid=$_SESSION['stud_id'];
     $jpi=$_REQUEST['jpi'];
     $haveapplied=$_REQUEST['apl'];
+   
     ?>
-
-<!-- Mirrored from www.cssigniter.com/themeforest/specialty/single-job.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:11 GMT -->
-<!-- Added by HTTrack -->
+<!doctype html>
+<html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<!-- /Added by HTTrack -->
-
 <head>
     <meta charset="utf-8">
     <title>Single Job &ndash; Specialty</title>
@@ -98,7 +93,7 @@
                                     </li>
                                    
                                     <li class="menu-item-btn">
-                                        <a href="../logout.php">Logout</a>
+                                        <a href="../logoutstud.php">Logout</a>
                                     </li>
 
 
@@ -193,16 +188,19 @@ if($query ->num_rows ==1){
             </div>
             <div >
             <div>
-            <form class="form-control">
+            <form method="post" action="" class="form-control" enctype="multipart/form-data">
+            Resume (<span id="det5"><a href="" target="blank" style="color:white;font-size:15px"></a></span>)
+            <input id="det4" type="file" name="updatedresume">
+            <button type="submit" id="resumesavebtn" class="btn btn-sm" style="float:right;display:none;" onclick="saveresume();">Save resume</button>
+            </form>
+            <form method="post" action="" class="form-control" enctype="multipart/form-data">
             Company name
             <input  id="det1" type="text" required>
             Current CTC
             <input id="det2" type="text" required>
             Experience (in years)
             <input id="det3" type="text" required>
-            <!-- Resume
-            <input id="det4" type="file" required> -->
-
+           
             
             <br>
             <br>
@@ -212,6 +210,7 @@ if($query ->num_rows ==1){
                 <button id='<?php echo $sid; ?>' type="button" class="btn editbtn btn-primary" style="float:right" onclick="applyafteredit(this.id);">Save changes and Apply</button>
             
             </form>
+
             </div>
             </div>
         </div>
@@ -226,6 +225,31 @@ if($query ->num_rows ==1){
 function off() {
   document.getElementById("myModal").style.display = "none";
 }
+
+
+function saveresume(){
+    console.log("saving resume");
+    var fd = new FormData(); 
+                var files = $('#det4')[0].files[0]; 
+                fd.append('file', files); 
+       
+                $.ajax({ 
+                    url: 'saveresume.php', 
+                    type: 'post', 
+                    data: fd, 
+                    contentType: false, 
+                    processData: false, 
+                    success: function(response){ 
+                        if(response != 0){ 
+                        //    alert(response); 
+                        } 
+                        else{ 
+                            // alert(response); 
+                        } 
+                    }
+                });
+}
+
 
 function applyforjob(x,y){
     // alert(x);
@@ -242,12 +266,15 @@ function applyforjob(x,y){
                                 //do something with the response
                                 // $('#<?php echo $jpi; ?>').html('Applied');
                                 // $("#myBtn").trigger('click');
+                                var resumepath='uploads/'+y+'/'+response[0]['resume'];
                                 $('#myModal').show();
                                 $('#det1').val(response[0]['curr_company']);
                                 $('#det2').val(response[0]['curr_ctc']);
                                 $('#det3').val(response[0]['experience']);
-                                // $('#det4').val(response[0]['resume']);
-                                // alert(response[0]['last_updated']);
+                                // $('#det4').val(resumepath);
+                                $("#det5 a").attr("href", resumepath);
+
+                                $('#det5 a').html(response[0]['resume']);
                                 $('#last_updated1').html(response[0]['last_updated'].slice(0, 10));
 
                                 
@@ -261,47 +288,58 @@ function applyforjob(x,y){
 
 function applyafteredit(arg){
     alert(arg);
+    // $('#resumesavebtn').trigger('click');
 
+ console.log("saving resume");
+    var fd = new FormData(); 
+                var files = $('#det4')[0].files[0]; 
+                fd.append('file', files); 
+       
+                $.ajax({ 
+                    url: 'saveresume.php', 
+                    type: 'post', 
+                    data: fd, 
+                    contentType: false, 
+                    processData: false, 
+                    success: function(response){ 
+                    console.log(response);
+                    }
+                }).done(function(response){
+                   alert(reponse); 
 
-// -------for updating in db------
+                //    / -------for updating in db------
 
-
-
-                     $.ajax({
+                        $.ajax({
                                 url: 'updateafteredit.php',
                                 type: 'POST',
                             
-                                data: {param1: $('#det1').val(),param2:arg,param3:$('#det2').val(),param4:$('#det3').val()},
-                               
-                            })
-                            .done(function(response) {
-                    alert(response);
-
-                    // ------------for applying----
-                    $.ajax({
-                                url: 'applyafteredit.php',
-                                type: 'POST',
                             
-                                data: {param1: <?php echo $jpi; ?>,param2:arg},
-                               
+                                data:{param1:$('#det1').val(),param2:arg,param3:$('#det2').val(),param4:$('#det3').val()},
+                                
                             })
                             .done(function(response) {
-                    alert(response);   
-                    off();
-                    $('#<?php echo $jpi; ?>').html('Applied');
-                            })
-                            .fail(function() {
-                                alert("error while applying");
-                            });   
-                            })
-                            .fail(function() {
-                                alert("error while saving details");
+                                        alert(response);
+
+                                        // ------------for applying----
+                                        $.ajax({
+                                                    url: 'applyafteredit.php',
+                                                    type: 'POST',
+                                                
+                                                    data: {param1: <?php echo $jpi; ?>,param2:arg},
+                                                
+                                                })
+                                                .done(function(response) {
+                                        alert(response); 
+                                        console.log(response);  
+                                        off();
+                                        $('#<?php echo $jpi; ?>').html('Applied');
+                                                })
+                                                .fail(function(data) {
+                                                    alert(data);
+                                                });   
                             });
-
-
-                            
-
-                     
+                        
+                                        });
 
                     }
 
@@ -381,111 +419,11 @@ function applyafteredit(arg){
 
         <footer class="footer">
             <div class="container">
-                <!-- <div class="row">
-                    <div class="col-xs-12">
-
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-xs-12">
-                                <aside class="widget widget_text group">
-                                    <h3 class="widget-title">Text Widget</h3>
-                                    <p>Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante. Nulla at nulla justo, eget luctus tortor.
-                                        Nulla facilisi. Duis aliquet egestas purus.</p>
-                                </aside>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 col-xs-12">
-                                <aside class="widget widget_categories group">
-                                    <h3 class="widget-title">Widget Title</h3>
-                                    <ul>
-                                        <li>
-                                            <a href="#">Privacy Policy</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Terms &amp; Conditions</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Careers</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">History</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Disclaimer</a>
-                                        </li>
-                                    </ul>
-                                </aside>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 col-xs-12">
-                                <aside class="widget widget_categories group">
-                                    <h3 class="widget-title">Widget Title</h3>
-                                    <ul>
-                                        <li>
-                                            <a href="#">Privacy Policy</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Terms &amp; Conditions</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Careers</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">History</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Disclaimer</a>
-                                        </li>
-                                    </ul>
-                                </aside>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 col-xs-12">
-
-                                <aside class="widget widget_ci_social_widget ci-socials group">
-                                    <h3 class="widget-title">Socials</h3>
-
-                                    <ul class="list-social-icons">
-                                        <li>
-                                            <a class="social-icon" href="#">
-                                                <i class="fa fa-rss"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-icon" href="#">
-                                                <i class="fa fa-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-icon" href="#">
-                                                <i class="fa fa-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-icon" href="#">
-                                                <i class="fa fa-pinterest-p"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-icon" href="#">
-                                                <i class="fa fa-vimeo"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-icon" href="#">
-                                                <i class="fa fa-medium"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </aside>
-                            </div>
-                        </div> -->
-
                 <div class="footer-copy">
                     <div class="row">
                         <div class="col-sm-6 col-xs-12">
                             <p>
                                 <a href="#">Specialty</a> &ndash; Job Board
-                                <a href="https://www.cssigniter.com/ignite" target="_blank"></a>
                             </p>
                         </div>
 
@@ -506,9 +444,11 @@ function applyafteredit(arg){
     <script src="js/jquery.matchHeight.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/scripts.js"></script>
-
+<script>
+$(document).ready(function(){
+    console.log("hi")
+    
+});
+</script>
 </body>
-
-<!-- Mirrored from www.cssigniter.com/themeforest/specialty/single-job.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:30:12 GMT -->
-
 </html>

@@ -3,17 +3,12 @@ session_start();
 include '../dbConfig.php';
 $posting_id=$_POST['param1'];
 $stud_id=$_POST['param2'];
-
- 
-  $insert = $db->query("INSERT into applied_table (posting_id,student_id,applied_at) VALUES ('".$posting_id."','".$stud_id."',NOW())");
+// echo $posting_id,$stud_id;
+  $insert = $db->query("UPDATE applied_table SET Status='has_applied', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
   if($insert){
-      $statusMsg = "Applied";
+      $statusMsg1 = "Applied";
   }else{
-      $statusMsg = "Error while applying";
+      $statusMsg1 = "Error while applying";
   } 
-
-  echo $statusMsg;
-
-
-
+  echo $statusMsg1;
 ?>

@@ -2,6 +2,7 @@
 
 <?php
 session_start();
+error_reporting(E_ALL & ~E_NOTICE);
 
 if(isset($_SESSION['emailemp'])){
     // echo $_SESSION['company'];
@@ -14,7 +15,6 @@ include '../dbConfig.php';
   ?>
 <html>
 
-<!-- Mirrored from www.coffeecreamthemes.com/themes/jobseek/site/jobs.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:32:44 GMT -->
 
 <head>
     <meta charset="utf-8">
@@ -28,11 +28,7 @@ include '../dbConfig.php';
     <!-- Main Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-		<script src="js/html5shiv.js"></script>
-		<script src="js/respond.min.js"></script>
-		<![endif]-->
+    
 
 </head>
 
@@ -56,10 +52,16 @@ include '../dbConfig.php';
             </div>
             <ul class="nav">
                 <!-- <li><a href="#home">Home</a></li> -->
-                <li class="active"><a href="jobs.php">Jobs</a></li>
-                <li><a href="post-a-job.php">Post a job</a></li>
-                <li><a href="candidates.php">Candidates</a></li>
+                <li class="active"><a href="post-a-job.php">Post a job</a></li>
+                <li><a href="jobs.php">Jobs</a></li>
+                <li><a href="candidates.php">Push Jobs</a></li>
+                <li><a href="linkedinCandidates.php">Push Jobs(Linkedin)</a></li>
 
+                <!-- <li><a href="csv_v2/index.php" target="blank">Add Candidates</a></li> -->
+                <!-- <li><a href="import-csv/index.php" target="blank">Add Company</a></li> -->
+                <li><a href="sendmails.php">Send Mails</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="showadmins.php">Admin details</a></li>
                 <!-- <li><a class="link-register">Register</a></li> -->
                 <li><a class="link-login" href="../logout.php">Logout</a></li>
             </ul>
@@ -95,9 +97,126 @@ include '../dbConfig.php';
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <h1>Job Posted</h1>
+                    <div id="actionbar" style="float:right;display:none">
+                    <button class="btn btn-warning btn-sm" onclick="repost();">Repost</button>
+                        <button class="btn btn-danger btn-sm" onclick="deletejob();"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
 
                 </div>
             </div>
+            <br>
+            <!-- -----------filters---- -->
+
+<?php
+
+
+// Get status message
+if(!empty($_GET['status'])){
+    switch($_GET['status']){
+        case 'succ':
+            $statusType = 'alert-success';
+            $statusMsg = 'Members data has been imported successfully.';
+            break;
+        case 'err':
+            $statusType = 'alert-danger';
+            $statusMsg = 'Some problem occurred, please try again.';
+            break;
+        case 'invalid_file':
+            $statusType = 'alert-danger';
+            $statusMsg = 'Please upload a valid CSV file.';
+            break;
+        default:
+            $statusType = '';
+            $statusMsg = '';
+    }
+}
+?>
+
+<!-- Display status message -->
+<?php if(!empty($statusMsg)){ ?>
+<div class="col-xs-12">
+    <div class="alert <?php echo $statusType; ?>"><?php echo $statusMsg; ?></div>
+</div>
+<?php } ?>
+ <!-- Import link -->
+ <div class="col-md-12 head">
+        <div class="float-right">
+            <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="formToggle('importFrm');"><i class="plus"></i> upload feedback</a>
+        </div>
+        <br>
+    </div>
+    <!-- CSV file upload form -->
+    <div class="col-md-12" id="importFrm" style="display: none;">
+    <br>
+        <form action="csv_v2/importfeedback.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="filefeedback" />
+            <br>
+            <input type="submit" class="btn btn-primary" name="importSubmitfeedback" value="IMPORT">
+        </form>
+        <br>
+    </div>
+
+<!-- Show/hide CSV upload form -->
+<script>
+function formToggle(ID){
+    var element = document.getElementById(ID);
+    if(element.style.display === "none"){
+        element.style.display = "block";
+    }else{
+        element.style.display = "none";
+    }
+}
+</script>
+
+
+               <!-- <div class="container"> -->
+                    <div class="row">
+                        <div class="col-lg-3 col-xs-12">
+                            <label for="job-description" class="sr-only">Job Title</label>
+							<input type="text"class="form-control" id="title-criteria" style="color:black" placeholder="Job title">
+							<!-- <input type="email"> -->
+                        </div>
+                        <div class="col-lg-2 col-xs-12">
+                            <label for="job-location" class="sr-only">Job Location</label>
+                            <input type="text"class="form-control"id="loc-criteria" style="color:black" placeholder="Location">
+                        </div>
+                        <div class="col-lg-2 col-xs-12">
+                            <label for="job-company" class="sr-only">Company</label>
+                            <select id="company-criteria" class="form-control">
+										<option value=" ">Company</option>
+									
+                                        <!-- -------php code to gather posted jobs---- -->
+                                        <?php
+
+                                        $query = $db->query("SELECT * FROM employer_account");
+                                                    
+                                        if($query ->num_rows >0){
+                                            while($row4 = $query->fetch_assoc()){
+
+                                                echo '<option value="' . $row4['company_name'] . '">' . $row4['company_name'] .' ('.$row4['email'].')' . '</option>';
+                                        ?>
+                                            <?php }} ?>
+								</select>
+                        </div>
+                        <div class="col-lg-2 col-xs-12">
+                            <label for="job-category" class="sr-only">Job Category</label>
+                            <div class="ci-select">
+                                <select id="category-criteria" class="form-control">
+										<option value=" ">Category</option>
+										<option value="Full Time">Full Time</option>
+										<option value="Part Time">Part Time</option>
+										<option value="Internship">Internship</option>
+										<option value="Freelance">Freelance</option>
+										<option value="Contract">Contract</option>
+								</select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xs-12">
+                            <button class="btn btn-info" id="search">Search</button>
+                        </div>
+                    </div>
+                <!-- </div> -->
         </div>
     </section>
 
@@ -108,8 +227,10 @@ include '../dbConfig.php';
     <section id="jobs">
         <div class="container">
             <div class="row">
-                <div class="col-sm-12">
+            <!-- <button onclick="exportTableToCSV('candidates.csv')" style="float:right" class="btn btn-primary btn-sm">Export to CSV File</button> -->
 
+                <div class="col-sm-12">
+<input type="checkbox" id="selectall">Select All
                     <div class="jobs">
 
 <!-- ------------- -->
@@ -120,16 +241,19 @@ include '../dbConfig.php';
 // echo $_REQUEST['category'];
 $reqcat=$_SESSION['company'];
 // Get images from the database
-$querycat = $db->query("SELECT * FROM Job_Posting WHERE company_name='$reqcat'");
+$querycat = $db->query("SELECT * FROM Job_Posting order by posting_time DESC");
 
 if($querycat ->num_rows >0){
     while($row = $querycat->fetch_assoc()){
         ?>
                         <!-- Job offer 1 -->
-                        <a href="showcandidates.php?jid=<?php echo $row['posting_id']; ?>" target="blank" class="featured applied">
-                            <div class="row">
+                        <a href="showcandidates.php?jid=<?php echo $row['posting_id']; ?>" target="blank" class="featured applied list-item" style="display:none;">
+
+                            <div class="row" >
+
                                 <div class="col-md-1 hidden-sm hidden-xs">
                                 <!-- <i class="fa fa-link" aria-hidden="true"></i> -->
+                                <input type="checkbox" class="chk" name="jb" value="<?php echo $row['posting_id']; ?>">
 
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12 job-title">
@@ -141,11 +265,25 @@ if($querycat ->num_rows >0){
                                     <!-- <p class="hidden-xs">126.3 miles away</p> -->
                                 </div>
                                 <div class="col-lg-2 col-md-2 hidden-sm hidden-xs job-type text-center">
-                                    <p class="job-salary"><strong>Rs 30,000</strong></p>
-                                    <p class="badge full-time"><?php echo $row['Job_type']; ?></p>
+                                <p class="badge full-time"><?php echo $row['Job_type']; ?></p>
+
+                                <?php $pt=strtotime(substr($row['posting_time'],0,10));
+                                    $ct=strtotime(date("Y-m-d")); 
+                                    $tdiff=($ct-$pt)/60/60/24;
+                                    $toshow='';
+                                    if($tdiff<1){
+                                            $toshow='Today';
+                                    }
+                                    else{
+                                        $toshow=number_format($tdiff).' days ago';
+                                    }
+                                    ?>
+                                    <p class="job-salary"><strong><?php echo $toshow ; ?> </strong></p>
                                 </div>
+
                             </div>
                         </a>
+
 
                        
     <?php }}
@@ -153,17 +291,13 @@ if($querycat ->num_rows >0){
 
 
                     </div>
+                    <div class="list-item-secondary-wrap text-center">
+                    <br>
+                                <button id="loadMore" class="btn" style="background: teal;color: white;">Load More Jobs</button>
+                            </div>
 
                     <nav>
-                        <!-- <ul class="pagination">
-                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-                        </ul> -->
+                       
                     </nav>
 
                 </div>
@@ -184,17 +318,8 @@ if($querycat ->num_rows >0){
         <div id="prefooter">
             <div class="container">
                 <div class="row">
-                    <!-- 
-                    <div class="col-sm-6" id="social-networks">
-                        <h2>Get in touch</h2>
-                        <a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-google-plus-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-youtube-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-vimeo-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-pinterest-square"></i></a>
-                        <a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                    </div> -->
+                   
+                   
                 </div>
             </div>
         </div>
@@ -211,79 +336,8 @@ if($querycat ->num_rows >0){
 
     <!-- ============ FOOTER END ============ -->
 
-    <!-- ============ LOGIN START ============ -->
-
-    <div class="popup" id="login">
-        <div class="popup-form">
-            <div class="popup-header">
-                <a class="close"><i class="fa fa-remove fa-lg"></i></a>
-                <h2>Login</h2>
-            </div>
-            <form>
-
-                <hr>
-                <div class="form-group">
-                    <label for="login-username">email</label>
-                    <input type="type" class="form-control" id="login-username">
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" class="form-control" id="login-password">
-                </div>
-                <button type="submit" class="btn btn-primary">Sign In</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============ LOGIN END ============ -->
-
-    <!-- ============ REGISTER START ============ -->
-
-    <div class="popup" id="register">
-        <div class="popup-form">
-            <div class="popup-header">
-                <a class="close"><i class="fa fa-remove fa-lg"></i></a>
-                <h2>Register</h2>
-            </div>
-            <form>
-                <ul class="social-login">
-                    <li><a class="btn btn-facebook"><i class="fa fa-facebook"></i>Register with Facebook</a></li>
-                    <li><a class="btn btn-google"><i class="fa fa-google-plus"></i>Register with Google</a></li>
-                    <li><a class="btn btn-linkedin"><i class="fa fa-linkedin"></i>Register with LinkedIn</a></li>
-                </ul>
-                <hr>
-                <div class="form-group">
-                    <label for="register-name">Name</label>
-                    <input type="text" class="form-control" id="register-name">
-                </div>
-                <div class="form-group">
-                    <label for="register-surname">Surname</label>
-                    <input type="text" class="form-control" id="register-surname">
-                </div>
-                <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" class="form-control" id="register-email">
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label for="register-username">Username</label>
-                    <input type="text" class="form-control" id="register-username">
-                </div>
-                <div class="form-group">
-                    <label for="register-password1">Password</label>
-                    <input type="password" class="form-control" id="register-password1">
-                </div>
-                <div class="form-group">
-                    <label for="register-password2">Repeat Password</label>
-                    <input type="password" class="form-control" id="register-password2">
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============ REGISTER END ============ -->
-
+ 
+  
     <!-- Modernizr Plugin -->
     <script src="js/modernizr.custom.79639.js"></script>
 
@@ -335,8 +389,193 @@ if($querycat ->num_rows >0){
     <script src="js/settings.js"></script>
 
 
+  <!-- -----load more script---- -->
+  <script>
+    $(document).ready(function () {
+    size_li = $(".list-item").length;
+    // console.log(size_li);
+    x=2;
+    $('.list-item:lt('+x+')').show();
+    $('#loadMore').click(function () {
+        if(x==size_li){
+            alert("no more jobs");
+        }
+        x= (x+5 <= size_li) ? x+5 : size_li;
+        $('.list-item:lt('+x+')').show();
+        
+    });
+    // $('#showLess').click(function () {
+    //     x=(x-5<0) ? 3 : x-5;
+    //     $('#myList li').not(':lt('+x+')').hide();
+    // });
+
+    $('#search').click(function(){
+    $('.contact-name').hide();
+    var txt = $('#loc-criteria').val();
+    var txttitle = $('#title-criteria').val();
+    var txtcategory = $('#category-criteria').val();
+    var txtcompany = $('#company-criteria').val();
+    $('.list-item').each(function(){
+       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1 && $(this).text().toUpperCase().indexOf(txttitle.toUpperCase()) != -1 && $(this).text().toUpperCase().indexOf(txtcategory.toUpperCase()) != -1 && $(this).text().toUpperCase().indexOf(txtcompany.toUpperCase()) != -1 ){
+           $(this).show();
+       }
+       else{
+           $(this).hide();
+           $('#loadMore').hide();
+       }
+    });
+});
+});
+
+// ----checkbox select--
+
+ var favorites = [];
+
+   
+$(".chk").click(function(){
+    $('#actionbar').show();
+
+    var favorite=[];
+        $.each($("input[name='jb']:checked"), function(){            
+            favorite.push($(this).val());
+        });
+        favorites=favorite;
+     console.log(favorites);
+ 
+
+});
+
+    // -----for selecting all student at once---
+    $("#selectall").click(function () {
+        $('#actionbar').toggle();
+        var jobarr=[]
+        $('.list-item').each(function(i, obj) {
+            //test
+            // console.log(obj);
+            if($(this).is(":visible")) {
+            
+            console.log(obj);
+            if($(this).find('.chk').prop('checked') == false){
+                $(this).find('.chk').prop('checked',true);
+                jobarr.push($(this).find('.chk').val());
+                favorites=jobarr;
+                console.log(favorites);
+
+            }
+            else{
+                $(this).find('.chk').prop('checked',false);
+                jobarr=[];
+                favorites=jobarr;
+                console.log(favorites);
+
+            }
+
+            }
+        });
+
+      
+   
+    });
+
+    function repost(){
+        favorites.forEach(function(i){
+            console.log(i);
+repostpart(i);
+
+        });
+    }
+
+    function repostpart(x){
+        console.log(x);
+                             $.ajax({
+                                url: 'repost.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                               
+                            })
+                            .fail(function() {
+                                alert("error in reposting");
+                            });
+    }
+
+    function deletejob(){
+        favorites.forEach(function(i){
+deletejobpart(i);
+        });
+    }
+
+    function deletejobpart(x){
+                            $.ajax({
+                                url: 'deletejob.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error while deleting!");
+                            });
+    }
+    
+    
+    </script>
+
+
+
+    <!-- ======export to csv script==== -->
+    <script>
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+        function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = document.querySelectorAll('table tr:not([style*="display:none"]):not([style*="display: none"])');
+            
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                
+                for (var j = 0; j < cols.length; j++) 
+                    row.push(cols[j].innerText);
+                
+                csv.push(row.join(","));        
+            }
+
+            // Download CSV file
+            downloadCSV(csv.join("\n"), filename);
+        }
+    </script>
 </body>
 
-<!-- Mirrored from www.coffeecreamthemes.com/themes/jobseek/site/jobs.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Aug 2019 18:32:44 GMT -->
 
 </html>

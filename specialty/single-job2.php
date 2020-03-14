@@ -88,7 +88,7 @@
                                     </li>
                                    
                                     <li class="menu-item-btn">
-                                        <a href="../logout.php">Logout</a>
+                                        <a href="../logoutstud.php">Logout</a>
                                     </li>
 
 
