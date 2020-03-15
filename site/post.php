@@ -24,16 +24,22 @@ if(isset($_POST["submit"]) ){
             // Insert image file name into database
             $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW())");
             if($insert){
-                $statusMsg = "The job has been uploaded successfully.";
+                // $statusMsg = "The job has been uploaded successfully.";
+                $statusMsg='?status=succjob';
 
             }else{
-                $statusMsg = "job upload failed, please try again.";
+                // $statusMsg = "job upload failed, please try again.";
+                $statusMsg='?status=errjob';
+
             } 
         }else{
-            $statusMsg = "Sorry, there was an error uploading your job.";
+            // $statusMsg = "Sorry, there was an error uploading your job.";
+            $statusMsg='?status=errjob';
+
         }
    
 
 // Display status message
-echo $statusMsg;
+// echo $statusMsg;
+header('Location:post-a-job.php'.$statusMsg);
 ?>

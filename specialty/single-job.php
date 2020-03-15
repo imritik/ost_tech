@@ -11,6 +11,7 @@
     $sid=$_SESSION['stud_id'];
     $jpi=$_REQUEST['jpi'];
     $haveapplied=$_REQUEST['apl'];
+    var_dump($_SESSION['stud_id']);
    
     ?>
 <!doctype html>
@@ -252,6 +253,7 @@ function saveresume(){
 
 
 function applyforjob(x,y){
+    console.log(x,y);
     // alert(x);
     // alert(y);
                             $.ajax({
@@ -305,7 +307,7 @@ function applyafteredit(arg){
                     console.log(response);
                     }
                 }).done(function(response){
-                   alert(reponse); 
+                   alert(response); 
 
                 //    / -------for updating in db------
 

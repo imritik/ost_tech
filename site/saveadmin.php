@@ -26,6 +26,7 @@ $id=$_POST['data']['id'];
  if($prevResult->num_rows >0){
      // Update member data in the database
      $db->query("UPDATE admins SET Full_name = '$name', email = '$email', password = '$password', role = '$role' WHERE id = '$id'");
+    //  $db->query("UPDATE to_admin SET ")
      echo "Updated";
  }else{
      // Insert member data in the database

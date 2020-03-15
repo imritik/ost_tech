@@ -130,6 +130,26 @@ if(!empty($_GET['status'])){
             $statusType = 'alert-danger';
             $statusMsg = 'Please upload a valid CSV file.';
             break;
+        case 'succjob':
+            $statusType='alert-success';
+            $statusMsg='The job has been uploaded successfully.';
+            break;
+        case 'errjob':
+            $statusType='alert-danger';
+            $statusMsg='job upload failed, please try again.';
+            break;
+            case 'succcomp':
+            $statusType='alert-success';
+            $statusMsg='The company has been added successfully.';
+            break;
+        case 'errcomp':
+            $statusType='alert-danger';
+            $statusMsg='Sorry, there was an error uploading ';
+            break;
+            case 'errcomptype':
+            $statusType='alert-danger';
+            $statusMsg='Sorry, only JPG, JPEG, PNG, GIF files are allowed to upload.';
+            break;
         default:
             $statusType = '';
             $statusMsg = '';

@@ -424,8 +424,8 @@ function formToggle(ID){
                     <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
                 </div>
             </div>
-            <div style="overflow-x:scroll">
-            <table class="table" id="tobesorted">
+            <div style="transform: rotateX(180deg);overflow-x:auto">
+            <table class="table" id="tobesorted" style="transform: rotateX(180deg);">
                 <thead>
                     <tr class="filters">
                     <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
@@ -531,6 +531,10 @@ if ($result ->num_rows >0) {
                                             Please consider that the JS part isn't production ready at all, I just code it to show the concept of merging filters and titles together !
                                             */
     $(document).ready(function() {
+
+
+console.log(getVisibleRows());
+        // -----------------------
         $('.filterable .btn-filter').click(function() {
             var $panel = $(this).parents('.filterable'),
                 $filters = $panel.find('.filters input'),
@@ -546,6 +550,7 @@ if ($result ->num_rows >0) {
         });
 
         $('.filterable .filters input').keyup(function(e) {
+            // console.log(getVisibleRows());
             /* Ignore tab key */
             var code = e.keyCode || e.which;
             if (code == '9') return;
@@ -556,6 +561,13 @@ if ($result ->num_rows >0) {
                 column = $panel.find('.filters th').index($input.parents('th')),
                 $table = $panel.find('.table'),
                 $rows = $table.find('tbody tr');
+                // $rows=new Array();
+                // console.log(getVisibleRows());
+                // $rows.push(getVisibleRows());
+            //   $rows=getVisibleRows();
+                // console.log($rows);
+
+             
                 console.log(inputContent);
                 if(inputContent=='#'){
                     console.log("blank search will be there");
@@ -649,6 +661,24 @@ favorites.forEach(function(stid){
     });
 </script>
 <script>
+
+function getVisibleRows(){
+
+$rowtest=[]
+         $('tr').each(function(i, obj) {
+            //test
+            // console.log(obj);
+            if($(this).is(":visible")) {
+            // console.log($(this).is(":visible"));
+            // console.log(obj);
+            $rowtest.push(obj);
+            // console.log("visible");
+            // console.log($rowtest.length);
+
+            }
+        });
+        return $rowtest;
+}
 
     function shortlist(studid){
         // alert(studid);
@@ -859,6 +889,7 @@ favorites.forEach(function(stid){
                                     var nEnd = $(this).text() * recordPerPage - 1;
                                     for (var i = nBegin; i <= nEnd; i++) {
                                     $(tr[i]).show();
+                                    console.log(getVisibleRows());
                                     }
                                 });
           });

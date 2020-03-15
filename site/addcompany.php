@@ -41,17 +41,24 @@ if(isset($_POST["submit_company"]) && !empty($_FILES["companylogo"]["name"])){
             // Insert image file name into database
             $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','".$fileName."',NOW())");
             if($insert){
-                $statusMsg = "The company has been added successfully.";
+                // $statusMsg = "The company has been added successfully.";
+                $statusMsg='?status=succcomp';
 
             }else{
-                $statusMsg = "upload image failed, please try again.";
+                // $statusMsg = "upload image failed, please try again.";
+                $statusMsg='?status=errcomp';
+
             } 
         }else{
-            $statusMsg = "Sorry, there was an error uploading ";
+            // $statusMsg = "Sorry, there was an error uploading ";
+            $statusMsg='?status=errcomp';
+
         }
     }
         else{
-            $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF files are allowed to upload.';
+            // $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF files are allowed to upload.';
+            $statusMsg='?status=errcomptype';
+
         }
         }
         else {
@@ -60,11 +67,17 @@ if(isset($_POST["submit_company"]) && !empty($_FILES["companylogo"]["name"])){
                     // Insert image file name into database
                     $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','dummy.jpg',NOW())");
                     if($insert){
-                        $statusMsg = "The company has been added successfully.";
+                        // $statusMsg = "The company has been added successfully.";
+                $statusMsg='?status=succcomp';
+
                     }else{
-                        $statusMsg = "upload data failed, please try again.";
+                        // $statusMsg = "upload data failed, please try again.";
+                $statusMsg='?status=errcomp';
+
                     } 
                 }    
 // Display status message
-echo $statusMsg;
+// echo $statusMsg;
+header('Location:post-a-job.php'.$statusMsg);
+
 ?>

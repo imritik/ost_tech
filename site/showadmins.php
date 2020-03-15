@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
@@ -123,6 +122,11 @@ if ($result ->num_rows >0) {
        
         <td>
 <button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button>
+<!-- <input type="button" id="save_button1" value="Save" class="save" onclick="save_row('1')"> -->
+<!-- <input type="button" value="Delete" class="delete" onclick="delete_row('1')"> -->
+</td>
+<td>
+<button id="edit_button2" value="Delete" class="deletebtn btn btn-info btn-sm">Delete</button>
 <!-- <input type="button" id="save_button1" value="Save" class="save" onclick="save_row('1')"> -->
 <!-- <input type="button" value="Delete" class="delete" onclick="delete_row('1')"> -->
 </td>
@@ -255,6 +259,69 @@ $('.editbtn').click(function () {
               $(this).html($(this).html() == 'Edit' ? 'Save' : 'Edit')
     
           });
+
+
+
+
+
+
+        //   -----------------delete admin-------------------
+        $('.deletebtn').click(function () {
+              var currentTD = $(this).parents('tr').find('td');
+              console.log(currentTD);
+              var currentid=$(this).parents('tr').prop('id');
+              console.log($(this).parents('tr').prop('id'));
+              console.log($('#'+currentid+' td .role').val());
+
+            //   if ($(this).html() == 'Edit') {
+            //       currentTD = $(this).parents('tr').find('td');
+            //       $.each(currentTD, function () {
+            //           $(this).prop('contenteditable', true)
+            //       });
+            //   } else {
+                //  $.each(currentTD, function () {
+                //       $(this).prop('contenteditable', false);
+                //       admindata={}
+                //       admindata.name=currentTD[0]['innerHTML'];
+                //       admindata.email=currentTD[1]['innerHTML'];
+                //       admindata.password=currentTD[2]['innerHTML'];
+                //       admindata.role=$('#'+currentid+' td .role').val();
+                //       admindata.id=currentid;
+                                            
+
+                  
+                //   });
+                //   console.log(admindata);
+                    //   -----ajax request to send and update new data-----
+
+
+                             $.ajax({
+                                url: 'deleteadmin.php',
+                                type: 'POST',
+                            
+                                data: {data:currentid},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                //do something with the response
+                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in saving");
+                            });
+
+
+                    // ----------------------------------
+
+            //   }
+    
+            //   $(this).html($(this).html() == 'Edit' ? 'Save' : 'Edit')
+    
+          });
+
+        //   -----------------------------------------------------
     
     </script>
 
