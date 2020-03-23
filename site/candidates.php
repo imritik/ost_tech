@@ -283,10 +283,12 @@ function formToggle(ID){
                         <!-- ---------------candidate's list----------------- -->
 
                         <div id="wrap">
-                            <div class="container" style="min-height:200px;height: auto">
-                            <div class="row" style="display:-webkit-box">
+                            <div class="container" style="height: auto">
+                            <div class="row" style="display:flex;justify-content: center;">
+                            <div>
                                 <h3>Select Job to shortlist</h3>
-
+</div>
+<div style='margin: 20px 40px;'>
                                 <select id="posted_jobs" name="posted_jobs" style="color:black;height:40px">
 
                                                 <option value="" >Select Job</option>
@@ -304,7 +306,9 @@ function formToggle(ID){
                                             <?php }} ?>
 
                                 </select>
-                                <div>
+                                </div>
+                                </div>
+                                
                                 <?php
                                 if(isset($_SESSION['emailemp'])){
                                     // echo "set";
@@ -354,13 +358,16 @@ function formToggle(ID){
                                 }
                                 
                                 ?>
-                                
+                                <div style='display: flex;
+    justify-content: center;'>
                                 <form action='' method='POST'>
+
+                    <input type='date' name="daterange1" id="dr1">-<input type='date' name='daterange2' id="dr2">
+                   
                                 <span>Experience</span>
                                 <input type="number" class="rangefilterbox" name="exp1" value="<?php echo $a;?>">-<input type="number" class="rangefilterbox" name="exp2" value="<?php echo $b;?>">
-                                </div>
                                 &nbsp;&nbsp;
-                                <div>
+                            
                                 <span>CTC</span>
                                 <input type="number" class="rangefilterbox" name="ctc1"value="<?php echo $c;?>">-<input type="number" class="rangefilterbox" name="ctc2" value="<?php echo $d;?>">
                                 <!-- <input type="text" name="skills" placeholder="enter technologies"> -->
@@ -368,11 +375,11 @@ function formToggle(ID){
                                 <button class="btn btn-sm" name="filtersearch">Search</button>
                                
                                </form>
-                               
+                              
                                <button id="btnshortlistall" class="btn btn-sm" style="background:aliceblue;display:none">Shortlist All</button>
 
-                                </div>
-
+                        
+ </div>
 <span id="checkspan">
                                
                     
@@ -386,7 +393,7 @@ function formToggle(ID){
 <div class="row">
 
 <!-- -----------send students to loaders section----------- -->
-
+<br>
 
             <div style="display:block" class="text-center">
                 <!-- --------------- -->
@@ -461,7 +468,16 @@ $sql="";
 
     // $sql="SELECT * FROM Student";
     if($bs=='' && !($a==0 &&$b==0 &&$c==0 &&$d==0)){
+    
         $sql = "SELECT * FROM Student WHERE (curr_ctc BETWEEN $c and $d) and (experience BETWEEN $a and $b);";
+
+    }
+    else if($bs=='' && ($a==0 &&$b==0) &&!($c==0 &&$d==0)){
+        $sql = "SELECT * FROM Student WHERE curr_ctc BETWEEN $c and $d";
+
+    }
+    else if($bs!='' && ($a==0 &&$b==0) &&!($c==0 &&$d==0)){
+        $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) and (curr_ctc BETWEEN $c and $d)";
 
     }
     else if($a==0 &&$b==0 &&$c==0 &&$d==0&& $bs!=''){
@@ -532,8 +548,112 @@ if ($result ->num_rows >0) {
                                             */
     $(document).ready(function() {
 
+  
+              function PageWiseFilter(second){
+  var totalRows = $('.table').find('tbody tr:has(td)').length;
+                                var recordPerPage = 100;
+                                var totalPages = Math.ceil(totalRows / recordPerPage);
+                                var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
+                                for (i = 0; i < totalPages; i++) {
+                                    $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
+                                }
+                                $pages.prependTo('.table');
 
-console.log(getVisibleRows());
+                                // $('.pageNumber').hover(
+                                //     function() {
+                                //     $(this).addClass('focus');
+                                //     },
+                                //     function() {
+                                //     $(this).removeClass('focus');
+                                //     }
+                                // );
+
+                                $('.table').find('tbody tr:has(td)').hide();
+                                if(second=="true"){
+                                var tr = $('.table tbody tr:has(td):visible');
+
+                                }
+                                else{
+                                var tr = $('.table tbody tr:has(td)');
+
+                                }
+                                for (var i = 0; i <= recordPerPage - 1; i++) {
+                                    $(tr[i]).show();
+                                    console.log(tr[i]);
+                                }
+                                $('span').click(function(event) {
+                                    $('span').removeClass('focus');
+                                    $(this).toggleClass('focus');
+
+                                    $('.table').find('tbody tr:has(td)').hide();
+                                    var nBegin = ($(this).text() - 1) * recordPerPage;
+                                    var nEnd = $(this).text() * recordPerPage - 1;
+                                    for (var i = nBegin; i <= nEnd; i++) {
+                                    $(tr[i]).show();
+                                    // $(this).addClass('focus');
+                                    }
+                                });
+              }
+               PageWiseFilter("false");  
+
+               $('#dr1').change(function(){
+                   console.log(this.value);
+               })   
+//                 $("#dr1").datepicker({
+//     onSelect: function(dateText) {
+//       display("Selected date: " + dateText + ", Current Selected Value= " + this.value);
+//       $(this).change();
+//     }
+//   }).on("change", function() {
+//     display("Change event");
+//   });    
+
+            });
+       function FilterRow($input){
+                       inputContent = $input.val().toLowerCase(),
+                $panel = $input.parents('.filterable'),
+                column = $panel.find('.filters th').index($input.parents('th')),
+                $table = $panel.find('.table'),
+                $rows = $table.find('tbody tr');
+                // $rows=new Array();
+                // console.log(getVisibleRows());
+                // $rows.push(getVisibleRows());
+            //   $rows=getVisibleRows();
+                // console.log($rows);
+
+             
+                console.log(inputContent);
+                if(inputContent=='#'){
+                    console.log("blank search will be there");
+                    var $filteredRows = $rows.filter(function() {
+                            var value = $(this).find('td').eq(column).text().trim()!='';
+                            return value === true;
+                            console.log(value);
+                    });
+                            // console.log($filteredRows);
+
+                }
+                else{
+                            /* Dirtiest filter function ever ;) */
+                            var $filteredRows = $rows.filter(function() {
+                                            var value = $(this).find('td').eq(column).text().toLowerCase();
+                                            return value.indexOf(inputContent) === -1;
+                            });
+                            // console.log($filteredRows);
+
+                }
+            
+            /* Clean previous no-result if exist */
+            $table.find('tbody .no-result').remove();
+            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+            $rows.show();
+            $filteredRows.hide();
+            /* Prepend no-result row if all rows are filtered */
+            if ($filteredRows.length === $rows.length) {
+                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+            }
+            // console.log(getVisibleRows());
+            }
         // -----------------------
         $('.filterable .btn-filter').click(function() {
             var $panel = $(this).parents('.filterable'),
@@ -555,47 +675,16 @@ console.log(getVisibleRows());
             var code = e.keyCode || e.which;
             if (code == '9') return;
             /* Useful DOM data and selectors */
-            var $input = $(this),
-                inputContent = $input.val().toLowerCase(),
-                $panel = $input.parents('.filterable'),
-                column = $panel.find('.filters th').index($input.parents('th')),
-                $table = $panel.find('.table'),
-                $rows = $table.find('tbody tr');
-                // $rows=new Array();
-                // console.log(getVisibleRows());
-                // $rows.push(getVisibleRows());
-            //   $rows=getVisibleRows();
-                // console.log($rows);
-
-             
-                console.log(inputContent);
-                if(inputContent=='#'){
-                    console.log("blank search will be there");
-                    var $filteredRows = $rows.filter(function() {
-                            var value = $(this).find('td').eq(column).text().trim()!='';
-                            return value === true;
-                            console.log(value);
-                    });
-                }
-                else{
-                            /* Dirtiest filter function ever ;) */
-                            var $filteredRows = $rows.filter(function() {
-                                            var value = $(this).find('td').eq(column).text().toLowerCase();
-                                            return value.indexOf(inputContent) === -1;
-                            });
-                }
-            
-            /* Clean previous no-result if exist */
-            $table.find('tbody .no-result').remove();
-            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
-            $rows.show();
-            $filteredRows.hide();
-            /* Prepend no-result row if all rows are filtered */
-            if ($filteredRows.length === $rows.length) {
-                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
-            }
+            var $input = $(this);
+     FilterRow($input);
+    //  $("#tobesorted tr:has(td)").remove();
+     $('#pages').html('');
+    //  PageWiseFilter("true");
+    getVisibleRows()
+    //  setTimeout(PageWiseFilter("true"), 3000);
+         
         });
-    });
+    // });
 
 
   
@@ -677,7 +766,52 @@ $rowtest=[]
 
             }
         });
-        return $rowtest;
+        // console.log($rowtest[1]);
+        // return $rowtest;
+        // ----------pagination work---------
+         var totalRows = $rowtest.length;
+        //  console.log(totalRows);
+                                var recordPerPage = 100;
+                                var totalPages = Math.ceil(totalRows / recordPerPage);
+                                var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
+                                for (i = 0; i < totalPages; i++) {
+                                    $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
+                                }
+                                $pages.prependTo('.table');
+
+                                // $('.pageNumber').hover(
+                                //     function() {
+                                //     $(this).addClass('focus');
+                                //     },
+                                //     function() {
+                                //     $(this).removeClass('focus');
+                                //     }
+                                // );
+
+                                $('.table').find('tbody tr:has(td)').hide();
+                                                             var tr = $rowtest;
+
+                                for (var i = 0; i <= recordPerPage - 1; i++) {
+                                    $(tr[i]).show();
+                                    // console.log(tr[i]);
+                                }
+                                $('span').click(function(event) {
+                                    $('span').removeClass('focus');
+                                    $(this).toggleClass('focus');
+
+                                    $('.table').find('tbody tr:has(td)').hide();
+                                    var nBegin = ($(this).text() - 1) * recordPerPage;
+                                    var nEnd = $(this).text() * recordPerPage - 1;
+                                    for (var i = nBegin; i <= nEnd; i++) {
+                                    $(tr[i]).show();
+                                    // $(this).addClass('focus');
+                                    }
+                                });
+
+
+
+
+        // ------------------------------------
 }
 
     function shortlist(studid){
@@ -859,39 +993,7 @@ $rowtest=[]
         // ------load more students---------
 
           $(document).ready(function () {
-              
-                                var totalRows = $('.table').find('tbody tr:has(td)').length;
-                                var recordPerPage = 100;
-                                var totalPages = Math.ceil(totalRows / recordPerPage);
-                                var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
-                                for (i = 0; i < totalPages; i++) {
-                                    $('<span class="pageNumber">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
-                                }
-                                $pages.prependTo('.table');
-
-                                $('.pageNumber').hover(
-                                    function() {
-                                    $(this).addClass('focus');
-                                    },
-                                    function() {
-                                    $(this).removeClass('focus');
-                                    }
-                                );
-
-                                $('.table').find('tbody tr:has(td)').hide();
-                                var tr = $('.table tbody tr:has(td)');
-                                for (var i = 0; i <= recordPerPage - 1; i++) {
-                                    $(tr[i]).show();
-                                }
-                                $('span').click(function(event) {
-                                    $('.table').find('tbody tr:has(td)').hide();
-                                    var nBegin = ($(this).text() - 1) * recordPerPage;
-                                    var nEnd = $(this).text() * recordPerPage - 1;
-                                    for (var i = nBegin; i <= nEnd; i++) {
-                                    $(tr[i]).show();
-                                    console.log(getVisibleRows());
-                                    }
-                                });
+                  
           });
 
 

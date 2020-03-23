@@ -17,63 +17,77 @@ if(isset($_POST['importSubmit'])){
                 // Get row data
                 $sid   = $line[0];
                 $name = $line[1];
-                $email  = $line[7];
-                $phone  = $line[6];
-                $clocation  = $line[5];
-                $address = $line[2];
-                $cid = $line[3];
-                $cname = $line[4];
-                $pass = $line[8];
-                $comp = $line[9];
-                $cctc = $line[10];
-                $resume = $line[11];
-                $tech = $line[12];
-                $cv_parsed = $line[13];
-                $turnup_rate = $line[14];
-                $job_seeker=$line[15];
-                $experience=$line[16];
-                $updated_on=$line[17];
-                $modified_on=$line[18];
-                $is_active=$line[19];
-                $uploaded_by=$line[20];
-                $school_hsc=$line[21];
-                $city_hsc=$line[22];
-                $per_hsc=$line[23];
-                $yoc_hsc=$line[24];
-                $school_ssc=$line[25];
-                $city_ssc=$line[26];
-                $per_ssc=$line[27];
-                $yoc_ssc=$line[28];
-                $ug_college=$line[29];
-                $ug_degree=$line[30];
-                $ug_city=$line[31];
-                $ug_agg=$line[32];
-                $ug_yoc=$line[33];
-                $pg_college=$line[34];
-                $pg_degree=$line[35];
-                $pg_city=$line[36];
-                $pg_agg=$line[37];
-                $pg_yoc=$line[38];
-                $add_courses=$line[39];
-                $expected_ctc=$line[40];
-                $pre_loc=$line[41];
-                $work_segment=$line[42];
-                $industry=$line[43];
-                $total_exp=$line[44];
-                $func_seg=$line[45];
-                $industries_worked=$line[46];
-                $max_teamsize=$line[47];
-                $languages=$line[48];
-                $prev_companies=$line[49];
-                $prev_comp_other=$line[50];
-                $linkedin=$line[51];
+                $email  = $line[2];
+                $pass = $line[3];
+                $additional_email=$line[4];
+                $phone  = $line[5];
+                $total_exp=$line[6];
+
+                // $clocation  = $line[5];
+                // $address = $line[2];
+                // $cid = $line[3];
+                // $cname = $line[4];
+                $comp = $line[7];
+                $designation=$line[8];
+                $ctc_fix=$line[9];
+                $ctc_variable=$line[10];
+                $cctc = $line[11];
+                
+                $resume = $line[23];
+                $tech = $line[40];
+                $cv_parsed = $line[24];
+                $turnup_rate = $line[35];
+                $offer_acceptance_rate=$line[36];
+                $source=$line[37];
+                $callers_comment=$line[38];
+                // $job_seeker=$line[15];
+                // $experience=$line[16];
+                // $updated_on=$line[17];
+                // $modified_on=$line[18];
+                $is_active=$line[34];
+                $uploaded_by=$line[39];
+                // $school_hsc=$line[21];
+                // $city_hsc=$line[22];
+                // $per_hsc=$line[23];
+                // $yoc_hsc=$line[24];
+                // $school_ssc=$line[25];
+                // $city_ssc=$line[26];
+                // $per_ssc=$line[27];
+                // $yoc_ssc=$line[28];
+                $ug_college=$line[18];
+                $ug_degree=$line[19];
+                $ug_city=$line[25];
+                $ug_agg=$line[26];
+                $ug_yoc=$line[27];
+                $pg_college=$line[20];
+                $pg_degree=$line[21];
+                $pg_city=$line[28];
+                $pg_agg=$line[29];
+                $pg_yoc=$line[30];
+                $add_courses=$line[22];
+                $expected_ctc=$line[12];
+                $notice_period=$line[13];
+                $curr_loc=$line[14];
+                $pre_loc=$line[15];
+                // $work_segment=$line[42];
+                // $industry=$line[43];
+                // $func_seg=$line[45];
+                // $industries_worked=$line[46];
+                // $max_teamsize=$line[47];
+                // $languages=$line[48];
+                $prev_companies=$line[16];
+                $prev_comp_other=$line[17];
+                $linkedin=$line[31];
+                $fb=$line[32];
+                $twitter=$line[33];
+
                 // Check whether member already exists in the database with the same email
                 $prevQuery = "SELECT * FROM Student WHERE email = '$email'";
                 $prevResult = $db->query($prevQuery);
                 $no='';
                 if($prevResult->num_rows ==1){
                     // Update member data in the database
-                   $update= $db->query("UPDATE Student SET id='$sid',stud_name = '$name',pass='$pass' ,contact = '$phone', address = '$address', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech',job_seeker='$job_seeker' , experience = '$experience', modified_on = NOW(),is_active='$is_active',school_hsc = '$school_hsc', city_hsc = '$city_hsc', percent_hsc = '$per_hsc', yoc_hsc = '$yoc_hsc',school_ssc = '$school_ssc', city_ssc = '$city_ssc', percent_ssc = '$per_ssc', yoc_ssc = '$yoc_ssc', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp', func_seg = '$func_seg', industries_worked = '$industries_worked',max_teamsize_handled='$max_teamsize',languages='$languages',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc', preferred_loc = '$pre_loc', work_segment = '$work_segment', industry = '$industry' WHERE email = '$email'");
+                   $update= $db->query("UPDATE Student SET id='$sid',stud_name = '$name',pass='$pass' ,contact = '$phone', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech', modified_on = NOW(),is_active='$is_active', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc', preferred_loc = '$pre_loc' WHERE email = '$email'");
                 // echo "old";
                 if(!$update){
                     $qstring = '?status=err';
@@ -85,7 +99,7 @@ if(isset($_POST['importSubmit'])){
                 
                 else{
                     // Insert member data in the database
-                    $insert=$db->query("INSERT INTO Student (id,stud_name, email, contact, address,college_id,college_name,college_location,pass,curr_company,curr_ctc,resume,experience,tech,cv_parsed,turnup_rate,job_seeker,updated_on, modified_on,is_active,Uploaded_by,school_hsc,city_hsc,percent_hsc,yoc_hsc,school_ssc,city_ssc,percent_ssc,yoc_ssc,ug_college,ug_degree,ug_city,ug_agg,ug_yoc,pg_college,pg_degree,pg_city,pg_agg,pg_yoc,add_courses,expected_ctc,preferred_loc,work_segment,industry,total_exp,func_seg,industries_worked,max_teamsize_handled,languages,prev_comp,prev_comp_other,linkedin) VALUES ('$sid', '$name', '$email', '$phone', '$address', '$cid', '$cname', '$clocation', '$pass', '$comp', '$cctc', '$resume', '$experience','$tech','$cv_parsed','$turnup_rate','$job_seeker',NOW(), NOW(),'$is_active','$uploaded_by','$school_hsc', '$city_hsc', '$per_hsc', '$yoc_hsc', '$school_ssc', '$city_ssc', '$per_ssc', '$yoc_ssc', '$ug_college', '$ug_degree', '$ug_city', '$ug_agg', '$ug_yoc','$pg_college', '$pg_degree', '$pg_city', '$pg_agg', '$pg_yoc', '$add_courses','$expected_ctc', '$pre_loc', '$work_segment', '$industry','$total_exp', '$func_seg', '$industries_worked', '$max_teamsize','$languages','$prev_companies','$prev_comp_other','$linkedin')");
+                    $insert=$db->query("INSERT INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,Offer_acceptance_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on) VALUES ('$sid', '$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$offer_acceptance_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW()");
                     if(!$insert){
                         // echo "srry";
                         $qstring = '?status=err';

@@ -122,7 +122,7 @@ if($uploadOk == 0){
 
 
 
-    $insert = $db->query("UPDATE Student SET resume='$fileName',modified_on=NOW() WHERE student_id=$resumeid");
+    $insert = $db->query("UPDATE Student SET resume='$fileName',cv_upload_date=NOW() WHERE student_id=$resumeid");
                 if($insert){
                     $statusMsg = "The image ".$fileName. " has been uploaded successfully.";
     

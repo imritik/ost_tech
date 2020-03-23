@@ -127,7 +127,7 @@ if( !empty($_FILES["resume"]["name"])){
             }
         
             // Insert image file name into database
-            $insert = $db->query("UPDATE Student SET stud_name='$tag1', address='$tag3',contact='$tag4',college_name='$tag11',  curr_company='$tag6',curr_ctc='$tag7',experience='$tag8',resume='$fileName',modified_on=NOW() WHERE student_id=$tag9");
+            $insert = $db->query("UPDATE Student SET stud_name='$tag1', address='$tag3',contact='$tag4',college_name='$tag11',  curr_company='$tag6',curr_ctc='$tag7',experience='$tag8',resume='$fileName',cv_upload_date=NOW(),modified_on=NOW() WHERE student_id=$tag9");
             if($insert){
                 $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
 
