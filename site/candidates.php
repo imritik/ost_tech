@@ -318,10 +318,24 @@ function formToggle(ID){
                  
                                         $_SESSION['c']=$_POST['ctc1'];
                                         $_SESSION['d']=$_POST['ctc2'];
+                                        $_SESSION['dr1']=$_POST['daterange1'];
+                                        $_SESSION['dr2']=$_POST['daterange2'];
+                                        $_SESSION['cv2']=$_POST['cv2'];
+                                        $_SESSION['cv1']=$_POST['cv1'];
+
+
+
                                         $a=$_SESSION['a'];
                                         $b=$_SESSION['b'];
                                         $c=$_SESSION['c'];
                                         $d=$_SESSION['d'];
+                                        $e=$_SESSION['dr1'];
+                                        $f=$_SESSION['dr2'];
+                                        $g=$_SESSION['cv1'];
+                                        $h=$_SESSION['cv2'];
+
+
+
 
 
                                        
@@ -332,10 +346,10 @@ function formToggle(ID){
 
                                     else{
                                         // echo "unset";
-                                        $a=0;
-                                        $b=0;
-                                        $c=0;
-                                        $d=0;
+                                        $a='';
+                                        $b='';
+                                        $c='';
+                                        $d='';
                                     }
                                     if(isset($_POST['booleanskills'])){
                                         $_SESSION['bs']=$_POST['booleanskills'];
@@ -361,9 +375,14 @@ function formToggle(ID){
                                 <div style='display: flex;
     justify-content: center;'>
                                 <form action='' method='POST'>
-
-                    <input type='date' name="daterange1" id="dr1">-<input type='date' name='daterange2' id="dr2">
+                                <span>CV Upload Date</span>
+                    <input type='date' name="cv1" id="cv1"value='<?php echo $g; ?>'>-<input type='date' name='cv2' id="cv2" value='<?php echo $h; ?>'>
                    
+ <span>Account Creation Date</span>
+                    <input type='date' name="daterange1" id="dr1"value='<?php echo $e; ?>'>-<input type='date' name='daterange2' id="dr2" value='<?php echo $f; ?>'>
+                   
+                   <br>
+                   <br>
                                 <span>Experience</span>
                                 <input type="number" class="rangefilterbox" name="exp1" value="<?php echo $a;?>">-<input type="number" class="rangefilterbox" name="exp2" value="<?php echo $b;?>">
                                 &nbsp;&nbsp;
@@ -371,7 +390,7 @@ function formToggle(ID){
                                 <span>CTC</span>
                                 <input type="number" class="rangefilterbox" name="ctc1"value="<?php echo $c;?>">-<input type="number" class="rangefilterbox" name="ctc2" value="<?php echo $d;?>">
                                 <!-- <input type="text" name="skills" placeholder="enter technologies"> -->
-                                <input type='text' name='booleanskills' placeholder='Enter skills comma(,) separated' value='<?php echo $bs; ?>'>
+                                <!-- <input type='text' name='booleanskills' placeholder='Enter skills comma(,) separated' value='<?php echo $bs; ?>'> -->
                                 <button class="btn btn-sm" name="filtersearch">Search</button>
                                
                                </form>
@@ -388,7 +407,7 @@ function formToggle(ID){
 
 </div>
 
-                            <!-- ======== -->
+
 
 <div class="row">
 
@@ -446,6 +465,7 @@ function formToggle(ID){
                         <!-- <th><input type="text" class="form-control" placeholder="Preferred_loc" disabled></th>-->
                         <th><input type="text" class="form-control fill" placeholder="CTC" disabled></th>
                         <th><input type="text" class="form-control fill" placeholder="FileName" disabled></th> 
+                        <th><input type="text" class="form-control fill" placeholder="DL Name" disabled></th> 
                         <th style="color:black">Resume</th>
                         <th style="color:black">Action</th>
                     </tr>
@@ -459,38 +479,71 @@ function formToggle(ID){
                          
 <?php
 if(isset($_POST['filtersearch'])){
+// var_dump(!empty($_POST['daterange1']));
 
-$sql="";
+$sql="SELECT * FROM Student WHERE 1";
 // echo $ctc1;
 // echo $a;
 
 // echo $skills;
+// var_dump(!empty($_POST['daterange1']));
+// var_dump(!empty($_POST['daterange2']));
+
+// var_dump($_POST['daterange1']);
+ if(!empty($_POST['daterange1']) && !empty($_POST['daterange2'])){
+     
+     $fromDate=$_POST['daterange1'];
+     $endDate=$_POST['daterange2'];
+             $sql .= " and updated_on between '".$fromDate."' and '".$endDate."' ";
+}
+
+ if(!empty($_POST['cv1']) && !empty($_POST['cv2'])){
+     
+     $fromDate=$_POST['cv1'];
+     $endDate=$_POST['cv2'];
+             $sql .= " and cv_upload_date between '".$fromDate."' and '".$endDate."' ";
+}
+
+ if(!empty($_POST['exp1']) && !empty($_POST['exp2'])){
+            $fromDate=$_POST['exp1'];
+            $endDate=$_POST['exp2'];
+                    $sql .= " and total_exp between '".$fromDate."' and '".$endDate."' ";
+ }
+
+  if(!empty($_POST['ctc1']) && !empty($_POST['ctc2'])){
+            $fromDate=$_POST['ctc1'];
+            $endDate=$_POST['ctc2'];
+                    $sql .= " and curr_ctc between '".$fromDate."' and '".$endDate."' ";
+ }
+
+//  var_dump($sql);
+
 
     // $sql="SELECT * FROM Student";
-    if($bs=='' && !($a==0 &&$b==0 &&$c==0 &&$d==0)){
+    // if($bs=='' && !($a==0 &&$b==0 &&$c==0 &&$d==0)){
     
-        $sql = "SELECT * FROM Student WHERE (curr_ctc BETWEEN $c and $d) and (experience BETWEEN $a and $b);";
+    //     $sql = "SELECT * FROM Student WHERE (curr_ctc BETWEEN $c and $d) and (total_exp BETWEEN $a and $b);";
 
-    }
-    else if($bs=='' && ($a==0 &&$b==0) &&!($c==0 &&$d==0)){
-        $sql = "SELECT * FROM Student WHERE curr_ctc BETWEEN $c and $d";
+    // }
+    // else if($bs=='' && ($a==0 &&$b==0) &&!($c==0 &&$d==0)){
+    //     $sql = "SELECT * FROM Student WHERE curr_ctc BETWEEN $c and $d";
 
-    }
-    else if($bs!='' && ($a==0 &&$b==0) &&!($c==0 &&$d==0)){
-        $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) and (curr_ctc BETWEEN $c and $d)";
+    // }
+    // else if($bs!='' && ($a==0 &&$b==0) &&!($c==0 &&$d==0)){
+    //     $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) and (curr_ctc BETWEEN $c and $d)";
 
-    }
-    else if($a==0 &&$b==0 &&$c==0 &&$d==0&& $bs!=''){
-        $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE);";
-    }
-    else if($a==0 &&$b==0 &&$c==0 &&$d==0 &&$bs==''){
-        $sql = "SELECT * FROM Student";
-    }
-    else
-    {
-        $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) and (curr_ctc BETWEEN $c and $d) and (experience BETWEEN $a and $b);";
+    // }
+    // else if($a==0 &&$b==0 &&$c==0 &&$d==0&& $bs!=''){
+    //     $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE);";
+    // }
+    // else if($a==0 &&$b==0 &&$c==0 &&$d==0 &&$bs==''){
+    //     $sql = "SELECT * FROM Student";
+    // }
+    // else
+    // {
+    //     $sql = "SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) and (curr_ctc BETWEEN $c and $d) and (total_exp BETWEEN $a and $b);";
 
-    }
+    // }
 $result = $db->query($sql);
 
 if ($result ->num_rows >0) {
@@ -515,7 +568,7 @@ if ($result ->num_rows >0) {
         <td  ><?php echo $row1["work_segment"];?></td> -->
         <td  ><?php echo $row1["curr_ctc"];?></td>
        <td> <?php echo $row1["resume"];?></td>
-
+       <td> <?php echo $row1["Uploaded_by"];?></td>
         <td  ><a href="../specialty/uploads/<?php echo $row1['student_id']; ?>/<?php echo $row1["resume"];?>" target="blank">View</a></td>
         <td  ><button id="<?php echo $row1['student_id'];?>" onclick="shortlist(this.id);" style="background:transparent;color:black">Shortlist</button></td>
 
@@ -1100,7 +1153,7 @@ function sortTable() {
 function writeStudents(){
 
 
-    $sql = "SELECT * FROM Student WHERE (curr_ctc BETWEEN '1' and '4') and (experience BETWEEN '1' and '3')";
+    $sql = "SELECT * FROM Student WHERE (curr_ctc BETWEEN '1' and '4') and (total_exp BETWEEN '1' and '3')";
     $result = $db->query($sql);
     
     if ($result ->num_rows >0) {
