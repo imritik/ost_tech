@@ -121,7 +121,7 @@ if ($result ->num_rows >0) {
        
        
         <td>
-<button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button>
+<!-- <button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button> -->
 <!-- <input type="button" id="save_button1" value="Save" class="save" onclick="save_row('1')"> -->
 <!-- <input type="button" value="Delete" class="delete" onclick="delete_row('1')"> -->
 </td>
