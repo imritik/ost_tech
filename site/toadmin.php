@@ -13,7 +13,7 @@ if(sizeof($data1)){
     // echo $studlistobtain[1];
         for($x=0;$x<$arrlen;$x++){
  // Insert image file name into database
- $insert = $db->query("UPDATE Student SET is_authorised=0 where student_id=$data1[$x]");
+ $insert = $db->query("UPDATE Student SET is_authorised=0,Uploaded_by='$admin_email' where student_id=$data1[$x]");
  if($insert){
      $statusMsg = "Unauthorized!";
  }else{

@@ -83,6 +83,10 @@ if(isset($_POST['importSubmit'])){
 
                 $cv_upload_date=$line[43];
                 $latest_application_date=$line[44];
+                $applied_for=$line[45];
+                $applied_to=$line[46];
+                $profile_segment=$line[47];
+
 
                 // Check whether member already exists in the database with the same email
                 $prevQuery = "SELECT * FROM Student WHERE email = '$email'";
@@ -90,7 +94,7 @@ if(isset($_POST['importSubmit'])){
                 $no='';
                 if($prevResult->num_rows ==1){
                     // Update member data in the database
-                   $update= $db->query("UPDATE Student SET id='$sid',stud_name = '$name',pass='$pass' ,contact = '$phone', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech', modified_on = NOW(),is_active='$is_active', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc', preferred_loc = '$pre_loc' WHERE email = '$email'");
+                   $update= $db->query("UPDATE IGNORE Student SET id='$sid',stud_name = '$name',pass='$pass' ,contact = '$phone', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech', modified_on = NOW(),is_active='$is_active', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc', preferred_loc = '$pre_loc',applied_for='$applied_for',applied_to='$applied_to',profile_segment='$profile_segment' WHERE email = '$email'");
                 // echo "old";
                 if(!$update){
                     $qstring = '?status=err';
@@ -102,7 +106,7 @@ if(isset($_POST['importSubmit'])){
                 
                 else{
                     // Insert member data in the database
-                    $insert=$db->query("INSERT INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,Offer_acceptance_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date) VALUES ('$sid', '$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$offer_acceptance_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date'");
+                    $insert=$db->query("INSERT IGNORE INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,Offer_acceptance_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid', '$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$offer_acceptance_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment'");
                     if(!$insert){
                         // echo "srry";
                         $qstring = '?status=err';
