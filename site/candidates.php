@@ -378,7 +378,7 @@ function formToggle(ID){
                                 <span>CV Upload Date</span>
                     <input type='date' name="cv1" id="cv1"value='<?php echo $g; ?>'>-<input type='date' name='cv2' id="cv2" value='<?php echo $h; ?>'>
                    
- <span>Account Creation Date</span>
+ <span>Application Date</span>
                     <input type='date' name="daterange1" id="dr1"value='<?php echo $e; ?>'>-<input type='date' name='daterange2' id="dr2" value='<?php echo $f; ?>'>
                    
                    <br>
@@ -450,6 +450,11 @@ function formToggle(ID){
                     <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
                 </div>
             </div>
+
+            <!-- -pagination -->
+<div class="pagination" style='display: flex;justify-content: center;'>
+</div>
+            <!-- ---------------------- -->
             <div style="transform: rotateX(180deg);overflow-x:auto">
             <table class="table" id="tobesorted" style="transform: rotateX(180deg);">
                 <thead>
@@ -494,7 +499,7 @@ $sql="SELECT * FROM Student WHERE 1";
      
      $fromDate=$_POST['daterange1'];
      $endDate=$_POST['daterange2'];
-             $sql .= " and updated_on between '".$fromDate."' and '".$endDate."' ";
+             $sql .= " and latest_application_date between '".$fromDate."' and '".$endDate."' ";
 }
 
  if(!empty($_POST['cv1']) && !empty($_POST['cv2'])){
@@ -603,63 +608,46 @@ if ($result ->num_rows >0) {
 
   
               function PageWiseFilter(second){
-  var totalRows = $('.table').find('tbody tr:has(td)').length;
-                                var recordPerPage = 100;
-                                var totalPages = Math.ceil(totalRows / recordPerPage);
-                                var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
-                                for (i = 0; i < totalPages; i++) {
-                                    $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
-                                }
-                                $pages.prependTo('.table');
+//   var totalRows = $('.table').find('tbody tr:has(td)').length;
+//                                 var recordPerPage = 100;
+//                                 var totalPages = Math.ceil(totalRows / recordPerPage);
+//                                 var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
+//                                 for (i = 0; i < totalPages; i++) {
+//                                     $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
+//                                 }
+//                                 $pages.prependTo('.table');
 
-                                // $('.pageNumber').hover(
-                                //     function() {
-                                //     $(this).addClass('focus');
-                                //     },
-                                //     function() {
-                                //     $(this).removeClass('focus');
-                                //     }
-                                // );
 
-                                $('.table').find('tbody tr:has(td)').hide();
-                                if(second=="true"){
-                                var tr = $('.table tbody tr:has(td):visible');
+//                                 $('.table').find('tbody tr:has(td)').hide();
+//                                 if(second=="true"){
+//                                 var tr = $('.table tbody tr:has(td):visible');
 
-                                }
-                                else{
-                                var tr = $('.table tbody tr:has(td)');
+//                                 }
+//                                 else{
+//                                 var tr = $('.table tbody tr:has(td)');
 
-                                }
-                                for (var i = 0; i <= recordPerPage - 1; i++) {
-                                    $(tr[i]).show();
-                                    console.log(tr[i]);
-                                }
-                                $('span').click(function(event) {
-                                    $('span').removeClass('focus');
-                                    $(this).toggleClass('focus');
+//                                 }
+//                                 for (var i = 0; i <= recordPerPage - 1; i++) {
+//                                     $(tr[i]).show();
+//                                     console.log(tr[i]);
+//                                 }
+//                                 $('span').click(function(event) {
+//                                     $('span').removeClass('focus');
+//                                     $(this).toggleClass('focus');
 
-                                    $('.table').find('tbody tr:has(td)').hide();
-                                    var nBegin = ($(this).text() - 1) * recordPerPage;
-                                    var nEnd = $(this).text() * recordPerPage - 1;
-                                    for (var i = nBegin; i <= nEnd; i++) {
-                                    $(tr[i]).show();
-                                    // $(this).addClass('focus');
-                                    }
-                                });
+//                                     $('.table').find('tbody tr:has(td)').hide();
+//                                     var nBegin = ($(this).text() - 1) * recordPerPage;
+//                                     var nEnd = $(this).text() * recordPerPage - 1;
+//                                     for (var i = nBegin; i <= nEnd; i++) {
+//                                     $(tr[i]).show();
+//                                     }
+//                                 });
               }
                PageWiseFilter("false");  
 
                $('#dr1').change(function(){
                    console.log(this.value);
                })   
-//                 $("#dr1").datepicker({
-//     onSelect: function(dateText) {
-//       display("Selected date: " + dateText + ", Current Selected Value= " + this.value);
-//       $(this).change();
-//     }
-//   }).on("change", function() {
-//     display("Change event");
-//   });    
 
             });
        function FilterRow($input){
@@ -723,21 +711,14 @@ if ($result ->num_rows >0) {
         });
 
         $('.filterable .filters input').keyup(function(e) {
-            // console.log(getVisibleRows());
-            /* Ignore tab key */
             var code = e.keyCode || e.which;
             if (code == '9') return;
-            /* Useful DOM data and selectors */
             var $input = $(this);
-     FilterRow($input);
-    //  $("#tobesorted tr:has(td)").remove();
-     $('#pages').html('');
-    //  PageWiseFilter("true");
-    getVisibleRows()
-    //  setTimeout(PageWiseFilter("true"), 3000);
-         
+            FilterRow($input);
+            console.log($input);
+            // $('#pages').html('');
+            getVisibleRows();
         });
-    // });
 
 
   
@@ -808,63 +789,157 @@ function getVisibleRows(){
 
 $rowtest=[]
          $('tr').each(function(i, obj) {
-            //test
-            // console.log(obj);
             if($(this).is(":visible")) {
-            // console.log($(this).is(":visible"));
-            // console.log(obj);
             $rowtest.push(obj);
-            // console.log("visible");
-            // console.log($rowtest.length);
-
             }
         });
-        // console.log($rowtest[1]);
-        // return $rowtest;
+            // $('.table').find('tbody tr:has(td)').hide();
+
+        console.log($rowtest.length);
+      
         // ----------pagination work---------
-         var totalRows = $rowtest.length;
-        //  console.log(totalRows);
-                                var recordPerPage = 100;
-                                var totalPages = Math.ceil(totalRows / recordPerPage);
-                                var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
-                                for (i = 0; i < totalPages; i++) {
-                                    $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
-                                }
-                                $pages.prependTo('.table');
+        //  var totalRows = $rowtest.length;
+        //                         var recordPerPage = 100;
+        //                         var totalPages = Math.ceil(totalRows / recordPerPage);
+        //                         var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
+        //                         for (i = 0; i < totalPages; i++) {
+        //                             $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
+        //                         }
+        //                         $pages.prependTo('.table');
 
-                                // $('.pageNumber').hover(
-                                //     function() {
-                                //     $(this).addClass('focus');
-                                //     },
-                                //     function() {
-                                //     $(this).removeClass('focus');
-                                //     }
-                                // );
+                               
 
-                                $('.table').find('tbody tr:has(td)').hide();
-                                                             var tr = $rowtest;
+        //                         $('.table').find('tbody tr:has(td)').hide();
+        //                                                      var tr = $rowtest;
 
-                                for (var i = 0; i <= recordPerPage - 1; i++) {
-                                    $(tr[i]).show();
-                                    // console.log(tr[i]);
-                                }
-                                $('span').click(function(event) {
-                                    $('span').removeClass('focus');
-                                    $(this).toggleClass('focus');
+        //                         for (var i = 0; i <= recordPerPage - 1; i++) {
+        //                             $(tr[i]).show();
+        //                         }
+        //                         $('span').click(function(event) {
+        //                             $('span').removeClass('focus');
+        //                             $(this).toggleClass('focus');
 
-                                    $('.table').find('tbody tr:has(td)').hide();
-                                    var nBegin = ($(this).text() - 1) * recordPerPage;
-                                    var nEnd = $(this).text() * recordPerPage - 1;
+        //                             $('.table').find('tbody tr:has(td)').hide();
+        //                             var nBegin = ($(this).text() - 1) * recordPerPage;
+        //                             var nEnd = $(this).text() * recordPerPage - 1;
+        //                             for (var i = nBegin; i <= nEnd; i++) {
+        //                             $(tr[i]).show();
+        //                             }
+        //                         });
+       
+          var numberOfItems = $rowtest.length;
+        var limitPerPage = 100;
+        // Total pages rounded upwards
+        var totalPages = Math.ceil(numberOfItems / limitPerPage);
+        console.log(totalPages);
+        // Number of buttons at the top, not counting prev/next,
+        // but including the dotted buttons.
+        // Must be at least 5:
+        var paginationSize = 7;
+        var currentPage;
+        
+        function getPageList(totalPages, page, maxLength) {
+            console.log("after filter getpage page");
+
+                if (maxLength < 0) throw "NO results";
+
+                function range(start, end) {
+                    return Array.from(Array(end - start + 1), (_, i) => i + start);
+                }
+
+                var sideWidth = maxLength < 9 ? 1 : 2;
+                var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+                var rightWidth = (maxLength - sideWidth * 2 - 2) >> 1;
+                if (totalPages <= maxLength) {
+                    // no breaks in list
+                    return range(1, totalPages);
+                }
+                if (page <= maxLength - sideWidth - 1 - rightWidth) {
+                    // no break on left of page
+                    return range(1, maxLength - sideWidth - 1)
+                        .concat(0, range(totalPages - sideWidth + 1, totalPages));
+                }
+                if (page >= totalPages - sideWidth - 1 - rightWidth) {
+                    // no break on right of page
+                    return range(1, sideWidth)
+                        .concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+                }
+                // Breaks on both sides
+                return range(1, sideWidth)
+                    .concat(0, range(page - leftWidth, page + rightWidth),
+                        0, range(totalPages - sideWidth + 1, totalPages));
+        }
+
+
+        function showPage(whichPage) {
+            console.log("after filter show page");
+            if (whichPage < 1 || whichPage > totalPages) return false;
+            currentPage = whichPage;
+            // $("#jar .content").hide()
+            // $('.table').find('tbody tr:has(td)').hide()
+            //     .slice((currentPage - 1) * limitPerPage,
+            //         currentPage * limitPerPage).show();
+            // Replace the navigation items (not prev/next):            
+            $(".pagination li").slice(1, -1).remove();
+            getPageList(totalPages, currentPage, paginationSize).forEach(item => {
+                $("<li>").addClass("page-item")
+                    .addClass(item ? "current-page" : "disabled")
+                    .toggleClass("active", item === currentPage).append(
+                        $("<a>").addClass("page-link").attr({
+                            href: "javascript:void(0)"
+                        }).text(item || "...")
+                    ).insertBefore("#next-page");
+            });
+            // Disable prev/next when at first/last page:
+            $("#previous-page").toggleClass("disabled", currentPage === 1);
+            $("#next-page").toggleClass("disabled", currentPage === totalPages);
+            return true;
+        }
+
+        // Include the prev/next buttons:
+        $(".pagination").append(
+            $("<li>").addClass("page-item").attr({
+                id: "previous-page"
+            }).append(
+                $("<a>").addClass("page-link").attr({
+                    href: "javascript:void(0)"
+                }).text("Prev")
+            ),
+            $("<li>").addClass("page-item").attr({
+                id: "next-page"
+            }).append(
+                $("<a>").addClass("page-link").attr({
+                    href: "javascript:void(0)"
+                }).text("Next")
+            )
+        );
+        // $(".table").show();
+        showPage(1);
+
+        // Use event delegation, as these items are recreated later    
+        $(document).on("click", ".pagination li.current-page:not(.active)", function() {
+            // return showPage(+$(this).text());
+            showPage(+$(this).text());
+            console.log($(this).text());
+            var tr=$rowtest;
+             $('.table').find('tbody tr:has(td)').hide();
+                                    var nBegin = ($(this).text() - 1) * limitPerPage;
+                                    var nEnd = $(this).text() * limitPerPage - 1;
+                                    console.log(nBegin,nEnd);
                                     for (var i = nBegin; i <= nEnd; i++) {
                                     $(tr[i]).show();
-                                    // $(this).addClass('focus');
                                     }
-                                });
 
+        });
+        $("#next-page").on("click", function() {
+            return showPage(currentPage + 1);
+        });
 
+        $("#previous-page").on("click", function() {
+            return showPage(currentPage - 1);
+        });
+    // }):
 
-
-        // ------------------------------------
 }
 
     function shortlist(studid){
@@ -1008,16 +1083,7 @@ $rowtest=[]
 
             // var csv = [];
          var idss=[];
-            // var rows = document.querySelectorAll('table tr:not([style*="display:none"]):not([style*="display: none"])');
-            
-            // for (var i = 1; i < rows.length; i++) {
-            //     var row = [], cols = rows[i].querySelectorAll("td, th");
-                
-            //     for (var j = 0; j < cols.length-1; j++) 
-            //         row.push(cols[j].innerText);
-            //         idss.push(cols[4].innerText);
-                    
-            //         console.log(idss);
+          
             idss=favorites;
             console.log(idss);
                 
@@ -1042,15 +1108,6 @@ $rowtest=[]
         }
 
 
-
-        // ------load more students---------
-
-          $(document).ready(function () {
-                  
-          });
-
-
-
         //   ---------send students to loaders function
         function sendids(){
                 var newArray = favorites;
@@ -1062,30 +1119,6 @@ $rowtest=[]
                 // var y=JSON.stringify(stid);
                 var z="to_loaders";
                 var w='<?php echo $_SESSION['emailemp'];?>';
-
-
-                // -----change authorised to unauthorised
-// <?php 
-//  if(sizeof(favorites)){
-//         $arrlen=count(favorites);
-//         // echo $arrlen;
-//         // echo $studlistobtain[1];
-//             for($x=0;$x<$arrlen;$x++){
-//             $sql = "SELECT * FROM Student where student_id='$studlistobtain[$x]' and is_authorised=0";
-//             $result = $db->query($sql);
-            
-//             if ($result ->num_rows >0) {
-               
-//                 while($row1 = $result->fetch_assoc()) {
-//                 }
-//             }
-//         }
-//     }
-//     ?>
-
-
-
-                // -----------------------------------------
 
                 // ----inserting----
                 $.ajax({
@@ -1105,87 +1138,116 @@ $rowtest=[]
 }
 
 
-// ----------sorting algo----------
-function sortTable() {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("tobesorted");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[0];
-      y = rows[i + 1].getElementsByTagName("TD")[0];
-      //check if the two rows should switch place:
-      console.log(x,y);
-      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        //if so, mark as a switch and break the loop:
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
-
-
-// --------------------------
     </script>
+<script>
+    // Returns an array of maxLength (or less) page numbers
+    // where a 0 in the returned array denotes a gap in the series.
+    // Parameters:
+    //   totalPages:     total number of pages
+    //   page:           current page
+    //   maxLength:      maximum size of returned array
+    function getPageList(totalPages, page, maxLength) {
+        if (maxLength < 0) throw "NO results";
 
-
-<?php
-
-
-function writeStudents(){
-
-
-    $sql = "SELECT * FROM Student WHERE (curr_ctc BETWEEN '1' and '4') and (total_exp BETWEEN '1' and '3')";
-    $result = $db->query($sql);
-    
-    if ($result ->num_rows >0) {
-       
-        while($row1 = $result->fetch_assoc()) {
-            ?>
-            <tr >
-            <td><input type="checkbox" class="studentcheckbox" value="<?php echo $row1['student_id']; ?>" name="id[]"></td>
-            <!-- <td > <?php echo $row1["college_id"];?> </td> -->
-            <td  > <?php echo $row1["college_name"];?></td>
-            <td ><?php echo $row1["college_location"];?></td>
-            <!-- <td ><?php echo $row1["student_id"];?></td> -->
-            <td  ><?php echo $row1["stud_name"];?></td>
-            <td  ><?php echo $row1["contact"];?></td>
-            <td  ><a href="mailto:<?php echo $row1["email"];?>"><?php echo $row1["email"];?></a></td>
-            <td  ><a href="../specialty/uploads/<?php echo $row1['student_id']; ?>/<?php echo $row1["resume"];?>" target="blank">View</a></td>
-            <td  ><button id="<?php echo $row1['student_id'];?>" onclick="shortlist(this.id);" style="background:transparent;color:black">Shortlist</button></td>
-    
-    
-    
-            </tr>
-    
-         <?php   
+        function range(start, end) {
+            return Array.from(Array(end - start + 1), (_, i) => i + start);
         }
-    } else {
-        echo "0 results";
+
+        var sideWidth = maxLength < 9 ? 1 : 2;
+        var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+        var rightWidth = (maxLength - sideWidth * 2 - 2) >> 1;
+        if (totalPages <= maxLength) {
+            // no breaks in list
+            return range(1, totalPages);
+        }
+        if (page <= maxLength - sideWidth - 1 - rightWidth) {
+            // no break on left of page
+            return range(1, maxLength - sideWidth - 1)
+                .concat(0, range(totalPages - sideWidth + 1, totalPages));
+        }
+        if (page >= totalPages - sideWidth - 1 - rightWidth) {
+            // no break on right of page
+            return range(1, sideWidth)
+                .concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+        }
+        // Breaks on both sides
+        return range(1, sideWidth)
+            .concat(0, range(page - leftWidth, page + rightWidth),
+                0, range(totalPages - sideWidth + 1, totalPages));
     }
-    
-}
 
+    // Below is an example use of the above function.
+    $(function() {
+        // Number of items and limits the number of items per page
+        // var numberOfItems = $("#jar .content").length;
+        var numberOfItems = $('.table').find('tbody tr:has(td)').length;
+        var limitPerPage = 100;
+        // Total pages rounded upwards
+        var totalPages = Math.ceil(numberOfItems / limitPerPage);
+        // Number of buttons at the top, not counting prev/next,
+        // but including the dotted buttons.
+        // Must be at least 5:
+        var paginationSize = 7;
+        var currentPage;
 
-?>
+        function showPage(whichPage) {
+            if (whichPage < 1 || whichPage > totalPages) return false;
+            currentPage = whichPage;
+            // $("#jar .content").hide()
+            $('.table').find('tbody tr:has(td)').hide()
+                .slice((currentPage - 1) * limitPerPage,
+                    currentPage * limitPerPage).show();
+            // Replace the navigation items (not prev/next):            
+            $(".pagination li").slice(1, -1).remove();
+            getPageList(totalPages, currentPage, paginationSize).forEach(item => {
+                $("<li>").addClass("page-item")
+                    .addClass(item ? "current-page" : "disabled")
+                    .toggleClass("active", item === currentPage).append(
+                        $("<a>").addClass("page-link").attr({
+                            href: "javascript:void(0)"
+                        }).text(item || "...")
+                    ).insertBefore("#next-page");
+            });
+            // Disable prev/next when at first/last page:
+            $("#previous-page").toggleClass("disabled", currentPage === 1);
+            $("#next-page").toggleClass("disabled", currentPage === totalPages);
+            return true;
+        }
+
+        // Include the prev/next buttons:
+        $(".pagination").append(
+            $("<li>").addClass("page-item").attr({
+                id: "previous-page"
+            }).append(
+                $("<a>").addClass("page-link").attr({
+                    href: "javascript:void(0)"
+                }).text("Prev")
+            ),
+            $("<li>").addClass("page-item").attr({
+                id: "next-page"
+            }).append(
+                $("<a>").addClass("page-link").attr({
+                    href: "javascript:void(0)"
+                }).text("Next")
+            )
+        );
+        // Show the page links
+        $(".table").show();
+        showPage(1);
+
+        // Use event delegation, as these items are recreated later    
+        $(document).on("click", ".pagination li.current-page:not(.active)", function() {
+            return showPage(+$(this).text());
+        });
+        $("#next-page").on("click", function() {
+            return showPage(currentPage + 1);
+        });
+
+        $("#previous-page").on("click", function() {
+            return showPage(currentPage - 1);
+        });
+    });
+</script>
 
 </body>
 
