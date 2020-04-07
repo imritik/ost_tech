@@ -91,6 +91,9 @@ $d=50;
         .fill{
             width:-webkit-fill-available;
         }
+        .width-auto{
+            width:auto;
+        }
     </style>
 
 
@@ -461,12 +464,12 @@ function formToggle(ID){
                     <tr class="filters">
                     <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
                         <!-- <th><input type="text" class="form-control" placeholder="Profile Score#" disabled></th> -->
-                        <th><input type="text" class="form-control" placeholder="College Name" disabled></th>
+                        <th><input type="text" class="form-control width-auto" placeholder="College Name" disabled></th>
                         <!-- <th><input type="text" class="form-control" placeholder="Student ID#" disabled></th> -->
-                        <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Contact" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Email"  disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Company"  disabled></th>
+                        <th><input type="text" class="form-control width-auto" placeholder="Name" disabled></th>
+                        <th><input type="text" class="form-control width-auto" placeholder="Contact" disabled></th>
+                        <th><input type="text" class="form-control width-auto" placeholder="Email"  disabled></th>
+                        <th><input type="text" class="form-control width-auto" placeholder="Company"  disabled></th>
                         <!-- <th><input type="text" class="form-control" placeholder="Preferred_loc" disabled></th>-->
                         <th><input type="text" class="form-control fill" placeholder="CTC" disabled></th>
                         <th><input type="text" class="form-control fill" placeholder="FileName" disabled></th> 
@@ -646,33 +649,47 @@ if ($result ->num_rows >0) {
                PageWiseFilter("false");  
 
                $('#dr1').change(function(){
-                   console.log(this.value);
+                //    console.log(this.value);
                })   
 
             });
+
+
        function FilterRow($input){
-                       inputContent = $input.val().toLowerCase(),
-                $panel = $input.parents('.filterable'),
-                column = $panel.find('.filters th').index($input.parents('th')),
+        //    console.log("in filter function",$input);
+           $tobeshown=[];
+        $visible_rows=[];
+
+if(!$input.length){
+    var rows = $('.table tr');
+    rows.show();
+}
+        //    loop through the filters here
+        for(var i = 0; i < $input.length; i++){
+            // console.log($input[i],"to be applied");
+
+
+                inputContent = $input[i].val().toLowerCase(),
+                $panel = $input[i].parents('.filterable'),
+                column = $panel.find('.filters th').index($input[i].parents('th')),
                 $table = $panel.find('.table'),
                 $rows = $table.find('tbody tr');
-                // $rows=new Array();
-                // console.log(getVisibleRows());
-                // $rows.push(getVisibleRows());
-            //   $rows=getVisibleRows();
                 // console.log($rows);
+                if($visible_rows.length && inputContent!=''){
+                    // console.log("filtered rows here");
+                    $rows=$visible_rows;
+                }
+                else{
+                    // console.log("all rows here");
+                }
 
-             
-                console.log(inputContent);
                 if(inputContent=='#'){
-                    console.log("blank search will be there");
+                    // console.log("blank search will be there");
                     var $filteredRows = $rows.filter(function() {
                             var value = $(this).find('td').eq(column).text().trim()!='';
                             return value === true;
-                            console.log(value);
+                            // console.log(value);
                     });
-                            // console.log($filteredRows);
-
                 }
                 else{
                             /* Dirtiest filter function ever ;) */
@@ -680,22 +697,42 @@ if ($result ->num_rows >0) {
                                             var value = $(this).find('td').eq(column).text().toLowerCase();
                                             return value.indexOf(inputContent) === -1;
                             });
-                            // console.log($filteredRows);
-
                 }
             
-            /* Clean previous no-result if exist */
-            $table.find('tbody .no-result').remove();
-            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
-            $rows.show();
-            $filteredRows.hide();
-            /* Prepend no-result row if all rows are filtered */
-            if ($filteredRows.length === $rows.length) {
-                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+                    /* Clean previous no-result if exist */
+                    $table.find('tbody .no-result').remove();
+                    /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+                    $rows.show();
+                    $filteredRows.hide();
+
+                    // -------------------
+//  $('tr').each(function(i, obj) {
+//             //test
+//             // console.log(obj);
+//             if($(this).is(":visible")) {
+//                 $tobeshown.push($(this));
+//             }
+//         });
+                    $tobeshown=$table.find('tbody tr:visible');
+                            $visible_rows=$tobeshown;
+                            // console.log($visible_rows);
+
+                    // ===--------------
+                    console.log($filteredRows);
+                    /* Prepend no-result row if all rows are filtered */
+                    if ($filteredRows.length === $rows.length) {
+                        $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+                    }
+                    // console.log(getVisibleRows());
+
+        }
+
+
             }
-            // console.log(getVisibleRows());
-            }
+
         // -----------------------
+
+
         $('.filterable .btn-filter').click(function() {
             var $panel = $(this).parents('.filterable'),
                 $filters = $panel.find('.filters input'),
@@ -711,12 +748,40 @@ if ($result ->num_rows >0) {
         });
 
         $('.filterable .filters input').keyup(function(e) {
+            // console.log($(this));
+            var inputs = $(".filterable .filters input");
+            var input_array=[];
+            var $input = $(this);
+        
+            for(var i = 0; i < inputs.length; i++){
+                // alert($(inputs[i]).val());
+                if($(inputs[i]).val()!=''){
+                    input_array.push($(inputs[i]));
+                    //  FilterRow($(inputs[i]));
+                }
+                else{
+                        //  var $input = $(this);
+                        // FilterRow($input);
+                }
+            }
+
+            if(!input_array.length){
+                // console.log("no filers");
+                //  var $input = $(this);
+                // FilterRow($input);
+            }
+            else{
+                // console.log(" filers");
+
+                // for(var i = 0; i < input_array.length; i++){
+                //     FilterRow(input_array[i]);
+                // }
+            }
+
+            // console.log(input_array);
             var code = e.keyCode || e.which;
             if (code == '9') return;
-            var $input = $(this);
-            FilterRow($input);
-            console.log($input);
-            // $('#pages').html('');
+            FilterRow(input_array);
             getVisibleRows();
         });
 
@@ -737,7 +802,7 @@ $(".studentcheckbox").click(function(){
             favorite.push($(this).val());
         });
         favorites=favorite;
-     console.log(favorites);
+    //  console.log(favorites);
  
 
 });
@@ -753,19 +818,19 @@ $(".studentcheckbox").click(function(){
             // console.log(obj);
             if($(this).is(":visible")) {
             
-            console.log(obj);
+            // console.log(obj);
             if($(this).find('.studentcheckbox').prop('checked') == false){
                 $(this).find('.studentcheckbox').prop('checked',true);
                 jobarr.push($(this).find('.studentcheckbox').val());
                 favorites=jobarr;
-                console.log(favorites);
+                // console.log(favorites);
 
             }
             else{
                 $(this).find('.studentcheckbox').prop('checked',false);
                 jobarr=[];
                 favorites=jobarr;
-                console.log(favorites);
+                // console.log(favorites);
 
             }
 
@@ -795,38 +860,8 @@ $rowtest=[]
         });
             // $('.table').find('tbody tr:has(td)').hide();
 
-        console.log($rowtest.length);
+        // console.log($rowtest.length);
       
-        // ----------pagination work---------
-        //  var totalRows = $rowtest.length;
-        //                         var recordPerPage = 100;
-        //                         var totalPages = Math.ceil(totalRows / recordPerPage);
-        //                         var $pages = $('<div id="pages" style="display:inline;font-size:18px"></div>');
-        //                         for (i = 0; i < totalPages; i++) {
-        //                             $('<span class="pageNumber" style="cursor:pointer">&nbsp;<b>' + (i + 1) + '</b></span>').appendTo($pages);
-        //                         }
-        //                         $pages.prependTo('.table');
-
-                               
-
-        //                         $('.table').find('tbody tr:has(td)').hide();
-        //                                                      var tr = $rowtest;
-
-        //                         for (var i = 0; i <= recordPerPage - 1; i++) {
-        //                             $(tr[i]).show();
-        //                         }
-        //                         $('span').click(function(event) {
-        //                             $('span').removeClass('focus');
-        //                             $(this).toggleClass('focus');
-
-        //                             $('.table').find('tbody tr:has(td)').hide();
-        //                             var nBegin = ($(this).text() - 1) * recordPerPage;
-        //                             var nEnd = $(this).text() * recordPerPage - 1;
-        //                             for (var i = nBegin; i <= nEnd; i++) {
-        //                             $(tr[i]).show();
-        //                             }
-        //                         });
-       
           var numberOfItems = $rowtest.length;
         var limitPerPage = 100;
         // Total pages rounded upwards
@@ -839,7 +874,7 @@ $rowtest=[]
         var currentPage;
         
         function getPageList(totalPages, page, maxLength) {
-            console.log("after filter getpage page");
+            // console.log("after filter getpage page");
 
                 if (maxLength < 0) throw "NO results";
 
@@ -872,7 +907,7 @@ $rowtest=[]
 
 
         function showPage(whichPage) {
-            console.log("after filter show page");
+            // console.log("after filter show page");
             if (whichPage < 1 || whichPage > totalPages) return false;
             currentPage = whichPage;
             // $("#jar .content").hide()
@@ -920,12 +955,12 @@ $rowtest=[]
         $(document).on("click", ".pagination li.current-page:not(.active)", function() {
             // return showPage(+$(this).text());
             showPage(+$(this).text());
-            console.log($(this).text());
+            // console.log($(this).text());
             var tr=$rowtest;
              $('.table').find('tbody tr:has(td)').hide();
                                     var nBegin = ($(this).text() - 1) * limitPerPage;
                                     var nEnd = $(this).text() * limitPerPage - 1;
-                                    console.log(nBegin,nEnd);
+                                    // console.log(nBegin,nEnd);
                                     for (var i = nBegin; i <= nEnd; i++) {
                                     $(tr[i]).show();
                                     }

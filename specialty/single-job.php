@@ -1,19 +1,19 @@
-    <?php 
-    include '../dbConfig.php';
-    session_start();
-    if(isset($_SESSION['stud_id'])){
-        // echo $_SESSION['company'];
-      }
-      else{
-        // echo "alert('no session exist')";
-        header("location: ../index.php");
-      }
-    $sid=$_SESSION['stud_id'];
-    $jpi=$_REQUEST['jpi'];
-    $haveapplied=$_REQUEST['apl'];
-    var_dump($_SESSION['stud_id']);
-   
-    ?>
+<?php 
+include '../dbConfig.php';
+session_start();
+if(isset($_SESSION['stud_id'])){
+    // echo $_SESSION['company'];
+  }
+  else{
+    // echo "alert('no session exist')";
+    header("location: ../index.php");
+  }
+$sid=$_SESSION['stud_id'];
+$jpi=$_REQUEST['jpi'];
+$haveapplied=$_REQUEST['apl'];
+var_dump($_SESSION['stud_id']);
+
+?>
 <!doctype html>
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -268,16 +268,46 @@ function applyforjob(x,y){
                                 //do something with the response
                                 // $('#<?php echo $jpi; ?>').html('Applied');
                                 // $("#myBtn").trigger('click');
-                                var resumepath='uploads/'+y+'/'+response[0]['resume'];
-                                $('#myModal').show();
-                                $('#det1').val(response[0]['curr_company']);
-                                $('#det2').val(response[0]['curr_ctc']);
-                                $('#det3').val(response[0]['experience']);
-                                // $('#det4').val(resumepath);
-                                $("#det5 a").attr("href", resumepath);
+                                var date=new Date();
+                                console.log(response[0]['last_updated'],Date.parse(response[0]['last_updated']),Date.parse(date));
+                                var diffdate=Date.parse(date)-Date.parse(response[0]['last_updated']);
+                                var days_diff=diffdate/(1000 * 3600 * 24);
+                                console.log("diff",days_diff);
+                                if(days_diff>15){
+                                        var resumepath='uploads/'+y+'/'+response[0]['resume'];
+                                        $('#myModal').show();
+                                        $('#det1').val(response[0]['curr_company']);
+                                        $('#det2').val(response[0]['curr_ctc']);
+                                        $('#det3').val(response[0]['experience']);
+                                        // $('#det4').val(resumepath);
+                                        $("#det5 a").attr("href", resumepath);
 
-                                $('#det5 a').html(response[0]['resume']);
-                                $('#last_updated1').html(response[0]['last_updated'].slice(0, 10));
+                                        $('#det5 a').html(response[0]['resume']);
+                                        $('#last_updated1').html(response[0]['last_updated'].slice(0, 10));
+                                }
+                                else{
+                                            console.log("direct apply");
+
+                                            console.log(<?php echo $jpi; ?>,<?php echo $sid; ?>)
+   // ------------for applying----
+                                        $.ajax({
+                                                    url: 'applyafteredit.php',
+                                                    type: 'POST',
+                                                
+                                                    data: {param1: <?php echo $jpi; ?>,param2:<?php echo $sid; ?>},
+                                                
+                                                })
+                                                .done(function(response) {
+                                                        alert(response); 
+                                                        console.log(response);  
+                                                        off();
+                                                        $('#<?php echo $jpi; ?>').html('Applied');
+                                                })
+                                                .fail(function(data) {
+                                                    alert(data);
+                                                }); 
+                                }
+                       
 
                                 
                                
@@ -331,10 +361,10 @@ function applyafteredit(arg){
                                                 
                                                 })
                                                 .done(function(response) {
-                                        alert(response); 
-                                        console.log(response);  
-                                        off();
-                                        $('#<?php echo $jpi; ?>').html('Applied');
+                                                        alert(response); 
+                                                        console.log(response);  
+                                                        off();
+                                                        $('#<?php echo $jpi; ?>').html('Applied');
                                                 })
                                                 .fail(function(data) {
                                                     alert(data);

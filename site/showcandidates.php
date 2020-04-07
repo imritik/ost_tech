@@ -54,7 +54,7 @@ if (mysqli_num_rows($result) > 0) {
 // var_dump($studids,$statusjob);
 $users = '<table class="table table-bordered">
 <tr>
-<th style="color:black;display:flex;"> </th>
+<th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
     <th>No.</th>
     <th>Job reference</th>
     <th>Name</th>
@@ -62,14 +62,19 @@ $users = '<table class="table table-bordered">
     <th>College</th>
     <th>contact</th>
     <th>Resume</th>
-   <th>Address</th>
     <th>Status</th>
-    <th>Tech</th>
-    <th>Add. Courses</th>
+<th>Current CTC</th>
     <th>Expected ctc</th>
-    <th>Preferred location</th>
-    <th>Total Experience</th>
-    <th>Previous companies</th>
+    <th>Current Company</th>
+    <th>Current location</th>
+    <th>Notice Period</th>
+    <th>UG college</th>
+    <th>UG degree</th>
+    <th>PG college</th>
+    <th>PG degree</th>
+
+    
+   
 
 </tr>
 ';
@@ -101,23 +106,20 @@ if(sizeof($studids)){
             <td>'.$jidd.'</td>
             <td>'.$row1['stud_name'].'</td>
             <td>'.$row1['email'].'</td>
-            <td>'.$row1['college_name'].'</td>
+            <td>'.$row1['ug_college'].'</td>
             <td>'.$row1['contact'].'</td>
             <td><a href="../specialty/uploads/'.$studids[$x].'/'.$sturesume.'" target="blank">'.$resumelinks.'</a></td>
-            <td>'.$row1['address'].'</td>
+            
             <td>'.$studstatuss[$x].'</td>
-            <td>'.$row1['tech'].'</td>
-            <td>'.$row1['add_courses'].'</td>
+            <td>'.$row1['curr_ctc'].'</td>
             <td>'.$row1['expected_ctc'].'</td>
-            <td>'.$row1['preferred_loc'].'</td>
-            <td>'.$row1['total_exp'].'</td>
-            <td>'.$row1['prev_comp'].'</td>
-
-
-
-
-
-
+            <td>'.$row1['curr_comp'].'</td>
+            <td>'.$row1['curr_loc'].'</td>
+            <td>'.$row1['notice_period'].'</td>
+            <td>'.$row1['ug_college'].'</td>
+            <td>'.$row1['ug_degree'].'</td>
+            <td>'.$row1['pg_college'].'</td>
+            <td>'.$row1['pg_degree'].'</td>
         </tr>';
         $number++;
     // }
@@ -275,22 +277,35 @@ function downloadCSV(csv, filename) {
     });
     // -----for selecting all student at once---
     $("#selectall").click(function () {
-        $('#updatestatusbtn').toggle();
+         $('#updatestatusbtn').toggle();
+        $('#updatenotebtn').toggle();
         $('#rejectbtn').toggle();
+        $('#admins_email').toggle()
+        $('#send_ids').toggle();
         var sidc=[];
         var jobid=[];
-        if($('tr').is(":visible")) {
-            // alert('hi');
+        //  var favorites = [];
+        $('tr').each(function(i, obj) {
 
-            $(".studentcheckbox").prop('checked', $(this).prop('checked'));
-            console.log($(".studentcheckbox").val());
-            sidc.push($(".studentcheckbox").val());
-            jobid.push($(".studentcheckbox").closest("tr").find('td:eq(2)').text());
-            favorites=sidc;
-            jobrefs=jobid;
+                if($('tr').is(":visible")) {
+                if($(this).find('.studentcheckbox1').prop('checked') == false){
 
-    //It's visible
-        }
+                    // alert('hi');
+                    $(this).find('.studentcheckbox1').prop('checked',true)
+                    console.log($(this).find('.studentcheckbox1').val());
+                    sidc.push($(this).find('.studentcheckbox1').val());
+                    jobid.push($(this).find('.studentcheckbox1').closest("tr").find('td:eq(2)').text());
+                    favorites=sidc;
+                    jobrefs=jobid;
+                }
+                else{
+                    $(this).find('.studentcheckbox1').prop('checked',false);
+                     favorites=sidc;
+                    jobrefs=jobid;
+                }
+            }
+        });
+
         var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
         newArray1=newArray;
          console.log(newArray1);
@@ -341,7 +356,7 @@ console.log(x,y,z,q);
                                 data: {param1: x,param2:y,param3:z,param4:q},
                             })
                             .done(function(response) {
-                                alert(response);
+                                // alert(response);
                                 location.reload();
                                
                             })
@@ -361,7 +376,7 @@ console.log(x,y);
                                 data: {param1: x,param2:y},
                             })
                             .done(function(response) {
-                                alert(response);
+                                // alert(response);
                                 location.reload();
                                
                             })
@@ -395,7 +410,7 @@ jid=obj.split(',')[1];
                                 data: {param1: x,param2:JSON.stringify(favorites),param3:z,param4:w},
                             })
                             .done(function(response) {
-                                alert(response);
+                                // alert(response);
                                $('#send_ids').html('sent!');
                             })
                             .fail(function() {
