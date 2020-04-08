@@ -24,12 +24,14 @@ if($_REQUEST['status']){
 }
 include '../dbConfig.php';
 ?>
+
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link href="css/style.css" rel="stylesheet">
 
 <?php
 // List Users
@@ -52,31 +54,28 @@ if (mysqli_num_rows($result) > 0) {
     } 
 }
 // var_dump($studids,$statusjob);
-$users = '<table class="table table-bordered">
-<tr>
+$users = '<table class="table" style="transform: rotateX(180deg);">
+<tr class="filters">
 <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
     <th>No.</th>
     <th>Job reference</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>College</th>
-    <th>contact</th>
+    <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="College"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Contact"></th>
     <th>Resume</th>
-    <th>Status</th>
-<th>Current CTC</th>
-    <th>Expected ctc</th>
-    <th>Current Company</th>
-    <th>Current location</th>
-    <th>Notice Period</th>
-    <th>UG college</th>
-    <th>UG degree</th>
-    <th>PG college</th>
-    <th>PG degree</th>
+    <th><input type="text" class="form-control width-auto" placeholder="Status"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Current CTC"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Company"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Current location"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="UG college"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="UG degree"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="PG college"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="PG degree"></th>
 
-    
-   
-
-</tr>
+    </tr>
 ';
 
 if(sizeof($studids)){
@@ -141,18 +140,26 @@ if(sizeof($studids)){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+  .width-auto{
+            width:auto;
+        }
+</style>
 </head>
 <body>
 <div class="container">
     <!--  Header  -->
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12">
         
         </div>
-    </div>
+    </div> -->
     <!--  /Header  -->
- <br>
+ <!-- <br> -->
     <!--  Content   -->
+    <div class="form-group">
+        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
+    </div>
     <div class="alert alert-info text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Offer");'>View Offered Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
     <div style="display:block" class="text-center">
     <!-- --------------- -->
@@ -177,7 +184,7 @@ echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['Full_n
 
 <button id="send_ids" class="btn btn-primary" style="display:none" onclick="sendids();">Send</button>
     <!-- ------------------------- -->
-<input id="updatenotebtn" class="form-control" placeholder="optional note" value="passed" style="width:auto;display:none">
+<input id="updatenotebtn" class="form-control" placeholder="optional note" value="feedback" style="width:auto;display:none">
     <select class="btn btn-info" id="updatestatusbtn" style="display:none" onchange="updatestatus();">
             <option value="Round 1">Round 1</option>
             <option value="Round 2">Round 2</option>
@@ -191,12 +198,12 @@ echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['Full_n
     </div>
     <br>
 
-    <div class="form-group">
+    <div class="form-group" style="transform: rotateX(180deg);overflow-x:auto">
         <?php echo $users ?>
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
-    </div>
+    </div> -->
     <!--  /Content   -->
  
     <script>var statusvalue=$('#updatestatusbtn').val();
@@ -311,8 +318,95 @@ function downloadCSV(csv, filename) {
          console.log(newArray1);
    
     });
+
+     function FilterRow($input){
+           console.log("in filter function",$input);
+           $tobeshown=[];
+        $visible_rows=[];
+
+            if(!$input.length){
+                var rows = $('.table tr');
+                rows.show();
+            }
+        //    loop through the filters here
+        for(var i = 0; i < $input.length; i++){
+                inputContent = $input[i].val().toLowerCase(),
+                // $panel = $input[i].parents('.filterable'),
+                column = $('.filters th').index($input[i].parents('th')),
+                $table = $('.table'),
+                $rows = $table.find('tbody tr');
+                // console.log($rows);
+                if($visible_rows.length && inputContent!=''){
+                    // console.log("filtered rows here");
+                    $rows=$visible_rows;
+                }
+                else{
+                    // console.log("all rows here");
+                }
+
+                if(inputContent=='#'){
+                    // console.log("blank search will be there");
+                    var $filteredRows = $rows.filter(function() {
+                            var value = $(this).find('td').eq(column).text().trim()!='';
+                            return value === true;
+                            // console.log(value);
+                    });
+                }
+                else{
+                            /* Dirtiest filter function ever ;) */
+                            var $filteredRows = $rows.filter(function() {
+                                            var value = $(this).find('td').eq(column).text().toLowerCase();
+                                            return value.indexOf(inputContent) === -1;
+                            });
+                }
+            
+                    /* Clean previous no-result if exist */
+                    // $table.find('tbody .no-result').remove();
+                    /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+                    // var firstrows = $('.table tr:first');
+                    // firstrows.show();
+                    // console.log(firstrows,"first rows");
+                    $rows.show();
+                    $filteredRows.slice(1).hide();
+
+                    $tobeshown=$table.find('tbody tr:visible');
+                            $visible_rows=$tobeshown;
+                            console.log($visible_rows);
+
+                    // ===--------------
+                    console.log($filteredRows,"filtered");
+                    /* Prepend no-result row if all rows are filtered */
+                    // if ($filteredRows.length === $rows.length) {
+                    //     $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+                    // }
+                    // console.log(getVisibleRows());
+        }
+            }
     
-    
+    $('.filters input').keyup(function(e) {
+        console.log(e);
+            console.log($(this));
+            var inputs = $(".filters input").slice(1);
+            var input_array=[];
+            var $input = $(this);
+        
+            for(var i = 0; i < inputs.length; i++){
+                // alert($(inputs[i]).val());
+                if($(inputs[i]).val()!=''){
+                    input_array.push($(inputs[i]));
+                    //  FilterRow($(inputs[i]));
+                }
+                else{
+                        //  var $input = $(this);
+                        // FilterRow($input);
+                }
+            }
+console.log(input_array);
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            FilterRow(input_array);
+            // getVisibleRows();
+        });
 
     function updatestatus(){
 
