@@ -145,15 +145,16 @@ function redirectlogin(){
                 <div class="row">
                     <div class="col-xl-9 col-lg-8 col-xs-12">
                         <div class="content-wrap">
+                            <h3 class="text-center">Job Description <a href='site/uploads/jd/<?php echo $jpi;?>/<?php echo $row1["description_file"];?>'>&nbsp;(View)</a></h3>
                             <article class="entry">
                                 <div class="entry-content">
                                     <p><?php echo $row1['job_description']; ?></p>
 
                                    
 
-                                    <h2>How to Join the Team:</h2>
+                                    <!-- <h2>How to Join the Team:</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur blanditiis corporis cumque cupiditate dignissimos, dolor dolorem eaque eligendi error et ex exercitationem expedita facere facilis ipsum iste laboriosam
-                                        magni minus, modi mollitia obcaecati officia optio quo repellat repellendus temporibus totam unde. Alias assumenda iste libero ullam. Aspernatur perspiciatis rem voluptatum?</p>
+                                        magni minus, modi mollitia obcaecati officia optio quo repellat repellendus temporibus totam unde. Alias assumenda iste libero ullam. Aspernatur perspiciatis rem voluptatum?</p> -->
 
                                 </div>
                             </article>

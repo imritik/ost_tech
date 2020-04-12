@@ -146,9 +146,13 @@ if(!empty($_GET['status'])){
             $statusType='alert-danger';
             $statusMsg='Sorry, there was an error uploading ';
             break;
-            case 'errcomptype':
+        case 'errcomptype':
             $statusType='alert-danger';
             $statusMsg='Sorry, only JPG, JPEG, PNG, GIF files are allowed to upload.';
+            break;
+        case 'errfiletype':
+            $statusType='alert-danger';
+            $statusMsg='Sorry only pdf,docx files are allowed to upload.';
             break;
         default:
             $statusType = '';
@@ -238,6 +242,10 @@ if($query ->num_rows >0){
                             <label for="job-description">Description</label>
                             <textarea class="textarea form-control" name="description" id="job-description" maxlength="2000" required></textarea>
                         </div>
+                        <div class="form-group" id="job-description-file-group">
+                            <label for="company-logo">Upload description</label>
+                            <input type="file" name="jobdescriptionfile" id="jobdescriptionfile">
+                        </div> 
                         <div class="form-group" id="job-url-group">
                             <label for="job-url">Website (Optional)</label>
                             <input type="text" name="weburl" class="form-control" id="job-url" placeholder="https://" readonly required>

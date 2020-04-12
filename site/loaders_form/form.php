@@ -7,7 +7,7 @@ if(isset($_SESSION['emaildl'])){
   }
   else{
     // echo "alert('no session exist')";
-    header("location: ../index.php");
+    header("location: ../../index.php");
   }
 include '../../dbConfig.php';
 $jidd=$_REQUEST['jid'];
