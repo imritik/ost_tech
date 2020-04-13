@@ -8,19 +8,16 @@ $companies=array();
 $jobs=array();
 $jobs_details=array();
 $to_admin_data=array();
+$company_names=array();
 if ($result ->num_rows ==1) {
-   
     while($row1 = $result->fetch_assoc()) {
-
         $companies=json_decode(stripslashes($row1['companies']));
         // var_dump($companies);
         if(sizeof($companies)){
             $arrlen=count($companies);
                 for($x=0;$x<$arrlen;$x++){
                     // var_dump($companies[$x]);
-
                     // ------collect all jobs of company here
-
                     $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and coordinator='$coordinator_email'";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
@@ -30,16 +27,34 @@ if ($result ->num_rows ==1) {
                             array_push($jobs_details,$rowjob);
                             }
                     }
-
                     // -------------------------
                 }
         } 
     }
- 
+}
+
+// ---get company names
+ for($i=0;$i<sizeof($companies);$i++){
+    $sqlname="SELECT * FROM employer_account WHERE email='$companies[$i]'";
+    $resultname = $db->query($sqlname);
+    if ($resultname ->num_rows > 0) {
+         while($rowname = $resultname->fetch_assoc()) {
+             array_push($company_names,$rowname['company_name']);
+        }
+    }
 }
 ?>
 <html>
     <head>
+       <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Jobseek - Job Board Responsive HTML Template">
+    <meta name="author" content="Coffeecream Themes, info@coffeecream.eu">
+    <link rel="shortcut icon" href="images/favicon.png">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="../css/style.css" rel="stylesheet">
   
         <style>
@@ -53,30 +68,78 @@ if ($result ->num_rows ==1) {
                 padding-left: 220px; /* 180 + 40 */
                 }
                 }
+                .showtable{
+                      position: fixed;
+                        right: 0;
+                        left:0;
+                        bottom: 0;
+                        top: 177px;
+                        height: 100%;
+                }
         </style>
     </head>
-<div class="container-fluid">
-    <div class="row"style="display:flex">
-        <div class="sidebar">
-        <ul class="nav nav-sidebar">
-            <?php
+
+    <!-- ============ PAGE LOADER END ============ -->
+
+    <!-- ============ NAVBAR START ============ -->
+<body onload="setclick()">
+    <div class="fm-container">
+        <!-- Menu -->
+        <div class="menu">
+            <div class="button-close text-right">
+                <a class="fm-button"><i class="fa fa-close fa-2x"></i></a>
+            </div>
+            <ul class="nav">
+             <?php
                 for($i=0;$i<sizeof($companies);$i++){
-                    echo '<li class="active dropdown" name="'.$companies[$i].'"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" onclick="showjobs(\''.$companies[$i].'\')">'.$companies[$i].'<span class="caret"></span></a> <ul id="'.$companies[$i].'" class="dropdown-menu" role="menu"></ul></li>';
+                    echo '<li id="'.$i.'" style="font-size:12px" name="'.$companies[$i].'" onclick="showjobs(\''.$companies[$i].'\')"><a href="#" style="width:max-content;padding: 10px;" >'.$company_names[$i].'<br>(<small class="company_name">'.$companies[$i].'</small>)</a> <ul id="'.$companies[$i].'" class="'.$companies[$i].'" style="font-size: initial;"></ul></li><br>';
                 }
             ?>
-        </ul>
+            </ul>
+            <ul class="nav">
+                <li><a href="">Logout</a></li>
+            </ul>
         </div>
-        <div class="col-sm-12 main">
-            <h3 class="page-header">Dashboard</h3>
-            <div class="showjobsdiv">
+        <!-- end Menu -->
+    </div>
 
+    <!-- ============ NAVBAR END ============ -->
+
+    <!-- ============ HEADER START ============ -->
+
+    <header>
+        <div id="header-background"></div>
+        <div class="container">
+            <div class="pull-left">
+               Coordinator (<?php echo $coordinator_email; ?>)
+            </div>
+            <div id="menu-open" class="pull-right">
+                <a class="fm-button"><i class="fa fa-bars fa-lg"></i></a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ============ HEADER END ============ -->
+<div class="container">
+    <div class="row"style="display:flex;margin-top:-30px">
+        <div class="col-sm-12 main">
+            <h3 class="page-header text-center">Dashboard &nbsp;(<span id="showjobname" ></span>)</h3>
+            <div class="showjobsdiv">
+                    <div class="showtable">
+                         <iframe name='cv' id="frametable" data-src="http://www.w3schools.com" src="../loaders_form/form.php?jid=2" width="900" style="background:#ffffff;height:inherit;width: -webkit-fill-available;display:none"></iframe>
+                    </div>
             </div>
         </div>
     </div>
 </div>
+</body>
 <script>
+
 var companyJobs=[];
+
 function showjobs(cemail){
+    document.getElementById(cemail).innerHTML='';
     console.log(cemail);
     var newArray=<?php echo json_encode($jobs_details); ?>;
     var companyjobs=newArray.filter(function(e1){
@@ -84,13 +147,80 @@ function showjobs(cemail){
     });
     companyJobs=companyjobs;
     console.log(companyJobs);
-    for(i=0;i<companyJobs.length;i++){
-        console.log(companyJobs[i]);
-        var e='<li><a href="#" id="'+companyJobs[i].posting_id+'">'+companyJobs[i].job_title+'</a></li>';
-        //   $("#"+cemail).append(e);
+    if(!companyJobs.length){
+        var e='<li><a href="#">No jobs</a></li>'
+        document.getElementById(cemail).innerHTML=e;
     }
+    else{
+        for(i=0;i<companyJobs.length;i++){
+        console.log(companyJobs[i]);
+        var e='<li><a href="#" id="'+companyJobs[i].posting_id+'" onclick="showjobtable(this.id,this.innerHTML)">'+companyJobs[i].job_title+'</a></li>';
+        document.getElementById(cemail).innerHTML+=e
+    }
+    }
+}
+
+function getcname(cemail){
+ var newArray=<?php echo json_encode($jobs_details); ?>;
+    var companyjobs=newArray.filter(function(e1){
+         return e1.email==cemail
+    });
+    console.log(companyjobs);
+    return companyjobs;
+      
+}
+
+function setcname(){
+     var companyArray=<?php echo json_encode($companies); ?>;
+    console.log(companyArray.length);
+            for(i=0;i<companyArray.length;i++){
+                var value=document.querySelectorAll("li[id='"+i+"']")[0].innerText;
+                var rr=value.toLowerCase();
+                console.log(rr);
+                console.log(rr.trim());
+                console.log(getcname(rr.trim()));
+                document.querySelectorAll("li[id='"+i+"'] a span")[0].innerText= getcname(rr.trim());
+            }  
 
 }
+
+var frm = ['cv'];
+ var hrf=[];
+ function setSource() {
+     console.log("in set source");
+            for(i=0, l=frm.length; i<l; i++) {
+                document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
+            }
+        }
+
+function showjobtable(jid,jname){
+    console.log(jid,jname);
+    $('#frametable').show();
+    document.getElementById('showjobname').innerHTML=jname;
+     var hrf1 = ['../showcandidates.php?jid='+jid];
+     hrf=hrf1;
+     setSource();
+}
+
+function setclick() {
+    var companyArray=<?php echo json_encode($companies); ?>;
+    // console.log(companyArray.length);
+    //         for(i=0;i<companyArray.length;i++){
+    //             console.log(i);
+    //             console.log(document.querySelector("li[id='"+i+"']"));
+    //             document.querySelector("li[id='"+i+"']").click();
+    //         }
+            // setcname();   
+            var sleep = 0;
+            $('.with-ul').each(function(){
+                var likeElement = $(this);
+                setTimeout(function() {
+                    likeElement.trigger('click');
+                }, sleep);
+                sleep += 10000;
+            }); 
+}
+
 </script>
   <!-- ============ FOOTER END ============ -->
 
