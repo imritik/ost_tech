@@ -30,8 +30,8 @@ $targetFilePath = $targetDir . $fileName;
 
 $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 // echo $tag1;
-
-if(isset($_POST["submit"]) && !empty($_FILES["jobdescriptionfile"]["name"])){
+var_dump($_FILES["jobdescriptionfile"]["name"]);
+if(!empty($_FILES["jobdescriptionfile"]["name"])){
     // Allow certain file formats
     // Allow certain file formats
     $allowTypes = array('doc','docx','pdf');
@@ -80,5 +80,5 @@ else{
     
 // Display status message
 // echo $statusMsg;
-header('Location:post-a-job.php'.$statusMsg);
+// header('Location:post-a-job.php'.$statusMsg);
 ?>

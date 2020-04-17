@@ -16,23 +16,12 @@ $ps2=$_POST['param6'];
       $statusMsg = "Error while updating";
   } 
   // Insert image file name into database
-  if($stud_status=="am"){
-        $insert = $db->query("UPDATE applied_table SET Note='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
-        if($insert){
-            $statusMsg = "Status updated";
-        }else{
-            $statusMsg = "Error while updating";
-        } 
-  }
-  else{
-            $insert = $db->query("UPDATE applied_table SET Status='$stud_status',Note='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
+ 
+            $insert = $db->query("UPDATE applied_table SET coordinator_note='$stud_note', Status='$stud_status',Note='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
             if($insert){
                 $statusMsg = "Status updated";
             }else{
                 $statusMsg = "Error while updating";
             } 
-  }
-  
-
   echo $statusMsg;
 ?>

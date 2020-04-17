@@ -16,6 +16,12 @@ if($_REQUEST['status']){
             if($_REQUEST['status']=='Offer'){
                 $statusjob='Offer';
             }
+            else if($_REQUEST['status']=='rejected'){
+                $statusjob='rejected';
+            }
+            else if($_REQUEST['status']=='shortlist'){
+$statusjob='shortlist';
+            }
             else{
                 $statusjob='has_applied';
             }
@@ -35,11 +41,15 @@ include '../dbConfig.php';
 
 <?php
 // List Users
-if($statusjob=='Offer'){
-    $query = "SELECT * FROM applied_table where posting_id='$jidd'";
+if($statusjob=='shortlist'){
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Note ='shortlist'";
+}
+else if($statusjob=='rejected'){
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Note ='rejected'";
 }
 else{
-    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Offer'";
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Offer' and Note!='rejeted'";
+
 }
 if (!$result = mysqli_query($db, $query)) {
     exit(mysqli_error($db));
@@ -133,6 +143,32 @@ if(sizeof($studids)){
         $users='No Student found!';
     }
        ?>
+
+       <?php
+// Load the database configuration file
+// include_once 'dbConfig.php';
+
+// Get status message
+if(!empty($_GET['status'])){
+    switch($_GET['status']){
+        case 'succ':
+            $statusType = 'alert-success';
+            $statusMsg = 'Members data has been imported successfully.';
+            break;
+        case 'err':
+            $statusType = 'alert-danger';
+            $statusMsg = 'Some problem occurred, please try again.';
+            break;
+        case 'invalid_file':
+            $statusType = 'alert-danger';
+            $statusMsg = 'Please upload a valid CSV file.';
+            break;
+        default:
+            $statusType = '';
+            $statusMsg = '';
+    }
+}
+?>
  
 <!doctype html>
 <html lang="en">
@@ -175,24 +211,51 @@ if(sizeof($studids)){
 </head>
 <body>
 <div class="container">
-   
+    <!-- ============ HEADER END ============ -->
+     <div class="row"style="display:flex;margin-top:-30px">
+            <!-- Display status message -->
+        <?php if(!empty($statusMsg)){ ?>
+        <div class="col-xs-12">
+            <div class="alert <?php echo $statusType; ?>"><?php echo $statusMsg; ?></div>
+        </div>
+        <?php } ?>
+</div>
     <div class="form-group">
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
     </div>
-    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Offer");'>View Offered Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
+
+            <div class="row">
+    <!-- Import link -->
+    <div class="col-md-12 head">
+        <div class="float-right">
+            <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
+        </div>
+    </div>
+    <!-- CSV file upload form -->
+    <div class="col-md-12" id="importFrm" style="display: none;">
+    <br>
+        <form action="csv_v2/am_importData.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <br>
+            <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
+        </form>
+        <br>
+    </div>
+    </div>
+    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("shortlist");'>View Shortlisted Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied(Hold)</a> &nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("rejected");'>View Rejected Students</a> </div>
 <div style="display:none"  class="text-center tobe-reused">
    <select id="admins_email" style="color:black;height:40px;"> 
 
-        <option value="" >Select admin</option>
+        <option value="" >Select Coordinator</option>
 
         <?php
 
-        $query = $db->query("SELECT * FROM admins where role!='DL'");
+        $query = $db->query("SELECT * FROM coordinators");
             
         if($query ->num_rows >0){
         while($row = $query->fetch_assoc()){
 
-        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['Full_name'].')' . '</option>';
+        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['name'].')' . '</option>';
         ?>
         <?php }} ?>
 
@@ -202,7 +265,12 @@ if(sizeof($studids)){
     <br>
     <br>
     <label>Feedback</label>
-    <input id="updatenotebtn" class="form-control" placeholder="optional note" value="feedback" required>
+    <select id="updatenotebtn" class="form-control">
+        <option value="hold" >Hold</option>
+        <option value="shortlist" >Shortlist</option>
+        <option value="rejected" >Reject</option>
+    </select>
+    <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="Hold" required> -->
     <br>
     <label>Profile Segment 1</label>
     <input id="ps1" class="form-control" placeholder="segment" required>
@@ -210,14 +278,15 @@ if(sizeof($studids)){
     <label>Profile Segment 1</label>
     <input id="ps2" class="form-control" placeholder="segment" required>
     <br>
-    <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
+    <!-- <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
                     <option value="Round 1">Round 1</option>
                     <option value="Round 2">Round 2</option>
                     <option value="Round 3">Round 3</option>
                     <option value="Round 4">Round 4</option>
-    </select>
+    </select> -->
                     &nbsp;
-     <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button>
+                    <button class="btn btn-info" onclick="updatestatus();">Save</button>
+     <!-- <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button> -->
                     <br>
             
 </div> 
@@ -229,7 +298,14 @@ if(sizeof($studids)){
    
     <script>var statusvalue=$('#updatestatusbtn').val();
        
-
+function formToggle(ID){
+    var element = document.getElementById(ID);
+    if(element.style.display === "none"){
+        element.style.display = "block";
+    }else{
+        element.style.display = "none";
+    }
+}
 
 function downloadCSV(csv, filename) {
     var csvFile;
@@ -283,7 +359,7 @@ function downloadCSV(csv, filename) {
 
    
     $(".studentcheckbox1").click(function(){
-         $('.tobe-reused').show();
+        //  $('.tobe-reused').show();
 
         var favorite=[];
         var jobref=[];
@@ -297,12 +373,19 @@ function downloadCSV(csv, filename) {
             var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
             newArray1=newArray;
          console.log(newArray1);
+
+         if(newArray1.length){
+         $('.tobe-reused').show();
+         }
+         else{
+         $('.tobe-reused').hide();
+
+         }
          
      
 
     });
     // -----for selecting all student at once---
-     // -----for selecting all student at once---
     $("#selectall").click(function () {
         // $('.tobe-reused').toggle();
         
@@ -339,6 +422,13 @@ function downloadCSV(csv, filename) {
         var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
         newArray1=newArray;
          console.log(newArray1);
+           if(newArray1.length){
+         $('.tobe-reused').show();
+         }
+         else{
+         $('.tobe-reused').hide();
+
+         }
    
     });
 
@@ -421,7 +511,7 @@ function downloadCSV(csv, filename) {
 
     function updatestatus(){
 
-        var statusvalue=$('#updatestatusbtn').val();
+        var statusvalue="am";
         var notevalue=$('#updatenotebtn').val();
         var ps1=$('#ps1').val();
         var ps2=$('#ps2').val();
@@ -511,7 +601,7 @@ function sendids(){
 
             // ----inserting----
             $.ajax({
-                                        url: 'toadmin.php',
+                                        url: 'am_toadmin.php',
                                         type: 'POST',
                                     
                                         data: {param1: x,param2:JSON.stringify(favorites),param3:z,param4:w},
@@ -553,7 +643,6 @@ function urlchange(cat){
      }
      function showcvform(x,y){
          $('.tobe-reused').hide();
-
          $('.tobe-reused').addClass('df3');
          console.log(x);
          var hrf1 = [x];

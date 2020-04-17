@@ -23,13 +23,20 @@ if(isset($_POST['importSubmitfeedback'])){
             while(($line = fgetcsv($csvFile)) !== FALSE){
                 // Get row data
                 $sid   = $line[0];
-                $name = $line[1];
+                $student_email = $line[1];
                 $email  = $line[2];
                 $phone  = $line[3];
                 $address = $line[4];
-                $cid = $line[5];
+                $coordinator_note = $line[5];
 
-            
+            $name='';
+            $dynamicquery=
+                // collect student id from email
+                $newquery="SELECT * FROM Student where email='$student_email'";
+                 $newqueryResult = $db->query($newquery);
+                if($newqueryResult->num_rows >0){
+                    $name=$newqueryResult['student_id'];
+                }
                 
                 // Check whether member already exists in the database with the same email
                 $prevQuery = "SELECT * FROM applied_table WHERE posting_id = $line[0] and student_id=$line[1]";
@@ -37,10 +44,10 @@ if(isset($_POST['importSubmitfeedback'])){
                 
                 if($prevResult->num_rows >0){
                     // Update member data in the database
-                    $db->query("UPDATE applied_table SET Status = '$phone', Note = '$address', Status_update = NOW() WHERE posting_id = $sid and student_id=$name");
+                    $db->query("UPDATE applied_table SET Status = '$phone', Note = '$address', coordinator_note='$coordinator_note',Status_update = NOW() WHERE posting_id = $sid and student_id=$name");
                 }else{
                     // Insert member data in the database
-                    $db->query("INSERT INTO applied_table (posting_id,student_id,applied_at,Status,Note,Status_update) VALUES ('".$sid."', '".$name."','".$email."', '".$phone."', '".$address."',NOW())");
+                    $db->query("INSERT INTO applied_table (posting_id,student_id,applied_at,Status,Note,coordinator_note,Status_update) VALUES ('".$sid."', '".$name."','".$email."', '".$phone."', '".$address."','".$coordinator_note."',NOW())");
                 }
             }
             

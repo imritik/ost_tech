@@ -62,6 +62,8 @@ include '../dbConfig.php';
                 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="showadmins.php">Admin details</a></li>
+                 <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
+                 <li><a href="../admin_jobs/cc/login.php" target="blank">Cordinator</a></li>
                 <!-- <li><a class="link-register">Register</a></li> -->
                 <li><a class="link-login" href="../logout.php">Logout</a></li>
             </ul>

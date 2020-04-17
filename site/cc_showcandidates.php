@@ -25,7 +25,7 @@ if($_REQUEST['status']){
 include '../dbConfig.php';
 ?>
 
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -39,7 +39,7 @@ if($statusjob=='Offer'){
     $query = "SELECT * FROM applied_table where posting_id='$jidd'";
 }
 else{
-    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Offer'";
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and coordinator_note !='rejected' and Status !='Offer' and note!='rejected'";
 }
 if (!$result = mysqli_query($db, $query)) {
     exit(mysqli_error($db));
@@ -53,7 +53,13 @@ if (mysqli_num_rows($result) > 0) {
         array_push($studstatuss,$row['Status']);
     } 
 }
-// var_dump($studids,$statusjob);
+    $studlistobtain=explode(",",$_COOKIE['sidss']);
+   $trimmed= array_map('trim',$studlistobtain);
+    // var_dump($trimmed);
+// var_dump($studids);
+// var_dump(array_intersect($studids,["202"]));
+$real_studids=array_intersect($studids,$trimmed);
+// var_dump($real_studids);
 $users = '<table class="table" style="transform: rotateX(180deg);">
 <tr class="filters">
 <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
@@ -79,16 +85,16 @@ $users = '<table class="table" style="transform: rotateX(180deg);">
     </tr>
 ';
 
-if(sizeof($studids)){
+if(sizeof($real_studids)){
     $number = 1;
-    $arrlength = count($studids);
+    $arrlength = count($real_studids);
 // var_dump($studids);
     for($x = 0; $x < $arrlength; $x++) {
     
      
 
     // Get images from the database
-    $query = $db->query("SELECT * FROM Student WHERE student_id='$studids[$x]'");
+    $query = $db->query("SELECT * FROM Student WHERE student_id='$real_studids[$x]'");
 
   
 
@@ -97,7 +103,7 @@ if(sizeof($studids)){
         // echo $row1;
         $sturesume=$row1["resume"];
        $ssid=$row1['student_id'];
-       $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$sturesume;
+       $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$real_studids[$x].'/'.$sturesume;
     //    echo $ssid;
     // while ($row = mysqli_fetch_assoc($result)) {
         $users .='<tr>
@@ -108,7 +114,7 @@ if(sizeof($studids)){
             <td>'.$row1['email'].'</td>
             <td>'.$row1['ug_college'].'</td>
             <td>'.$row1['contact'].'</td>
-            <td><button class="btn btn-xs" id="'.$studids[$x].'" onclick="showcvform(\''.$resumelinks.'\',\''.$studids[$x].'\')">View</button></td>
+            <td><button class="btn btn-xs" id="'.$real_studids[$x].'" onclick="showcvform(\''.$resumelinks.'\',\''.$real_studids[$x].'\')">View</button></td>
             
             <td>'.$studstatuss[$x].'</td>
             <td>'.$row1['curr_ctc'].'</td>
@@ -179,7 +185,7 @@ if(sizeof($studids)){
     <div class="form-group">
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
     </div>
-    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Offer");'>View Offered Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
+    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($real_studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a></div>
 <div style="display:none"  class="text-center tobe-reused">
    <select id="admins_email" style="color:black;height:40px;"> 
 
@@ -187,12 +193,12 @@ if(sizeof($studids)){
 
         <?php
 
-        $query = $db->query("SELECT * FROM admins where role!='DL'");
+        $query = $db->query("SELECT * FROM coordinators");
             
         if($query ->num_rows >0){
         while($row = $query->fetch_assoc()){
 
-        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['Full_name'].')' . '</option>';
+        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['name'].')' . '</option>';
         ?>
         <?php }} ?>
 
@@ -202,7 +208,12 @@ if(sizeof($studids)){
     <br>
     <br>
     <label>Feedback</label>
-    <input id="updatenotebtn" class="form-control" placeholder="optional note" value="feedback" required>
+    <select id="updatenotebtn" class="form-control">
+        <option value="hold" >Hold</option>
+        <option value="shortlist" >Shortlist</option>
+        <option value="rejected" >Reject</option>
+    </select>
+    <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="feedback" required> -->
     <br>
     <label>Profile Segment 1</label>
     <input id="ps1" class="form-control" placeholder="segment" required>
@@ -210,7 +221,7 @@ if(sizeof($studids)){
     <label>Profile Segment 1</label>
     <input id="ps2" class="form-control" placeholder="segment" required>
     <br>
-    <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
+    <select class="btn btn-info" id="updatestatusbtn">
                     <option value="Round 1">Round 1</option>
                     <option value="Round 2">Round 2</option>
                     <option value="Round 3">Round 3</option>
@@ -219,6 +230,8 @@ if(sizeof($studids)){
                     &nbsp;
      <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button>
                     <br>
+                    <button class="btn btn-info" onclick="updatestatus();">Save</button>
+
             
 </div> 
     <br>
@@ -302,7 +315,7 @@ function downloadCSV(csv, filename) {
 
     });
     // -----for selecting all student at once---
-     // -----for selecting all student at once---
+    // -----for selecting all student at once---
     $("#selectall").click(function () {
         // $('.tobe-reused').toggle();
         
@@ -457,7 +470,7 @@ function downloadCSV(csv, filename) {
 
                 console.log(x,y,z,q,a,b);
                 $.ajax({
-                                url: 'updatestudentstatus.php',
+                                url: 'cc_updatestudentstatus.php',
                                 type: 'POST',
                             
                                 data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
@@ -572,6 +585,50 @@ function urlchange(cat){
          $('.df3').toggle();
          $('.df4').toggle();
      }
+
+  function getUnique(array){
+        var uniqueArray = [];
+        
+        // Loop through array values
+        for(i=0; i < array.length; i++){
+            if(uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+        return uniqueArray;
+    }
+
+       function getjobids(x){
+        var y=x
+            // alert(y);
+            document.cookie = "sidss=";
+          
+// getting student ids with admin email
+
+                            $.ajax({
+                                url: 'cc_studentbyadmin.php',
+                                type: 'POST',
+                                data: {param1:y},
+                                dataType:"json",
+                                success:function(){console.log("seach succsss");},
+                                error:function(data){console.log(data);}
+                            }).done(function(data){
+                                // alert(data);
+                                console.log(data,"new data");
+                                                       console.log(getUnique(data));     
+
+                                document.cookie="sidss="+getUnique(data);
+                                // $( "#foo" ).trigger( "click" );
+
+    });
+    }
+
+      // -------document ready
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            getjobids('<?php echo $_SESSION['ccemp'] ?>');
+
+        });
 </script>
 
   <div class='df2'style='display:none'>

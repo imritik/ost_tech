@@ -67,9 +67,8 @@ if(isset($_SESSION['emailemp'])){
                 <li><a href="sendmails.php">Send Mails</a></li> 
                  <li><a href="dashboard.php">Dashboard</a></li>
                  <li><a href="showadmins.php">Admin details</a></li>
-                
-
-                <!-- <li><a class="link-register">Register</a></li> -->
+                  <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
+                 <li><a href="../admin_jobs/cc/login.php" target="blank">Cordinator</a></li>
                 <li><a class="link-login" href="../logout.php">Logout</a></li>
             </ul>
         </div>
@@ -248,7 +247,7 @@ if($query ->num_rows >0){
                         </div> 
                         <div class="form-group" id="job-url-group">
                             <label for="job-url">Website (Optional)</label>
-                            <input type="text" name="weburl" class="form-control" id="job-url" placeholder="https://" readonly required>
+                            <input type="text" name="weburl" class="form-control" id="job-url" placeholder="https://" required>
                         </div>
                         <div class="row text-center">
                     <p>&nbsp;</p>
@@ -416,7 +415,7 @@ function formToggle1(ID){
 
         <script>
                 $('#job-company').change(function(){
-            alert(this.value);
+            // alert(this.value);
             var output=this.value;
             var cname=output.split('$')[0];
             var cemail=output.split('$')[1];

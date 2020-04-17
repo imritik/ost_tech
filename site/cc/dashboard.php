@@ -1,15 +1,15 @@
 <?php 
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['coordinatoremp'])){
+if(isset($_SESSION['ccemp'])||isset( $_SESSION['emailemp'])){
     // echo $_SESSION['company'];
   }
   else{
     // echo "alert('no session exist')";
-    header("location: ../../admin_jobs/coordinators/login.php");
+    header("location: ../../admin_jobs/cc/login.php");
   }
 include '../../dbConfig.php';
-$coordinator_email=$_SESSION['coordinatoremp'];
+$coordinator_email=$_SESSION['ccemp'];
 $sql="SELECT * FROM coordinators WHERE email='$coordinator_email'";
 $result = $db->query($sql);
 $companies=array();
@@ -52,7 +52,6 @@ if ($result ->num_rows ==1) {
     }
 }
 ?>
-
 <html>
     <head>
        <meta charset="utf-8">
@@ -82,7 +81,7 @@ if ($result ->num_rows ==1) {
                         right: 0;
                         left:0;
                         bottom: 0;
-                        top: auto;
+                        top: 129px;
                         height: 500px;
                 }
         </style>
@@ -106,7 +105,7 @@ if ($result ->num_rows ==1) {
             ?>
             </ul>
             <ul class="nav">
-                <li><a href="../../logoutcoordinator.php">Logout</a></li>
+                <li><a href="../../logoutcc.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->
@@ -120,7 +119,7 @@ if ($result ->num_rows ==1) {
         <div id="header-background"></div>
         <div class="container">
             <div class="pull-left">
-              Account Manager (<?php echo $coordinator_email; ?>)
+               Coordinator (<?php echo $coordinator_email; ?>)
             </div>
             <div id="menu-open" class="pull-right">
                 <a class="fm-button"><i class="fa fa-bars fa-lg"></i></a>
@@ -129,12 +128,11 @@ if ($result ->num_rows ==1) {
         </div>
     </header>
 
-   
+    <!-- ============ HEADER END ============ -->
 <div class="container">
-
+    <div class="row"style="display:flex;margin-top:-30px">
         <div class="col-sm-12 main">
             <h3 class="page-header text-center">Dashboard &nbsp;(<span id="showjobname" ></span>)</h3>
-
             <!-- <div class="showjobsdiv"> -->
                     <div class="showtable">
                          <iframe name='cv' id="frametable" data-src="http://www.w3schools.com" src="../loaders_form/form.php?jid=2" width="900" style="background:#ffffff;height:-webkit-fill-available;width: -webkit-fill-available;display:none"></iframe>
@@ -158,7 +156,6 @@ if ($result ->num_rows ==1) {
 <script>
 
 var companyJobs=[];
-
 
 function showjobs(cemail){
     document.getElementById(cemail).innerHTML='';
@@ -226,7 +223,7 @@ function showjobtable(jid,jname){
         //  urlchange("gg");
     $('#frametable').show();
     document.getElementById('showjobname').innerHTML=jname;
-     var hrf1 = ['../am_showcandidates.php?jid='+jid];
+     var hrf1 = ['../cc_showcandidates.php?jid='+jid];
      hrf=hrf1;
      setSource();
 }
