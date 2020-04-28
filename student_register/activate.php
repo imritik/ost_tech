@@ -11,7 +11,7 @@ require_once './config.php';
 if (isset($_GET["id"])) {
   $id = intval(base64_decode($_GET["id"]));
  
-  $sql = "SELECT * from tbl_users where id = :id";
+  $sql = "SELECT * from Student where student_id = :id";
   try {
     $stmt = $DB->prepare($sql);
     $stmt->bindValue(":id", $id);
@@ -24,7 +24,7 @@ if (isset($_GET["id"])) {
         $msg = "Your account has already been activated.";
         $msgType = "info";
       } else {
-        $sql = "UPDATE `tbl_users` SET  `status` =  'approved' WHERE `id` = :id";
+        $sql = "UPDATE `Student` SET  `status` =  'approved' WHERE `student_id` = :id";
         $stmt = $DB->prepare($sql);
         $stmt->bindValue(":id", $id);
         $stmt->execute();

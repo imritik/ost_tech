@@ -1,11 +1,5 @@
 <?php
-/*
- * @author Shahrukh Khan
- * @website http://www.thesoftwareguy.in
- * @facebbok https://www.facebook.com/Thesoftwareguy7
- * @twitter https://twitter.com/thesoftwareguy7
- * @googleplus https://plus.google.com/+thesoftwareguyIn
- */
+
 require_once './config.php';
 if (isset($_POST["sub"])) {
   // require_once "phpmailer/class.phpmailer.php";
@@ -13,7 +7,7 @@ if (isset($_POST["sub"])) {
   $name = trim($_POST["uname"]);
   $pass = trim($_POST["pass1"]);
   $email = trim($_POST["uemail"]);
-  $sql = "SELECT COUNT(*) AS count from tbl_users where email = :email_id";
+  $sql = "SELECT COUNT(*) AS count from Student where email = :email_id";
   try {
     $stmt = $DB->prepare($sql);
     $stmt->bindValue(":email_id", $email);
@@ -24,10 +18,10 @@ if (isset($_POST["sub"])) {
       $msg = "Email already exist";
       $msgType = "warning";
     } else {
-      $sql = "INSERT INTO `tbl_users` (`name`, `pass`, `email`) VALUES " . "( :name, :pass, :email)";
+      $sql = "INSERT INTO `Student` (`stud_name`, `pass`, `email`) VALUES " . "( :name, :pass, :email)";
       $stmt = $DB->prepare($sql);
       $stmt->bindValue(":name", $name);
-      $stmt->bindValue(":pass", md5($pass));
+      $stmt->bindValue(":pass",$pass);
       $stmt->bindValue(":email", $email);
       $stmt->execute();
       $result = $stmt->rowCount();
@@ -67,10 +61,12 @@ if (isset($_POST["sub"])) {
   mail($email,"My subject",$message);
             if(mail($email,"My subject",$message)){
               $msg = "An email has been sent for verfication.";
+        $msgType = "success";
               
             }
             else{
         $msg = "Failed to send mail";
+        $msgType = "warning";
 
             }
         // try {
@@ -100,7 +96,8 @@ include './header.php';
   </div>
 <?php } ?>
 <div class="container">
-  <div class="row">
+  <div class="row"style="margin-left: 30%;
+    text-align: center;">
     <div class="col-lg-6">
       <div class="well contact-form-container">
         <form class="form-horizontal contactform" action="index.php" method="post" name="f" onsubmit="return validateForm();">

@@ -375,8 +375,11 @@ include 'dbConfig.php';
                             </li>
                         </ul>
                     </li>
+                        <li class="nav-item">
+                        <a href="student_register/index.php" target="blank" class="btn btn-primary get-started-btn mt-1 mb-1">Register</a>
+                    </li>
                     <li class="nav-item">
-                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle get-started-btn mt-1 mb-1">Student</a>
+                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle get-started-btn mt-1 mb-1">Login</a>
                         <ul class="dropdown-menu form-wrapper">
                             <li>
                                 <form action="login/stud.php" method="post">
