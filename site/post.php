@@ -15,6 +15,7 @@ $type=$_POST['type'];
 // $category=$_POST['category'];
 $url=$_POST['weburl'];
 $description=$_POST['description'];
+$coordinator=$_POST['coordinator'];
 $postingid=rand(pow(10, $digits-1), pow(10, $digits)-1);
 
 // File upload path
@@ -40,7 +41,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,company_url,posting_time) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$url."',NOW())");
+                    $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$url."',NOW()),'".$coordinator."'");
                     if($insert){
                         // $statusMsg = "The job has been uploaded successfully.";
                         $statusMsg='?status=succjob';
@@ -60,7 +61,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW())");
+            $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW()),'".$coordinator."'");
             if($insert){
                 // $statusMsg = "The job has been uploaded successfully.";
                 $statusMsg='?status=succjob';

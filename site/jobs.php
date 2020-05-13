@@ -264,7 +264,7 @@ if($querycat ->num_rows >0){
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 job-location">
                                     <p><strong><?php echo $row['Job_location']; ?></strong></p>
-                                    <!-- <p class="hidden-xs">126.3 miles away</p> -->
+                                    <p class="hidden-xs">Coordinator:<strong><?php echo $row['coordinator']; ?></strong> </p>
                                 </div>
                                 <div class="col-lg-2 col-md-2 hidden-sm hidden-xs job-type text-center">
                                 <p class="badge full-time"><?php echo $row['Job_type']; ?></p>

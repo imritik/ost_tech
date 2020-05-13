@@ -13,7 +13,7 @@ define('DB_SERVER_PASSWORD', '');
 define('DB_DATABASE', 'job');
 
 // must end with a slash
-define('SITE_URL', 'http://localhost/ost_internship/student_register/');
+define('SITE_URL', 'http://talentchords.com/jobs/student_register/');
 
 $dboptions = array(
     PDO::ATTR_PERSISTENT => FALSE,

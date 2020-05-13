@@ -1,5 +1,4 @@
 <?php
-
 require_once './config.php';
 if (isset($_POST["sub"])) {
   // require_once "phpmailer/class.phpmailer.php";
@@ -18,7 +17,7 @@ if (isset($_POST["sub"])) {
       $msg = "Email already exist";
       $msgType = "warning";
     } else {
-      $sql = "INSERT INTO `Student` (`stud_name`, `pass`, `email`) VALUES " . "( :name, :pass, :email)";
+      $sql = "INSERT IGNORE INTO `Student` (`stud_name`, `pass`, `email`) VALUES " . "( :name, :pass, :email)";
       $stmt = $DB->prepare($sql);
       $stmt->bindValue(":name", $name);
       $stmt->bindValue(":pass",$pass);
@@ -39,6 +38,12 @@ if (isset($_POST["sub"])) {
         $message .= '<p><a href="'.SITE_URL.'activate.php?id=' . base64_encode($lastID) . '">CLICK TO ACTIVATE YOUR ACCOUNT</a>';
         $message .= "</body></html>";
         
+        //headers
+$headers = "From:TalentChords<rupendra@talentchords.com>\r\n";
+// To send HTML mail, the Content-type header must be set
+$headers .= 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        
 
         // php mailer code starts
         // $mail = new PHPMailer(true);
@@ -58,8 +63,8 @@ if (isset($_POST["sub"])) {
 
         // $mail->Subject = trim("Email Verifcation - talent");
         // $mail->MsgHTML($message);
-  mail($email,"My subject",$message);
-            if(mail($email,"My subject",$message)){
+//   mail($email,"TalentChords | Verification",$message,$headers);
+            if(mail($email,"TalentChords | Verification",$message,$headers)){
               $msg = "An email has been sent for verfication.";
         $msgType = "success";
               

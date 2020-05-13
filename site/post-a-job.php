@@ -249,6 +249,26 @@ if($query ->num_rows >0){
                             <label for="job-url">Website (Optional)</label>
                             <input type="text" name="weburl" class="form-control" id="job-url" placeholder="https://" required>
                         </div>
+                         <div class="form-group" id="job-coordinator-group">
+                            <label for="job-email">Coordinator</label>
+<select class="form-control" name="coordinator" id="job-coordinator">
+
+ <option value="" >Select Coordinator</option>
+
+<!-- -------php code to gather posted jobs---- -->
+<?php
+
+$query = $db->query("SELECT * FROM coordinators where is_manager=0");
+            
+if($query ->num_rows >0){
+    while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['email'] .'">' . $row['name'] .' ('.$row['email'].')' . '</option>';
+?>
+    <?php }} ?>
+
+</select>
+                        </div>
                         <div class="row text-center">
                     <p>&nbsp;</p>
                     <button type="submit" name="submit" class="btn btn-primary btn-lg">Post <i class="fa fa-arrow-right"></i></button>

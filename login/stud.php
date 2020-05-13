@@ -9,7 +9,7 @@ session_start();
 
       // echo $myusername,$mypassword;
       
-      $sql = "SELECT * FROM Student WHERE email = '$myusername' and pass = '$mypassword'";
+      $sql = "SELECT * FROM Student WHERE email = '$myusername' and pass = '$mypassword' and status!='pending'";
       $result = mysqli_query($db,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
     //   $active = $row['active'];
