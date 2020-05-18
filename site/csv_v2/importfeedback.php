@@ -30,21 +30,29 @@ if(isset($_POST['importSubmitfeedback'])){
                 $coordinator_note = $line[5];
 
             $name='';
-            $dynamicquery=
+            var_dump($student_email);
+            // $dynamicquery=
                 // collect student id from email
-                $newquery="SELECT * FROM Student where email='$student_email'";
+                $newquery="SELECT * FROM Student where email=$student_email";
                  $newqueryResult = $db->query($newquery);
-                if($newqueryResult->num_rows >0){
+                if($newqueryResult->num_rows ==1){
                     $name=$newqueryResult['student_id'];
+                    var_dump($name);
                 }
                 
                 // Check whether member already exists in the database with the same email
-                $prevQuery = "SELECT * FROM applied_table WHERE posting_id = $line[0] and student_id=$line[1]";
+                $prevQuery = "SELECT * FROM applied_table WHERE posting_id = $line[0] and student_id=$name";
                 $prevResult = $db->query($prevQuery);
                 
                 if($prevResult->num_rows >0){
                     // Update member data in the database
-                    $db->query("UPDATE applied_table SET Status = '$phone', Note = '$address', coordinator_note='$coordinator_note',Status_update = NOW() WHERE posting_id = $sid and student_id=$name");
+                    $db->query("UPDATE applied_table 
+                    SET 
+                    Status = Coalesce(NULLIF('$phone',''),Status), 
+                    Note = Coalesce(NULLIF('$address',''),Note), 
+                    coordinator_note=Coalesce(NULLIF('$coordinator_note',''),coordinator_note),
+                    Status_update = NOW() 
+                    WHERE posting_id = $sid and student_id=$name");
                 }else{
                     // Insert member data in the database
                     $db->query("INSERT INTO applied_table (posting_id,student_id,applied_at,Status,Note,coordinator_note,Status_update) VALUES ('".$sid."', '".$name."','".$email."', '".$phone."', '".$address."','".$coordinator_note."',NOW())");
@@ -64,4 +72,4 @@ if(isset($_POST['importSubmitfeedback'])){
 }
 
 // Redirect to the listing page
-header("Location: ../jobs.php".$qstring);
+// header("Location: ../jobs.php".$qstring);
