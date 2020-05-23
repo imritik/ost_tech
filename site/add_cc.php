@@ -64,6 +64,8 @@ include '../dbConfig.php';
                  <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
                  <li><a href="../admin_jobs/cc/login.php" target="blank">Cordinator</a></li>
                 <!-- <li><a class="link-register">Register</a></li> -->
+                <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li>
+
                 <li><a class="link-login" href="../logout.php">Logout</a></li>
             </ul>
         </div>
@@ -90,7 +92,7 @@ include '../dbConfig.php';
     </header>
 
     <!-- ============ HEADER END ============ -->
-<div id="wrapper" style="overflow:scroll">
+<div id="wrapper" style="height:auto">
 <table id="data_table" border=1 class="table table-striped">
 <tr>
 <th>Name</th>
@@ -121,7 +123,7 @@ if ($result ->num_rows >0) {
         <td contenteditable="false"><?php echo $row1["email"];?></td>
         <td contenteditable="false"><?php echo $row1["password"];?></td>
         <td contenteditable="false" style="background:cadetblue">
-       <select  class="multiselect" multiple="multiple"></select>
+       <select  class="multiselect" name="select[]" multiple="multiple"></select>
         </td>
 
         <td contenteditable="false"><?php echo $row1["contact"];?></td>
@@ -215,6 +217,7 @@ $('.editbtn').click(function () {
               console.log(currentTD);
               var currentid=$(this).parents('tr').prop('id');
               console.log($(this).parents('tr').prop('id'));
+              console.log($('#'+currentid+' td .multiselect').val());
               console.log($('#'+currentid+' td .role').val());
 
               if ($(this).html() == 'Edit') {
@@ -222,7 +225,10 @@ $('.editbtn').click(function () {
                   $.each(currentTD, function () {
                       $(this).prop('contenteditable', true)
                   });
-              } else {
+              } 
+              
+              else {
+
                  $.each(currentTD, function () {
                       $(this).prop('contenteditable', false);
                       admindata={}
@@ -231,10 +237,8 @@ $('.editbtn').click(function () {
                       admindata.password=currentTD[2]['innerHTML'];
                       admindata.role=$('#'+currentid+' td .role').val();
                       admindata.id=currentid;
-                                            
-
-                  
                   });
+
                   console.log(admindata);
                     //   -----ajax request to send and update new data-----
 
@@ -398,10 +402,10 @@ if ($resultcomp ->num_rows >0) {
   $('.multiselect')
     .multiselect({
       allSelectedText: 'All',
-    //   maxHeight: 200,
+      maxHeight: 200,
       includeSelectAllOption: true
     })
-    // .multiselect('selectAll', false)
+    .multiselect('selectAll', false)
     .multiselect('updateButtonText');
 });
 

@@ -30,7 +30,8 @@ if(isset($_POST['importSubmitjobs'])){
                 $address = $line[4];
                 $cid = $line[5];
                 $cname = $line[6];
-                $pass = $line[8];
+                $coordinator=$line[8];
+                $pass = $line[9];
             
                 
                 // Check whether member already exists in the database with the same email
@@ -39,10 +40,10 @@ if(isset($_POST['importSubmitjobs'])){
                 
                 if($prevResult->num_rows >0){
                     // Update member data in the database
-                    $db->query("UPDATE Job_Posting SET job_title = '$phone', Job_type = '$address', Job_location = '$cid', Job_description = '$cname',posting_time = NOW() WHERE posting_id = $sid");
+                    $db->query("UPDATE Job_Posting SET job_title = '$phone', Job_type = '$address', Job_location = '$cid', Job_description = '$cname',coordinator='$coordinator',posting_time = NOW() WHERE posting_id = $sid");
                 }else{
                     // Insert member data in the database
-                    $db->query("INSERT INTO Job_Posting (posting_id,company_name, email, job_title,Job_type,Job_location,job_description,company_url,posting_time) VALUES ('".$sid."', '".$name."', '".$email."', '".$phone."', '".$address."', '".$cid."', '".$cname."', '".$clocation."', '".$pass."')");
+                    $db->query("INSERT INTO Job_Posting (posting_id,company_name, email, job_title,Job_type,Job_location,job_description,company_url,coordinator,posting_time) VALUES ('".$sid."', '".$name."', '".$email."', '".$phone."', '".$address."', '".$cid."', '".$cname."', '".$clocation."','".$coordinator."', '".$pass."')");
                 }
             }
             
