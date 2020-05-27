@@ -385,10 +385,10 @@ include 'dbConfig.php';
                                 <form action="login/stud.php" method="post">
 
                                     <div class="form-group">
-                                        <input type="email" class="form-control" name="emailstud" placeholder="email" value="rv@gmail.com" required="required">
+                                        <input type="email" class="form-control" name="emailstud" placeholder="email" value="ritikvverma@gmail.com" required="required">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" name="passwordstud" placeholder="Password" value="pass" required="required">
+                                        <input type="password" class="form-control" name="passwordstud" placeholder="Password" value="denim" required="required">
                                     </div>
 
                                     <input type="submit" class="btn btn-primary btn-block" value="Login">
