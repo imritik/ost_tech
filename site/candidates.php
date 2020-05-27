@@ -133,7 +133,7 @@ $d=50;
                  <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
                  <li><a href="../admin_jobs/cc/login.php" target="blank">Cordinator</a></li>
                 <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li>
-                <li><a class="link-login" href="../logout.php">Logout</a></li>
+                <li><a class="link-login" href="../logout/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->

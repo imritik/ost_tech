@@ -64,7 +64,7 @@ include '../dbConfig.php';
                 <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li>
 
                 <!-- <li><a class="link-register">Register</a></li> -->
-                <li><a class="link-login" href="../logout.php">Logout</a></li>
+                <li><a class="link-login" href="../logout/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->

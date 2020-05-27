@@ -74,7 +74,7 @@ include '../dbConfig.php';
             </div>
             <ul class="nav">
                 <li><a class='link-login'><?php echo $_SESSION['emaildl']; ?></a></li>
-                <li><a class="link-login" href="../logout.php">Logout</a></li>
+                <li><a class="link-login" href="../logout/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->

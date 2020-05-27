@@ -105,7 +105,7 @@ if ($result ->num_rows ==1) {
             ?>
             </ul>
             <ul class="nav">
-                <li><a href="../../logoutcc.php">Logout</a></li>
+                <li><a href="../../logout/logoutcc.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->

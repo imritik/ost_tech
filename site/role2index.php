@@ -47,7 +47,7 @@ $email=$_SESSION['emailemplevel2'];
 
             <ul class="nav">
                 
-                <li><a class="link-login btn btn-danger pull-right" href="../logout.php">Logout</a></li>
+                <li><a class="link-login btn btn-danger pull-right" href="../logout/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->

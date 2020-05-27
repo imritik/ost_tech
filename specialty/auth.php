@@ -82,7 +82,7 @@ if(isset($_SESSION['stud_id'])){
 										</li>
 									
 										<li class="menu-item-btn">
-											<a href="../logoutstud.php">Logout</a>
+											<a href="../logout/logoutstud.php">Logout</a>
 										</li>
 									</ul>
 									<!-- #navigation -->
