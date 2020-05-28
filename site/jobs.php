@@ -12,87 +12,9 @@ if(isset($_SESSION['emailemp'])){
     header("location: ../index.php");
   }
 include '../dbConfig.php';
+include 'partials/header.php';
   ?>
-<html>
 
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Jobseek - Job Board Responsive HTML Template">
-    <meta name="author" content="Coffeecream Themes, info@coffeecream.eu">
-    <title> Job Board </title>
-    <link rel="shortcut icon" href="images/favicon.png">
-
-    <!-- Main Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-
-    
-
-</head>
-
-<body>
-
-    <!-- ============ PAGE LOADER START ============ -->
-
-    <div id="loader">
-        <i class="fa fa-cog fa-4x fa-spin"></i>
-    </div>
-
-    <!-- ============ PAGE LOADER END ============ -->
-
-    <!-- ============ NAVBAR START ============ -->
-
-    <div class="fm-container">
-        <!-- Menu -->
-        <div class="menu">
-            <div class="button-close text-right">
-                <a class="fm-button"><i class="fa fa-close fa-2x"></i></a>
-            </div>
-            <ul class="nav">
-                <!-- <li><a href="#home">Home</a></li> -->
-                <li class="active"><a href="post-a-job.php">Post a job</a></li>
-                <li><a href="jobs.php">Jobs</a></li>
-                <li><a href="candidates.php">Push Jobs</a></li>
-                <li><a href="linkedinCandidates.php">Push Jobs(Linkedin)</a></li>
-
-                <!-- <li><a href="csv_v2/index.php" target="blank">Add Candidates</a></li> -->
-                <!-- <li><a href="import-csv/index.php" target="blank">Add Company</a></li> -->
-                <li><a href="sendmails.php">Send Mails</a></li>
-                <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="showadmins.php">Admin details</a></li>
-                  <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
-                 <li><a href="../admin_jobs/cc/login.php" target="blank">Cordinator</a></li>
-                <!-- <li><a class="link-register">Register</a></li> -->
-                <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li>
-
-                <li><a class="link-login" href="../logout/logout.php">Logout</a></li>
-            </ul>
-        </div>
-        <!-- end Menu -->
-    </div>
-
-    <!-- ============ NAVBAR END ============ -->
-
-    <!-- ============ HEADER START ============ -->
-
-    <header>
-        <div id="header-background"></div>
-        <div class="container">
-            <div class="pull-left">
-                <div id="logo">
-                    <a href="#"><img src="images/logo.png" alt="Jobseek - Job Board Responsive HTML Template" /></a>
-                </div>
-            </div>
-            <div id="menu-open" class="pull-right">
-                <a class="fm-button"><i class="fa fa-bars fa-lg"></i></a>
-            </div>
-
-        </div>
-    </header>
-
-    <!-- ============ HEADER END ============ -->
 
     <!-- ============ TITLE START ============ -->
 
@@ -315,82 +237,7 @@ if($querycat ->num_rows >0){
 
 
     <!-- ============ CONTACT END ============ -->
-
-    <!-- ============ FOOTER START ============ -->
-
-    <footer>
-        <div id="prefooter">
-            <div class="container">
-                <div class="row">
-                   
-                   
-                </div>
-            </div>
-        </div>
-        <div id="credits">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-sm-12">
-                        &copy; Job Board
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ============ FOOTER END ============ -->
-
- 
-  
-    <!-- Modernizr Plugin -->
-    <script src="js/modernizr.custom.79639.js"></script>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery-1.11.2.min.js"></script>
-
-    <!-- Bootstrap Plugins -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Retina Plugin -->
-    <script src="js/retina.min.js"></script>
-
-    <!-- ScrollReveal Plugin -->
-    <script src="js/scrollReveal.min.js"></script>
-
-    <!-- Flex Menu Plugin -->
-    <script src="js/jquery.flexmenu.js"></script>
-
-    <!-- Slider Plugin -->
-    <script src="js/jquery.ba-cond.min.js"></script>
-    <script src="js/jquery.slitslider.js"></script>
-
-    <!-- Carousel Plugin -->
-    <script src="js/owl.carousel.min.js"></script>
-
-    <!-- Parallax Plugin -->
-    <script src="js/parallax.js"></script>
-
-    <!-- Counterup Plugin -->
-    <script src="js/jquery.counterup.min.js"></script>
-    <script src="js/waypoints.min.js"></script>
-
-    <!-- No UI Slider Plugin -->
-    <script src="js/jquery.nouislider.all.min.js"></script>
-
-    <!-- Bootstrap Wysiwyg Plugin -->
-    <script src="js/bootstrap3-wysihtml5.all.min.js"></script>
-
-    <!-- Flickr Plugin -->
-    <script src="js/jflickrfeed.min.js"></script>
-
-    <!-- Fancybox Plugin -->
-    <script src="js/fancybox.pack.js"></script>
-
-    <!-- Magic Form Processing -->
-    <script src="js/magic.js"></script>
-
-    <!-- jQuery Settings -->
-    <script src="js/settings.js"></script>
+<?php include 'partials/footer.php'; ?>
 
 
   <!-- -----load more script---- -->
