@@ -100,7 +100,7 @@ if(!empty($_GET['status'])){
         <br>
     </div>
 
-<form  action="post.php" method="post">
+<form  action="post.php" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-sm-10">
                         <h2>Job Details(<span style="font-size:15px;"> <a href="javascript:void(0);"  onclick="formToggle('importFrm');"><i class="plus"></i>Upload csv</a></span>)</h2>
@@ -161,7 +161,7 @@ if($query ->num_rows >0){
                             <textarea class="textarea form-control" name="description" id="job-description" maxlength="2000" required></textarea>
                         </div>
                         <div class="form-group" id="job-description-file-group">
-                            <label for="company-logo">Upload description</label>
+                            <label for="desc-file">Upload description</label>
                             <input type="file" name="jobdescriptionfile" id="jobdescriptionfile">
                         </div> 
                         <div class="form-group" id="job-url-group">

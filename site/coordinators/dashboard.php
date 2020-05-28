@@ -26,7 +26,7 @@ if ($result ->num_rows ==1) {
                 for($x=0;$x<$arrlen;$x++){
                     // var_dump($companies[$x]);
                     // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and coordinator='$coordinator_email'";
+                    $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {
@@ -164,6 +164,8 @@ function showjobs(cemail){
     document.getElementById(cemail).innerHTML='';
     console.log(cemail);
     var newArray=<?php echo json_encode($jobs_details); ?>;
+    console.log(newArray);
+
     var companyjobs=newArray.filter(function(e1){
          return e1.email==cemail
     });

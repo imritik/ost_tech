@@ -149,7 +149,11 @@ if( !empty($_FILES["resume"]["name"])){
 }
 
 // Display status message
-echo $statusMsg;
+// echo $statusMsg;
+echo "<SCRIPT> //not showing me this
+        alert('$statusMsg')
+       window.history.back()
+    </SCRIPT>";
 ?>
 
 

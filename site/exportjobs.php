@@ -22,13 +22,13 @@ if($query->num_rows > 0){
     $f = fopen('php://memory', 'w');
     
     //set column headers
-    $fields = array('Job_ID', 'Company_Name', 'Email', 'Job_title', 'Job_type', 'Job_location', 'Job_description', 'url', 'Posting_time');
+    $fields = array('Job_ID', 'Company_Name', 'Email', 'Job_title', 'Job_type', 'Job_location', 'Job_description', 'url', 'Coordinator','Posting_time');
     fputcsv($f, $fields, $delimiter);
     
     //output each row of the data, format line as csv and write to file pointer
     while($row = $query->fetch_assoc()){
         // $status = ($row['status'] == '1')?'Active':'Inactive';
-        $lineData = array($row['posting_id'], $row['company_name'], $row['email'], $row['job_title'], $row['Job_type'], $row['Job_location'],  $row['job_description'],$row['company_url'], $row['posting_time']);
+        $lineData = array($row['posting_id'], $row['company_name'], $row['email'], $row['job_title'], $row['Job_type'], $row['Job_location'],  $row['job_description'],$row['company_url'], $row['coordinator'],$row['posting_time']);
         fputcsv($f, $lineData, $delimiter);
     }
     

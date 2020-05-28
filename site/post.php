@@ -25,9 +25,14 @@ $targetDir = "uploads/jd/".$postingid."/";
     //Directory does not exist, so lets create it.
     mkdir($targetDir, 0755, true);
 }
+// var_dump(isset($_FILES["jobdescriptionfile"]));
+
+// var_dump($_FILES);
 $fileName = basename($_FILES["jobdescriptionfile"]["name"]);
 
 $targetFilePath = $targetDir . $fileName;
+
+var_dump($targetFilePath);
 
 $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 // echo $tag1;
@@ -41,7 +46,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$url."',NOW()),'".$coordinator."'");
+                    $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$url."',NOW(),'".$coordinator."')");
                     if($insert){
                         // $statusMsg = "The job has been uploaded successfully.";
                         $statusMsg='?status=succjob';
@@ -80,6 +85,6 @@ else{
    
     
 // Display status message
-// echo $statusMsg;
-// header('Location:post-a-job.php'.$statusMsg);
+echo $statusMsg;
+header('Location:post-a-job.php'.$statusMsg);
 ?>

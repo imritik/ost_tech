@@ -145,7 +145,7 @@ function redirectlogin(){
                 <div class="row">
                     <div class="col-xl-9 col-lg-8 col-xs-12">
                         <div class="content-wrap">
-                            <h3 class="text-center">Job Description <a href='site/uploads/jd/<?php echo $jpi;?>/<?php echo $row1["description_file"];?>'>&nbsp;(View)</a></h3>
+                            <h3 class="text-center">Job Description <a href='site/uploads/jd/<?php echo $jpi;?>/<?php echo $row1["description_file"];?>' target="blank">&nbsp;(View)</a></h3>
                             <article class="entry">
                                 <div class="entry-content">
                                     <p><?php echo $row1['job_description']; ?></p>
