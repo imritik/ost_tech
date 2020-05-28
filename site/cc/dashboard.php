@@ -26,7 +26,7 @@ if ($result ->num_rows ==1) {
                 for($x=0;$x<$arrlen;$x++){
                     // var_dump($companies[$x]);
                     // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and coordinator='$coordinator_email'";
+                    $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and coordinator='$coordinator_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {

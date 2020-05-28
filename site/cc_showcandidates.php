@@ -212,6 +212,8 @@ if(sizeof($real_studids)){
         <option value="hold" >Hold</option>
         <option value="shortlist" >Shortlist</option>
         <option value="rejected" >Reject</option>
+        <option value="blacklist">Blacklist</option>
+
     </select>
     <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="feedback" required> -->
     <br>

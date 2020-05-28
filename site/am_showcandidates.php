@@ -114,7 +114,7 @@ if(sizeof($studids)){
         <td><input type="checkbox" class="studentcheckbox1" value=" '.$ssid.'" name="chk"></td>
             <td>'.$number.'</td>
             <td>'.$jidd.'</td>
-            <td>'.$row1['stud_name'].'</td>
+            <td>'.$row1['stud_name'].'&nbsp;&nbsp;<button style="background: transparent;border: none;" onclick="showlastjob('.$ssid.')"><i class="fa fa-info-circle"></i></button></td>
             <td>'.$row1['email'].'</td>
             <td>'.$row1['ug_college'].'</td>
             <td>'.$row1['contact'].'</td>
@@ -269,6 +269,7 @@ if(!empty($_GET['status'])){
         <option value="hold" >Hold</option>
         <option value="shortlist" >Shortlist</option>
         <option value="rejected" >Reject</option>
+        <option value="blacklist">Blacklist</option>
     </select>
     <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="Hold" required> -->
     <br>
@@ -641,6 +642,7 @@ function urlchange(cat){
 
 
      }
+
      function showcvform(x,y){
          $('.tobe-reused').hide();
          $('.tobe-reused').addClass('df3');
@@ -661,6 +663,26 @@ function urlchange(cat){
          $('.df3').toggle();
          $('.df4').toggle();
      }
+
+     function showlastjob(id){
+        //  alert(id);
+        //  ajax request to fetch job stats
+                            $.ajax({
+                                url: 'jobstats.php',
+                                type: 'POST',
+                            
+                                data: {param1: id},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                // location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error while fetching");
+                            });
+     }
+
 </script>
 
   <div class='df2'style='display:none'>

@@ -47,7 +47,7 @@ if ($result ->num_rows >0) {
         <td contenteditable="false"><?php echo $row1["contact"];?></td>
 
 
-        <td contenteditable="false"><select role='<?php echo $row1["role"];?>' value="<?php echo $row1['role'];?>" class="btn btn-success btn-sm role"><option value="1"<?php if ($row1['role'] == '1')  echo 'selected = "selected"'; ?>>Accout Manager</option><option value="0"<?php if ($row1['role'] == '0')  echo 'selected = "selected"'; ?>>Coordinator</option></select></td>
+        <td contenteditable="false"><select role='<?php echo $row1["is_manager"];?>' value="<?php echo $row1['is_manager'];?>" class="btn btn-success btn-sm role"><option value="1"<?php if ($row1['is_manager'] == '1')  echo 'selected = "selected"'; ?>>Accout Manager</option><option value="0"<?php if ($row1['is_manager'] == '0')  echo 'selected = "selected"'; ?>>Coordinator</option></select></td>
        
        
         <td>
@@ -325,6 +325,12 @@ if ($resultcomp ->num_rows >0) {
     })
     .multiselect('selectAll', false)
     .multiselect('updateButtonText');
+
+    // checkSelection(name);
+
 });
 
+// function checkSelection(available,name){
+//     console.log("in check func",available,name);
+// }
 </script>
