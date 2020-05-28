@@ -156,7 +156,7 @@ if ($result ->num_rows >0) {
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
 <td><input type="text" id="new_age"></td>
-<td style="background:cadetblue"><select  class="multiselect" multiple="multiple"></select></td>
+<td style="background:cadetblue"><select id="companies" class="multiselect" multiple="multiple"></select></td>
 <td><input type="text" id="new_contact"></td>
 <td><select id="new_role" class="btn btn-success btn-sm"><option value="1">Account Manager</option><option value="0">Coordinator</option></select></td>
 <td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add Row"></td>
@@ -176,7 +176,13 @@ function add_row()
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
  var new_age=document.getElementById("new_age").value;
+ var new_companies=document.getElementById("companies").value;
  var new_role=document.getElementById("new_role").value;
+ var new_contact=document.getElementById("new_contact").value;
+
+if(typeof(new_companies)=='string'){
+ new_companies = [new_companies];
+}
 if(new_country=='' || new_name=='' || new_age=='' || new_role==''){
     alert("fill details correctly");
 }
@@ -186,6 +192,8 @@ newadmin.name=new_name;
 newadmin.email=new_country;
 newadmin.password=new_age;
 newadmin.role=new_role;
+newadmin.company=JSON.stringify(new_companies);
+newadmin.contact=new_contact;
 
 console.log(newadmin);
 
@@ -200,10 +208,6 @@ console.log(newadmin);
                             .done(function(response) {
                                 alert(response);
                                 location.reload();
-
-                                //do something with the response
-                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
-                               
                             })
                             .fail(function() {
                                 alert("error in saving");
@@ -213,6 +217,7 @@ console.log(newadmin);
 }
 
 $('.editbtn').click(function () {
+
               var currentTD = $(this).parents('tr').find('td');
               console.log(currentTD);
               var currentid=$(this).parents('tr').prop('id');
@@ -226,23 +231,22 @@ $('.editbtn').click(function () {
                       $(this).prop('contenteditable', true)
                   });
               } 
-              
               else {
-
                  $.each(currentTD, function () {
                       $(this).prop('contenteditable', false);
                       admindata={}
                       admindata.name=currentTD[0]['innerHTML'];
                       admindata.email=currentTD[1]['innerHTML'];
                       admindata.password=currentTD[2]['innerHTML'];
+                      admindata.company=JSON.stringify($('#'+currentid+' td .multiselect').val());
+                      admindata.contact=currentTD[4]['innerHTML'];
                       admindata.role=$('#'+currentid+' td .role').val();
                       admindata.id=currentid;
                   });
 
                   console.log(admindata);
+
                     //   -----ajax request to send and update new data-----
-
-
                              $.ajax({
                                 url: 'saveam.php',
                                 type: 'POST',
@@ -251,8 +255,6 @@ $('.editbtn').click(function () {
                             })
                             .done(function(response) {
                                 alert(response);
-                                //do something with the response
-                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
                                 location.reload();
                                
                             })
