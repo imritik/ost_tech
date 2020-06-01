@@ -114,7 +114,7 @@ if(sizeof($studids)){
         <td><input type="checkbox" class="studentcheckbox1" value=" '.$ssid.'" name="chk"></td>
             <td>'.$number.'</td>
             <td>'.$jidd.'</td>
-            <td>'.$row1['stud_name'].'&nbsp;&nbsp;<button style="background: transparent;border: none;" onclick="showlastjob('.$ssid.')"><i class="fa fa-info-circle"></i></button></td>
+            <td>'.$row1['stud_name'].'&nbsp;&nbsp;<a id="'.$ssid.'"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a></td>
             <td>'.$row1['email'].'</td>
             <td>'.$row1['ug_college'].'</td>
             <td>'.$row1['contact'].'</td>
@@ -674,8 +674,14 @@ function urlchange(cat){
                                 data: {param1: id},
                             })
                             .done(function(response) {
-                                alert(response);
+                                // alert(response);
+                                data=JSON.parse(response)
+                                console.log(data,typeof(data));
                                 // location.reload();
+var newtext='Status: '+data.Status+'\n Feedback: '+data.Note+'\n Applied_at: '+data.Status_update.slice(0,10)
+                                $('#'+id).tooltip('hide')
+                                .attr('data-original-title',newtext)
+                                .tooltip('show');
                                
                             })
                             .fail(function() {
