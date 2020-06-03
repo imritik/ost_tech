@@ -2,13 +2,13 @@
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
 
-// if(isset($_SESSION['emailemp'])){
-//     // echo $_SESSION['company'];
-//   }
-//   else{
-//     // echo "alert('no session exist')";
-//     header("location: ../index.php");
-//   }
+if(isset($_SESSION['emailvendor'])){
+    // echo $_SESSION['company'];
+  }
+  else{
+    // echo "alert('no session exist')";
+    header("location: ../../index.php");
+  }
 include '../../dbConfig.php';
   ?>
   <!DOCTYPE html>
@@ -49,7 +49,7 @@ include '../../dbConfig.php';
             </div>
             <ul class="nav">
                
-                <li><a class="link-login" href="../../logout/logout.php">Logout</a></li>
+                <li><a class="link-login" href="../../logout/logoutvendor.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->
@@ -64,7 +64,7 @@ include '../../dbConfig.php';
         <div class="container">
             <div class="pull-left">
                 <div id="logo">
-                    <a href="#"><img src="images/logo.png" alt="Jobseek - Job Board Responsive HTML Template" /></a>
+                    <a href="#"><img src="images/logo.png" alt="TalentChords" /></a>
                 </div>
             </div>
             <div id="menu-open" class="pull-right">
@@ -145,7 +145,7 @@ if(!empty($_GET['status'])){
 
     <section id="jobs">
         <div class="container">
-            <div class="row" style="overflow-x:auto;">
+            <div class="row" style="overflow-x:auto;width: 50%;margin: auto;">
                     <form action='' method='post' >
           
             <div class="form-group" id="job-company-group">
@@ -170,7 +170,7 @@ if(!empty($_GET['status'])){
                     <!-- <button name="showstudentlist" class="btn btn-sm" id="srchbtn">Search</button> -->
 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="text-align: center;">
                     <input type='date' name="daterange1" id="dr1">-<input type='date' name='daterange2' id="dr2">
                     <button onclick="setjscookie();">Filter</button>
                  
@@ -178,12 +178,13 @@ if(!empty($_GET['status'])){
                     </form>
                         </div>
 
+<br>
                              <table class="table table-bordered">
                                     <thead>
                                         <tr class="filters">
                                             <th>College </th>
                                             <th>College_location</th>
-                                            <th>Student id</th>
+                                            <!-- <th>Student id</th> -->
                                             <th>Name</th>
                                             <th>Contact</th>
                                             <th>Email</th>
@@ -191,26 +192,29 @@ if(!empty($_GET['status'])){
                                             <th>Status</th>
                                             <th>Note</th>
                                             <th>Applied on</th>
-                                            <th>Status last updated</th>
+                                            <!-- <th>Status last updated</th> -->
                                             <th>Registered on</th>
                                             <th style="color:black">Resume</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    
+                                    <div class="alert alert-warning text-center" role="alert">
+                                    <p>Duplicates will be shown here</p>
+                                    <p id="duplicates-number"></p>
+                                    </div>
 
 
                     <!-- -------php code to fetch data from two tables---- -->
 
                   
 <?php
-if(isset($_POST['showstudentlist'])){
- if (isset($_COOKIE["sids"])){
+// if(isset($_POST['showstudentlist'])){
+ if (isset($_COOKIE["vendorduplicate"])){
     // echo $_COOKIE["sids"]; 
     // echo $_COOKIE['daterange1'];
     // echo '2019-10-05';
     // echo strcmp("2019-10-05",$_COOKIE['daterange1']); 
-    $studlistobtain=explode(",",$_COOKIE['sids']);
+    $studlistobtain=explode(",",$_COOKIE['vendorduplicate']);
     // $appliedobtain=explode(",",$_COOKIE['applied']);
     // $statusobtain=explode(",",$_COOKIE['status']);
     // $noteobtain=explode(",",$_COOKIE['note']);
@@ -219,6 +223,11 @@ if(isset($_POST['showstudentlist'])){
     // echo sizeof($studlistobtain);
     if(sizeof($studlistobtain)){
         $arrlen=count($studlistobtain);
+        ?>
+        <script>
+        document.getElementById("duplicates-number").innerHTML='<?php echo $arrlen; ?> Duplicate(s) Found';
+        </script>
+        <?php
         // echo $arrlen;
         // echo $studlistobtain[1];
             for($x=0;$x<$arrlen;$x++){
@@ -233,7 +242,7 @@ if(isset($_POST['showstudentlist'])){
                     <tr >
                     <td  > <?php echo $row1["college_name"];?></td>
                     <td ><?php echo $row1["college_location"];?></td>
-                    <td ><?php echo $row1["student_id"];?></td>
+                    <!-- <td ><?php echo $row1["student_id"];?></td> -->
                     <td  ><?php echo $row1["stud_name"];?></td>
                     <td  ><?php echo $row1["contact"];?></td>
                     <td  ><a href="mailto:<?php echo $row1["email"];?>"><?php echo $row1["email"];?></a></td>
@@ -242,8 +251,8 @@ if(isset($_POST['showstudentlist'])){
                     <td  ><?php echo $noteobtain[$x];?></td>
                     <td class="applied" ><?php echo $appliedobtain[$x];?></td>
                     <td  ><?php echo $updatedonobtain[$x];?></td>
-                    <td  ><?php echo $row1['updated_on'];?></td>
-                    <td  ><a href="../specialty//<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
+                    <!-- <td  ><?php echo $row1['updated_on'];?></td> -->
+                    <td  ><a href="../../specialty/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
             
             
             
@@ -261,7 +270,7 @@ if(isset($_POST['showstudentlist'])){
  
 }
  }
-}
+// }
 ?>
                     <!-- ----------------- -->
                    

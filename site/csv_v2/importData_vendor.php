@@ -12,6 +12,7 @@ if(isset($_POST['importSubmit'])){
             // Open uploaded CSV file with read-only mode
 
     $studlistobtain=$_COOKIE['sids'];
+    $duplicatecandidates=array();
 
             $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
             // Skip the first line
@@ -100,9 +101,11 @@ if(isset($_POST['importSubmit'])){
                 // var_dump($prevQuery);
                 // var_dump($prevResult);
                 if($prevResult->num_rows >0){
-                    // Update member data in the database
-                //    $update= $db->query("UPDATE IGNORE Student SET stud_name = '$name',pass='$pass' ,contact = '$phone', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech', modified_on = NOW(),is_active='$is_active', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc', preferred_loc = '$pre_loc',applied_for='$applied_for',applied_to='$applied_to',profile_segment='$profile_segment',cv_upload_date='$cv_upload_date',latest_application_date='$latest_application_date' WHERE email = '$email'");
-               echo "old";
+                        
+                        // echo "old";
+                        while($row = $prevResult->fetch_assoc()){
+                             array_push($duplicatecandidates,$row['student_id']);
+                        }
 
                 // if(!$update){
                     // echo "here";
@@ -122,14 +125,16 @@ if(isset($_POST['importSubmit'])){
                         // $qstring = '?status=err';
                     // }
                     // else{
-                        echo "new";
+                        // echo "new";
                         
                         $qstring = '?status=succ';
                     // }
                 
                 }
             }
-            
+            // var_dump($duplicatecandidates);
+            $duplicatecandidates=implode(" ",$duplicatecandidates);
+            setcookie("vendorduplicate",$duplicatecandidates, time()+3600 , '/' );
             // Close opened CSV file
             fclose($csvFile);
             
@@ -143,5 +148,5 @@ if(isset($_POST['importSubmit'])){
 }
 // Redirect to the listing page
 // 
-// header("Location: ../vendors/dashboard.php".$qstring);
+header("Location: ../vendors/dashboard.php".$qstring);
 ?>
