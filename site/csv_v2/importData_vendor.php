@@ -148,5 +148,5 @@ if(isset($_POST['importSubmit'])){
 }
 // Redirect to the listing page
 // 
-header("Location: ../vendors/dashboard.php".$qstring);
+header("Location:". $_SERVER['HTTP_REFERER'].$qstring);
 ?>
