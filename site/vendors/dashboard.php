@@ -49,6 +49,8 @@ $vendoremail=$_SESSION['emailvendor'];
                 <a class="fm-button"><i class="fa fa-close fa-2x"></i></a>
             </div>
             <ul class="nav">
+                <li><a class="link-login" href=""+window.location.href onclick="clearuri()">Home</a></li>
+
                <?php
  // ------collect all jobs of company here
                     $sqljob="SELECT * FROM Job_Posting WHERE vendor='$vendoremail'";
@@ -61,6 +63,9 @@ $vendoremail=$_SESSION['emailvendor'];
                     echo '<li id="'.$postid.'" name="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#" style="width:max-content;padding: 10px;" >'.$jobtitle.'  (<small class="company_name"> '.$cname.' </small>)</a> </li>';
                             
                             }
+                    }
+                    else{
+                        echo '<li><a class="link-login">No Jobs</a></li>';
                     }
                ?>
                 <li><a class="link-login" href="../../logout/logoutvendor.php">Logout</a></li>
@@ -173,7 +178,7 @@ if(!empty($_GET['jid'])){
                     <div class="row" style="text-align:center">
                      <?php
  // ------collect all jobs of company here
-                    $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid'";
+                    $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid' and vendor='$vendoremail'";
                     $result22 = $db->query($sql22);
                     if ($result22 ->num_rows > 0) {
                         while($row22 = $result22->fetch_assoc()) {
@@ -183,6 +188,9 @@ if(!empty($_GET['jid'])){
                     echo '<p style="font-size:x-large"><b>JobCode:</b>'.$postid.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> JobTitle:</b>'.$jobtitle.' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Company:</b>'.$cname.'</p>';
                             
                             }
+                    }
+                    else{
+                        echo '<p style="font-size:x-large">Invalid Job</p>';
                     }
                ?>
                     </div>
@@ -264,9 +272,7 @@ if(!empty($_GET['jid'])){
                                 <td  ><?php echo $updatedonobtain[$x];?></td>
                                 <!-- <td  ><?php echo $row1['updated_on'];?></td> -->
                                 <td  ><a href="../../specialty/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
-                        
-                        
-                        
+
                                 </tr>
                         
                             <?php   
@@ -296,7 +302,23 @@ if(!empty($_GET['jid'])){
 
 }
 else{
-    echo "Please select a job";
+
+      $jobcount="SELECT * FROM Job_Posting WHERE vendor='$vendoremail'";
+    $jobcountresult = $db->query($jobcount);
+    $jobcountrows=$jobcountresult->num_rows;
+
+     $studcount="SELECT * FROM Student WHERE Uploaded_by='$vendoremail'";
+    $studcountresult = $db->query($studcount);
+    $studcountrows=$studcountresult->num_rows;
+
+
+
+    echo "
+    <div class='alert alert-info text-center' style='font-size:20px'>
+    <p>Served  <b>".$studcountrows."</b> candidate(s) for <b>".$jobcountrows." </b> Client(s)</p>
+    <p>Select a job to add more candidates.</p>
+    </div>
+    ";
 }
 
 ?>
@@ -357,11 +379,7 @@ function showpage(postid){
                                 console.log(data.list);
                                 document.cookie="sids="+data.list+";path=/";
 
-                                var uri = window.location.toString();
-                                if (uri.indexOf("?") > 0) {
-                                    var clean_uri = uri.substring(0, uri.indexOf("?"));
-                                    window.history.replaceState({}, document.title, clean_uri);
-                                }
+                               clearuri();
 
                                 location.replace(window.location.href.split('#')[0]+'?jid='+x);
                             });
@@ -378,6 +396,16 @@ $('#job-company').val(document.cookie.split(';')[0].split('=')[1]);
 
          
     <script>
+
+
+    function clearuri(){
+        var uri = window.location.toString();
+                                if (uri.indexOf("?") > 0) {
+                                    var clean_uri = uri.substring(0, uri.indexOf("?"));
+                                    window.history.replaceState({}, document.title, clean_uri);
+                                }
+
+    }
        function setjscookie(){
         document.cookie="daterange1="+$('#dr1').val();
         document.cookie="daterange2="+$('#dr2').val();
