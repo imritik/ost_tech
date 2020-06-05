@@ -94,7 +94,7 @@ if(isset($_POST['importSubmit'])){
 
 
                 // Check whether member already exists in the database with the same email
-                $prevQuery = "SELECT * FROM Student WHERE (email = '$email' or contact='$phone') and student_id in ('$studlistobtain')";
+                $prevQuery = "SELECT * FROM Student WHERE (email = '$email' or contact='$phone') and student_id in ($studlistobtain)";
                 $prevResult = $db->query($prevQuery);
                 $no='';
 
@@ -102,17 +102,17 @@ if(isset($_POST['importSubmit'])){
                 // var_dump($prevResult);
                 if($prevResult->num_rows >0){
                         
-                        // echo "old";
+                        echo "old";
                         while($row = $prevResult->fetch_assoc()){
                              array_push($duplicatecandidates,$row['student_id']);
                         }
 
                 // if(!$update){
                     // echo "here";
-                    $qstring = '?status=err';
+                    // $qstring = '&status=err';/
                 // }
                 // else{
-                    // $qstring = '?status=succ';
+                    $qstring = '?status=succ';
                 // }
                 }
                 
@@ -127,23 +127,24 @@ if(isset($_POST['importSubmit'])){
                     // else{
                         // echo "new";
                         
-                        $qstring = '?status=succ';
+                        $qstring = '&status=succ';
                     // }
                 
                 }
             }
             // var_dump($duplicatecandidates);
-            $duplicatecandidates=implode(" ",$duplicatecandidates);
+            $duplicatecandidates=implode(",",$duplicatecandidates);
             setcookie("vendorduplicate",$duplicatecandidates, time()+3600 , '/' );
             // Close opened CSV file
             fclose($csvFile);
             
             // $qstring = '?status=succ';
         }else{
-            $qstring = '?status=err';
+            // echo "here1";/
+            $qstring = '&status=err';
         }
     }else{
-        $qstring = '?status=invalid_file';
+        $qstring = '&status=invalid_file';
     }
 }
 // Redirect to the listing page

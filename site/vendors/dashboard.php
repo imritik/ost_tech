@@ -215,10 +215,10 @@ if(!empty($_GET['jid'])){
                                                         <th>Name</th>
                                                         <th>Contact</th>
                                                         <th>Email</th>
-                                                        <th>Job title</th>
-                                                        <th>Status</th>
-                                                        <th>Note</th>
-                                                        <th>Applied on</th>
+                                                        <!-- <th>Job title</th> -->
+                                                        <!-- <th>Status</th> -->
+                                                        <!-- <th>Note</th> -->
+                                                        <!-- <th>Applied on</th> -->
                                                         <!-- <th>Status last updated</th> -->
                                                         <th>Registered on</th>
                                                         <th style="color:black">Resume</th>
@@ -227,7 +227,7 @@ if(!empty($_GET['jid'])){
                                                 <tbody>
                                                 <div class="alert alert-warning text-center" role="alert">
                                                 <p>Duplicates will be shown here</p>
-                                                <p id="duplicates-number"></p>
+                                                <p id="duplicates-number" style="color:red"></p>
                                                 </div>
 
 
@@ -265,12 +265,12 @@ if(!empty($_GET['jid'])){
                                 <td  ><?php echo $row1["stud_name"];?></td>
                                 <td  ><?php echo $row1["contact"];?></td>
                                 <td  ><a href="mailto:<?php echo $row1["email"];?>"><?php echo $row1["email"];?></a></td>
-                                <td  ><?php echo $jobtitleobtain[$x];?></td>
-                                <td  ><?php echo $statusobtain[$x];?></td>
-                                <td  ><?php echo $noteobtain[$x];?></td>
-                                <td class="applied" ><?php echo $appliedobtain[$x];?></td>
-                                <td  ><?php echo $updatedonobtain[$x];?></td>
-                                <!-- <td  ><?php echo $row1['updated_on'];?></td> -->
+                                <!-- <td  ><?php echo $jobtitleobtain[$x];?></td> -->
+                                <!-- <td  ><?php echo $statusobtain[$x];?></td> -->
+                                <!-- <td  ><?php echo $noteobtain[$x];?></td> -->
+                                <!-- <td class="applied" ><?php echo $appliedobtain[$x];?></td> -->
+                                <!-- <td  ><?php echo $updatedonobtain[$x];?></td> -->
+                                <td  ><?php echo $row1['updated_on'];?></td>
                                 <td  ><a href="../../specialty/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
 
                                 </tr>
@@ -350,7 +350,7 @@ function showpage(postid){
     function getjobids(x){
         // var y=x.split('$')[0];
             // document.cookie="cname="+x;
-            document.cookie = "sids=";
+            // document.cookie = "sids=";
             
 
 // getting job ids with company name
@@ -377,6 +377,7 @@ function showpage(postid){
                             }).done(function(data){
                                 console.log(data);
                                 console.log(data.list);
+                                console.log("setting sids");
                                 document.cookie="sids="+data.list+";path=/";
 
                                clearuri();
