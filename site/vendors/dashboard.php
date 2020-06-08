@@ -194,23 +194,14 @@ if(!empty($_GET['jid'])){
                     }
                ?>
                     </div>
-                        <div class="row" style="overflow-x:auto;width: 50%;margin: auto;">
-                                <form action='' method='post' >
-                    
-                                <div class="form-group" style="text-align: center;">
-                                <input type='date' name="daterange1" id="dr1">-<input type='date' name='daterange2' id="dr2">
-                                <button onclick="setjscookie();">Filter</button>
-                            
-                            </div>
-                                </form>
-                                    </div>
+   
 
             <br>
                                         <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="filters">
                                                         <th>College </th>
-                                                        <th>College_location</th>
+                                                        <!-- <th>College_location</th> -->
                                                         <!-- <th>Student id</th> -->
                                                         <th>Name</th>
                                                         <th>Contact</th>
@@ -222,6 +213,7 @@ if(!empty($_GET['jid'])){
                                                         <!-- <th>Status last updated</th> -->
                                                         <th>Registered on</th>
                                                         <th style="color:black">Resume</th>
+                                                        <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -239,6 +231,7 @@ if(!empty($_GET['jid'])){
             if (isset($_COOKIE["vendorduplicate"])){
             
                 $studlistobtain=explode(",",$_COOKIE['vendorduplicate']);
+                $duplicatestatus=explode(",",$_COOKIE['duplicatestatus']);
                 
                 if(sizeof($studlistobtain)){
                     $arrlen=count($studlistobtain);
@@ -260,7 +253,7 @@ if(!empty($_GET['jid'])){
                                 ?>
                                 <tr >
                                 <td  > <?php echo $row1["college_name"];?></td>
-                                <td ><?php echo $row1["college_location"];?></td>
+                                <!-- <td ><?php echo $row1["college_location"];?></td> -->
                                 <!-- <td ><?php echo $row1["student_id"];?></td> -->
                                 <td  ><?php echo $row1["stud_name"];?></td>
                                 <td  ><?php echo $row1["contact"];?></td>
@@ -271,8 +264,8 @@ if(!empty($_GET['jid'])){
                                 <!-- <td class="applied" ><?php echo $appliedobtain[$x];?></td> -->
                                 <!-- <td  ><?php echo $updatedonobtain[$x];?></td> -->
                                 <td  ><?php echo $row1['updated_on'];?></td>
-                                <td  ><a href="../../specialty/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
-
+                                <td  ><a href="../../specialty/uploads/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
+<td><?php echo $duplicatestatus[$x];?></td>
                                 </tr>
                         
                             <?php   
