@@ -143,17 +143,17 @@ if(!empty($_GET['jid'])){
 
                 <div class="container">
                         <div class="row">
-                        <div class="col-md-6 head">
+                        <!-- <div class="col-md-6 head"> -->
 
-                    <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
-                    </div>
-                        <div class="col-md-6" style="text-align:center">
+                    <!-- <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button> -->
+                    <!-- </div> -->
+                        <div class="col-md-12" style="text-align:center">
                     <div class="float-right">
                         <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
                     </div>
                 </div>
                 <!-- CSV file upload form -->
-                <div class="pull-right" id="importFrm" style="display: none;">
+                <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
                 <br>
                     <form action="../csv_v2/importData_vendor.php" method="post" enctype="multipart/form-data">
                         <input type="file" name="file" />
@@ -200,6 +200,8 @@ if(!empty($_GET['jid'])){
                                         <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="filters">
+                    <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
+                                                      
                                                         <th>College </th>
                                                         <!-- <th>College_location</th> -->
                                                         <!-- <th>Student id</th> -->
@@ -220,6 +222,7 @@ if(!empty($_GET['jid'])){
                                                 <div class="alert alert-warning text-center" role="alert">
                                                 <p>Duplicates will be shown here</p>
                                                 <p id="duplicates-number" style="color:red"></p>
+                                                <button id="mark-duplicate" class="btn btn-xs btn-danger" style="display:none" onclick="removeduplicates();">Mark as duplicate</button>
                                                 </div>
 
 
@@ -252,6 +255,8 @@ if(!empty($_GET['jid'])){
                                 $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studlistobtain[$x].'/'.$row1['resume'];
                                 ?>
                                 <tr >
+        <td><input type="checkbox" class="studentcheckbox" value="<?php echo $row1['student_id']; ?>" name="id[]"></td>
+
                                 <td  > <?php echo $row1["college_name"];?></td>
                                 <!-- <td ><?php echo $row1["college_location"];?></td> -->
                                 <!-- <td ><?php echo $row1["student_id"];?></td> -->
@@ -264,8 +269,17 @@ if(!empty($_GET['jid'])){
                                 <!-- <td class="applied" ><?php echo $appliedobtain[$x];?></td> -->
                                 <!-- <td  ><?php echo $updatedonobtain[$x];?></td> -->
                                 <td  ><?php echo $row1['updated_on'];?></td>
-                                <td  ><a href="../../specialty/uploads/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank"><?php echo $resumelinks; ?></a></td>
+                                <td  ><a href="../../specialty/uploads/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank">View</a></td>
 <td><?php echo $duplicatestatus[$x];?></td>
+
+  <td style='display:flex'>
+                <!-- Add resume -->
+                <form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
+                <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
+                <button type='submit' id='upl_resume' class='editresume' value='Upload Resume' ><i class="fa fa-upload" aria-hidden="true"></i>
+</button>
+</form>
+                </td>
                                 </tr>
                         
                             <?php   
@@ -338,26 +352,92 @@ function showpage(postid){
     console.log(postid);
     getjobids(postid);
 }
+
+// ----checkbox select--
+
+ var favorites = [];
+
+   
+$(".studentcheckbox").click(function(){
+
+    var favorite=[];
+        $.each($("input[name='id[]']:checked"), function(){            
+            favorite.push($(this).val());
+        });
+        favorites=favorite;
+     console.log(favorites);
+
+     if(favorites.length){
+            $('#mark-duplicate').show();
+     }
+     else{
+            $('#mark-duplicate').hide();
+     }
+ 
+
+});
+
+    // -----for selecting all student at once---
+    $("#selectall").click(function () {
+
+        var jobarr=[]
+        $('tr').each(function(i, obj) {
+            //test
+            console.log(obj);
+            if($(this).is(":visible")) {
+            
+            // console.log(obj);
+            if($(this).find('.studentcheckbox').prop('checked') == false){
+                $(this).find('.studentcheckbox').prop('checked',true);
+                jobarr.push($(this).find('.studentcheckbox').val());
+                favorites=jobarr;
+                console.log(favorites);
+
+            }
+            else{
+                $(this).find('.studentcheckbox').prop('checked',false);
+                jobarr=[];
+                favorites=jobarr;
+                console.log(favorites);
+
+            }
+
+            }
+        });
+
+          if(favorites.length){
+            $('#mark-duplicate').show();
+     }
+     else{
+            $('#mark-duplicate').hide();
+     }
+
+    });
 </script>
   <script>
-    function getjobids(x){
-        // var y=x.split('$')[0];
-            // document.cookie="cname="+x;
-            // document.cookie = "sids=";
-            
 
-// getting job ids with company name
-                            // $.ajax({
-                            //     url: '../getjobids.php',
-                            //     type: 'POST',
-                            //     data: {param1:y},
-                            //     dataType:"json",
-                            //     success:function(){console.log("seach succsss");},
-                            //     error:function(data){console.log(data);}
-                            // }).done(function(data){
-                            //     console.log(data.list);
-                            //     console.log(data.job_title);
-                            //     document.cookie="jobtitle="+data.job_title;
+function remove(array, element) {
+    // console.log("in remove",element,array);
+  const index = array.indexOf(element);
+  array.splice(index, 1);
+}
+
+  function removeduplicates(){
+      console.log(favorites);
+     <?php  $originalduplicates=explode(",",$_COOKIE['vendorduplicate']); ?>
+      console.log(<?php echo json_encode($originalduplicates);?>);
+
+      for(i=0;i<favorites.length;i++){
+            remove(<?php echo json_encode($originalduplicates);?>,favorites[i]);
+      }
+      
+    //   <?php  setcookie("vendorduplicate",implode(",",$originalduplicates), time()+36000 , '/' ); ?>
+
+    //   remove the selected student id from cookie duplicatevendors
+
+
+  }
+    function getjobids(x){
 
 // getting ids of student applied for jobs
                                 $.ajax({
@@ -442,6 +522,83 @@ console.log(rowDateTimeStamp);
         }
     });
 }
+
+
+    
+// ===================================================for updating resume------------------
+
+$(".form_resume").on('submit',(function(e) {
+    e.preventDefault();   
+    // console.log(this.id); 
+    var curr_stud=this.id;
+    // console.log('tag',$(".form_resume").attr('tag'));
+    var resumename=$(".form_resume").attr('tag');
+    var myFormData = new FormData();
+        var media = document.getElementById('resumefile'+curr_stud);
+       console.log(resumename,curr_stud);
+        myFormData.append('pictureFile', media.files[0]);
+        myFormData.append('var',curr_stud);
+// check for resume error here by data loaders
+
+//         if(resumename==media.files[0]['name'] && resumename!=''){
+//                         $.ajax({
+//                             url: 'resumebydl.php',
+//                             type: 'POST',
+//                             data: myFormData,  
+//                             processData: false,
+//                             contentType: false, 
+//                             cache: false,
+                        
+//                             error: function (data) {
+//                                 alert(data);
+//                             }
+                        
+//                         }).done(function(data){
+//                             alert(data);
+//                             console.log(data);
+//                         });
+//         }
+//         else if(resumename==''){
+//             $.ajax({
+//                             url: 'resumebydl.php',
+//                             type: 'POST',
+//                             data: myFormData,  
+//                             processData: false,
+//                             contentType: false, 
+//                             cache: false,
+                        
+//                             error: function (data) {
+//                                 alert(data);
+//                             }
+                        
+//                         }).done(function(data){
+//                             alert(data);
+//                             console.log(data);
+//                         });
+//         }
+//         else{
+// alert("upload right resume!");
+//         }
+
+    $.ajax({
+                            url: '../resumebydl.php',
+                            type: 'POST',
+                            data: myFormData,  
+                            processData: false,
+                            contentType: false, 
+                            cache: false,
+                        
+                            error: function (data) {
+                                alert(data);
+                            }
+                        
+                        }).done(function(data){
+                            alert(data);
+                            console.log(data);
+                        });
+   
+}));
+
 
 
 // ----------------------------------------
