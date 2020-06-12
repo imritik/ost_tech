@@ -431,8 +431,8 @@ function remove(array, element) {
             remove(<?php echo json_encode($originalduplicates);?>,favorites[i]);
       }
       
-    //   <?php  setcookie("vendorduplicate",implode(",",$originalduplicates), time()+36000 , '/' ); ?>
-
+    
+        setcookie("vendorduplicate",'<?php echo implode(",",$originalduplicates); ?>');
     //   remove the selected student id from cookie duplicatevendors
 
 
