@@ -34,9 +34,29 @@ include '../../dbConfig.php';
 
 <body style='padding:0'>
 
+ <!-- ============ HEADER START ============ -->
+ <header>
+        <div id="header-background"></div>
+        <div class="container">
+            <div class="pull-left">
+              <b>HR<b> (<?php echo $coordinator_email; ?>)
+            </div>
+            <div id="menu-open" class="pull-right">
+               <a href="../../logout/logoutcoordinator.php">Logout</a>
+            </div>
+
+        </div>
+    </header>
+    <br>
+    <br>
+    <br>
 <div class="container">
+   
+    <div class="row">
+    <div class="col-md-2 fixed-top">
 <h3>Jobs</h3>
-<ul class="nav nav-pills nav-stacked col-md-2">
+
+<ul class="nav nav-pills nav-stacked">
 
 <!-- ----jobs using php -->
  <?php
@@ -58,7 +78,50 @@ include '../../dbConfig.php';
                ?>
 
 </ul>
+</div>
 <div class="tab-content col-md-10">
+<div style="display:none"  class="text-center tobe-reused">
+   <select id="admins_email" style="color:black;height:40px;"> 
+
+        <option value="" >Select Coordinator</option>
+
+        <?php
+
+        $query = $db->query("SELECT * FROM coordinators");
+            
+        if($query ->num_rows >0){
+        while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['name'].')' . '</option>';
+        ?>
+        <?php }} ?>
+
+    </select>
+
+    <button id="send_ids" class="btn btn-primary"  onclick="sendids();">Send</button>
+    <br>
+    <br>
+    <label>Feedback</label>
+    <select id="updatenotebtn" class="form-control">
+        <option value="hold" >Hold</option>
+        <option value="shortlist" >Shortlist</option>
+        <option value="rejected" >Reject</option>
+        <option value="blacklist">Blacklist</option>
+    </select>
+    <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="Hold" required> -->
+  
+    <!-- <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
+                    <option value="Round 1">Round 1</option>
+                    <option value="Round 2">Round 2</option>
+                    <option value="Round 3">Round 3</option>
+                    <option value="Round 4">Round 4</option>
+    </select> -->
+                    &nbsp;
+                    <button class="btn btn-info" onclick="updatestatus();">Save</button>
+     <!-- <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button> -->
+                    <br>
+            
+</div> 
         <div class="tab-pane active" id="tab_a">
         
         <?php
@@ -79,7 +142,7 @@ if(!empty($_GET['jid'])){
                             $postid=$row22['posting_id'];
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
-                    echo '<p style="font-size:x-large">'.$jobtitle.'</p>';
+                    echo '<p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>';
                             
                             }
                     }
@@ -125,7 +188,19 @@ if(!empty($_GET['jid'])){
    $('.<?php echo $status;?>').addClass('active');    
     </script>
     <?php
+$query='';
+        if($status=='new_arrival'){
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status_update >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)";
+
+        }
+        else if($status=='to_process'){
                 $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+
+        }
+        else{
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+
+        }
             if (!$result = mysqli_query($db, $query)) {
                 exit(mysqli_error($db));
             }
@@ -168,9 +243,9 @@ if(!empty($_GET['jid'])){
             // while ($row = mysqli_fetch_assoc($result)) {
                 ?>
                 <tr>
-                <td><input type="checkbox" class="studentcheckbox1" value=" '.$ssid.'" name="chk"></td>
+                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
               
-                    <td><?php echo $row1['stud_name'];?>&nbsp;&nbsp;<a id="'.$ssid.'"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a></td>
+                    <td><?php echo $row1['stud_name'];?>&nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a></td>
                     <td><?php echo $row1['email'];?></td>
                
                     <td><?php echo $row1['curr_ctc'];?></td>
@@ -207,6 +282,7 @@ if(!empty($_GET['jid'])){
         </div>
        
 </div><!-- tab content -->
+</div>
 </div>
 </body>
  <!-- ============ JOBS END ============ -->
@@ -260,5 +336,342 @@ function showpage(postid){
 
     }
 </script>
+ <script>
+         var favorites = [];
+        var jobrefs=[];
+        var newArray1=[];
+        var is_checked=false;
+
+   
+    $(".studentcheckbox1").click(function(){
+        //  $('.tobe-reused').show();
+
+        var favorite=[];
+        var jobref=[];
+            $.each($("input[name='chk']:checked"), function(){  
+                console.log($(this).val());          
+                favorite.push($(this).val());
+                jobref.push($(this).closest("tr").find('td:eq(2)').text());
+            });
+            favorites=favorite;
+            jobrefs=jobref;
+            var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+            newArray1=newArray;
+         console.log(newArray1);
+
+         if(newArray1.length){
+         $('.tobe-reused').show();
+         }
+         else{
+         $('.tobe-reused').hide();
+
+         }
+         
+     
+
+    });
+    // -----for selecting all student at once---
+    $("#selectall").click(function () {
+        // $('.tobe-reused').toggle();
+        
+        var sidc=[];
+        var jobid=[];
+                is_checked=!is_checked;
+
+        $('tr').each(function(i, obj) {
+                if($('tr').not(':first').is(":visible")) {
+
+                    if(is_checked){
+   // alert('hi');
+                            $(this).find('.studentcheckbox1').prop('checked',true)
+                            if($(this).find('.studentcheckbox1').prop('checked') == true){
+                                console.log($(this).find('.studentcheckbox1').val());
+                                sidc.push($(this).find('.studentcheckbox1').val());
+                                jobid.push($(this).find('.studentcheckbox1').closest("tr").find('td:eq(2)').text());
+                                favorites=sidc;
+                                jobrefs=jobid;
+                            }
+
+                 
+                     }
+                    else{
+                        console.log("here");
+                        $(this).find('.studentcheckbox1').prop('checked',false);
+                        favorites=sidc;
+                        jobrefs=jobid;
+                    }
+                }
+                // }
+        });
+
+        var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+        newArray1=newArray;
+         console.log(newArray1);
+           if(newArray1.length){
+         $('.tobe-reused').show();
+         }
+         else{
+         $('.tobe-reused').hide();
+
+         }
+   
+    });
+
+     function FilterRow($input){
+           console.log("in filter function",$input);
+           $tobeshown=[];
+        $visible_rows=[];
+
+            if(!$input.length){
+                var rows = $('.table tr');
+                rows.show();
+            }
+        //    loop through the filters here
+        for(var i = 0; i < $input.length; i++){
+                inputContent = $input[i].val().toLowerCase(),
+                // $panel = $input[i].parents('.filterable'),
+                column = $('.filters th').index($input[i].parents('th')),
+                $table = $('.table'),
+                $rows = $table.find('tbody tr');
+                // console.log($rows);
+                if($visible_rows.length && inputContent!=''){
+                    // console.log("filtered rows here");
+                    $rows=$visible_rows;
+                }
+                else{
+                    // console.log("all rows here");
+                }
+
+                if(inputContent=='#'){
+                    // console.log("blank search will be there");
+                    var $filteredRows = $rows.filter(function() {
+                            var value = $(this).find('td').eq(column).text().trim()!='';
+                            return value === true;
+                            // console.log(value);
+                    });
+                }
+                else{
+                            /* Dirtiest filter function ever ;) */
+                            var $filteredRows = $rows.filter(function() {
+                                            var value = $(this).find('td').eq(column).text().toLowerCase();
+                                            return value.indexOf(inputContent) === -1;
+                            });
+                }
+                    $rows.show();
+                    $filteredRows.slice(1).hide();
+
+                    $tobeshown=$table.find('tbody tr:visible');
+                            $visible_rows=$tobeshown;
+                            console.log($visible_rows);
+
+                    // ===--------------
+                    console.log($filteredRows,"filtered");
+        }
+            }
+    
+    $('.filters input').keyup(function(e) {
+        console.log(e);
+            console.log($(this));
+            var inputs = $(".filters input").slice(1);
+            var input_array=[];
+            var $input = $(this);
+        
+            for(var i = 0; i < inputs.length; i++){
+                // alert($(inputs[i]).val());
+                if($(inputs[i]).val()!=''){
+                    input_array.push($(inputs[i]));
+                    //  FilterRow($(inputs[i]));
+                }
+                else{
+                        //  var $input = $(this);
+                        // FilterRow($input);
+                }
+            }
+                console.log(input_array);
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            FilterRow(input_array);
+            // getVisibleRows();
+        });
+
+    function updatestatus(){
+
+        var statusvalue="am";
+        var notevalue=$('#updatenotebtn').val();
+        var ps1=$('#ps1').val();
+        var ps2=$('#ps2').val();
+
+        newArray1.forEach(function(obj){
+
+            var stid=obj.split(',')[0];
+            var jid=obj.split(',')[1];
+
+         
+
+            // call to function for updating status
+            updatestatusofeach(stid,jid,statusvalue,notevalue,ps1,ps2);
+        });
+
+    }
+
+    function rejectstud(){
+
+                  newArray1.forEach(function(obj){
+
+                        var stid=obj.split(',')[0];
+                        var jid=obj.split(',')[1];
+
+
+                            // call to function for rejecting student
+                            rejectstudeach(stid,jid);
+        });
+
+    }
+
+    function updatestatusofeach(x,y,z,q,a,b){
+
+                console.log(x,y,z,q,a,b);
+                $.ajax({
+                                url: 'updatestudentstatus.php',
+                                type: 'POST',
+                            
+                                data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
+                            })
+                            .done(function(response) {
+                                // alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in updating status");
+                            });
+
+    }
+
+    function rejectstudeach(x,y){
+                console.log(x,y);
+
+                $.ajax({
+                                url: 'rejectstudent.php',
+                                type: 'POST',
+                            
+                                data: {param1: x,param2:y},
+                            })
+                            .done(function(response) {
+                                // alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in rejecting");
+                            });
+
+    }
+
+
+function sendids(){
+    var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+    var stid=[];
+    var jid=[];
+    newArray.forEach(function(obj){
+
+        stid=obj.split(',')[0];
+        jid=obj.split(',')[1];
+        });
+            // ------------
+            var x= $('#admins_email').val();
+            var y=JSON.stringify(stid);
+            var z=JSON.stringify(jid);
+            var w='<?php echo $_SESSION['emailemp'];?>';
+
+            // ----inserting----
+            $.ajax({
+                                        url: 'am_toadmin.php',
+                                        type: 'POST',
+                                    
+                                        data: {param1: x,param2:JSON.stringify(favorites),param3:z,param4:w},
+                                    })
+                                    .done(function(response) {
+                                        // alert(response);
+                                    $('#send_ids').html('sent!');
+                                    })
+                                    .fail(function() {
+                                        alert("error while sending");
+                                    });
+
+}
+
+function urlchange(cat){
+   
+
+    window.location=window.location.protocol + "//" + window.location.host + window.location.pathname + '?jid=<?php echo $jidd;?>&status='+cat;
+}
+    
+
+ var frm = ['cv'];
+ var hrf=[];
+ function setSource() {
+     console.log("in set source");
+            for(i=0, l=frm.length; i<l; i++) {
+                document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
+            }
+        }
+     function showform(){
+        $('.tobehidden').removeClass('blur');
+        $('.tobe-reused').removeClass('df3');
+        $('.tobe-reused').toggle();
+         $('.df2').toggle();
+         $('.df3').toggle();
+         $('.df4').toggle();
+
+
+     }
+
+     function showcvform(x,y){
+         $('.tobe-reused').hide();
+         $('.tobe-reused').addClass('df3');
+         console.log(x);
+         var hrf1 = [x];
+         hrf=hrf1;
+        var favorite=[];
+        var jobref=['<?php echo $jidd;?>'];
+        favorite.push(y);
+        favorites=favorite;
+        jobrefs=jobref;
+        var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+        newArray1=newArray;
+        console.log(newArray1);
+         setSource();
+         $('.tobehidden').addClass('blur');
+         $('.df2').toggle();
+         $('.df3').toggle();
+         $('.df4').toggle();
+     }
+
+     function showlastjob(id){
+        //  alert(id);
+        //  ajax request to fetch job stats
+                            $.ajax({
+                                url: '../jobstats.php',
+                                type: 'POST',
+                            
+                                data: {param1: id},
+                            })
+                            .done(function(response) {
+                                // alert(response);
+                                data=JSON.parse(response)
+                                console.log(data,typeof(data));
+                                // location.reload();
+var newtext='Status: '+data.Status+'\n Feedback: '+data.Note+'\n Applied_at: '+data.Status_update.slice(0,10)
+                                $('#'+id).tooltip('hide')
+                                .attr('data-original-title',newtext)
+                                .tooltip('show');
+                               
+                            })
+                            .fail(function() {
+                                alert("error while fetching stats");
+                            });
+     }
+     </script>
     <!-- ============ CONTACT END ============ -->
 </html>
