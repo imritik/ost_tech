@@ -2,7 +2,7 @@
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
 
-if(isset($_SESSION['emailvendor'])){
+if(isset($_SESSION['emailvendors'])){
     // echo $_SESSION['company'];
   }
   else{
@@ -10,7 +10,7 @@ if(isset($_SESSION['emailvendor'])){
     header("location: ../../index.php");
   }
 include '../../dbConfig.php';
-$vendoremail=$_SESSION['emailvendor'];
+$vendoremail=$_SESSION['emailvendors'];
   ?>
   <!DOCTYPE html>
 <html>
@@ -68,7 +68,7 @@ $vendoremail=$_SESSION['emailvendor'];
                         echo '<li><a class="link-login">No Jobs</a></li>';
                     }
                ?>
-                <li><a class="link-login" href="../../logout/logoutvendor.php">Logout</a></li>
+                <li><a class="link-login" href="../../logout/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->
@@ -87,7 +87,7 @@ $vendoremail=$_SESSION['emailvendor'];
                 </div>
             </div>
             <div id="menu-open" class="pull-right">
-              <a class="link-login" style="font-size:large"><?php echo $_SESSION['emailvendor'];?></a>
+              <a class="link-login" style="font-size:large"><?php echo $_SESSION['emailvendors'];?></a>
 &nbsp;
                 <a class="fm-button"><i class="fa fa-bars fa-lg"></i></a>
             </div>

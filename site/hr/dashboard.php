@@ -2,15 +2,16 @@
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
 
-// if(isset($_SESSION['emailvendor'])){
+if(isset($_SESSION['emailhr'])){
     // echo $_SESSION['company'];
-//   }
-//   else{
-//     // echo "alert('no session exist')";
-//     header("location: ../../index.php");
-//   }
+  }
+  else{
+    // echo "alert('no session exist')";
+    header("location: ../../index.php");
+  }
 include '../../dbConfig.php';
-// $vendoremail=$_SESSION['emailvendor'];
+$hremail=$_SESSION['emailhr'];
+$hrcompany=$_SESSION['companyhr'];
   ?>
 
   <!DOCTYPE html>
@@ -39,10 +40,10 @@ include '../../dbConfig.php';
         <div id="header-background"></div>
         <div class="container">
             <div class="pull-left">
-              <b>HR<b> (<?php echo $coordinator_email; ?>)
+             <b>HR<b> (<?php echo $hremail; ?>)
             </div>
             <div id="menu-open" class="pull-right">
-               <a href="../../logout/logoutcoordinator.php">Logout</a>
+               <a href="../../logout/logout.php">Logout</a>
             </div>
 
         </div>
@@ -54,14 +55,14 @@ include '../../dbConfig.php';
    
     <div class="row">
     <div class="col-md-2 fixed-top">
-<h3>Jobs</h3>
+<h3>Jobs</h3><span><?php echo $hrcompany;?></span>
 
 <ul class="nav nav-pills nav-stacked">
 
 <!-- ----jobs using php -->
  <?php
  // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting";
+                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany'";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {
@@ -496,16 +497,16 @@ function showpage(postid){
 
     function updatestatus(){
 
-        var statusvalue="am";
+        var statusvalue="hr";
         var notevalue=$('#updatenotebtn').val();
-        var ps1=$('#ps1').val();
-        var ps2=$('#ps2').val();
+       
 
         newArray1.forEach(function(obj){
 
             var stid=obj.split(',')[0];
-            var jid=obj.split(',')[1];
-
+            var jid="<?php echo $_GET['jid']?>";
+var ps1="";
+var ps2="";
          
 
             // call to function for updating status
@@ -532,13 +533,13 @@ function showpage(postid){
 
                 console.log(x,y,z,q,a,b);
                 $.ajax({
-                                url: 'updatestudentstatus.php',
+                                url: '../updatestudentstatus.php',
                                 type: 'POST',
                             
                                 data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
                             })
                             .done(function(response) {
-                                // alert(response);
+                                alert(response);
                                 location.reload();
                                
                             })
@@ -576,17 +577,17 @@ function sendids(){
     newArray.forEach(function(obj){
 
         stid=obj.split(',')[0];
-        jid=obj.split(',')[1];
+        jid="<?php echo $_GET['jid']?>";
         });
             // ------------
             var x= $('#admins_email').val();
             var y=JSON.stringify(stid);
             var z=JSON.stringify(jid);
-            var w='<?php echo $_SESSION['emailemp'];?>';
+            var w='<?php echo $_SESSION['emailhr'];?>';
 
             // ----inserting----
             $.ajax({
-                                        url: 'am_toadmin.php',
+                                        url: '../am_toadmin.php',
                                         type: 'POST',
                                     
                                         data: {param1: x,param2:JSON.stringify(favorites),param3:z,param4:w},
@@ -662,7 +663,7 @@ function urlchange(cat){
                                 data=JSON.parse(response)
                                 console.log(data,typeof(data));
                                 // location.reload();
-var newtext='Status: '+data.Status+'\n Feedback: '+data.Note+'\n Applied_at: '+data.Status_update.slice(0,10)
+var newtext='Status: '+data.Status+'\nFeedback: '+data.Note+'\n Applied_at: '+data.Status_update.slice(0,10)
                                 $('#'+id).tooltip('hide')
                                 .attr('data-original-title',newtext)
                                 .tooltip('show');

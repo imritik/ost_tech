@@ -5,7 +5,7 @@ include '../dbConfig.php';
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
-if(isset($_SESSION['emaildl'] )|| isset($_SESSION['emailvendor'])){
+if(isset($_SESSION['emaildl'] )|| isset($_SESSION['emailvendors'])){
 
   }
   else{
