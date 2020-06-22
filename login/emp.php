@@ -9,7 +9,7 @@
       $mypassword = mysqli_real_escape_string($db,$_POST['passwordemp']); 
       $role=$_POST['role'];
     // print $myusername;
-      echo $role;
+      // echo $role;
         
       if($role=='admins'){
 

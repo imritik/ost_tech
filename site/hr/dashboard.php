@@ -12,6 +12,7 @@ if(isset($_SESSION['emailhr'])){
 include '../../dbConfig.php';
 $hremail=$_SESSION['emailhr'];
 $hrcompany=$_SESSION['companyhr'];
+$page="job";
   ?>
 
   <!DOCTYPE html>
@@ -52,6 +53,15 @@ $hrcompany=$_SESSION['companyhr'];
     <br>
     <br>
 <div class="container">
+
+<div class="row" style="display: flex;justify-content: center;">
+<input class="radio" type="radio" name="alg_Type" id="HP" value="job" onclick="location.href='dashboard.php'" <?php echo ($page == 'job') ? 'checked="checked"' : ''; ?> /> <label class="choice" for="HP">Jobs</label>
+&nbsp;&nbsp;
+<input class="radio" type="radio" name="alg_Type" id="HP" value="vendor" onclick="location.href='showvendors.php'" <?php echo ($page == 'vendor') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Vendors</label>
+&nbsp;&nbsp;
+<input class="radio" type="radio" name="alg_Type" id="HP" value="manager" onclick="location.href='showmanagers.php'" <?php echo ($page == 'manager') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Managers</label>
+
+</div>
    
     <div class="row">
     <div class="col-md-2 fixed-top">
@@ -246,7 +256,12 @@ $query='';
                 <tr>
                 <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
               
-                    <td><?php echo $row1['stud_name'];?>&nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a></td>
+                    <td>
+                    <?php echo $row1['stud_name'];?>
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
+                   
+                   </td>
                     <td><?php echo $row1['email'];?></td>
                
                     <td><?php echo $row1['curr_ctc'];?></td>
@@ -284,6 +299,27 @@ $query='';
        
 </div><!-- tab content -->
 </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">This Job Feedbacks</h4>
+      </div>
+      <div class="modal-body thisjob">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 </body>
  <!-- ============ JOBS END ============ -->
@@ -663,11 +699,37 @@ function urlchange(cat){
                                 data=JSON.parse(response)
                                 console.log(data,typeof(data));
                                 // location.reload();
-var newtext='Status: '+data.Status+'\nFeedback: '+data.Note+'\n Applied_at: '+data.Status_update.slice(0,10)
+var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,   Applied_at: '+data.Status_update.slice(0,10)
                                 $('#'+id).tooltip('hide')
                                 .attr('data-original-title',newtext)
                                 .tooltip('show');
                                
+                            })
+                            .fail(function() {
+                                alert("error while fetching stats");
+                            });
+     }
+
+     function showthisjob(id){
+        //  alert(id);
+        
+        //  ajax request to fetch job stats
+
+        
+                            $.ajax({
+                                url: '../jobstats.php',
+                                type: 'POST',
+                            
+                                data: {param1: id},
+                            })
+                            .done(function(response) {
+                                // alert(response);
+                                data=JSON.parse(response)
+                                console.log(data,typeof(data));
+                             
+                     $('.thisjob').html(data.Status);
+                      // Display Modal
+      $('#myModal').modal('show'); 
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
