@@ -62,7 +62,7 @@ $page="job";
 <input class="radio" type="radio" name="alg_Type" id="HP" value="manager" onclick="location.href='showmanagers.php'" <?php echo ($page == 'manager') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Managers</label>
 
 </div>
-   
+   <br>
     <div class="row">
     <div class="col-md-2 fixed-top">
 <h3>Jobs</h3><span><?php echo $hrcompany;?></span>
@@ -92,7 +92,8 @@ $page="job";
 </div>
 <div class="tab-content col-md-10">
 <div style="display:none"  class="text-center tobe-reused">
-   <select id="admins_email" style="color:black;height:40px;"> 
+<div style="display:flex;justify-content: center;">
+   <select id="admins_email" class="form-control" style="width:50%"> 
 
         <option value="" >Select Coordinator</option>
 
@@ -110,24 +111,31 @@ $page="job";
     </select>
 
     <button id="send_ids" class="btn btn-primary"  onclick="sendids();">Send</button>
+    </div>
     <br>
-    <br>
-    <label>Feedback</label>
+   
+    <div style="display:flex;justify-content: center;">
+    <div>
+    <!-- <label>Feedback</label> -->
     <select id="updatenotebtn" class="form-control">
         <option value="hold" >Hold</option>
         <option value="shortlist" >Shortlist</option>
         <option value="rejected" >Reject</option>
         <option value="blacklist">Blacklist</option>
     </select>
-    <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="Hold" required> -->
-  
+    </div>
+    <div>
+    <input id="hrfeedback" class="form-control" name="hrfeedback" placeholder="detailed feedback" value="feedback" required>
+  </div>
+  </div>
+  <br>
     <!-- <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
                     <option value="Round 1">Round 1</option>
                     <option value="Round 2">Round 2</option>
                     <option value="Round 3">Round 3</option>
                     <option value="Round 4">Round 4</option>
     </select> -->
-                    &nbsp;
+                    <!-- &nbsp; -->
                     <button class="btn btn-info" onclick="updatestatus();">Save</button>
      <!-- <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button> -->
                     <br>
@@ -165,7 +173,7 @@ if(!empty($_GET['jid'])){
 
 <ul class="nav nav-tabs">
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
-    <li class='to_process'><a  onclick="setstatus('to_process')">To be processed&nbsp;<span></span></a></li>
+    <li class='to_process'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
     <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
@@ -379,6 +387,11 @@ function showpage(postid){
         var newArray1=[];
         var is_checked=false;
 
+
+$('#admins_email').on('change', function () {
+    $('#send_ids').prop('disabled', !$(this).val());
+}).trigger('change');
+
    
     $(".studentcheckbox1").click(function(){
         //  $('.tobe-reused').show();
@@ -535,18 +548,17 @@ function showpage(postid){
 
         var statusvalue="hr";
         var notevalue=$('#updatenotebtn').val();
-       
-
+        var hrfeedback=$('#hrfeedback').val();
         newArray1.forEach(function(obj){
 
             var stid=obj.split(',')[0];
             var jid="<?php echo $_GET['jid']?>";
-var ps1="";
-var ps2="";
+            var ps1="";
+            var ps2="";
          
 
             // call to function for updating status
-            updatestatusofeach(stid,jid,statusvalue,notevalue,ps1,ps2);
+            updatestatusofeach(stid,jid,statusvalue,notevalue,hrfeedback,ps2);
         });
 
     }

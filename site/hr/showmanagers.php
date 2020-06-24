@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE| E_PARSE);
 
 if(isset($_SESSION['emailhr'])){
     // echo $_SESSION['company'];
@@ -88,35 +88,36 @@ $result = $db->query($sql);
 if ($result ->num_rows >0) {
    
     while($row1 = $result->fetch_assoc()) {
-        ?>
-        <tr id="<?php echo $row1["id"];?>" >
-        
-       
-        <td  contenteditable="false"> <?php echo $row1["name"];?></td>
-        <td contenteditable="false"><?php echo $row1["email"];?></td>
-        <td contenteditable="false"><?php echo $row1["password"];?></td>
-        <td contenteditable="false" style="background:cadetblue">
-       <select  class="multiselect" name="select[]" multiple="multiple"></select>
-        </td>
+        $companies=json_decode(stripslashes($row1['companies']));
+        // var_dump($companies);
+        if (in_array($hrcompany, $companies)) 
+            { 
+                 ?>
+                    <tr id="<?php echo $row1["id"];?>" >
+                    <td  contenteditable="false"> <?php echo $row1["name"];?></td>
+                    <td contenteditable="false"><?php echo $row1["email"];?></td>
+                    <td contenteditable="false"><?php echo $row1["password"];?></td>
+                    <td contenteditable="false" style="background:cadetblue">
+                <select  class="multiselect" name="select[]" multiple="multiple"></select>
+                    </td>
+                    <td contenteditable="false"><?php echo $row1["contact"];?></td>
+                    <td contenteditable="false"><select role='<?php echo $row1["is_manager"];?>' value="<?php echo $row1['is_manager'];?>" class="btn btn-success btn-sm role"><option value="1"<?php if ($row1['is_manager'] == '1')  echo 'selected = "selected"'; ?>>Accout Manager</option><option value="0"<?php if ($row1['is_manager'] == '0')  echo 'selected = "selected"'; ?>>Coordinator</option></select></td>
 
-        <td contenteditable="false"><?php echo $row1["contact"];?></td>
+                    <td>
+            <!-- <button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button> -->
 
-
-        <td contenteditable="false"><select role='<?php echo $row1["is_manager"];?>' value="<?php echo $row1['is_manager'];?>" class="btn btn-success btn-sm role"><option value="1"<?php if ($row1['is_manager'] == '1')  echo 'selected = "selected"'; ?>>Accout Manager</option><option value="0"<?php if ($row1['is_manager'] == '0')  echo 'selected = "selected"'; ?>>Coordinator</option></select></td>
-       
-       
-        <td>
-<!-- <button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button> -->
-
-</td>
-<td>
-<button id="edit_button2" value="Delete" class="deletebtn btn btn-danger btn-sm">Delete</button>
-</td>
-        </tr>
-
+            </td>
+            <td>
+            <button id="edit_button2" value="Delete" class="deletebtn btn btn-danger btn-sm">Delete</button>
+            </td>
+                    </tr> 
      <?php   
     }
-} else {
+    else{
+    } 
+}
+}
+else {
     echo "0 results";
 }
 
@@ -261,7 +262,7 @@ $('.editbtn').click(function () {
 
 
                              $.ajax({
-                                url: '../deleteam.php',
+                                url: 'deleteam.php',
                                 type: 'POST',
                             
                                 data: {data:currentid},
