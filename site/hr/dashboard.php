@@ -173,7 +173,7 @@ if(!empty($_GET['jid'])){
 
 <ul class="nav nav-tabs">
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
-    <li class='to_process'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
+    <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
     <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
@@ -723,25 +723,38 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
      }
 
      function showthisjob(id){
-        //  alert(id);
-        
         //  ajax request to fetch job stats
-
-        
                             $.ajax({
-                                url: '../jobstats.php',
+                                url: '../thisjobstats.php',
                                 type: 'POST',
                             
-                                data: {param1: id},
+                                data: {param1: id,param2:<?php echo $_GET['jid'];?>},
                             })
                             .done(function(response) {
-                                // alert(response);
                                 data=JSON.parse(response)
-                                console.log(data,typeof(data));
-                             
-                     $('.thisjob').html(data.Status);
-                      // Display Modal
-      $('#myModal').modal('show'); 
+                                console.log(data);
+
+                                var html = "<table border='1|1'class='table table-striped'>";
+                                for (var i = 0; i < data.length; i++) {
+                                    if(data[i]){
+                                        for(var j=0;j<data[i].length;j++){
+                                            var res = data[i][j].split("$");
+                                            html+="<tr>";
+                                            html+="<td>"+res[1]+"</td>";
+                                            html+="<td>"+res[0]+"</td>";
+                                            html+="<td>"+res[2]+"</td>";
+                                            html+="</tr>";
+                                        }
+
+                                    }
+
+
+                                }
+                                html+="</table>";
+
+                                $('.thisjob').html(html);
+                                // Display Modal
+                                $('#myModal').modal('show'); 
                             })
                             .fail(function() {
                                 alert("error while fetching stats");

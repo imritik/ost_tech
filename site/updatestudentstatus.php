@@ -28,7 +28,32 @@ $ps2=$_POST['param6'];
 // var_dump("in hr");
         $insert = $db->query("UPDATE applied_table SET hr_note='$ps1',Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
     //    var_dump("UPDATE applied_table SET hr_note='$stud_note',Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
-       $dumpinsert=$db->query("INSERT into interaction_log (posting_id,stud_id,hr) values('$posting_id','$stud_id','$ps1')");
+
+
+                $prevQuery = "SELECT * FROM interaction_log WHERE posting_id = $posting_id and stud_id=$stud_id";
+                $prevResult = $db->query($prevQuery);
+                
+                if($prevResult->num_rows >0){
+                     while($row = $prevResult->fetch_assoc()){
+                         $feedback_unserialize=unserialize($row['hr']);
+                        $feedbackstring=$ps1.'$'.$_SESSION['emailhr'].'$'.date("Y-m-d");
+                        array_push($feedback_unserialize,$feedbackstring);
+                        $feedback_string=serialize($feedback_unserialize);
+                    $db->query("UPDATE IGNORE interaction_log SET hr='$feedback_string' WHERE posting_id = $posting_id and stud_id=$stud_id");
+
+                     }
+                // update
+
+                }
+                    else{
+                        $feedback=array();
+                        $feedbackstring=$ps1.'$'.$_SESSION['emailhr'].'$'.date("Y-m-d");
+                        array_push($feedback,$feedbackstring);
+                        $feedback_string=serialize($feedback);
+                    $db->query("INSERT into interaction_log (posting_id,stud_id,hr) values('$posting_id','$stud_id','$feedback_string')");
+                    }
+
+
         if($insert){
             $statusMsg = "Status updated";
         }else{
