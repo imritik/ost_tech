@@ -54,14 +54,7 @@ $page="job";
     <br>
 <div class="container">
 
-<div class="row" style="display: flex;justify-content: center;">
-<input class="radio" type="radio" name="alg_Type" id="HP" value="job" onclick="location.href='dashboard.php'" <?php echo ($page == 'job') ? 'checked="checked"' : ''; ?> /> <label class="choice" for="HP">Jobs</label>
-&nbsp;&nbsp;
-<input class="radio" type="radio" name="alg_Type" id="HP" value="vendor" onclick="location.href='showvendors.php'" <?php echo ($page == 'vendor') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Vendors</label>
-&nbsp;&nbsp;
-<input class="radio" type="radio" name="alg_Type" id="HP" value="manager" onclick="location.href='showmanagers.php'" <?php echo ($page == 'manager') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Managers</label>
 
-</div>
    <br>
     <div class="row">
     <div class="col-md-2 fixed-top">
@@ -162,10 +155,7 @@ if(!empty($_GET['jid'])){
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
                     echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
-                    <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" target="blank" style="color:white">Edit</a></button>
-                    <button class="btn btn-danger btn-sm">Delete</button>
-                    <button class="btn btn-info btn-sm">Repost</button></div>
-                    <br>
+                  
                     ';
                             
                             }
@@ -177,11 +167,9 @@ if(!empty($_GET['jid'])){
                 ?>
 
 <ul class="nav nav-tabs">
-    <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
-    <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
 
   </ul>
 
@@ -704,7 +692,7 @@ function urlchange(cat){
 
      function showlastjob(id){
         //  alert(id);
-        jid=<?php echo $_GET['jid'];?>
+          jid=<?php echo $_GET['jid'];?>
         //  ajax request to fetch job stats
                             $.ajax({
                                 url: '../jobstats.php',

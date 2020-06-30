@@ -74,7 +74,7 @@ $users = '<table class="table" style="transform: rotateX(180deg);">
     <th><input type="text" class="form-control width-auto" placeholder="College"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Contact"></th>
     <th>Resume</th>
-    <th><input type="text" class="form-control width-auto" placeholder="Status"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Comment"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Current CTC"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Company"></th>
@@ -114,7 +114,8 @@ if(sizeof($studids)){
         <td><input type="checkbox" class="studentcheckbox1" value=" '.$ssid.'" name="chk"></td>
             <td>'.$number.'</td>
             <td>'.$jidd.'</td>
-            <td>'.$row1['stud_name'].'&nbsp;&nbsp;<a id="'.$ssid.'"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a></td>
+            <td>'.$row1['stud_name'].'
+            &nbsp;&nbsp;<a id="'.$ssid.'"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a></td>
             <td>'.$row1['email'].'</td>
             <td>'.$row1['ug_college'].'</td>
             <td>'.$row1['contact'].'</td>
@@ -194,7 +195,7 @@ if(!empty($_GET['status'])){
         right:0;
         bottom:0;
         height:100%;
-        margin: -30px 100px -80px;
+        /* margin: -30px 100px -80px; */
     }
     .df4{
         position:fixed;
@@ -244,7 +245,9 @@ if(!empty($_GET['status'])){
     </div>
     <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("shortlist");'>View Shortlisted Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied(Hold)</a> &nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("rejected");'>View Rejected Students</a> </div>
 <div style="display:none"  class="text-center tobe-reused">
-   <select id="admins_email" style="color:black;height:40px;"> 
+<div style="display:flex;justify-content:center">  
+<div> 
+<select id="admins_email" class="form-control" style="color:black;height:40px;"> 
 
         <option value="" >Select Coordinator</option>
 
@@ -260,10 +263,15 @@ if(!empty($_GET['status'])){
         <?php }} ?>
 
     </select>
-
+</div>
+<div>
     <button id="send_ids" class="btn btn-primary"  onclick="sendids();">Send</button>
+    </div>
+</div>
+<br>
+    <div style="display:flex;justify-content:center">
     <br>
-    <br>
+    <div>
     <label>Feedback</label>
     <select id="updatenotebtn" class="form-control">
         <option value="hold" >Hold</option>
@@ -271,13 +279,17 @@ if(!empty($_GET['status'])){
         <option value="rejected" >Reject</option>
         <option value="blacklist">Blacklist</option>
     </select>
+    </div>
     <!-- <input id="updatenotebtn" class="form-control" placeholder="optional note" value="Hold" required> -->
-    <br>
-    <label>Profile Segment 1</label>
+<div>    <label>Profile Segment 1</label>
     <input id="ps1" class="form-control" placeholder="segment" required>
-    <br>
+    </div>
+    <div>
     <label>Profile Segment 1</label>
     <input id="ps2" class="form-control" placeholder="segment" required>
+    </div>
+    <br>
+    </div>
     <br>
     <!-- <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
                     <option value="Round 1">Round 1</option>
@@ -288,7 +300,6 @@ if(!empty($_GET['status'])){
                     &nbsp;
                     <button class="btn btn-info" onclick="updatestatus();">Save</button>
      <!-- <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button> -->
-                    <br>
             
 </div> 
     <br>
@@ -353,6 +364,10 @@ function downloadCSV(csv, filename) {
     </script>
 
     <script>
+
+$('#admins_email').on('change', function () {
+    $('#send_ids').prop('disabled', !$(this).val());
+}).trigger('change');
          var favorites = [];
         var jobrefs=[];
         var newArray1=[];

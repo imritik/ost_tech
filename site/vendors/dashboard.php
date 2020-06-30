@@ -1,7 +1,6 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-
 if(isset($_SESSION['emailvendors'])){
     // echo $_SESSION['company'];
   }
@@ -25,7 +24,8 @@ $vendoremail=$_SESSION['emailvendors'];
 
     <!-- Main Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
 
 </head>
@@ -99,7 +99,7 @@ $vendoremail=$_SESSION['emailvendors'];
 
     <!-- ============ TITLE START ============ -->
 
-    <section id="title">
+    <section id="title" style="padding: 40px 0;">
     <?php
 // Load the database configuration file
 // include_once 'dbConfig.php';
@@ -163,7 +163,7 @@ if(!empty($_GET['jid'])){
                     <br>
                 </div>
                         </div>
-                        <br>
+                        <!-- <br> -->
                         <!-- -----------filters---- -->
             </div>
 
@@ -173,7 +173,7 @@ if(!empty($_GET['jid'])){
 
                 <!-- ============ JOBS START ============ -->
 
-                <section id="jobs">
+                <section id="jobs"style="padding: 40px 0;">
                     <div class="container">
                     <div class="row" style="text-align:center">
                      <?php
@@ -196,8 +196,188 @@ if(!empty($_GET['jid'])){
                     </div>
    
 
-            <br>
-                                        <table class="table table-bordered">
+
+ <div class="tab-pane active" id="tab_a">
+        
+        <?php
+
+if(!empty($_GET['jid'])){
+    $jid=$_GET['jid'];
+    ?>
+
+    <script>
+   $('#'+<?php echo $jid;?>).addClass('active');    
+    </script>
+    <?php
+// /
+                }
+                ?>
+
+<ul class="nav nav-tabs" style="padding: 0 339px;">
+    <li class='uploaded'><a  onclick="setstatus('uploaded')">Uploaded CV&nbsp;<span></span></a></li>
+    <li class='shared'><a  onclick="setstatus('shared')">Shared&nbsp;<span></span></a></li>
+    <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
+    <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
+
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+       <div class="form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
+      <table class="table" style="transform: rotateX(180deg);">
+<tr class="filters">
+<th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
+    <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
+   
+    <th><input type="text" class="form-control width-auto" placeholder="Current CTC"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
+   
+    <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
+    <th>Resume</th>
+   
+    </tr>
+    <tbody>
+    <?php 
+
+    if(!empty($_GET['jid'])&& !empty($_GET['status'])){
+                $jid=$_GET['jid'];
+                $status=$_GET['status'];
+                ?>
+                 <script>
+   $('.<?php echo $status;?>').addClass('active');    
+    </script>
+    <?php
+$query='';
+        if($status=='uploaded'){
+                $query = "SELECT * FROM Student where Uploaded_by='$vendoremail'";
+
+        }
+        else if($status=='shared'){
+
+                    // -----get students id forwarded 
+
+                            // List Users
+                    $query1 = "SELECT * FROM to_admin where recieved_email='$vendoremail' and job_id_ref='$jid'";
+                    if (!$result1 = mysqli_query($db, $query1)) {
+                        exit(mysqli_error($db));
+                    }
+                    if (mysqli_num_rows($result1) > 0) {
+                        while ($row1 = mysqli_fetch_assoc($result1)) {
+                            $data1=json_decode(stripslashes($row1['stud_id']));
+                                        foreach($data1 as $d){
+                                            array_push($list,$d);
+                        } 
+                    }
+                }
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+
+        }
+        else{
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+
+        }
+            if (!$result = mysqli_query($db, $query)) {
+                exit(mysqli_error($db));
+            }
+            $studids=array();
+            // $studstatuss=array();
+            
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    array_push($studids,$row['student_id']);
+                } 
+            }
+            else{
+                $studids=$list;
+            }
+
+
+        if(sizeof($studids)){
+            // $number = 1;
+            $arrlength = count($studids);
+        // var_dump($studids);
+        ?>
+        <script>
+         $('.<?php echo $status;?>').find( "span" ).html('(<?php echo $arrlength;?>)'); 
+        </script>
+        <?php
+            for($x = 0; $x < $arrlength; $x++) {
+            
+            
+
+            // Get images from the database
+            $query = $db->query("SELECT * FROM Student WHERE student_id='$studids[$x]'");
+
+        
+
+            if($query ->num_rows ==1){
+            $row1 = $query->fetch_assoc();
+                // echo $row1;
+            $sturesume=$row1["resume"];
+            $ssid=$row1['student_id'];
+            $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$sturesume;
+            //    echo $ssid;
+            // while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                <tr>
+                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
+              
+                    <td>
+                    <?php echo $row1['stud_name'];?>
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
+                   
+                   </td>
+                    <td><?php echo $row1['email'];?></td>
+               
+                    <td><?php echo $row1['curr_ctc'];?></td>
+                    <td><?php echo $row1['expected_ctc'];?></td>
+              
+                    <td><?php echo $row1['notice_period']?>
+                    </td>
+                    <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
+                
+                </tr>
+                <?php
+                // $number++;
+            // }
+            }}
+            // $users .= '</table>';
+
+        }
+            else{
+                // $users='No Student found!';
+                echo "No Candidates";
+            }
+    }
+
+
+    ?>
+
+    </tbody>
+    </table>
+    </div>
+    </div>
+   
+  </div>
+            <!-- -------------------------------------- -->
+        </div>
+       
+<!-- </div> -->
+            <!-- <br> -->
+                                      
+
+
+                                <!-- -------php code to fetch data from two tables---- -->
+
+                            
+            <?php
+            // if(isset($_POST['showstudentlist'])){
+            if (isset($_COOKIE["vendorduplicate"])){
+                ?>
+
+  <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="filters">
                     <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
@@ -226,12 +406,7 @@ if(!empty($_GET['jid'])){
                                                 </div>
 
 
-                                <!-- -------php code to fetch data from two tables---- -->
-
-                            
-            <?php
-            // if(isset($_POST['showstudentlist'])){
-            if (isset($_COOKIE["vendorduplicate"])){
+                <?php
             
                 $studlistobtain=explode(",",$_COOKIE['vendorduplicate']);
                 $duplicatestatus=explode(",",$_COOKIE['duplicatestatus']);
@@ -338,6 +513,25 @@ else{
 
 <!-- Show/hide CSV upload form -->
 <script>
+   
+
+    function clearuri(){
+        var uri = window.location.toString();
+                                if (uri.indexOf("?") > 0) {
+                                    var clean_uri = uri.substring(0, uri.indexOf("?"));
+                                    window.history.replaceState({}, document.title, clean_uri);
+                                }
+
+    }
+    function setstatus(status){
+        var uri = window.location.toString();
+                                if (uri.indexOf("&") > 0) {
+                                    var clean_uri = uri.substring(0, uri.indexOf("&"));
+                                    window.history.replaceState({}, document.title, clean_uri);
+                                }
+            location.replace(window.location.href+'&status='+status);
+
+    }
 function formToggle(ID){
     var element = document.getElementById(ID);
     if(element.style.display === "none"){
