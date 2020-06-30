@@ -6,7 +6,7 @@ $adminid=$_POST['data'];
 // $stud_id=$_POST['param2'];
 
   // Insert image file name into database
-  $insert = $db->query("DELETE FROM vendors WHERE id='$adminid' ");
+  $insert = $db->query("DELETE FROM admins WHERE id='$adminid' ");
   if($insert){
       $statusMsg = "Deleted";
   }else{

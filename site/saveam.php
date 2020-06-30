@@ -24,17 +24,17 @@ $oldemail='';
 
 
 
- $prevQuery = "SELECT * FROM coordinators WHERE id = $id";
+ $prevQuery = "SELECT * FROM admins WHERE id = $id";
  $prevResult = $db->query($prevQuery);
  
  if($prevResult->num_rows >0){
      // Update member data in the database
-     $db->query("UPDATE IGNORE coordinators SET name = '$name', email = '$email', password = '$password', is_manager = '$role',companies='$companies',contact='$contact' WHERE id = $id");
+     $db->query("UPDATE IGNORE admins SET Full_name = '$name', email = '$email', password = '$password',contact='$contact' WHERE id = $id");
     //  $db->query("UPDATE to_admin SET ")
      echo "Updated";
  }else{
      // Insert member data in the database
-     $db->query("INSERT INTO coordinators (name,email,password,companies,contact,is_manager,account_creation) VALUES ('$name','$email','$password','$companies','$contact','$role',NOW())");
+     $db->query("INSERT INTO admins (Full_name,email,password,company,role,contact,added_on) VALUES ('$name','$email','$password','$companies','$role','$contact',NOW())");
     echo "Inserted";
     }
 

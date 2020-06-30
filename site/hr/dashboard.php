@@ -60,6 +60,8 @@ $page="job";
 <input class="radio" type="radio" name="alg_Type" id="HP" value="vendor" onclick="location.href='showvendors.php'" <?php echo ($page == 'vendor') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Vendors</label>
 &nbsp;&nbsp;
 <input class="radio" type="radio" name="alg_Type" id="HP" value="manager" onclick="location.href='showmanagers.php'" <?php echo ($page == 'manager') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Managers</label>
+&nbsp;&nbsp;
+<input class="radio" type="radio" name="alg_Type" id="HP" value="recruiter" onclick="location.href='showrecruiters.php'" <?php echo ($page == 'recruiter') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Recruiters</label>
 
 </div>
    <br>
@@ -163,11 +165,10 @@ if(!empty($_GET['jid'])){
                             $cname=$row22['company_name'];
                     echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" target="blank" style="color:white">Edit</a></button>
-                    <button class="btn btn-danger btn-sm">Delete</button>
-                    <button class="btn btn-info btn-sm">Repost</button></div>
+                    <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
+                    <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button></div>
                     <br>
                     ';
-                            
                             }
                     }
                     else{
@@ -338,6 +339,41 @@ $query='';
  <!-- ============ JOBS END ============ -->
 
 <script>
+
+                            
+  function deletejobpart(x){
+                            $.ajax({
+                                url: '../deletejob.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error while deleting!");
+                            });
+    }
+
+    function repostpart(x){
+        console.log(x);
+                             $.ajax({
+                                url: '../repost.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                               
+                            })
+                            .fail(function() {
+                                alert("error in reposting");
+                            });
+    }
 
 function showpage(postid){
     document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

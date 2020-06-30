@@ -60,6 +60,8 @@ $page="vendor";
 <input class="radio" type="radio" name="alg_Type" id="HP" value="vendor" onclick="location.href='showvendors.php'" <?php echo ($page == 'vendor') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Vendors</label>
 &nbsp;&nbsp;
 <input class="radio" type="radio" name="alg_Type" id="HP" value="manager" onclick="location.href='showmanagers.php'" <?php echo ($page == 'manager') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Managers</label>
+&nbsp;&nbsp;
+<input class="radio" type="radio" name="alg_Type" id="HP" value="recruiter" onclick="location.href='showrecruiters.php'" <?php echo ($page == 'recruiter') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Recruiters</label>
 
 </div>
    
@@ -82,7 +84,7 @@ $page="vendor";
 
 $sql="";
 
-$sql = "SELECT * FROM vendors";
+$sql = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
 $result = $db->query($sql);
 
 if ($result ->num_rows >0) {
@@ -92,7 +94,7 @@ if ($result ->num_rows >0) {
         <tr id="<?php echo $row1["id"];?>" >
         
        
-        <td  contenteditable="false"> <?php echo $row1["name"];?></td>
+        <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
         <td contenteditable="false"><?php echo $row1["email"];?></td>
         <td contenteditable="false"><?php echo $row1["password"];?></td>
         <!-- <td contenteditable="false" style="background:cadetblue">
@@ -150,7 +152,7 @@ function add_row()
  var new_country=document.getElementById("new_country").value;
  var new_age=document.getElementById("new_age").value;
 //  var new_companies=document.getElementById("companies").value;
-//  var new_role=document.getElementById("new_role").value;
+ var new_role="vendors";
  var new_contact=document.getElementById("new_contact").value;
 
 // if(typeof(new_companies)=='string'){
@@ -164,8 +166,8 @@ newadmin={}
 newadmin.name=new_name;
 newadmin.email=new_country;
 newadmin.password=new_age;
-// newadmin.role=new_role;
-// newadmin.company=JSON.stringify(new_companies);
+newadmin.role=new_role;
+newadmin.company='<?php echo $hrcompany;?>';
 newadmin.contact=new_contact;
 
 console.log(newadmin);
@@ -173,7 +175,7 @@ console.log(newadmin);
 // ------ajax request to save new admin details-----
 
                              $.ajax({
-                                url: '../savevendor.php',
+                                url: '../saveam.php',
                                 type: 'POST',
                             
                                 data: {data:newadmin},
@@ -210,10 +212,10 @@ $('.editbtn').click(function () {
                       admindata={}
                       admindata.name=currentTD[0]['innerHTML'];
                       admindata.email=currentTD[1]['innerHTML'];
-                      admindata.password=currentTD[2]['innerHTML'];
-                      admindata.company=JSON.stringify($('#'+currentid+' td .multiselect').val());
+                     admindata.password=currentTD[2]['innerHTML'];
+                      admindata.company='<?php echo $hrcompany;?>';
                       admindata.contact=currentTD[4]['innerHTML'];
-                      admindata.role=$('#'+currentid+' td .role').val();
+                      admindata.role="vendors";
                       admindata.id=currentid;
                   });
 

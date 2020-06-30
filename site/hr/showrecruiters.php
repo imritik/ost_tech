@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL & ~E_NOTICE| E_PARSE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 if(isset($_SESSION['emailhr'])){
     // echo $_SESSION['company'];
@@ -12,7 +12,7 @@ if(isset($_SESSION['emailhr'])){
 include '../../dbConfig.php';
 $hremail=$_SESSION['emailhr'];
 $hrcompany=$_SESSION['companyhr'];
-$page="manager";
+$page="recruiter";
   ?>
 
   <!DOCTYPE html>
@@ -67,13 +67,16 @@ $page="manager";
    
    
    <br>
-<div id="wrapper" style="height:auto;overflow-x:scroll">
+<div id="wrapper" style="height:auto;">
 <table id="data_table" border=1 class="table table-striped">
 <tr>
 <th>Name</th>
 <th>Email</th>
 <th>Password</th>
+<!-- <th>Companies</th> -->
 <th>Contact</th>
+<!-- <th>Role</th> -->
+
 </tr>
 <!-- ---------- -->
                         
@@ -81,38 +84,41 @@ $page="manager";
 
 $sql="";
 
-$sql = "SELECT * FROM admins where role='manager' and company='$hrcompany'";
+$sql = "SELECT * FROM admins where role='recruiters' and company='$hrcompany'";
 $result = $db->query($sql);
 
 if ($result ->num_rows >0) {
    
     while($row1 = $result->fetch_assoc()) {
-        // $companies=json_decode(stripslashes($row1['companies']));
-        // var_dump($companies);
-        // if (in_array($hrcompany, $companies)) 
-        //     { 
-                 ?>
-                    <tr id="<?php echo $row1["id"];?>" >
-                    <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
-                    <td contenteditable="false"><?php echo $row1["email"];?></td>
-                    <td contenteditable="false"><?php echo $row1["password"];?></td>
-                    <td contenteditable="false"><?php echo $row1["contact"];?></td>
+        ?>
+        <tr id="<?php echo $row1["id"];?>" >
+        
+       
+        <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
+        <td contenteditable="false"><?php echo $row1["email"];?></td>
+        <td contenteditable="false"><?php echo $row1["password"];?></td>
+        <!-- <td contenteditable="false" style="background:cadetblue">
+       <select  class="multiselect" name="select[]" multiple="multiple"></select>
+        </td> -->
 
-                    <td>
-            <!-- <button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button> -->
+        <td contenteditable="false"><?php echo $row1["contact"];?></td>
 
-            </td>
-            <td>
-            <button id="edit_button2" value="Delete" class="deletebtn btn btn-danger btn-sm">Delete</button>
-            </td>
-                    </tr> 
+
+        <!-- <td contenteditable="false"><select role='<?php echo $row1["is_manager"];?>' value="<?php echo $row1['is_manager'];?>" class="btn btn-success btn-sm role"><option value="1"<?php if ($row1['is_manager'] == '1')  echo 'selected = "selected"'; ?>>Accout Manager</option><option value="0"<?php if ($row1['is_manager'] == '0')  echo 'selected = "selected"'; ?>>Coordinator</option></select></td> -->
+       
+       
+        <td>
+<!-- <button id="edit_button1" value="Edit" class="editbtn btn btn-info btn-sm">Edit</button> -->
+
+</td>
+<td>
+<button id="edit_button2" value="Delete" class="deletebtn btn btn-danger btn-sm">Delete</button>
+</td>
+        </tr>
+
      <?php   
-    // }
-    // else{
-    // } 
-}
-}
-else {
+    }
+} else {
     echo "0 results";
 }
 
@@ -125,8 +131,10 @@ else {
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
 <td><input type="text" id="new_age"></td>
+<!-- <td style="background:cadetblue"><select id="companies" class="multiselect" multiple="multiple"></select></td> -->
 <td><input type="text" id="new_contact"></td>
-<td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add"></td>
+<!-- <td><select id="new_role" class="btn btn-success btn-sm"><option value="1">Account Manager</option><option value="0">Coordinator</option></select></td> -->
+<td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add Row"></td>
 </tr>
 
 </table>
@@ -135,21 +143,19 @@ else {
 </body>
 </html>
 <script>
-
-
-
 function add_row()
 {
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
  var new_age=document.getElementById("new_age").value;
- var new_role="manager";
+//  var new_companies=document.getElementById("companies").value;
+ var new_role="recruiters";
  var new_contact=document.getElementById("new_contact").value;
 
-if(typeof(new_companies)=='string'){
- new_companies = [new_companies];
-}
-if(new_country=='' || new_name=='' || new_age=='' || new_role==''){
+// if(typeof(new_companies)=='string'){
+//  new_companies = [new_companies];
+// }
+if(new_country=='' || new_name=='' || new_age=='' ){
     alert("fill details correctly");
 }
 else{
@@ -203,10 +209,10 @@ $('.editbtn').click(function () {
                       admindata={}
                       admindata.name=currentTD[0]['innerHTML'];
                       admindata.email=currentTD[1]['innerHTML'];
-                    admindata.password=currentTD[2]['innerHTML'];
+                      admindata.password=currentTD[2]['innerHTML'];
                       admindata.company='<?php echo $hrcompany;?>';
                       admindata.contact=currentTD[4]['innerHTML'];
-                      admindata.role="manager";
+                      admindata.role="recruiters";
                       admindata.id=currentid;
                   });
 
@@ -283,54 +289,54 @@ $('.editbtn').click(function () {
 
   
     <!-- Modernizr Plugin -->
-    <script src="js/modernizr.custom.79639.js"></script>
+    <script src="../js/modernizr.custom.79639.js"></script>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery-1.11.2.min.js"></script>
+    <!-- jQuery (../necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-1.11.2.min.js"></script>
 
-    <!-- Bootstrap Plugins -->
-    <script src="js/bootstrap.min.js"></script>
+    <!-- Bootstra../p Plugins -->
+    <script src="../js/bootstrap.min.js"></script>
 
-    <!-- Retina Plugin -->
-    <script src="js/retina.min.js"></script>
+    <!-- Retina P../lugin -->
+    <script src="../js/retina.min.js"></script>
 
-    <!-- ScrollReveal Plugin -->
-    <script src="js/scrollReveal.min.js"></script>
+    <!-- ScrollRe../veal Plugin -->
+    <script src="../js/scrollReveal.min.js"></script>
 
-    <!-- Flex Menu Plugin -->
-    <script src="js/jquery.flexmenu.js"></script>
+    <!-- Flex Men../u Plugin -->
+    <script src="../js/jquery.flexmenu.js"></script>
 
-    <!-- Slider Plugin -->
-    <script src="js/jquery.ba-cond.min.js"></script>
-    <script src="js/jquery.slitslider.js"></script>
+    <!-- Slider P../lugin -->
+    <script src="../js/jquery.ba-cond.min.js"></script>
+    <script src="../js/jquery.slitslider.js"></script>
 
-    <!-- Carousel Plugin -->
-    <script src="js/owl.carousel.min.js"></script>
+    <!-- Carousel../ Plugin -->
+    <script src="../js/owl.carousel.min.js"></script>
 
-    <!-- Parallax Plugin -->
-    <script src="js/parallax.js"></script>
+    <!-- Parallax../ Plugin -->
+    <script src="../js/parallax.js"></script>
 
-    <!-- Counterup Plugin -->
-    <script src="js/jquery.counterup.min.js"></script>
-    <script src="js/waypoints.min.js"></script>
+    <!-- Counteru../p Plugin -->
+    <script src="../js/jquery.counterup.min.js"></script>
+    <script src="../js/waypoints.min.js"></script>
 
-    <!-- No UI Slider Plugin -->
-    <script src="js/jquery.nouislider.all.min.js"></script>
+    <!-- No UI Sl../ider Plugin -->
+    <script src="../js/jquery.nouislider.all.min.js"></script>
 
-    <!-- Bootstrap Wysiwyg Plugin -->
-    <script src="js/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Bootstra../p Wysiwyg Plugin -->
+    <script src="../js/bootstrap3-wysihtml5.all.min.js"></script>
 
-    <!-- Flickr Plugin -->
-    <script src="js/jflickrfeed.min.js"></script>
+    <!-- Flickr P../lugin -->
+    <script src="../js/jflickrfeed.min.js"></script>
 
-    <!-- Fancybox Plugin -->
-    <script src="js/fancybox.pack.js"></script>
+    <!-- Fancybox../ Plugin -->
+    <script src="../js/fancybox.pack.js"></script>
 
-    <!-- Magic Form Processing -->
-    <script src="js/magic.js"></script>
+    <!-- Magic Fo../rm Processing -->
+    <script src="../js/magic.js"></script>
 
-    <!-- jQuery Settings -->
-    <script src="js/settings.js"></script>
+    <!-- jQuery S../ettings -->
+    <script src="../js/settings.js"></script>
 
 
 
@@ -346,7 +352,7 @@ $(function() {
     // $companies_name=array();
     // gathering companies
 
-$sqlcomp = "SELECT * FROM employer_account where email='$hrcompany'";
+$sqlcomp = "SELECT * FROM employer_account";
 $resultcomp = $db->query($sqlcomp);
 
 if ($resultcomp ->num_rows >0) {
