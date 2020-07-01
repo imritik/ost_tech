@@ -13,6 +13,30 @@ include '../../dbConfig.php';
 $hremail=$_SESSION['emailhr'];
 $hrcompany=$_SESSION['companyhr'];
 $page="job";
+
+
+// Get status message
+if(!empty($_GET['status'])){
+    switch($_GET['status']){
+       
+        case 'succjob':
+            $statusType='alert-success';
+            $statusMsg='The job has been updated successfully.';
+            break;
+        case 'errjob':
+            $statusType='alert-danger';
+            $statusMsg='job update failed, please try again.';
+            break;
+           
+        case 'errfiletype':
+            $statusType='alert-danger';
+            $statusMsg='Sorry only pdf,docx files are allowed to upload.';
+            break;
+        default:
+            $statusType = '';
+            $statusMsg = '';
+    }
+}
   ?>
 
   <!DOCTYPE html>
@@ -54,6 +78,12 @@ $page="job";
     <br>
 <div class="container">
 <div style="padding:10px;">
+<!-- !-- Display status message --> 
+<?php if(!empty($statusMsg)){ ?>
+<div class="col-xs-12">
+    <div class="alert <?php echo $statusType; ?>"><?php echo $statusMsg; ?></div>
+</div>
+<?php } ?>
        <?php
 
 if(!empty($_GET['jid'])){
@@ -67,7 +97,7 @@ if(!empty($_GET['jid'])){
                         while($row22 = $result22->fetch_assoc()) {
                             ?>
 
-<form  action="post.php" method="post" enctype="multipart/form-data">
+<form  action="updatejob.php?jid=<?php echo $jid;?>" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <h2>Job Details</h2>
@@ -117,20 +147,41 @@ if(!empty($_GET['jid'])){
                             <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" required>
                         </div>
                          <div class="form-group" id="job-coordinator-group">
-                            <label for="job-email">Coordinator</label>
-<select class="form-control" name="coordinator" id="job-coordinator">
+                            <label for="job-email">Vendor</label>
+<select class="form-control" name="coordinator" id="job-coordinator" required>
 
- <option value="" >Select Coordinator</option>
+ <option value="" >Assign Vendor</option>
 
 <!-- -------php code to gather posted jobs---- -->
 <?php
 
-$query = $db->query("SELECT * FROM coordinators where is_manager=0");
+$query = $db->query("SELECT * FROM admins where role='vendors' and company='$hrcompany'");
             
 if($query ->num_rows >0){
     while($row = $query->fetch_assoc()){
 
-        echo '<option value="' . $row['email'] .'">' . $row['name'] .' ('.$row['email'].')' . '</option>';
+        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
+?>
+    <?php }} ?>
+
+</select>
+                        </div>
+
+                                <div class="form-group" id="job-recruiter-group">
+                            <label for="job-email">Recruiter</label>
+<select class="form-control" name="recruiter" id="job-Recruiter" required>
+
+ <option value="" >Assign Recruiter</option>
+
+<!-- -------php code to gather posted jobs---- -->
+<?php
+
+$query = $db->query("SELECT * FROM admins where role='recruiters' and company='$hrcompany'");
+            
+if($query ->num_rows >0){
+    while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
 ?>
     <?php }} ?>
 
@@ -138,7 +189,7 @@ if($query ->num_rows >0){
                         </div>
                         <div class="row text-center">
                     <p>&nbsp;</p>
-                    <button type="submit" name="submit" class="btn btn-primary btn-lg">Save <i class="fa fa-arrow-right"></i></button>
+                    <button type="submit" name="submit" id="register" class="btn btn-primary btn-lg">Update <i class="fa fa-arrow-right"></i></button>
                 </div>
                     </div>
              </div>
