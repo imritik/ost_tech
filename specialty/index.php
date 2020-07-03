@@ -27,7 +27,7 @@ setcookie("firsttimevisit", "no");
 
 <head>
     <meta charset="utf-8">
-    <title>Home &ndash; Specialty</title>
+    <title>Home &ndash;&nbsp;<?php echo $_SESSION['stud_name']; ?></title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,6 +44,10 @@ setcookie("firsttimevisit", "no");
     <link rel="apple-touch-icon" href="#">
     <link rel="apple-touch-icon" sizes="72x72" href="#">
     <link rel="apple-touch-icon" sizes="114x114" href="#">
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -104,9 +108,9 @@ $jobcount1=$querycat1 ->num_rows;
                             </h1>
                             <nav class="nav">
                                 <ul class="navigation-main">
-                                    <li  id="getappliedjobs" class="menu-item-btn">
+                                    <!-- <li  id="getappliedjobs" class="menu-item-btn">
                                         <a href="#">Applied Jobs</a>
-                                    </li>
+                                    </li> -->
                                     <li  id="getnotappliedjobs" class="menu-item-btn" style="display:none">
                                         <a href="index.php">Home</a>
                                     </li>
@@ -133,7 +137,7 @@ $jobcount1=$querycat1 ->num_rows;
                 </div>
             </div>
         </header>
-        <div class="page-hero page-hero-lg" style="background-image: url(images/hero-1.jpg);">
+        <div class="page-hero page-hero-lg" >
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -144,7 +148,6 @@ $jobcount1=$querycat1 ->num_rows;
                             </h2>
                             <p class="page-subtitle">
                                 <span class="text-theme"><?php echo $jobcount; ?></span>  jobs offered in the last
-                                <!-- <span class="text-theme">7</span> days. Search now. -->
                             </p>
                         </div>
                     </div>
@@ -177,81 +180,122 @@ $jobcount1=$querycat1 ->num_rows;
 
         <main class="main">
             <div class="container">
-                <div class="row notappliedjobsdiv">
-                    <div class="col-xl-12 col-lg-12 col-xs-12">
-                        <h3 class="section-title">
-                            <b><span id="newjob"></span></b>&nbsp;New Job(s) Found</h3>
 
-                        <div class="item-listing">
-                            
+             <div class="row">
+                            <div class="col-md-2 fixed-top">
 
-                            <!-- ----fetching jobs offered---- -->
+                        <ul id="menu" class="nav nav-pills nav-stacked">
+                        <li class="menu-item-btn active" ><a href="#">Home</a></li>
+                        <li id="getappliedjobs"><a href="#">Applied Jobs</a></li>
 
+                        <li id="getnotappliedjobs"><a href="index.php">Suggested Jobs</a></li>
+                        <li><a href="#">Messages</a></li>
+                        <li><a href="auth.php">Edit Profile</a></li>
 
-                              <?php
-                            
-if(sizeof($jobids)){
-
-    $arrlength = count($jobids);
-
-    for($x = 0; $x < $arrlength; $x++) {
-    
-
-    // Get offers from the database
-    $query = $db->query("SELECT *
-    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Offer'");
-
-    if($query ->num_rows ==1){
-        $row1 = $query->fetch_assoc();
-        $notapplied=$notapplied+1;
-        
-       ?>
-  
-
-
-    <div class="list-item">
-        <div class="list-item-main-info">
-            <p class="list-item-title">
-                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
-            </p>
-
-            <div class="list-item-meta">
-                <a href="#" class="list-item-tag item-badge job-type-contract"><?php echo $row1['Job_type']; ?></a>
-                <span class="list-item-company"><?php echo $row1['company_name']; ?></span>
-            </div>
-        </div>
-
-        <div class="list-item-secondary-info">
-            <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
-            <time class="list-item-time" datetime="2017-01-01"><?php echo $row1['posting_time']; ?></time>
-        </div>
-    </div>
-
-
-<?php 
-}}
-?>
-<?php
-}
-else{
-    echo "No job offered";
-}
-?>
-
-
+                        </ul>
                         </div>
-                    </div>
+                                    <div class="col-md-10 notappliedjobsdiv">
+                                        <div class="col-xl-12 col-lg-12 col-xs-12">
+                                            <h3 class="section-title">
+                                                <b><span id="newjob"></span></b>&nbsp;New Job(s) Found</h3>
+
+                                            <div class="item-listing">
+                                                
+
+                                                <!-- ----fetching jobs offered---- -->
+
+
+                                                <?php
+                                                
+                    if(sizeof($jobids)){
+
+                        $arrlength = count($jobids);
+                        if(!sizeof($arrlength)){
+
+                    ?>
+                    <table class="table" >
+                    <tr class="filters">
+                      <th>Job Title</th>
+    <th>Company</th>
+    <th>Location</th>
+    <th>Status</th>
+   
+    <th>Job Description</th>
+    <th>Applied At</th>
                     
+                        </tr>
+                        <tbody>
+                    <?php
+                        }
+                        for($x = 0; $x < $arrlength; $x++) {
+                        
 
-                </div>
-            </div>
-    </div>
-    </div>
+                        // Get offers from the database
+                        $query = $db->query("SELECT *
+                        FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Offer'");
+
+                        if($query ->num_rows ==1){
+                            $row1 = $query->fetch_assoc();
+                            $notapplied=$notapplied+1;
+                            
+                        ?>
+                    
+                                    <tr>
+                                
+                                        <td>
+                                        <?php echo $row1['job_title']; ?>
+                                    
+                                    </td>
+                                        <td><?php echo $row1['company_name']; ?></td>
+                                
+                                        <td><?php echo $row1['Job_location']; ?></td>
+                                        <td></td>
+                                
+                                        <td><?php echo $row1['Status_update'];?>
+                                        </td>
+                                    
+                                    </tr>
+
+                        <!-- <div class="list-item">
+                            <div class="list-item-main-info">
+                                <p class="list-item-title">
+                                    <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
+                                </p>
+
+                                <div class="list-item-meta">
+                                    <a href="#" class="list-item-tag item-badge job-type-contract"><?php echo $row1['Job_type']; ?></a>
+                                    <span class="list-item-company"><?php echo $row1['company_name']; ?></span>
+                                </div>
+                            </div>
+
+                            <div class="list-item-secondary-info">
+                                <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
+                                <time class="list-item-time" datetime="2017-01-01"><?php echo $row1['posting_time']; ?></time>
+                            </div>
+                        </div> -->
+
+                    <?php 
+                    }}
+                    ?>
+                    <?php
+                    }
+                    else{
+                        echo "No job offered";
+                    }
+                    ?>
 
 
+                                            </div>
+                                        </div>
+                                        
+
+                                    </div>
+                                <!-- </div> -->
+                        <!-- </div> -->
+   
     <!-- --------------------------------------------------------------------------- -->
-<div class="container">
-    <div class="row appliedjobsdiv" style="display:none;margin-top:-50px" >
+<!-- <div class="container"> -->
+    <div class="col-md-10 appliedjobsdiv" style="display:none;overflow:scroll" >
 
 
     <div class="col-xl-12 col-lg-12 col-xs-12">
@@ -271,6 +315,24 @@ if(sizeof($jobids)){
     $arrlength = count($jobids);
     // var_dump($jobids);
     $i=0;
+     if(sizeof($arrlength)){
+
+?>
+<div class="container">
+ <table class="table table-bordered table-striped">
+<tr class="filters">
+    <th>Job Title</th>
+    <th>Company</th>
+    <th>Location</th>
+    <th>Status</th>
+   
+    <th>Job Description</th>
+    <th>Applied At</th>
+   
+    </tr>
+    <tbody>
+<?php
+    }
     for($x = 0; $x < $arrlength; $x++) {
        
 
@@ -285,9 +347,27 @@ if(sizeof($jobids)){
         
        ?>
   
+   <tr>
+              
+                    <td>
+                    <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=5a" target="blank" ><?php echo $row1['job_title']; ?> </a>
+                   
+                   </td>
+                    <td><?php echo $row1['company_name']; ?></td>
+               
+                    <td><?php echo $row1['Job_location']; ?></td>
+              <td><?php echo $row1['Status']; ?></td>
+                    <td>
+                    <a href='../site/uploads/jd/<?php echo $jobids[$x];?>/<?php echo $row1["description_file"];?>' target="blank">&nbsp;(View)</a>
+                    </td>
 
 
-    <div class="list-item">
+                    <td><?php echo $row1['Status_update'];?>
+                    </td>
+                
+                </tr>
+
+    <!-- <div class="list-item">
         <div class="list-item-main-info">
             <p class="list-item-title">
                 <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=5a" target="blank" ><?php echo $row1['job_title']; ?> </a>
@@ -306,8 +386,7 @@ if(sizeof($jobids)){
             <br>
             <a href="#" class="list-item-tag item-badge" style="font-size:13px;"><b> <?php echo $statusarr[$i]; ?></b></a>
         </div>
-    </div>
-
+    </div> -->
 
 <?php 
 $i=$i+1;
@@ -321,8 +400,11 @@ $i=$i+1;
 else{
     echo "You have not applied for any job yet!";
 }
-?>
 
+?>
+ </tbody>
+    </table>
+    </div>
 
                         </div>
                     </div>
@@ -335,9 +417,9 @@ else{
     
     </div>
     </div>
-    </div>
+    <!-- </div> -->
     </main>
-
+<br>
     <footer class="footer">
         <div class="container">
          
@@ -356,7 +438,7 @@ else{
         </div>
         </div>
         </div>
-    </footer>
+    </footer> 
     </div>
     <!-- #page -->
 
@@ -371,6 +453,7 @@ else{
 
 
     <script>
+
     $(document).ready(function(){
         $('#newjob').html(<?php echo $notapplied; ?>);
         $('#appliedjob').html(<?php echo $applied; ?>);
@@ -381,7 +464,7 @@ else{
 
             $('.notappliedjobsdiv').hide();
             $('.appliedjobsdiv').show();
-            $('#getappliedjobs').hide();
+            // $('#getappliedjobs').hide();
             $('#getnotappliedjobs').show();
 
 
@@ -401,6 +484,10 @@ else{
             });
     });
     
+    $("#menu li a").click(function() {
+    $(this).parent().addClass('active').siblings().removeClass('active');
+
+    });
     </script>
 
 </body>
