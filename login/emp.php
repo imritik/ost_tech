@@ -7,11 +7,11 @@
       
       $myusername = mysqli_real_escape_string($db,$_POST['emailemp']);
       $mypassword = mysqli_real_escape_string($db,$_POST['passwordemp']); 
-      $role=$_POST['role'];
+      // $role=$_POST['role'];
     // print $myusername;
       // echo $role;
         
-      if($role=='admins'){
+      // if($role=='admins'){
 
           $sql = "SELECT * FROM admins WHERE email = '$myusername' and password = '$mypassword'";
           $result = mysqli_query($db,$sql);
@@ -34,51 +34,50 @@
 
                 header("location: ../site/roleindex.php");
               }
-              // else if($row['role']=='Level2'){
-              //   $_SESSION['emailemplevel2'] = $row['email'];
+              else if($row['role']=='Level2'){
+                $_SESSION['emailemplevel2'] = $row['email'];
 
-                // header("location: ../site/role2index.php");
-              // }
-              else{
-                //data uploaders
-                $_SESSION['emaildl']=$row['email'];
-                print $_SESSION['emaildl'];
-                header("location: ../site/loaders.php");
+                header("location: ../site/role2index.php");
               }
+              else {
+                $_SESSION['email'.$row['role']]=$row['email'];
+                $_SESSION['company'.$row['role']]=$row['company'];
+
+                header("location: ../site/".$row['role']."/dashboard.php");
+              }
+              
             
           }else {
             $error = "Your Login Name or Password is invalid";
              header("location: ../index.php");
           }
 
-      }
-      else{
+      // }
+      // else{
 
-        $sql = "SELECT * FROM $role WHERE email = '$myusername' and password = '$mypassword'";
-          $result = mysqli_query($db,$sql);
-          $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-        //   $active = $row['active'];
+      //   $sql = "SELECT * FROM $role WHERE email = '$myusername' and password = '$mypassword'";
+      //     $result = mysqli_query($db,$sql);
+      //     $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
           
-          $count = mysqli_num_rows($result);
+      //     $count = mysqli_num_rows($result);
           
-          // If result matched $myusername and $mypassword, table row must be 1 row
         
-          if($count == 1) {
+      //     if($count == 1) {
 
-            if($role=='hr'){
-              $_SESSION['companyhr']=$row['company'];
-            }
-            $_SESSION['email'.$role] = $row['email'];
+      //       if($role=='hr'){
+      //         $_SESSION['companyhr']=$row['company'];
+      //       }
+      //       $_SESSION['email'.$role] = $row['email'];
 
-                header("location: ../site/$role/dashboard.php");
+      //           header("location: ../site/$role/dashboard.php");
 
-          }
-          else {
-            $error = "Your Login Name or Password is invalid";
-             header("location: ../index.php");
-          }
+      //     }
+      //     else {
+      //       $error = "Your Login Name or Password is invalid";
+      //        header("location: ../index.php");
+      //     }
         
-      }
+      // }
     
    }
 ?>

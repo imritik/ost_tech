@@ -2,7 +2,7 @@
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
 
-if(isset($_SESSION['emailhr'])){
+if(isset($_SESSION['emailmanager'])){
     // echo $_SESSION['company'];
   }
   else{
@@ -10,8 +10,8 @@ if(isset($_SESSION['emailhr'])){
     header("location: ../../index.php");
   }
 include '../../dbConfig.php';
-$hremail=$_SESSION['emailhr'];
-$hrcompany=$_SESSION['companyhr'];
+$hremail=$_SESSION['emailmanager'];
+$hrcompany=$_SESSION['companymanager'];
 $page="job";
   ?>
 

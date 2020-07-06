@@ -155,7 +155,7 @@ if(!empty($_GET['jid'])){
                 <!-- CSV file upload form -->
                 <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
                 <br>
-                    <form action="../csv_v2/importData_vendor.php" method="post" enctype="multipart/form-data">
+                    <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?>" method="post" enctype="multipart/form-data">
                         <input type="file" name="file" />
                         <br>
                         <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
@@ -227,13 +227,11 @@ if(!empty($_GET['jid'])){
       <table class="table" style="transform: rotateX(180deg);">
 <tr class="filters">
 <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
-    <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
-   
-    <th><input type="text" class="form-control width-auto" placeholder="Current CTC"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
-   
-    <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Current CTC</th>
+    <th>Expected CTC</th>
+    <th>Notice period</th>
     <th>Resume</th>
    
     </tr>
@@ -325,9 +323,9 @@ $query='';
               
                     <td>
                     <?php echo $row1['stud_name'];?>
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
+                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
                     &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
-                   
+                    -->
                    </td>
                     <td><?php echo $row1['email'];?></td>
                
@@ -383,16 +381,9 @@ $query='';
                     <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
                                                       
                                                         <th>College </th>
-                                                        <!-- <th>College_location</th> -->
-                                                        <!-- <th>Student id</th> -->
                                                         <th>Name</th>
                                                         <th>Contact</th>
                                                         <th>Email</th>
-                                                        <!-- <th>Job title</th> -->
-                                                        <!-- <th>Status</th> -->
-                                                        <!-- <th>Note</th> -->
-                                                        <!-- <th>Applied on</th> -->
-                                                        <!-- <th>Status last updated</th> -->
                                                         <th>Registered on</th>
                                                         <th style="color:black">Resume</th>
                                                         <th>Status</th>

@@ -1,7 +1,9 @@
 <?php
 // Load the database configuration file
 // var_dump($_COOKIE);
+session_start();
 include_once 'dbConfig.php';
+// var_dump($_SESSION);
 if(isset($_POST['importSubmit'])){
     // Allowed mime types
     $csvMimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
@@ -14,7 +16,7 @@ if(isset($_POST['importSubmit'])){
     $studlistobtain=$_COOKIE['sids'];
     $duplicatecandidates=array();
     $duplicatestatus=array();
-
+    $jobid=$_GET['jid'];
             $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
             // Skip the first line
             fgetcsv($csvFile);
@@ -41,11 +43,11 @@ if(isset($_POST['importSubmit'])){
                 $cv_parsed = $line[24];
                 $turnup_rate = $line[35];
                 $offer_acceptance_rate=$line[36];
-                $source=$line[37];
+                $source="vendors";
                 $callers_comment=$line[38];
              
                 $is_active=$line[34];
-                $uploaded_by=$line[39];
+                $uploaded_by=$_SESSION['emailvendors'];
                
                 $ug_college=$line[18];
                 $ug_degree=$line[19];
@@ -132,14 +134,27 @@ if(isset($_POST['importSubmit'])){
                     // Insert member data in the database
                     $insert=$db->query("INSERT IGNORE INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,Offer_acceptance_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$offer_acceptance_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
                     if(!$insert){
-                      
                         // echo "srry";
-                        $qstring = '?status=err';
+                        $qstring = '&status=err';
                     }
                     else{
-                        // echo "new";
-                        
-                        $qstring = '&status=succ';
+
+                                $sql22="SELECT * FROM Student WHERE email='$email'";
+                                $result22 = $db->query($sql22);
+                                if ($result22 ->num_rows ==1) {
+                                    while($row22 = $result22->fetch_assoc()) {
+                                        $stud_id=$row22['student_id'];
+                                        $insertapply=$db->query("INSERT IGNORE INTO applied_table(posting_id,student_id,applied_at) VALUES ('$jobid',$stud_id,NOW())");
+                                        if($insertapply){
+                                            $qstring='&status=succ';
+                                        }
+                                        else{
+                                            $qstring='&status=err';
+                                        }
+
+                                    }
+                                }
+                        // $qstring = '&status=succ';
                     }
                 
                 }

@@ -24,14 +24,14 @@
 
 <form action="../login/emp.php" method="post">
                                     <div class="form-group">
-                                    <select class="form-control" name="role">
+                                    <!-- <select class="form-control" name="role">
                                     <option value="none" selected disabled hidden> 
                                         Select Role
                                     </option> 
                                     <option value="hr">HR</option>
                                     <option value="vendors">Vendor</option>
                                     <option value="admins">Main Admin</option>
-                                    </select>
+                                    </select> -->
                                    </div>
                                    <div class="form-group">
                                        <input type="email" class="form-control" name="emailemp" placeholder="email" value="rit@gmail.com" required="required">
