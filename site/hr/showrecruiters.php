@@ -55,13 +55,7 @@ $page="recruiter";
 <div class="container">
 
 <div class="row" style="display: flex;justify-content: center;">
-<input class="radio" type="radio" name="alg_Type" id="HP" value="job" onclick="location.href='dashboard.php'" <?php echo ($page == 'job') ? 'checked="checked"' : ''; ?> /> <label class="choice" for="HP">Jobs</label>
-&nbsp;&nbsp;
-<input class="radio" type="radio" name="alg_Type" id="HP" value="vendor" onclick="location.href='showvendors.php'" <?php echo ($page == 'vendor') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Vendors</label>
-&nbsp;&nbsp;
-<input class="radio" type="radio" name="alg_Type" id="HP" value="manager" onclick="location.href='showmanagers.php'" <?php echo ($page == 'manager') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Managers</label>
-&nbsp;&nbsp;
-<input class="radio" type="radio" name="alg_Type" id="HP" value="recruiter" onclick="location.href='showrecruiters.php'" <?php echo ($page == 'recruiter') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Recruiters</label>
+<?php include 'radio.php';?>
 
 </div>
    

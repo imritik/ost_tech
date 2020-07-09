@@ -202,6 +202,126 @@ if($query ->num_rows >0){
                         }
                     }
                 }
+
+                else{
+?>
+
+
+<form  action="" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <h2>Add a Job</h2>
+                        <div class="form-group" id="job-company-group">
+                            <label for="job-email">Company Name</label>
+                            <!-- <input type="email" class="form-control" name="email" id="job-email" placeholder="you@yourdomain.com" required> -->
+<select class="form-control" name="companyname" id="job-company">
+
+
+<!-- -------php code to gather posted jobs---- -->
+<?php
+
+$query = $db->query("SELECT * FROM employer_account where email='$hrcompany'");
+            
+if($query ->num_rows >0){
+    while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['company_name'] .'">' . $row['company_name'] .' ('.$row['email'].')' . '</option>';
+?>
+    <?php }} ?>
+
+</select>
+
+                        </div>
+                        <div class="form-group" id="job-email-group">
+                            <label for="job-email">Email</label>
+                            <input type="email" class="form-control" name="email" id="job-email" value="<?php echo $hrcompany; ?>" placeholder="you@yourdomain.com" readonly required>
+                        </div>
+                        <div class="form-group" id="job-title-group">
+                            <label for="job-title">Title</label>
+                            <input type="text" name="title" class="form-control" id="job-title"  placeholder="e.g. Web Designer" required>
+                        </div>
+                        <div class="form-group" id="job-location-group">
+                            <label for="job-location">Location (Optional)</label>
+                            <input type="text" name="location" class="form-control" id="job-location"  placeholder="e.g. New York" required>
+                        </div>
+                       
+                        <div class="form-group" id="job-type-group">
+                            <label for="job-type">Job Type</label>
+                            <select class="form-control" name="type" id="job-type" required>
+									<option>Choose a job type</option>
+									<option >Freelance</option>
+									<option >Part Time</option>
+									<option >Full Time</option>
+									<option >Internship</option>
+									<option >Volunteer</option>
+								</select>
+                        </div>
+                       
+                        <div class="form-group" id="job-description-group">
+                            <label for="job-description">Description</label>
+                            <textarea class="textarea form-control" name="description"id="job-description" maxlength="2000" required>
+                            </textarea>
+                        </div>
+                        <div class="form-group" id="job-description-file-group">
+                            <label for="desc-file">Upload description&nbsp;</label>
+                            <input type="file" name="jobdescriptionfile" id="jobdescriptionfile">
+                        </div> 
+                        <div class="form-group" id="job-url-group">
+                            <label for="job-url">Website (Optional)</label>
+                            <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" required>
+                        </div>
+                         <div class="form-group" id="job-coordinator-group">
+                            <label for="job-email">Vendor</label>
+<select class="form-control" name="coordinator" id="job-coordinator" required>
+
+ <option value="" >Assign Vendor</option>
+
+<!-- -------php code to gather posted jobs---- -->
+<?php
+
+$query = $db->query("SELECT * FROM admins where role='vendors' and company='$hrcompany'");
+            
+if($query ->num_rows >0){
+    while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
+?>
+    <?php }} ?>
+
+</select>
+                        </div>
+
+                                <div class="form-group" id="job-recruiter-group">
+                            <label for="job-email">Recruiter</label>
+<select class="form-control" name="recruiter" id="job-Recruiter" required>
+
+ <option value="" >Assign Recruiter</option>
+
+<!-- -------php code to gather posted jobs---- -->
+<?php
+
+$query = $db->query("SELECT * FROM admins where role='recruiters' and company='$hrcompany'");
+            
+if($query ->num_rows >0){
+    while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
+?>
+    <?php }} ?>
+
+</select>
+                        </div>
+                        <div class="row text-center">
+                    <p>&nbsp;</p>
+                    <button type="submit" name="submit" id="register" class="btn btn-primary btn-lg">Post <i class="fa fa-arrow-right"></i></button>
+                </div>
+                    </div>
+             </div>
+              
+            </form>
+
+<?php
+                }
     ?>
   <!-- Modernizlugin -->
     <script src="../js/modernizr.custom.79639.js"></script>
