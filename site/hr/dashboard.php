@@ -30,7 +30,14 @@ $page="job";
     <link href="../css/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
+    <style>
+ .fill{
+            width:-webkit-fill-available;
+        }
+        .width-auto{
+            width:auto;
+        }
+</style>
 
 </head>
 
@@ -177,7 +184,7 @@ if(!empty($_GET['jid'])){
                 ?>
 
 <ul class="nav nav-tabs">
-    <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
+    <li class='new_arrival'><a  onclick="setstatus('new_arrival')">Probable duplicates&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
@@ -199,6 +206,15 @@ if(!empty($_GET['jid'])){
    
     <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
     <th>Resume</th>
+      
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment" readonly></th>
+    
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
+   
+   
    
     </tr>
     <tbody>
@@ -228,12 +244,19 @@ $query='';
                 exit(mysqli_error($db));
             }
             $studids=array();
+            $hrcomment=array();
+            $recruitercomment=array();
+            $managercomment=array();
             // $studstatuss=array();
             
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     array_push($studids,$row['student_id']);
-                    // array_push($studstatuss,$row['Status']);
+                
+                    array_push($hrcomment,$row['hr_note']);
+                    array_push($managercomment,$row['manager_note']);
+                    array_push($recruitercomment,$row['recruiter_note']);
+
                 } 
             }
 
@@ -282,6 +305,18 @@ $query='';
                     <td><?php echo $row1['notice_period']?>
                     </td>
                     <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
+                 <td><?php echo $hrcomment[$x];?></td>
+                    <td><?php echo $managercomment[$x];?></td>
+                    <td><?php echo $recruitercomment[$x];?></td>
+<td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
+                    <td>
+                     <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
+        <option value="hold" >Hold</option>
+        <option value="shortlist" >Shortlist</option>
+        <option value="rejected" >Reject</option>
+        <option value="blacklist">Blacklist</option>
+    </select>
+                    </td>
                 
                 </tr>
                 <?php
@@ -292,8 +327,11 @@ $query='';
 
         }
             else{
-                // $users='No Student found!';
-                echo "No Candidates";
+           ?>         
+       <div style="transform: rotateX(180deg);">
+        <p>No Candidate(s) found! </p>
+        </div>
+<?php
             }
     }
 
@@ -304,7 +342,11 @@ $query='';
     </table>
 
     </div>
-
+<br>
+    <br>
+      <div style="float:right;">
+                <button class="btn btn-primary">Save</button>
+            </div>
     </div>
    
   </div>

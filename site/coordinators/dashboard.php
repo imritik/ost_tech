@@ -6,11 +6,12 @@ if(isset($_SESSION['coordinatoremp'])){
   }
   else{
     // echo "alert('no session exist')";
-    header("location: ../../admin_jobs/coordinators/login.php");
+    header("location: ../../admin_jobs/admin_home.php");
+
   }
 include '../../dbConfig.php';
 $coordinator_email=$_SESSION['coordinatoremp'];
-$sql="SELECT * FROM coordinators WHERE email='$coordinator_email'";
+$sql="SELECT * FROM admins WHERE email='$coordinator_email'";
 $result = $db->query($sql);
 $companies=array();
 $jobs=array();
@@ -19,7 +20,7 @@ $to_admin_data=array();
 $company_names=array();
 if ($result ->num_rows ==1) {
     while($row1 = $result->fetch_assoc()) {
-        $companies=json_decode(stripslashes($row1['companies']));
+        $companies=json_decode(stripslashes($row1['company']));
         // var_dump($companies);
         if(sizeof($companies)){
             $arrlen=count($companies);
@@ -106,7 +107,7 @@ if ($result ->num_rows ==1) {
             ?>
             </ul>
             <ul class="nav">
-                <li><a href="../../logout/logoutcoordinator.php">Logout</a></li>
+                <li><a href="../../logout/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- end Menu -->

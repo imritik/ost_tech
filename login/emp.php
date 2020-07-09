@@ -39,6 +39,16 @@
 
                 header("location: ../site/role2index.php");
               }
+               else if($row['role']=='am'){
+                   $_SESSION['emailemp'] = $row['email'];
+                  $_SESSION['coordinatoremp']=$row['email'];
+                  header("location: ../site/coordinators/dashboard.php");
+              }
+                 else if($row['role']=='cc'){
+                $_SESSION['emailemp'] = $row['email'];
+                $_SESSION['ccemp']=$row['email'];
+                header("location: ../site/cc/dashboard.php");
+              }
               else {
                 $_SESSION['email'.$row['role']]=$row['email'];
                 $_SESSION['company'.$row['role']]=$row['company'];

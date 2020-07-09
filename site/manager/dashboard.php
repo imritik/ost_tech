@@ -31,7 +31,14 @@ $page="job";
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
-
+<style>
+ .fill{
+            width:-webkit-fill-available;
+        }
+        .width-auto{
+            width:auto;
+        }
+</style>
 </head>
 
 <body style='padding:0'>
@@ -41,7 +48,7 @@ $page="job";
         <div id="header-background"></div>
         <div class="container">
             <div class="pull-left">
-             <b>HR<b> (<?php echo $hremail; ?>)
+             <b>Manager<b> (<?php echo $hremail; ?>)
             </div>
             <div id="menu-open" class="pull-right">
                <a href="../../logout/logout.php">Logout</a>
@@ -85,27 +92,7 @@ $page="job";
 </div>
 <div class="tab-content col-md-10">
 <div style="display:none"  class="text-center tobe-reused">
-<div style="display:flex;justify-content: center;">
-   <select id="admins_email" class="form-control" style="width:50%"> 
 
-        <option value="" >Select Coordinator</option>
-
-        <?php
-
-        $query = $db->query("SELECT * FROM coordinators");
-            
-        if($query ->num_rows >0){
-        while($row = $query->fetch_assoc()){
-
-        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['name'].')' . '</option>';
-        ?>
-        <?php }} ?>
-
-    </select>
-
-    <button id="send_ids" class="btn btn-primary"  onclick="sendids();">Send</button>
-    </div>
-    <br>
    
     <div style="display:flex;justify-content: center;">
     <div>
@@ -163,7 +150,7 @@ if(!empty($_GET['jid'])){
                     else{
                         echo '<p style="font-size:x-large">Invalid Job</p>';
                     }
-                }
+                // }
                 ?>
 
 <ul class="nav nav-tabs">
@@ -175,7 +162,7 @@ if(!empty($_GET['jid'])){
 
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-       <div class="form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
+       <div class="tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
       <table class="table" style="transform: rotateX(180deg);">
 <tr class="filters">
 <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
@@ -187,11 +174,19 @@ if(!empty($_GET['jid'])){
    
     <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
     <th>Resume</th>
+    
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment" readonly></th>
+    
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
+   
    
     </tr>
     <tbody>
     <?php 
-
+}
     if(!empty($_GET['jid'])&& !empty($_GET['status'])){
                 $jid=$_GET['jid'];
                 $status=$_GET['status'];
@@ -217,12 +212,19 @@ $query='';
                 exit(mysqli_error($db));
             }
             $studids=array();
+            $hrcomment=array();
+            $recruitercomment=array();
+            $managercomment=array();
             // $studstatuss=array();
             
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     array_push($studids,$row['student_id']);
-                    // array_push($studstatuss,$row['Status']);
+                
+                    array_push($hrcomment,$row['hr_note']);
+                    array_push($managercomment,$row['manager_note']);
+                    array_push($recruitercomment,$row['recruiter_note']);
+
                 } 
             }
 
@@ -271,18 +273,42 @@ $query='';
                     <td><?php echo $row1['notice_period']?>
                     </td>
                     <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
+                    <td><?php echo $hrcomment[$x];?></td>
+                    <td><?php echo $managercomment[$x];?></td>
+                   
+                    <td><?php echo $recruitercomment[$x];?></td>
+<td><input class="form-control" id="manager_comment<?php echo $ssid;?>"></td>
+                    <td>
+                    <td>
+                     <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
+        <option value="hold" >Hold</option>
+        <option value="shortlist" >Shortlist</option>
+        <option value="rejected" >Reject</option>
+        <option value="blacklist">Blacklist</option>
+    </select>
+                    </td>
                 
                 </tr>
                 <?php
                 // $number++;
             // }
             }}
+
+            ?>
+
+          
+
+            <?php
             // $users .= '</table>';
 
         }
             else{
                 // $users='No Student found!';
-                echo "No Candidates";
+      ?>         
+       <div style="transform: rotateX(180deg);">
+        <p>No Candidate(s) found! </p>
+        </div>
+<?php
             }
     }
 
@@ -292,6 +318,13 @@ $query='';
     </tbody>
     </table>
     </div>
+    <br>
+    <br>
+  
+        <div style="float:right;">
+                <button class="btn btn-primary">Save</button>
+        </div>
+           
     </div>
    
   </div>
@@ -539,7 +572,7 @@ $('#admins_email').on('change', function () {
 
     function updatestatus(){
 
-        var statusvalue="hr";
+        var statusvalue="manager";
         var notevalue=$('#updatenotebtn').val();
         var hrfeedback=$('#hrfeedback').val();
         newArray1.forEach(function(obj){
