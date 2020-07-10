@@ -95,9 +95,9 @@ $page="job";
 <div class="tab-content col-md-10">
 <div style="display:none"  class="text-center tobe-reused">
 <div style="display:flex;justify-content: center;">
-   <select id="admins_email" class="form-control" style="width:50%"> 
+   <!-- <select id="admins_email" class="form-control" style="width:50%"> 
 
-        <option value="" >Select Coordinator</option>
+        <option value="" >Select Managerr</option>
 
         <?php
 
@@ -117,20 +117,20 @@ $page="job";
     <br>
    
     <div style="display:flex;justify-content: center;">
-    <div>
+    <div> -->
     <!-- <label>Feedback</label> -->
-    <select id="updatenotebtn" class="form-control">
+    <!-- <select id="updatenotebtn" class="form-control">
         <option value="hold" >Hold</option>
         <option value="shortlist" >Shortlist</option>
         <option value="rejected" >Reject</option>
         <option value="blacklist">Blacklist</option>
-    </select>
-    </div>
-    <div>
-    <input id="hrfeedback" class="form-control" name="hrfeedback" placeholder="detailed feedback" value="feedback" required>
+    </select> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!-- <input id="hrfeedback" class="form-control" name="hrfeedback" placeholder="detailed feedback" value="feedback" required> -->
+  <!-- </div> -->
   </div>
-  </div>
-  <br>
+  <!-- <br> -->
     <!-- <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
                     <option value="Round 1">Round 1</option>
                     <option value="Round 2">Round 2</option>
@@ -138,9 +138,9 @@ $page="job";
                     <option value="Round 4">Round 4</option>
     </select> -->
                     <!-- &nbsp; -->
-                    <button class="btn btn-info" onclick="updatestatus();">Save</button>
+                    <!-- <button class="btn btn-info" onclick="updatestatus();">Save</button> -->
      <!-- <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button> -->
-                    <br>
+                    <!-- <br> -->
             
 </div> 
         <div class="tab-pane active" id="tab_a">
@@ -298,7 +298,7 @@ $query='';
                 }
                 else{
                     ?>
-                <input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
+                <input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk" disabled></td>
 <?php
                 }
                 ?>
@@ -320,11 +320,12 @@ $query='';
 <td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
                     <td>
                      <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-        <option value="hold" >Hold</option>
-        <option value="shortlist" >Shortlist</option>
-        <option value="rejected" >Reject</option>
-        <option value="blacklist">Blacklist</option>
-    </select>
+                        <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
+                        <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
+                        <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
+                        <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
+                        <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
+                    </select>
                     </td>
                 
                 </tr>
@@ -397,7 +398,7 @@ $query='';
 <br>
     <br>
       <div style="float:right;">
-                <button class="btn btn-primary">Save</button>
+                <button class="btn btn-primary" onclick="saveStatus()">Save</button>
             </div>
             <br>
             <br>
@@ -916,10 +917,10 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
    // alert('hi');
                             $(this).find('.studentcheckbox1').prop('checked',true)
                             if($(this).find('.studentcheckbox1').prop('checked') == true){
-                                // console.log($(this).find('.studentcheckbox1').val());
+                                console.log($(this).find('.studentcheckbox1').val());
                                 var selectedID=$(this).find('.studentcheckbox1').val();
-                                // console.log($('#manager_comment'+selectedID).val());
-                                // console.log($('#updatenotebtn'+selectedID).val());
+                                console.log($('#hr_comment'+selectedID).val());
+                                console.log($('#updatenotebtn'+selectedID).val());
                                     var statusvalue="hr";
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();

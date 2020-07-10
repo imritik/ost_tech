@@ -283,10 +283,12 @@ $query='';
 <td><input class="form-control" id="manager_comment<?php echo $ssid;?>"></td>
                     <td>
                      <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-        <option value="hold" >Hold</option>
-        <option value="shortlist" >Shortlist</option>
-        <option value="rejected" >Reject</option>
-        <option value="blacklist">Blacklist</option>
+         <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
+                        <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
+                        <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
+                        <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
+                        <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
+                    
     </select>
                     </td>
                 
