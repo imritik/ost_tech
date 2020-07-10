@@ -214,7 +214,7 @@ if(!empty($_GET['jid'])){
                 ?>
 
 <ul class="nav nav-tabs" style="padding: 0 339px;">
-    <li class='uploaded'><a  onclick="setstatus('uploaded')">Uploaded CV&nbsp;<span></span></a></li>
+    <li class='uploaded'><a  onclick="setstatus('uploaded')">Upload CV&nbsp;<span></span></a></li>
     <li class='shared'><a  onclick="setstatus('shared')">Shared&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
@@ -226,7 +226,6 @@ if(!empty($_GET['jid'])){
        <div class="form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
       <table class="table" style="transform: rotateX(180deg);">
 <tr class="filters">
-<th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
     <th>Name</th>
     <th>Email</th>
     <th>Current CTC</th>
@@ -246,29 +245,15 @@ if(!empty($_GET['jid'])){
    $('.<?php echo $status;?>').addClass('active');    
     </script>
     <?php
-$query='';
-        if($status=='uploaded'){
-                $query = "SELECT * FROM Student where Uploaded_by='$vendoremail'";
+            $query='';
+            $studids=array();
 
+        if($status=='uploaded'){
+               $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='hold' or applied_table.duplicate_status='probable')";
         }
         else if($status=='shared'){
 
-                    // -----get students id forwarded 
-
-                            // List Users
-                    $query1 = "SELECT * FROM to_admin where recieved_email='$vendoremail' and job_id_ref='$jid'";
-                    if (!$result1 = mysqli_query($db, $query1)) {
-                        exit(mysqli_error($db));
-                    }
-                    if (mysqli_num_rows($result1) > 0) {
-                        while ($row1 = mysqli_fetch_assoc($result1)) {
-                            $data1=json_decode(stripslashes($row1['stud_id']));
-                                        foreach($data1 as $d){
-                                            array_push($list,$d);
-                        } 
-                    }
-                }
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='hold'";
 
         }
         else{
@@ -278,8 +263,6 @@ $query='';
             if (!$result = mysqli_query($db, $query)) {
                 exit(mysqli_error($db));
             }
-            $studids=array();
-            // $studstatuss=array();
             
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -287,7 +270,7 @@ $query='';
                 } 
             }
             else{
-                $studids=$list;
+             
             }
 
 
@@ -319,7 +302,6 @@ $query='';
             // while ($row = mysqli_fetch_assoc($result)) {
                 ?>
                 <tr>
-                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
               
                     <td>
                     <?php echo $row1['stud_name'];?>
@@ -334,10 +316,31 @@ $query='';
               
                     <td><?php echo $row1['notice_period']?>
                     </td>
-                    <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
+                    
+                    <td>
+
+                        <!-- Add resume -->
+                <?php if($status=='uploaded'){
+                    ?>
+<form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
+                <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
+                <button type='submit' id='upl_resume' class='editresume' value='Upload Resume' ><i class="fa fa-upload" aria-hidden="true"></i>
+</button>
+</form>
+                    <?php
+
+                } 
+                else{?>
+                    
+                    
+                    <a href='<?php echo $resumelinks;?>' target='blank'>View</a>
+                    
+                    
+                    </td>
                 
                 </tr>
                 <?php
+                }
                 // $number++;
             // }
             }}
@@ -346,7 +349,11 @@ $query='';
         }
             else{
                 // $users='No Student found!';
-                echo "No Candidates";
+                  ?>         
+       <div style="transform: rotateX(180deg);">
+        <p>No Candidate(s) found! </p>
+        </div>
+<?php
             }
     }
 
@@ -378,7 +385,7 @@ $query='';
   <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="filters">
-                    <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
+                    
                                                       
                                                         <th>College </th>
                                                         <th>Name</th>
@@ -421,7 +428,6 @@ $query='';
                                 $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studlistobtain[$x].'/'.$row1['resume'];
                                 ?>
                                 <tr >
-        <td><input type="checkbox" class="studentcheckbox" value="<?php echo $row1['student_id']; ?>" name="id[]"></td>
 
                                 <td  > <?php echo $row1["college_name"];?></td>
                                 <!-- <td ><?php echo $row1["college_location"];?></td> -->
@@ -440,11 +446,17 @@ $query='';
 
   <td style='display:flex'>
                 <!-- Add resume -->
-                <form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
+                <?php if($duplicatestatus[$x]!='Duplicate'){
+                    ?>
+<form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
                 <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
                 <button type='submit' id='upl_resume' class='editresume' value='Upload Resume' ><i class="fa fa-upload" aria-hidden="true"></i>
 </button>
 </form>
+                    <?php
+
+                } ?>
+                
                 </td>
                                 </tr>
                         
