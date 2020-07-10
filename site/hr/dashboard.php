@@ -195,9 +195,10 @@ if(!empty($_GET['jid'])){
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
        <div class="form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
-      <table class="table" style="transform: rotateX(180deg);">
-<tr class="filters">
-<th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
+      <table class="table table-striped table-condensed" style="transform: rotateX(180deg);">
+<tr class="filters" style="background: white">
+
+    <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
    
@@ -229,7 +230,7 @@ if(!empty($_GET['jid'])){
     <?php
 $query='';
         if($status=='new_arrival'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status_update >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and duplicate_status='probable'";
 
         }
         else if($status=='to_process'){
@@ -284,12 +285,24 @@ $query='';
                 // echo $row1;
             $sturesume=$row1["resume"];
             $ssid=$row1['student_id'];
+            $sname=$row1['stud_name'];
             $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$sturesume;
             //    echo $ssid;
             // while ($row = mysqli_fetch_assoc($result)) {
                 ?>
                 <tr>
-                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
+                <td>
+                <?php
+
+                if($status=='new_arrival'){
+
+                }
+                else{
+                    ?>
+                <input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
+<?php
+                }
+                ?>
               
                     <td>
                     <?php echo $row1['stud_name'];?>
@@ -298,12 +311,9 @@ $query='';
                    
                    </td>
                     <td><?php echo $row1['email'];?></td>
-               
                     <td><?php echo $row1['curr_ctc'];?></td>
                     <td><?php echo $row1['expected_ctc'];?></td>
-              
-                    <td><?php echo $row1['notice_period']?>
-                    </td>
+                    <td><?php echo $row1['notice_period']?></td>
                     <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
                  <td><?php echo $hrcomment[$x];?></td>
                     <td><?php echo $managercomment[$x];?></td>
@@ -319,6 +329,49 @@ $query='';
                     </td>
                 
                 </tr>
+                <?php if($status=='new_arrival'){
+?>
+                         <tr>
+                                <td>
+                            <table class="table table-condensed">
+
+                            <?php
+
+                                $sqlcomp = "SELECT * FROM Student where stud_name='$sname'";
+                                $resultcomp = $db->query($sqlcomp);
+// var_dump($resultcomp);
+                                if ($resultcomp ->num_rows >0) {
+                                
+                                    while($rowcomp = $resultcomp->fetch_assoc()) {
+
+            $duplinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$rowcomp['resume'];
+
+?>
+                                          <tr>
+                                <td><?php echo $rowcomp['stud_name'];?></td>
+                                <td><?php echo $rowcomp['email'];?></td>
+                                <!-- <td><?php echo $rowcomp['curr_ctc'];?></td>
+                                <td><?php echo $rowcomp['expected_ctc'];?></td>
+                                <td><?php echo $rowcomp['notice_period']?></td> -->
+                                <td><a href='<?php echo $duplinks;?>' target='blank'>View</a></td>
+                                <tr>
+                               
+                                <?php
+                                    }
+                                }
+
+                            ?>
+                              
+                            </table>
+                            </td>
+                </tr>
+                <?php
+
+                }else{
+
+                }
+                ?>
+               
                 <?php
                 // $number++;
             // }
@@ -347,6 +400,8 @@ $query='';
       <div style="float:right;">
                 <button class="btn btn-primary">Save</button>
             </div>
+            <br>
+            <br>
     </div>
    
   </div>
