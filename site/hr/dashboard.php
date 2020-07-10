@@ -1,7 +1,6 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-
 if(isset($_SESSION['emailhr'])){
     // echo $_SESSION['company'];
   }
@@ -904,6 +903,37 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
      function setclick(){
          $(".nav-pills li:first").trigger('click');
      }
+
+       function saveStatus(){
+             var sidc=[];
+            var jobid=[];
+                is_checked=!is_checked;
+
+        $('tr').each(function(i, obj) {
+                if($('tr').not(':first').is(":visible")) {
+
+                    if(is_checked){
+   // alert('hi');
+                            $(this).find('.studentcheckbox1').prop('checked',true)
+                            if($(this).find('.studentcheckbox1').prop('checked') == true){
+                                // console.log($(this).find('.studentcheckbox1').val());
+                                var selectedID=$(this).find('.studentcheckbox1').val();
+                                // console.log($('#manager_comment'+selectedID).val());
+                                // console.log($('#updatenotebtn'+selectedID).val());
+                                    var statusvalue="hr";
+                                    var notevalue=$('#updatenotebtn'+selectedID).val();
+                                    var hrfeedback=$('#hr_comment'+selectedID).val();
+                                    var ps2='';
+                                updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                            }
+                     }
+                    else{
+                        console.log("here");
+                       
+                    }
+                }
+        });
+        }
 
      </script>
 

@@ -32,11 +32,14 @@ $page="job";
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
 <style>
- .fill{
+        .fill{
             width:-webkit-fill-available;
         }
         .width-auto{
             width:auto;
+        }
+        .selected {
+            color: red;
         }
 </style>
 </head>
@@ -163,7 +166,7 @@ if(!empty($_GET['jid'])){
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
        <div class="tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
-      <table class="table" style="transform: rotateX(180deg);">
+      <table class="table" style="transform: rotateX(180deg);" id="display-table">
 <tr class="filters">
 <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
@@ -279,7 +282,6 @@ $query='';
                     <td><?php echo $recruitercomment[$x];?></td>
 <td><input class="form-control" id="manager_comment<?php echo $ssid;?>"></td>
                     <td>
-                    <td>
                      <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
         <option value="hold" >Hold</option>
         <option value="shortlist" >Shortlist</option>
@@ -322,7 +324,7 @@ $query='';
     <br>
   
         <div style="float:right;">
-                <button class="btn btn-primary">Save</button>
+                <button class="btn btn-primary" onclick="saveStatus()">Save</button>
         </div>
            
     </div>
@@ -787,6 +789,39 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
                                 alert("error while fetching stats");
                             });
      }
+
+  function saveStatus(){
+             var sidc=[];
+            var jobid=[];
+                is_checked=!is_checked;
+
+        $('tr').each(function(i, obj) {
+                if($('tr').not(':first').is(":visible")) {
+
+                    if(is_checked){
+   // alert('hi');
+                            $(this).find('.studentcheckbox1').prop('checked',true)
+                            if($(this).find('.studentcheckbox1').prop('checked') == true){
+                                // console.log($(this).find('.studentcheckbox1').val());
+                                var selectedID=$(this).find('.studentcheckbox1').val();
+                                // console.log($('#manager_comment'+selectedID).val());
+                                // console.log($('#updatenotebtn'+selectedID).val());
+                                    var statusvalue="manager";
+                                    var notevalue=$('#updatenotebtn'+selectedID).val();
+                                    var hrfeedback=$('#manager_comment'+selectedID).val();
+                                    var ps2='';
+                                updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                            }
+                     }
+                    else{
+                        console.log("here");
+                       
+                    }
+                }
+        });
+        }
      </script>
+  
+
     <!-- ============ CONTACT END ============ -->
 </html>

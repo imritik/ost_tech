@@ -1,5 +1,6 @@
 <?php 
 session_start();
+error_reporting(E_ALL & ~E_NOTICE);
 include '../dbConfig.php';
 $posting_id=$_POST['param2'];
 $stud_id=$_POST['param1'];
