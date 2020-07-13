@@ -93,7 +93,7 @@ include '../dbConfig.php';
     </header>
 
     <!-- ============ HEADER END ============ -->
-<div id="wrapper">
+<div id="wrapper" style="padding: 4%;height:500px;overflow:scroll">
 <table align='center' cellspacing=2 cellpadding=5 id="data_table" border=1 class="table table-striped">
 <tr>
 <th>Name</th>
@@ -121,7 +121,18 @@ if ($result ->num_rows >0) {
         <td contenteditable="false"><?php echo $row1["email"];?></td>
         <td contenteditable="false"><?php echo $row1["password"];?></td>
 
-        <td contenteditable="false"><select role='<?php echo $row1["role"];?>' value="<?php echo $row1['role'];?>" class="btn btn-success btn-sm role"><option value="Main"<?php if ($row1['role'] == 'Main')  echo 'selected = "selected"'; ?>>Main</option><option value="Level"<?php if ($row1['role'] == 'Level')  echo 'selected = "selected"'; ?>>Level</option><option value="DL"<?php if ($row1['role'] == 'DL')  echo 'selected = "selected"'; ?>>D.L</option></select></td>
+        <td contenteditable="false">
+            <select role='<?php echo $row1["role"];?>' value="<?php echo $row1['role'];?>" class="btn btn-success btn-sm role">
+            <option value="Main"<?php if ($row1['role'] == 'Main')  echo 'selected = "selected"'; ?>>Main</option>
+            <option value="Level"<?php if ($row1['role'] == 'Level')  echo 'selected = "selected"'; ?>>Level</option>
+            <option value="DL"<?php if ($row1['role'] == 'DL')  echo 'selected = "selected"'; ?>>D.L</option>
+            <option value="recruiters"<?php if ($row1['role'] == 'recruiters')  echo 'selected = "selected"'; ?>>Recruiters</option>
+            <option value="vendors"<?php if ($row1['role'] == 'vendors')  echo 'selected = "selected"'; ?>>Vendors</option>
+            <option value="manager"<?php if ($row1['role'] == 'manager')  echo 'selected = "selected"'; ?>>Manager</option>
+            <option value="am"<?php if ($row1['role'] == 'am')  echo 'selected = "selected"'; ?>>Account Manager</option>
+            <option value="cc"<?php if ($row1['role'] == 'cc')  echo 'selected = "selected"'; ?>>Coordinator</option>
+            </select>
+        </td>
        
        
         <td>
@@ -153,7 +164,18 @@ if ($result ->num_rows >0) {
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
 <td><input type="text" id="new_age"></td>
-<td><select id="new_role" class="btn btn-success btn-sm"><option value="Main">Main</option><option value="Level">Level</option><option value="DL">D.L</option></select></td>
+<td>
+    <select id="new_role" class="btn btn-success btn-sm">
+    <option value="Main">Main</option>
+    <option value="Level">Level</option>
+    <option value="DL">D.L</option>
+    <option value="recruiters">Recruiter</option>
+    <option value="vendors">Vendor</option>
+    <option value="manager">Manager</option>
+    <option value="am">Account manager</option>
+    <option value="cc">Coordinator</option>
+ </select>
+</td>
 <td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add Row"></td>
 </tr>
 

@@ -168,7 +168,7 @@ if(!empty($_GET['jid'])){
        <div class="tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
       <table class="table" style="transform: rotateX(180deg);" id="display-table">
 <tr class="filters">
-<th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
+<th style="color:black;display:flex;"><input type="checkbox" id="selectall" disabled>Select  </th>
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
    
@@ -260,7 +260,7 @@ $query='';
             // while ($row = mysqli_fetch_assoc($result)) {
                 ?>
                 <tr>
-                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
+                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk" disabled></td>
               
                     <td>
                     <?php echo $row1['stud_name'];?>

@@ -39,6 +39,11 @@
 
                 header("location: ../site/role2index.php");
               }
+              else if($row['role']=='DL'){
+                   $_SESSION['emaildl'] = $row['email'];
+                  // $_SESSION['coordinatoremp']=$row['email'];
+                  header("location: ../site/loaders.php");
+              }
                else if($row['role']=='am'){
                    $_SESSION['emailemp'] = $row['email'];
                   $_SESSION['coordinatoremp']=$row['email'];

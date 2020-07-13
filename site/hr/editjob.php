@@ -2,7 +2,7 @@
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
 
-if(isset($_SESSION['emailhr'])){
+if(isset($_SESSION['emailhr']) || isset($_SESSION['emailemp'])){
     // echo $_SESSION['company'];
   }
   else{

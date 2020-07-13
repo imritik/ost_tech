@@ -22,13 +22,11 @@ include 'partials/header.php';
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <h1>Job Posted</h1>
+                    <h1>Companies</h1>
                     <div id="actionbar" style="float:right;display:none">
-                    <button class="btn btn-warning btn-sm" onclick="repost();">Repost</button>
+                    <!-- <button class="btn btn-warning btn-sm" onclick="repost();">Repost</button> -->
                         <button class="btn btn-danger btn-sm" onclick="deletejob();"><i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
-                    <button class="btn btn-info btn-sm" onclick="editjob();">Edit</button>
-
                     </div>
 
                 </div>
@@ -70,7 +68,7 @@ if(!empty($_GET['status'])){
  <!-- Import link -->
  <div class="col-md-12 head">
         <div class="float-right">
-            <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="formToggle('importFrm');"><i class="plus"></i> upload feedback</a>
+            <!-- <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="formToggle('importFrm');"><i class="plus"></i> upload feedback</a> -->
         </div>
         <br>
     </div>
@@ -99,51 +97,7 @@ function formToggle(ID){
 
 
                <!-- <div class="container"> -->
-                    <div class="row">
-                        <div class="col-lg-3 col-xs-12">
-                            <label for="job-description" class="sr-only">Job Title</label>
-							<input type="text"class="form-control" id="title-criteria" style="color:black" placeholder="Job title">
-							<!-- <input type="email"> -->
-                        </div>
-                        <div class="col-lg-2 col-xs-12">
-                            <label for="job-location" class="sr-only">Job Location</label>
-                            <input type="text"class="form-control"id="loc-criteria" style="color:black" placeholder="Location">
-                        </div>
-                        <div class="col-lg-2 col-xs-12">
-                            <label for="job-company" class="sr-only">Company</label>
-                            <select id="company-criteria" class="form-control">
-										<option value=" ">Company</option>
-									
-                                        <!-- -------php code to gather posted jobs---- -->
-                                        <?php
-
-                                        $query = $db->query("SELECT * FROM employer_account");
-                                                    
-                                        if($query ->num_rows >0){
-                                            while($row4 = $query->fetch_assoc()){
-
-                                                echo '<option value="' . $row4['company_name'] . '">' . $row4['company_name'] .' ('.$row4['email'].')' . '</option>';
-                                        ?>
-                                            <?php }} ?>
-								</select>
-                        </div>
-                        <div class="col-lg-2 col-xs-12">
-                            <label for="job-category" class="sr-only">Job Category</label>
-                            <div class="ci-select">
-                                <select id="category-criteria" class="form-control">
-										<option value=" ">Category</option>
-										<option value="Full Time">Full Time</option>
-										<option value="Part Time">Part Time</option>
-										<option value="Internship">Internship</option>
-										<option value="Freelance">Freelance</option>
-										<option value="Contract">Contract</option>
-								</select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xs-12">
-                            <button class="btn btn-info" id="search">Search</button>
-                        </div>
-                    </div>
+                 
                 <!-- </div> -->
         </div>
     </section>
@@ -169,44 +123,33 @@ function formToggle(ID){
 // echo $_REQUEST['category'];
 $reqcat=$_SESSION['company'];
 // Get images from the database
-$querycat = $db->query("SELECT * FROM Job_Posting order by posting_time DESC");
+$querycat = $db->query("SELECT * FROM employer_account order by added_on DESC");
 
 if($querycat ->num_rows >0){
     while($row = $querycat->fetch_assoc()){
         ?>
                         <!-- Job offer 1 -->
-                        <a href="showcandidates.php?jid=<?php echo $row['posting_id']; ?>" target="blank" class="featured applied list-item" style="display:none;">
+                        <a href="editcompany.php?jid=<?php echo $row['email'];?>" target="blank" class="featured applied list-item" style="display:none;">
 
                             <div class="row" >
 
                                 <div class="col-md-1 hidden-sm hidden-xs">
                                 <!-- <i class="fa fa-link" aria-hidden="true"></i> -->
-                                <input type="checkbox" class="chk" name="jb" value="<?php echo $row['posting_id']; ?>">
+                                <input type="checkbox" class="chk" name="jb" value="<?php echo $row['email']; ?>">
 
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12 job-title">
-                                    <h5> <?php echo $row['job_title']; ?></h5>
-                                    <p><strong><?php echo $row['company_name']; ?></strong> </p>
+                                    <h5> <?php echo $row['company_name']; ?></h5>
+                                    <p><strong><?php echo $row['email']; ?></strong> </p>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 job-location">
-                                    <p><strong><?php echo $row['Job_location']; ?></strong></p>
-                                    <p class="hidden-xs">Coordinator:<strong><?php echo $row['coordinator']; ?></strong> </p>
+                                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+                                    <p><strong><?php echo $row['url']; ?></strong></p>
+                                    <p class="hidden-xs">Added on:<strong><?php echo $row['added_on']; ?></strong> </p>
                                 </div>
                                 <div class="col-lg-2 col-md-2 hidden-sm hidden-xs job-type text-center">
-                                <p class="badge full-time"><?php echo $row['Job_type']; ?></p>
+                                <!-- <p class="badge full-time"><?php echo $row['Job_type']; ?></p> -->
 
-                                <?php $pt=strtotime(substr($row['posting_time'],0,10));
-                                    $ct=strtotime(date("Y-m-d")); 
-                                    $tdiff=($ct-$pt)/60/60/24;
-                                    $toshow='';
-                                    if($tdiff<1){
-                                            $toshow='Today';
-                                    }
-                                    else{
-                                        $toshow=number_format($tdiff).' days ago';
-                                    }
-                                    ?>
-                                    <p class="job-salary"><strong><?php echo $toshow ; ?> </strong></p>
+                        
                                 </div>
 
                             </div>
@@ -221,7 +164,7 @@ if($querycat ->num_rows >0){
                     </div>
                     <div class="list-item-secondary-wrap text-center">
                     <br>
-                                <button id="loadMore" class="btn" style="background: teal;color: white;">Load More Jobs</button>
+                                <button id="loadMore" class="btn" style="background: teal;color: white;">Load More Companies</button>
                             </div>
 
                     <nav>
@@ -333,7 +276,7 @@ $(".chk").click(function(){
 
     // -----for selecting all student at once---
     $("#selectall").click(function () {
-        $('#actionbar').toggle();
+        $('#actionbar').show();
         var jobarr=[]
         $('.list-item').each(function(i, obj) {
             //test
@@ -411,11 +354,6 @@ deletejobpart(i);
                             });
     }
     
-    function editjob(){
-       console.log(favorites[0]);
-         document.location.href = 'hr/editjob.php?jid='+favorites[0];
-
-    }
     
     </script>
 

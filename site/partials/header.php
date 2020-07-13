@@ -47,7 +47,7 @@
 
                 <!-- <li><a href="csv_v2/index.php" target="blank">Add Candidates</a></li> -->
                 <!-- <li><a href="import-csv/index.php" target="blank">Add Company</a></li> -->
-                <!-- <li><a href="sendmails.php">Send Mails</a></li> -->
+                <li><a href="companies.php">Companies</a></li>
                 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="showadmins.php">Admin details</a></li>
