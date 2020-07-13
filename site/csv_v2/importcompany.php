@@ -23,35 +23,34 @@ if(isset($_POST['importSubmitcompany'])){
             while(($line = fgetcsv($csvFile)) !== FALSE){
                 // Get row data
                 $sid   = $line[0];
-                $name = $line[1];
+                $desc = $line[1];
                 $email  = $line[2];
-                $phone  = $line[3];
-                $clocation  = $line[7];
-                $address = $line[4];
-                $cid = $line[5];
-                $cname = $line[6];
+                $password  = $line[3];
+                $url = $line[4];
+                $am= $line[5];
 
-            
-                
+
                 // Check whether member already exists in the database with the same email
-                $prevQuery = "SELECT * FROM employer_account WHERE company_name = $line[0]";
+                $prevQuery = "SELECT * FROM employer_account WHERE email = '$line[2]'";
                 $prevResult = $db->query($prevQuery);
                 
                 if($prevResult->num_rows >0){
                     // Update member data in the database
-                    $db->query("UPDATE employer_account SET description = '$name', is_active = '$address', url = '$cid', logo = '$cname',added_on = NOW() WHERE company_name = $sid");
+                    $db->query("UPDATE IGNORE employer_account SET company_name='$sid',description = '$desc', am='$am', url = '$url',added_on = NOW() WHERE email = '$email'");
+
+                    // var_dump("UPDATE IGNORE employer_account SET company_name='$sid',description = '$desc', am='$am', url = '$url',added_on = NOW() WHERE email = '$email'");
                 }else{
                     // Insert member data in the database
-                    $db->query("INSERT INTO employer_account (company_name, description,email, pass,is_active,url,logo,added_on) VALUES ('".$sid."', '".$name."', '".$email."', '".$phone."', '".$address."', '".$cid."', '".$cname."', '".$clocation."')");
+                    $db->query("INSERT IGNORE INTO employer_account (company_name, description,email, pass,url,am,added_on) VALUES ('".$sid."', '".$desc."', '".$email."', '".$password."', '".$url."', '".$am."',NOW())");
                 }
             }
             
             // Close opened CSV file
             fclose($csvFile);
             
-            $qstring = '?status=succ';
+            $qstring = '?status=succcomp';
         }else{
-            $qstring = '?status=err';
+            $qstring = '?status=errcomp';
         }
     }else{
         $qstring = '?status=invalid_file';

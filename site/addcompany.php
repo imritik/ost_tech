@@ -34,7 +34,7 @@ if(isset($_POST["submit_company"]) && !empty($_FILES["companylogo"]["name"])){
         if(move_uploaded_file($_FILES["companylogo"]["tmp_name"], $targetFilePath)){
    
             // Insert image file name into database
-            $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','".$fileName."',NOW())");
+            $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,am,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','".$fileName."','".$am."',NOW())");
             if($insert){
                 // $statusMsg = "The company has been added successfully.";
                 $statusMsg='?status=succcomp';
@@ -58,7 +58,7 @@ if(isset($_POST["submit_company"]) && !empty($_FILES["companylogo"]["name"])){
         }
         else {
                     // Insert image file name into database
-                    $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','dummy.jpg',NOW())");
+                    $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,am,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','dummy.jpg','".$am."',NOW())");
                     if($insert){
                 $statusMsg='?status=succcomp';
 

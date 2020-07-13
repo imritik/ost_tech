@@ -40,19 +40,19 @@ if(isset($_POST['importSubmitjobs'])){
                 
                 if($prevResult->num_rows >0){
                     // Update member data in the database
-                    $db->query("UPDATE Job_Posting SET job_title = '$phone', Job_type = '$address', Job_location = '$cid', Job_description = '$cname',coordinator='$coordinator',posting_time = NOW() WHERE posting_id = $sid");
+                    $db->query("UPDATE IGNORE Job_Posting SET job_title = '$phone', Job_type = '$address', Job_location = '$cid', Job_description = '$cname',coordinator='$coordinator',posting_time = NOW() WHERE posting_id = $sid");
                 }else{
                     // Insert member data in the database
-                    $db->query("INSERT INTO Job_Posting (posting_id,company_name, email, job_title,Job_type,Job_location,job_description,company_url,coordinator,posting_time) VALUES ('".$sid."', '".$name."', '".$email."', '".$phone."', '".$address."', '".$cid."', '".$cname."', '".$clocation."','".$coordinator."', '".$pass."')");
+                    $db->query("INSERT IGNORE INTO Job_Posting (posting_id,company_name, email, job_title,Job_type,Job_location,job_description,company_url,coordinator,posting_time) VALUES ('".$sid."', '".$name."', '".$email."', '".$phone."', '".$address."', '".$cid."', '".$cname."', '".$clocation."','".$coordinator."', '".$pass."')");
                 }
             }
             
             // Close opened CSV file
             fclose($csvFile);
             
-            $qstring = '?status=succ';
+            $qstring = '?status=succjob';
         }else{
-            $qstring = '?status=err';
+            $qstring = '?status=errjob';
         }
     }else{
         $qstring = '?status=invalid_file';

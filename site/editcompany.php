@@ -1,7 +1,6 @@
 <?php
 session_start();
 // error_reporting(E_ALL & ~E_NOTICE);
-
 if(isset($_SESSION['emailemp'])){
     // echo $_SESSION['company'];
   }
@@ -14,19 +13,16 @@ include '../dbConfig.php';
 // $hrcompany=$_SESSION['companyhr'];
 $page="job";
 include 'partials/header.php';
-
-
 // Get status message
 if(!empty($_GET['status'])){
     switch($_GET['status']){
-       
-        case 'succjob':
+        case 'succcomp':
             $statusType='alert-success';
-            $statusMsg='The job has been updated successfully.';
+            $statusMsg='The Company has been updated successfully.';
             break;
-        case 'errjob':
+        case 'errcomp':
             $statusType='alert-danger';
-            $statusMsg='job update failed, please try again.';
+            $statusMsg='Company update failed, please try again.';
             break;
            
         case 'errfiletype':
@@ -42,17 +38,9 @@ if(!empty($_GET['status'])){
 
   <!DOCTYPE html>
 <html>
-<head>
-    
-    
-
-</head>
-
-<body style='padding:0'>
-
-
-<div class="container">
-<div style="padding:10px;">
+<body>
+<div class="container" style="height: 570px;overflow: scroll;">
+<div >
 <!-- !-- Display status message --> 
 <?php if(!empty($statusMsg)){ ?>
 <div class="col-xs-12">
@@ -84,11 +72,11 @@ if(!empty($_GET['jid'])){
                         </div>
                         <div class="form-group" id="job-email-group">
                             <label for="job-email">Email</label>
-                            <input type="email" class="form-control" name="email" id="job-email" value="<?php echo $row22['email']; ?>" placeholder="you@yourdomain.com" readonly required>
+                            <input type="email" class="form-control" name="companyemail" id="job-email" value="<?php echo $row22['email']; ?>" placeholder="you@yourdomain.com" readonly required>
                         </div>
                         <div class="form-group" id="job-title-group">
                             <label for="job-title">Url</label>
-                            <input type="text" name="title" class="form-control" id="job-title" value="<?php echo $row22['url']; ?>" placeholder="e.g. Web Designer" required>
+                            <input type="text" name="companywebsite" class="form-control" id="job-title" value="<?php echo $row22['url']; ?>" placeholder="e.g. Web Designer" required>
                         </div>
                       
                        
@@ -96,9 +84,30 @@ if(!empty($_GET['jid'])){
                        
                         <div class="form-group" id="job-description-group">
                             <label for="job-description">Description</label>
-                            <textarea class="textarea form-control" name="description"id="job-description" maxlength="2000" required>
+                            <textarea class="textarea form-control" name="companydescription"id="job-description" maxlength="2000" required>
                             <?php echo htmlspecialchars($row22['description']); ?>
                             </textarea>
+                        </div>
+
+                         <div class="form-group" id="job-coordinator-group">
+                                                            <label for="job-email">Account manager (Assigned: <?php echo $row22['am'];?> )</label>
+                                <select class="form-control" name="manager" id="job-coordinator" required>
+
+                                <option value="" >Select</option>
+
+                                <!-- -------php code to gather posted jobs---- -->
+                                <?php
+
+                                $query = $db->query("SELECT * FROM admins where role='am'");
+                                            
+                                if($query ->num_rows >0){
+                                    while($row = $query->fetch_assoc()){
+
+                                        echo '<option value="' . $row['email'] .'" >' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
+                                ?>
+                                    <?php }} ?>
+
+                                </select>
                         </div>
                       
                          
@@ -108,14 +117,15 @@ if(!empty($_GET['jid'])){
                 </div>
                     </div>
              </div>
-              <br>
+           
+            </form>
+</div>
+</div>
+   <br>
               <br>
               <br>
               <br>
 
-            </form>
-</div>
-</div>
 </div>
                             <?php
                         }

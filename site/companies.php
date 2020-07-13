@@ -25,8 +25,7 @@ include 'partials/header.php';
                     <h1>Companies</h1>
                     <div id="actionbar" style="float:right;display:none">
                     <!-- <button class="btn btn-warning btn-sm" onclick="repost();">Repost</button> -->
-                        <button class="btn btn-danger btn-sm" onclick="deletejob();"><i class="fa fa-trash-o" aria-hidden="true"></i>
-                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deletejob();"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete </button>
                     </div>
 
                 </div>
@@ -144,10 +143,10 @@ if($querycat ->num_rows >0){
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
                                     <p><strong><?php echo $row['url']; ?></strong></p>
-                                    <p class="hidden-xs">Added on:<strong><?php echo $row['added_on']; ?></strong> </p>
+                                    <p class="hidden-xs">Acc Manag.:<strong><?php echo $row['am']; ?></strong> </p>
                                 </div>
                                 <div class="col-lg-2 col-md-2 hidden-sm hidden-xs job-type text-center">
-                                <!-- <p class="badge full-time"><?php echo $row['Job_type']; ?></p> -->
+                                <p class="badge full-time"><?php echo substr($row['added_on'],0,10); ?></p>
 
                         
                                 </div>
@@ -339,7 +338,7 @@ deletejobpart(i);
 
     function deletejobpart(x){
                             $.ajax({
-                                url: 'deletejob.php',
+                                url: 'deletecompany.php',
                                 type: 'POST',
                             
                                 data: {param1: x},
