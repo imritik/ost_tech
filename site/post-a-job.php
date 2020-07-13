@@ -177,12 +177,12 @@ if($query ->num_rows >0){
 <!-- -------php code to gather posted jobs---- -->
 <?php
 
-$query = $db->query("SELECT * FROM coordinators where is_manager=0");
+$query = $db->query("SELECT * FROM admins where role='cc'");
             
 if($query ->num_rows >0){
     while($row = $query->fetch_assoc()){
 
-        echo '<option value="' . $row['email'] .'">' . $row['name'] .' ('.$row['email'].')' . '</option>';
+        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
 ?>
     <?php }} ?>
 
@@ -242,6 +242,29 @@ if($query ->num_rows >0){
                             <label for="company-logo">Logo</label>
                             <input type="file" name="companylogo" id="company-logo">
                         </div> 
+
+                         <div class="form-group" id="job-coordinator-group">
+                            <label for="job-email">Account Manager</label>
+<select class="form-control" name="manager" id="job-coordinator">
+
+ <option value="" >Select Account Manager</option>
+
+<!-- -------php code to gather posted jobs---- -->
+<?php
+
+$query = $db->query("SELECT * FROM admins where role='am'");
+            
+if($query ->num_rows >0){
+    while($row = $query->fetch_assoc()){
+
+        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
+?>
+    <?php }} ?>
+
+</select>
+                        </div>
+
+
                         <div class="row text-center">
                     <p>&nbsp;</p>
                     <button type="submit" name="submit_company" class="btn btn-primary btn-lg">Add company <i class="fa fa-arrow-right"></i></button>

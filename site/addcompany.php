@@ -9,6 +9,7 @@ $email=$_POST['companyemail'];
 $title=$_POST['companyname'];
 $cweb=$_POST['companywebsite'];
 $cdes=$_POST['companydescription'];
+$am=$_POST['manager'];
 $pass= "pass";
 $statusMsg = '';
 // File upload path
@@ -23,12 +24,6 @@ $fileName = basename($_FILES["companylogo"]["name"]);
 $targetFilePath = $targetDir . $fileName;
 
 $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-
- 
-
-
-
-
 
 if(isset($_POST["submit_company"]) && !empty($_FILES["companylogo"]["name"])){
     // Allow certain file formats
@@ -62,22 +57,41 @@ if(isset($_POST["submit_company"]) && !empty($_FILES["companylogo"]["name"])){
         }
         }
         else {
-           
-           
                     // Insert image file name into database
                     $insert = $db->query("INSERT into employer_account (company_name,description,email,pass,is_active,url,logo,added_on) VALUES ('".$title."','".$cdes."' ,'".$email."','".$pass."','1','".$cweb."','dummy.jpg',NOW())");
                     if($insert){
-                        // $statusMsg = "The company has been added successfully.";
                 $statusMsg='?status=succcomp';
 
                     }else{
-                        // $statusMsg = "upload data failed, please try again.";
                 $statusMsg='?status=errcomp';
 
                     } 
                 }    
 // Display status message
 // echo $statusMsg;
+
+$sql="SELECT * FROM admins WHERE email='$am'";
+$result = $db->query($sql);
+$companies=array();
+
+if ($result ->num_rows ==1) {
+    while($row1 = $result->fetch_assoc()) {
+        $companies=json_decode(stripslashes($row1['company']));
+        var_dump($companies);
+        array_push($companies,$email);
+        var_dump($companies);
+        $newcomp=json_encode($companies);
+        $updateam=$db->query("UPDATE admins SET company='$newcomp' where email='$am'");
+
+        if($updateam){
+            $statusMsg='?status=succcomp';
+        }
+        else{
+            $statusMsg='?status=errcomp';
+        } 
+    }
+}
+
 header('Location:post-a-job.php'.$statusMsg);
 
 ?>
