@@ -74,7 +74,10 @@ if ($result ->num_rows >0) {
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
 <td><input type="text" id="new_age"></td>
-<td style="background:cadetblue"><select id="companies" class="multiselect" multiple="multiple"></select></td>
+<td style="background:cadetblue">
+<select id="companies" class="multiselect" multiple="multiple">
+</select>
+</td>
 <td><input type="text" id="new_contact"></td>
 <td><select id="new_role" class="btn btn-success btn-sm"><option value="1">Account Manager</option><option value="0">Coordinator</option></select></td>
 <td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add Row"></td>

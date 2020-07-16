@@ -53,9 +53,16 @@ if(!empty($_GET['status'])){
     <!-- Main Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
     
+<style>
 
+.donotshow{
+    visibility: hidden;
+    position: absolute;
+}
+
+</style>
 </head>
 
 <body style='padding:0'>
@@ -101,13 +108,13 @@ if(!empty($_GET['jid'])){
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <h2>Job Details</h2>
-                        <div class="form-group" id="job-company-group">
+                        <div class="form-group donotshow" id="job-company-group">
                             <label for="job-email">Company Name</label>
                             <!-- <input type="email" class="form-control" name="email" id="job-email" placeholder="you@yourdomain.com" required> -->
 <input class="form-control" name="companyname" id="job-company" value="<?php echo $row22['company_name']; ?>" readonly required>
 
                         </div>
-                        <div class="form-group" id="job-email-group">
+                        <div class="form-group donotshow" id="job-email-group">
                             <label for="job-email">Email</label>
                             <input type="email" class="form-control" name="email" id="job-email" value="<?php echo $row22['email']; ?>" placeholder="you@yourdomain.com" readonly required>
                         </div>
@@ -142,7 +149,7 @@ if(!empty($_GET['jid'])){
                             <label for="desc-file">Upload description&nbsp; (<a href='../uploads/jd/<?php echo $jid;?>/<?php echo $row22["description_file"];?>' target="blank">View</a>)</label>
                             <input type="file" name="jobdescriptionfile" id="jobdescriptionfile">
                         </div> 
-                        <div class="form-group" id="job-url-group">
+                        <div class="form-group donotshow" id="job-url-group">
                             <label for="job-url">Website (Optional)</label>
                             <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" required>
                         </div>
@@ -211,7 +218,7 @@ if($query ->num_rows >0){
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <h2>Add a Job</h2>
-                        <div class="form-group" id="job-company-group">
+                        <div class="form-group donotshow" id="job-company-group">
                             <label for="job-email">Company Name</label>
                             <!-- <input type="email" class="form-control" name="email" id="job-email" placeholder="you@yourdomain.com" required> -->
 <select class="form-control" name="companyname" id="job-company">
@@ -232,7 +239,7 @@ if($query ->num_rows >0){
 </select>
 
                         </div>
-                        <div class="form-group" id="job-email-group">
+                        <div class="form-group donotshow" id="job-email-group">
                             <label for="job-email">Email</label>
                             <input type="email" class="form-control" name="email" id="job-email" value="<?php echo $hrcompany; ?>" placeholder="you@yourdomain.com" readonly required>
                         </div>
@@ -266,49 +273,19 @@ if($query ->num_rows >0){
                             <label for="desc-file">Upload description&nbsp;</label>
                             <input type="file" name="jobdescriptionfile" id="jobdescriptionfile">
                         </div> 
-                        <div class="form-group" id="job-url-group">
+                        <div class="form-group donotshow" id="job-url-group">
                             <label for="job-url">Website (Optional)</label>
                             <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" required>
                         </div>
-                         <div class="form-group" id="job-coordinator-group">
+                         <div class="form-group" id="job-coordinator-group" style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
-<select class="form-control" name="coordinator" id="job-coordinator" required>
-
- <option value="" >Assign Vendor</option>
-
-<!-- -------php code to gather posted jobs---- -->
-<?php
-
-$query = $db->query("SELECT * FROM admins where role='vendors' and company='$hrcompany'");
-            
-if($query ->num_rows >0){
-    while($row = $query->fetch_assoc()){
-
-        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
-?>
-    <?php }} ?>
-
+                            <select id="companies" class="multiselect"  multiple="multiple">
 </select>
                         </div>
 
-                                <div class="form-group" id="job-recruiter-group">
+                                <div class="form-group" id="job-recruiter-group" style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
-<select class="form-control" name="recruiter" id="job-Recruiter" required>
-
- <option value="" >Assign Recruiter</option>
-
-<!-- -------php code to gather posted jobs---- -->
-<?php
-
-$query = $db->query("SELECT * FROM admins where role='recruiters' and company='$hrcompany'");
-            
-if($query ->num_rows >0){
-    while($row = $query->fetch_assoc()){
-
-        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
-?>
-    <?php }} ?>
-
+                   <select id="companies" class="multiselectrecruiters"  multiple="multiple">
 </select>
                         </div>
                         <div class="row text-center">
@@ -358,4 +335,87 @@ if($query ->num_rows >0){
     <!-- jQuery S../ettings -->
     <script src="../js/settings.js"></script>
     <!-- ============ CONTACT END ============ -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js" integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
+
+<script>
+// ----multiselect part----
+
+$(function() {
+    <?php
+    $companies=array();
+    $recruiters=array();
+    // $companies_name=array();
+    // gathering companies
+
+$sqlcomp = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
+$resultcomp = $db->query($sqlcomp);
+
+if ($resultcomp ->num_rows >0) {
+   
+    while($rowcomp = $resultcomp->fetch_assoc()) {
+        array_push($companies,$rowcomp['email']);
+        // array_push($companies_name,$rowcomp['company_name']);
+
+    }
+}
+
+$sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
+$resultrec = $db->query($sqlrec);
+
+if ($resultrec ->num_rows >0) {
+   
+    while($rowrec = $resultrec->fetch_assoc()) {
+        array_push($recruiters,$rowrec['email']);
+        // array_push($companies_name,$rowcomp['company_name']);
+
+    }
+}
+
+
+    ?>
+  var name =<?php echo json_encode($companies) ?>;
+  $.map(name, function (x) {
+    return $('.multiselect').append("<option>" + x + "</option>");
+  });
+  
+  $('.multiselect')
+    .multiselect({
+      allSelectedText: 'All',
+      maxHeight: 200,
+      includeSelectAllOption: true
+    })
+    // .multiselect('selectAll', false)
+    .multiselect('updateButtonText');
+
+    // checkSelection(name);
+
+// });
+
+
+var name1 =<?php echo json_encode($recruiters) ?>;
+  $.map(name1, function (x) {
+    return $('.multiselectrecruiters').append("<option>" + x + "</option>");
+  });
+  
+  $('.multiselectrecruiters')
+    .multiselect({
+      allSelectedText: 'All',
+      maxHeight: 200,
+      includeSelectAllOption: true
+    })
+    // .multiselect('selectAll', false)
+    .multiselect('updateButtonText');
+
+    // checkSelection(name);
+
+});
+
+
+// }
+</script>
+
+
 </html>
