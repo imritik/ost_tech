@@ -49,26 +49,30 @@ $vendoremail=$_SESSION['emailvendors'];
                 <a class="fm-button"><i class="fa fa-close fa-2x"></i></a>
             </div>
             <ul class="nav">
-                <li><a class="link-login" href=""+window.location.href onclick="clearuri()">Home</a></li>
+                <li>
+                    <a class="link-login" href=""+window.location.href onclick="clearuri()">Home</a>
+                </li>
 
                <?php
- // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting WHERE vendor='$vendoremail'";
+                    // ------collect all jobs of company here
+                    $sqljob="SELECT * FROM Job_Posting WHERE vendor LIKE '%$vendoremail%'";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {
                             $postid=$rowjob['posting_id'];
                             $jobtitle=$rowjob['job_title'];
                             $cname=$rowjob['company_name'];
-                    echo '<li id="'.$postid.'" name="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#" style="width:max-content;padding: 10px;" >'.$jobtitle.'  (<small class="company_name"> '.$cname.' </small>)</a> </li>';
-                            
+                            echo '<li id="'.$postid.'" name="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#" style="width:max-content;padding: 10px;" >'.$jobtitle.'  (<small class="company_name"> '.$cname.' </small>)</a> </li>';
                             }
                     }
                     else{
                         echo '<li><a class="link-login">No Jobs</a></li>';
                     }
                ?>
-                <li><a class="link-login" href="../../logout/logout.php">Logout</a></li>
+
+                <li>
+                    <a class="link-login" href="../../logout/logout.php">Logout</a>
+                </li>
             </ul>
         </div>
         <!-- end Menu -->
