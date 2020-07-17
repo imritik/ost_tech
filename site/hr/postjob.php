@@ -16,9 +16,26 @@ $url=$_POST['weburl'];
 $description=$_POST['description'];
 $vendors=$_POST['coordinator'];
 $recruiters=$_POST['recruiter'];
-$postingid=$_GET['jid'];
+// $postingid=$_GET['jid'];
 $postingid=rand(pow(10, $digits-1), pow(10, $digits)-1);
+// var_dump($email);
+if(is_string($vendors)){
+$vendors=explode(",",$vendors);
+$vendors=json_encode($vendors);
+}
+else{
+    $vendors=json_encode($vendors);
+}
+if(is_string($recruiters)){
+$recruiters=explode(",",$recruiters);
+$recruiters=json_encode($recruiters);
+}
+else{
+$recruiters=json_encode($recruiters);
+}
 
+// var_dump($vendors);
+// var_dump($recruiters);
 // File upload path
 $targetDir = "uploads/jd/".$postingid."/";
  //Check if the directory already exists.

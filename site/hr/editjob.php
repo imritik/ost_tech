@@ -151,47 +151,17 @@ if(!empty($_GET['jid'])){
                         </div> 
                         <div class="form-group donotshow" id="job-url-group">
                             <label for="job-url">Website (Optional)</label>
-                            <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" required>
+                            <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" >
                         </div>
-                         <div class="form-group" id="job-coordinator-group">
+                         <div class="form-group" id="job-coordinator-group"style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
-<select class="form-control" name="coordinator" id="job-coordinator" required>
-
- <option value="" >Assign Vendor</option>
-
-<!-- -------php code to gather posted jobs---- -->
-<?php
-
-$query = $db->query("SELECT * FROM admins where role='vendors' and company='$hrcompany'");
-            
-if($query ->num_rows >0){
-    while($row = $query->fetch_assoc()){
-
-        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
-?>
-    <?php }} ?>
-
+ <select id="companies" name="coordinator" class="multiselect"  multiple="multiple">
 </select>
                         </div>
 
-                                <div class="form-group" id="job-recruiter-group">
+                                <div class="form-group" id="job-recruiter-group"style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
-<select class="form-control" name="recruiter" id="job-Recruiter" required>
-
- <option value="" >Assign Recruiter</option>
-
-<!-- -------php code to gather posted jobs---- -->
-<?php
-
-$query = $db->query("SELECT * FROM admins where role='recruiters' and company='$hrcompany'");
-            
-if($query ->num_rows >0){
-    while($row = $query->fetch_assoc()){
-
-        echo '<option value="' . $row['email'] .'">' . $row['Full_name'] .' ('.$row['email'].')' . '</option>';
-?>
-    <?php }} ?>
-
+ <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple">
 </select>
                         </div>
                         <div class="row text-center">
@@ -214,7 +184,7 @@ if($query ->num_rows >0){
 ?>
 
 
-<form  action="" method="post" enctype="multipart/form-data">
+<form  action="postjob.php" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <h2>Add a Job</h2>
@@ -275,17 +245,17 @@ if($query ->num_rows >0){
                         </div> 
                         <div class="form-group donotshow" id="job-url-group">
                             <label for="job-url">Website (Optional)</label>
-                            <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" required>
+                            <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" >
                         </div>
                          <div class="form-group" id="job-coordinator-group" style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
-                            <select id="companies" class="multiselect"  multiple="multiple">
+                            <select id="companies" name="coordinator" class="multiselect"  multiple="multiple">
 </select>
                         </div>
 
                                 <div class="form-group" id="job-recruiter-group" style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
-                   <select id="companies" class="multiselectrecruiters"  multiple="multiple">
+                   <select id="companies" class="multiselectrecruiters" name="recruiter" multiple="multiple">
 </select>
                         </div>
                         <div class="row text-center">
