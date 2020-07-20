@@ -230,8 +230,8 @@ if(!empty($_GET['status'])){
         </div> -->
 
                 <!-- -----import csv automated--- -->
-                <div class="col-md-4" id="importFrm2" style="display: none;">
-            <br>
+            <div class="col-md-4" id="importFrm2" style="display: none;">
+                <br>
                 <form action="csvimportbydl.php" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" />
                     <br>
@@ -939,6 +939,8 @@ $rowtest=[]
             // Disable prev/next when at first/last page:
             $("#previous-page").toggleClass("disabled", currentPage === 1);
             $("#next-page").toggleClass("disabled", currentPage === totalPages);
+                // $('#selectall').prop('checked',false);
+
             return true;
         }
 
@@ -975,6 +977,8 @@ $rowtest=[]
                                     for (var i = nBegin; i <= nEnd; i++) {
                                     $(tr[i]).show();
                                     }
+
+
 
         });
         $("#next-page").on("click", function() {
@@ -1246,6 +1250,9 @@ $rowtest=[]
 
         // Use event delegation, as these items are recreated later    
         $(document).on("click", ".pagination li.current-page:not(.active)", function() {
+                // console.log($(this).text());
+                $('#selectall').prop('checked',false);
+
             return showPage(+$(this).text());
         });
         $("#next-page").on("click", function() {

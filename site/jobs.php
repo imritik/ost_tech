@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-
 if(isset($_SESSION['emailemp'])){
     // echo $_SESSION['company'];
   }
@@ -34,7 +32,7 @@ include 'partials/header.php';
                 </div>
             </div>
             <br>
-            <!-- -----------filters---- -->
+            <!-- -----------filters------>
 
 <?php
 
