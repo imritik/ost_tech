@@ -32,15 +32,15 @@ $fileName = basename($_FILES["jobdescriptionfile"]["name"]);
 
 $targetFilePath = $targetDir . $fileName;
 
-var_dump($targetFilePath);
+// var_dump($targetFilePath);
 
 $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 // echo $tag1;
-var_dump($_FILES["jobdescriptionfile"]["name"]);
+// var_dump($_FILES["jobdescriptionfile"]["name"]);
 if(!empty($_FILES["jobdescriptionfile"]["name"])){
     // Allow certain file formats
     // Allow certain file formats
-    $allowTypes = array('doc','docx','pdf');
+    $allowTypes = array('doc','docx','DOCX','pdf');
     if(in_array($fileType, $allowTypes)){
       
         // Upload file to server
@@ -85,6 +85,6 @@ else{
    
     
 // Display status message
-echo $statusMsg;
+// echo $statusMsg;
 header('Location:post-a-job.php'.$statusMsg);
 ?>

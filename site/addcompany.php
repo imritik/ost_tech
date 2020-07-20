@@ -77,9 +77,9 @@ $companies=array();
 if ($result ->num_rows ==1) {
     while($row1 = $result->fetch_assoc()) {
         $companies=json_decode(stripslashes($row1['company']));
-        var_dump($companies);
+        // var_dump($companies);
         array_push($companies,$email);
-        var_dump($companies);
+        // var_dump($companies);
         $newcomp=json_encode($companies);
         $updateam=$db->query("UPDATE admins SET company='$newcomp' where email='$am'");
 

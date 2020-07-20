@@ -396,7 +396,7 @@ function formToggle(ID){
                                 <span>CTC</span>
                                 <input type="number" class="rangefilterbox" name="ctc1"value="<?php echo $c;?>">-<input type="number" class="rangefilterbox" name="ctc2" value="<?php echo $d;?>">
                                 <!-- <input type="text" name="skills" placeholder="enter technologies"> -->
-                                <!-- <input type='text' name='booleanskills' placeholder='Enter skills comma(,) separated' value='<?php echo $bs; ?>'> -->
+                                <input type='text' name='booleanskills' placeholder='Enter skills comma(,) separated' value='<?php echo $bs; ?>'>
                                 <button class="btn btn-sm" name="filtersearch">Search</button>
                                
                                </form>
@@ -492,7 +492,15 @@ function formToggle(ID){
 if(isset($_POST['filtersearch'])){
 // var_dump(!empty($_POST['daterange1']));
 
+// var_dump($bs);
+if($bs==''){
 $sql="SELECT * FROM Student WHERE 1";
+
+}
+else{
+$sql="SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE)";
+
+}
 // echo $ctc1;
 // echo $a;
 
