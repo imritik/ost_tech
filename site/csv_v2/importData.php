@@ -94,6 +94,7 @@ if(isset($_POST['importSubmit'])){
                 $no='';
                 if($prevResult->num_rows ==1){
                     // Update member data in the database
+                    $cv_parsed=str_replace("'","",$cv_parsed);
 
 
                    $update= $db->query("UPDATE IGNORE Student SET 
@@ -144,11 +145,15 @@ if(isset($_POST['importSubmit'])){
                 }
                 
                 else{
+
+                    $cv_parsed=str_replace("'","",$cv_parsed);
                     // Insert member data in the database
                     $insert=$db->query("INSERT IGNORE INTO Student (id,stud_name, email,status ,contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,Offer_acceptance_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email','approved','$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$offer_acceptance_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
+                //    var_dump("INSERT IGNORE INTO Student (id,stud_name, email,status ,contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,Offer_acceptance_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email','approved','$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$offer_acceptance_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
+                //    echo strlen($cv_parsed);
                     if(!$insert){
                       
-                        //echo "srry";
+                       echo "srry";
                         $qstring = '?status=err';
                     }
                     else{
@@ -172,5 +177,6 @@ if(isset($_POST['importSubmit'])){
 }
 // Redirect to the listing page
 // 
+// echo $qstring;
 header("Location: ../candidates.php".$qstring);
 ?>
