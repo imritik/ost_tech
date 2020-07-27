@@ -104,6 +104,7 @@ if(isset($_POST['importSubmit'])){
                    curr_company = Coalesce(NULLIF('$comp',''),curr_company), 
                    curr_ctc = Coalesce(NULLIF('$cctc',''),curr_ctc),
                    tech=Coalesce(NULLIF('$tech',''),tech), 
+                   cv_parsed=Coalesce(NULLIF('$cv_parsed',''),cv_parsed),
                    modified_on = NOW(),
                    is_active='$is_active', 
                    ug_college = Coalesce(NULLIF('$ug_college',''),ug_college),

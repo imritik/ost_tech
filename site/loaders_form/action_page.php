@@ -58,7 +58,9 @@ if ( isset($_GET['sidforform']) && count($_GET) > 1 ) {
               
                 if($prevResult->num_rows ==1){
                     // Update member data in the database
-                   $update= $db->query("UPDATE Student SET id='$fid',stud_name = '$name',contact = '$phone', curr_company = '$comp',designation='$designation', modified_on = NOW(), ug_college = '$ug_college', ug_degree = '$ug_degree', pg_college = '$pg_college', pg_degree = '$pg_degree',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',Alternate_emails='$alternate_emails' WHERE student_id = $sid");
+                   $update= $db->query("UPDATE IGNORE  Student SET id='$fid',stud_name = '$name',contact = '$phone', curr_company = '$comp',designation='$designation', modified_on = NOW(), ug_college = '$ug_college', ug_degree = '$ug_degree', pg_college = '$pg_college', pg_degree = '$pg_degree',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',Alternate_emails='$alternate_emails' WHERE student_id = $sid");
+                  
+                //   var_dump("UPDATE IGNORE  Student SET id='$fid',stud_name = '$name',contact = '$phone', curr_company = '$comp',designation='$designation', modified_on = NOW(), ug_college = '$ug_college', ug_degree = '$ug_degree', pg_college = '$pg_college', pg_degree = '$pg_degree',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',Alternate_emails='$alternate_emails' WHERE student_id = $sid");
                    if(!$update){
                     // echo "cantupdate";
                     $qstring = 'status=err';
@@ -72,5 +74,6 @@ if ( isset($_GET['sidforform']) && count($_GET) > 1 ) {
                     // echo "not fouund";
                     $qstring = 'status=err';
                 }
+                // echo $qstring;
 header("Location:show_status.php?".$qstring);
 ?>
