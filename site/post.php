@@ -66,12 +66,15 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW()),'".$coordinator."'");
+            $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW(),'".$coordinator."')");
+        // var_dump("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time,coordinator) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW(),'".$coordinator."')");
+        
             if($insert){
                 // $statusMsg = "The job has been uploaded successfully.";
                 $statusMsg='?status=succjob';
 
             }else{
+                echo "old";
                 // $statusMsg = "job upload failed, please try again.";
                 $statusMsg='?status=errjob';
 

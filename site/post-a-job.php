@@ -158,7 +158,7 @@ if($query ->num_rows >0){
                        
                         <div class="form-group" id="job-description-group">
                             <label for="job-description">Description</label>
-                            <textarea class="textarea form-control" name="description" id="job-description" maxlength="2000" required></textarea>
+                            <textarea class="textarea form-control" name="description" id="job-description" maxlength="2000"></textarea>
                         </div>
                         <div class="form-group" id="job-description-file-group">
                             <label for="desc-file">Upload description</label>
