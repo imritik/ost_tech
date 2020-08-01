@@ -97,9 +97,58 @@ if(isset($_POST['importSubmit'])){
                     $cv_parsed=str_replace("'","",$cv_parsed);
 
 
-                   $update= $db->query("UPDATE IGNORE Student SET 
+                //   $update= $db->query("UPDATE IGNORE Student SET 
                    
-                   stud_name = Coalesce(NULLIF('$name',''),stud_name),
+                //   stud_name = Coalesce(NULLIF('$name',''),stud_name),
+                //   pass=Coalesce(NULLIF('$pass',''),pass) ,
+                //   contact = Coalesce(NULLIF('$phone',''),contact), 
+                //   curr_company = Coalesce(NULLIF('$comp',''),curr_company), 
+                //   curr_ctc = Coalesce(NULLIF('$cctc',''),curr_ctc),
+                //   tech=Coalesce(NULLIF('$tech',''),tech), 
+                //   cv_parsed=Coalesce(NULLIF('$cv_parsed',''),cv_parsed),
+                //   modified_on = NOW(),
+                //   is_active='$is_active', 
+                //   ug_college = Coalesce(NULLIF('$ug_college',''),ug_college),
+                //   ug_degree = Coalesce(NULLIF('$ug_degree',''),ug_degree),  
+                //   ug_city = Coalesce(NULLIF('$ug_city',''),ug_city), 
+                //   ug_agg = Coalesce(NULLIF('$ug_agg',''),ug_agg),
+                //   ug_yoc=Coalesce(NULLIF('$ug_yoc',''),ug_yoc),
+                //   pg_college = Coalesce(NULLIF('$pg_college',''),pg_college), 
+                //   pg_degree = Coalesce(NULLIF('$pg_degree',''),pg_degree),  
+                //   pg_city = Coalesce(NULLIF('$pg_city',''),pg_city), 
+                //   pg_agg = Coalesce(NULLIF('$pg_agg',''),pg_agg),
+                //   pg_yoc=Coalesce(NULLIF('$pg_yoc',''),pg_yoc),
+                //   add_courses=Coalesce(NULLIF('$add_courses',''),add_courses),
+                //   total_exp = Coalesce(NULLIF('$total_exp',''),total_exp),
+                //   prev_comp=Coalesce(NULLIF('$prev_companies',''),prev_comp),
+                //   prev_comp_other=Coalesce(NULLIF('$prev_comp_other',''),prev_comp_other),
+                //   expected_ctc = Coalesce(NULLIF('$expected_ctc',''),expected_ctc),
+                //   curr_loc=Coalesce(NULLIF('$curr_loc',''),curr_loc), 
+                //   preferred_loc = Coalesce(NULLIF('$pre_loc',''),preferred_loc),
+                //   applied_for=Coalesce(NULLIF('$applied_for',''),applied_for),
+                //   applied_to=Coalesce(NULLIF('$applied_to',''),applied_to),
+                //   profile_segment=Coalesce(NULLIF('$profile_segment',''),profile_segment),
+                //   cv_upload_date=Coalesce(NULLIF('$cv_upload_date',''),cv_upload_date),
+                //   latest_application_date=Coalesce(NULLIF('$latest_application_date',''),latest_application_date),
+              
+                //   ctc_fixed=Coalesce(NULLIF('$ctc_fix',''),ctc_fixed),
+                //   ctc_variable=Coalesce(NULLIF('$ctc_variable',''),ctc_variable),
+                
+                //   notice_period=Coalesce(NULLIF('$notice_period',''),notice_period),
+                //   Alternate_emails=Coalesce(NULLIF('$additional_email',''),Alternate_emails),
+                //   profile_segment2=Coalesce(NULLIF('$profile_segment',''),profile_segment2),
+                //   source=Coalesce(NULLIF('$source',''),source),
+                //   designation=Coalesce(NULLIF('$designation',''),designation)
+                //   WHERE email = '$email'");
+            
+            // var_dump($update);
+            //    echo "old";
+// var_dump("UPDATE IGNORE Student SET stud_name = '$name',pass='$pass' ,contact = '$phone', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech', modified_on = NOW(),is_active='$is_active', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc',curr_loc='$curr_loc', preferred_loc = '$pre_loc',applied_for='$applied_for',applied_to='$applied_to',profile_segment='$profile_segment',cv_upload_date='$cv_upload_date',latest_application_date='$latest_application_date' WHERE email = '$email'");
+mysqli_query($db,"SET collation_connection = latin1_swedish_ci")or die(mysqli_error($db));
+
+$update=mysqli_query($db,"UPDATE IGNORE Student SET 
+                   
+                  stud_name = Coalesce(NULLIF('$name',''),stud_name),
                    pass=Coalesce(NULLIF('$pass',''),pass) ,
                    contact = Coalesce(NULLIF('$phone',''),contact), 
                    curr_company = Coalesce(NULLIF('$comp',''),curr_company), 
@@ -129,12 +178,19 @@ if(isset($_POST['importSubmit'])){
                    applied_to=Coalesce(NULLIF('$applied_to',''),applied_to),
                    profile_segment=Coalesce(NULLIF('$profile_segment',''),profile_segment),
                    cv_upload_date=Coalesce(NULLIF('$cv_upload_date',''),cv_upload_date),
-                   latest_application_date=Coalesce(NULLIF('$latest_application_date',''),latest_application_date) 
-                   WHERE email = '$email'");
-            
-            
-            //    echo "old";
-// var_dump("UPDATE IGNORE Student SET stud_name = '$name',pass='$pass' ,contact = '$phone', curr_company = '$comp', curr_ctc = '$cctc',tech='$tech', modified_on = NOW(),is_active='$is_active', ug_college = '$ug_college', ug_degree = '$ug_degree',  ug_city = '$ug_city', ug_agg = '$ug_agg',ug_yoc='$ug_yoc',pg_college = '$pg_college', pg_degree = '$pg_degree',  pg_city = '$pg_city', pg_agg = '$pg_agg',pg_yoc='$pg_yoc',add_courses='$add_courses',total_exp = '$total_exp',prev_comp='$prev_companies',prev_comp_other='$prev_comp_other',expected_ctc = '$expected_ctc',curr_loc='$curr_loc', preferred_loc = '$pre_loc',applied_for='$applied_for',applied_to='$applied_to',profile_segment='$profile_segment',cv_upload_date='$cv_upload_date',latest_application_date='$latest_application_date' WHERE email = '$email'");
+                   latest_application_date=Coalesce(NULLIF('$latest_application_date',''),latest_application_date),
+              
+                   ctc_fixed=Coalesce(NULLIF('$ctc_fix',''),ctc_fixed),
+                   ctc_variable=Coalesce(NULLIF('$ctc_variable',''),ctc_variable),
+                
+                   notice_period=Coalesce(NULLIF('$notice_period',''),notice_period),
+                   Alternate_emails=Coalesce(NULLIF('$additional_email',''),Alternate_emails),
+                   profile_segment2=Coalesce(NULLIF('$profile_segment',''),profile_segment2),
+                   source=Coalesce(NULLIF('$source',''),source),
+                   designation=Coalesce(NULLIF('$designation',''),designation)
+                   WHERE email = '$email'") or die(mysqli_error($db));
+
+// var_dump($update);
                 if(!$update){
                     // echo "here";
                     $qstring = '?status=err';
@@ -176,7 +232,6 @@ if(isset($_POST['importSubmit'])){
     }
 }
 // Redirect to the listing page
-// 
+
 // echo $qstring;
 header("Location: ../candidates.php".$qstring);
-?>
