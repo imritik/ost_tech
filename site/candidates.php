@@ -506,10 +506,10 @@ $sql="SELECT * FROM Student WHERE 1";
 
 }
 else if($bs!=''&& $locations!=''){
-$sql="SELECT * FROM Student WHERE MATCH(tech,cv_parsed) AGAINST ('$bs' IN BOOLEAN MODE) AND MATCH(curr_loc) AGAINST ('$locations' IN BOOLEAN MODE)";
+$sql="SELECT * FROM Student WHERE MATCH(tech,cv_parsed) AGAINST ('$bs' IN BOOLEAN MODE) AND MATCH(curr_loc,preferred_loc) AGAINST ('$locations' IN BOOLEAN MODE)";
 }
 else if($bs=='' && $locations!=''){
-$sql="SELECT * FROM Student WHERE MATCH(curr_loc) AGAINST ('$locations' IN BOOLEAN MODE)";
+$sql="SELECT * FROM Student WHERE MATCH(curr_loc,preferred_loc) AGAINST ('$locations' IN BOOLEAN MODE)";
 
 }
 else{
