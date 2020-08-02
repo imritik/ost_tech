@@ -362,8 +362,13 @@ function formToggle(ID){
                                      
                                         $bs=$_SESSION['bs'];
                                     }
+                                    if(isset($_POST['locations'])){
+                                        $_SESSION['locations']=$_POST['locations'];
+                                        $locations=$_SESSION['locations'];
+                                    }
                                     else{
                                         $bs='';
+                                        $locations='';
                                     }
                                    
                                    
@@ -375,6 +380,7 @@ function formToggle(ID){
                                     $c=0;
                                     $d=50;
                                     $bs='nodejs,php';
+                                    $locations='noida';
                                 }
                                 
                                 ?>
@@ -397,6 +403,8 @@ function formToggle(ID){
                                 <input type="number" class="rangefilterbox" name="ctc1"value="<?php echo $c;?>">-<input type="number" class="rangefilterbox" name="ctc2" value="<?php echo $d;?>">
                                 <!-- <input type="text" name="skills" placeholder="enter technologies"> -->
                                 <input type='text' name='booleanskills' placeholder='Enter skills comma(,) separated' value='<?php echo $bs; ?>'>
+                                <input type='text' name='locations' placeholder='Enter locations comma(,) separated' value='<?php echo $locations; ?>'>
+                               
                                 <button class="btn btn-sm" name="filtersearch">Search</button>
                                
                                </form>
@@ -493,12 +501,19 @@ if(isset($_POST['filtersearch'])){
 // var_dump(!empty($_POST['daterange1']));
 
 // var_dump($bs);
-if($bs==''){
+if($bs==''&& $locations==''){
 $sql="SELECT * FROM Student WHERE 1";
 
 }
+else if($bs!=''&& $locations!=''){
+$sql="SELECT * FROM Student WHERE MATCH(tech,cv_parsed) AGAINST ('$bs' IN BOOLEAN MODE) AND MATCH(curr_loc) AGAINST ('$locations' IN BOOLEAN MODE)";
+}
+else if($bs=='' && $locations!=''){
+$sql="SELECT * FROM Student WHERE MATCH(curr_loc) AGAINST ('$locations' IN BOOLEAN MODE)";
+
+}
 else{
-$sql="SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) AS score FROM Student WHERE MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE)";
+$sql="SELECT * FROM Student WHERE MATCH(tech,cv_parsed) AGAINST ('$bs' IN BOOLEAN MODE)";
 
 }
 // echo $ctc1;
@@ -534,6 +549,14 @@ $sql="SELECT *, MATCH (tech,cv_parsed) AGAINST ('$bs' IN NATURAL LANGUAGE MODE) 
             $endDate=$_POST['ctc2'];
                     $sql .= " and curr_ctc between '".$fromDate."' and '".$endDate."' ";
  }
+//  if(!empty($_POST['locations'])){
+//      $locationstring=$_POST['locations'];
+//      $eachlocation=explode(',',$locationstring);
+//      $sql.="and curr_loc LIKE '%$eachlocation[0]%'
+//      OR curr_loc LIKE '%$eachlocation[1]%'
+//      OR curr_loc LIKE '%$eachlocation[1]%'     
+//      ";
+//  }
 
 //  var_dump($sql);
 
