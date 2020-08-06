@@ -171,7 +171,7 @@ $update=mysqli_query($db,"UPDATE IGNORE Student SET
                    applied_for=Coalesce(NULLIF('$applied_for',''),applied_for),
                    applied_to=Coalesce(NULLIF('$applied_to',''),applied_to),
                    profile_segment=Coalesce(NULLIF('$profile_segment',''),profile_segment),
-                   cv_upload_date=NOW(),
+                   cv_upload_date=Coalesce(NULLIF('$cv_upload_date',''),cv_upload_date),
                    latest_application_date=Coalesce(NULLIF('$latest_application_date',''),latest_application_date),
               
                    ctc_fixed=Coalesce(NULLIF('$ctc_fix',''),ctc_fixed),

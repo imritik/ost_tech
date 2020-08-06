@@ -123,7 +123,7 @@ if( !empty($_FILES["pictureFile"]["name"])){
 
 
             // Insert image file name into database
-            $insert = $db->query("UPDATE Student SET resume='$fileName',modified_on=NOW() WHERE student_id='$studid'");
+            $insert = $db->query("UPDATE Student SET resume='$fileName',cv_upload_date=NOW(),modified_on=NOW() WHERE student_id='$studid'");
             if($insert){
                 $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
 

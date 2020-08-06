@@ -339,7 +339,7 @@ $query='';
 
                             <?php
 
-                                $sqlcomp = "SELECT * FROM Student where stud_name='$sname' and student_id!='$studids[$x]'";
+                                $sqlcomp = "SELECT * FROM Student where stud_name='$sname' and student_id!='$studids[$x]' ORDER BY updated_on DESC";
                                 $resultcomp = $db->query($sqlcomp);
 // var_dump($resultcomp);
                                 if ($resultcomp ->num_rows >0) {
@@ -640,7 +640,22 @@ $('#admins_email').on('change', function () {
 
 
 function combine(){
-    console.log(newArray1);
+    console.log(jobrefs);
+
+                            $.ajax({
+                                url: 'combine.php',
+                                type: 'POST',
+                            
+                                data: {param1: jobrefs},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                // location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in combining");
+                            });
 }
 
 
