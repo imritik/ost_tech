@@ -54,7 +54,7 @@ $targetFilePath = $targetDir . $fileName;
 
 $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 // echo $tag1;
-var_dump($_FILES["jobdescriptionfile"]["name"]);
+// var_dump($_FILES["jobdescriptionfile"]["name"]);
 if(!empty($_FILES["jobdescriptionfile"]["name"])){
     // Allow certain file formats
     // Allow certain file formats
@@ -106,6 +106,6 @@ else{
    
     
 // Display status message
-echo $statusMsg;
+// echo $statusMsg;
 header('Location:'.$_SERVER["HTTP_REFERER"].$statusMsg);
 ?>
