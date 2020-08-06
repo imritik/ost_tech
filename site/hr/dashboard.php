@@ -171,7 +171,9 @@ if(!empty($_GET['jid'])){
                     echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" target="blank" style="color:white">Edit</a></button>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
-                    <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button></div>
+                    <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
+                    <button id="combine"class="btn btn-primary btn-sm" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
+                    </div>
                     <br>
                     ';
                             }
@@ -314,18 +316,18 @@ $query='';
                     <td><?php echo $row1['expected_ctc'];?></td>
                     <td><?php echo $row1['notice_period']?></td>
                     <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
-                 <td><?php echo $hrcomment[$x];?></td>
+                    <td><?php echo $hrcomment[$x];?></td>
                     <td><?php echo $managercomment[$x];?></td>
                     <td><?php echo $recruitercomment[$x];?></td>
-<td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
+                    <td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
                     <td>
-                     <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-                        <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
-                        <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
-                        <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
-                        <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
-                        <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
-                    </select>
+                        <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
+                            <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
+                            <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
+                            <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
+                            <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
+                            <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
+                        </select>
                     </td>
                 
                 </tr>
@@ -337,17 +339,18 @@ $query='';
 
                             <?php
 
-                                $sqlcomp = "SELECT * FROM Student where stud_name='$sname'";
+                                $sqlcomp = "SELECT * FROM Student where stud_name='$sname' and student_id!='$studids[$x]'";
                                 $resultcomp = $db->query($sqlcomp);
 // var_dump($resultcomp);
                                 if ($resultcomp ->num_rows >0) {
                                 
                                     while($rowcomp = $resultcomp->fetch_assoc()) {
 
-            $duplinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$rowcomp['resume'];
+            $duplinks='http://talentchords.com/jobs/specialty/uploads/'.$rowcomp['student_id'].'/'.$rowcomp['resume'];
 
 ?>
-                                          <tr>
+                                <tr>
+                                <td><input type="checkbox" class="studentcheckbox1comp" value="<?php echo $rowcomp['student_id'];?>" name="chkcomp"></td></td>
                                 <td><?php echo $rowcomp['stud_name'];?></td>
                                 <td><?php echo $rowcomp['email'];?></td>
                                 <!-- <td><?php echo $rowcomp['curr_ctc'];?></td>
@@ -559,6 +562,35 @@ $('#admins_email').on('change', function () {
      
 
     });
+
+    // for selecting comp names
+
+
+
+    $(".studentcheckbox1comp").click(function(){
+        //  $('.tobe-reused').show();
+        var favorite=[];
+        var jobref=[];
+            $.each($("input[name='chkcomp']:checked"), function(){  
+                console.log($(this).val());          
+                favorite.push($(this).val());
+                jobref.push($(this).closest("tr").find('td:eq(2)').text());
+            });
+            favorites=favorite;
+            jobrefs=jobref;
+            var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+            newArray1=newArray;
+         console.log(newArray1);
+
+          if(newArray1.length){
+         $('#combine').show();
+         }
+         else{
+         $('#combine').hide();
+
+         }
+    });
+
     // -----for selecting all student at once---
     $("#selectall").click(function () {
         // $('.tobe-reused').toggle();
@@ -605,6 +637,12 @@ $('#admins_email').on('change', function () {
          }
    
     });
+
+
+function combine(){
+    console.log(newArray1);
+}
+
 
      function FilterRow($input){
            console.log("in filter function",$input);
