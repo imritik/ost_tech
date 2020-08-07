@@ -124,11 +124,11 @@ if ($result ->num_rows >0) {
         <td contenteditable="false">
             <select role='<?php echo $row1["role"];?>' value="<?php echo $row1['role'];?>" class="btn btn-success btn-sm role">
             <option value="Main"<?php if ($row1['role'] == 'Main')  echo 'selected = "selected"'; ?>>Main</option>
-            <option value="Level"<?php if ($row1['role'] == 'Level')  echo 'selected = "selected"'; ?>>Level</option>
+            <option value="Level"<?php if ($row1['role'] == 'Level')  echo 'selected = "selected"'; ?>>Hiring Manager</option>
             <option value="DL"<?php if ($row1['role'] == 'DL')  echo 'selected = "selected"'; ?>>D.L</option>
             <option value="recruiters"<?php if ($row1['role'] == 'recruiters')  echo 'selected = "selected"'; ?>>Recruiters</option>
             <option value="vendors"<?php if ($row1['role'] == 'vendors')  echo 'selected = "selected"'; ?>>Vendors</option>
-            <option value="manager"<?php if ($row1['role'] == 'manager')  echo 'selected = "selected"'; ?>>Manager</option>
+            <option value="manager"<?php if ($row1['role'] == 'manager')  echo 'selected = "selected"'; ?>>HR Manager</option>
             <option value="am"<?php if ($row1['role'] == 'am')  echo 'selected = "selected"'; ?>>Account Manager</option>
             <option value="cc"<?php if ($row1['role'] == 'cc')  echo 'selected = "selected"'; ?>>Coordinator</option>
             </select>

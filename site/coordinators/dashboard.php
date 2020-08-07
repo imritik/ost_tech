@@ -202,6 +202,7 @@ if(!empty($_GET['jid'])){
 <ul class="nav nav-tabs">
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
+    <li class='hold'><a  onclick="setstatus('hold')">Processed&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
     <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
