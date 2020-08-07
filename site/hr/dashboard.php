@@ -350,7 +350,7 @@ $query='';
 
 ?>
                                 <tr>
-                                <td><input type="checkbox" class="studentcheckbox1comp" value="<?php echo $rowcomp['student_id'];?>" name="chkcomp"></td></td>
+                                <!-- <td><input type="checkbox" class="studentcheckbox1comp" value="<?php echo $rowcomp['student_id'];?>" name="chkcomp"></td></td> -->
                                 <td><?php echo $rowcomp['stud_name'];?></td>
                                 <td><?php echo $rowcomp['email'];?></td>
                                 <!-- <td><?php echo $rowcomp['curr_ctc'];?></td>
