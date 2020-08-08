@@ -261,17 +261,37 @@ function downloadCSV(csv, filename) {
             var csv = [];
             var rows = document.querySelectorAll("table tr");
             
-            for (var i = 0; i < rows.length; i++) {
+            for (var i = 1; i < rows.length; i++) {
+
                 var row = [], cols = rows[i].querySelectorAll("td, th");
                 
-                for (var j = 0; j < cols.length; j++) 
-                    row.push(cols[j].innerText);
+                // for (var j = 0; j < cols.length; j++) 
+                    // row.push(cols[j].innerText);
+                console.log(cols[2].innerText);
                 
-                csv.push(row.join(","));        
+                csv.push(cols[2].innerText);  
+                console.log(csv);      
             }
 
+              $.ajax({
+                    url: "setstudbyemail.php",
+                    type:'post',
+                    data: { role: csv }
+                }).done(function(response) {
+                                // alert(response);
+                                //do something with the response
+                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
+        window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportstudbyemail.php";
+                               
+                            })
+                            .fail(function() {
+                                alert("error in exporting");
+                            });
+
+
             // Download CSV file
-            downloadCSV(csv.join("\n"), filename);
+            // downloadCSV(csv.join("\n"), filename);
+        // }nloadCSV(csv.join("\n"), filename);
         }
     </script>
 

@@ -20,8 +20,12 @@ if(isset($_POST['importSubmitfeedback'])){
                 $student_email = $line[1];
                 $email  = $line[2];
                 $phone  = $line[3];
-                $address = $line[4];
-                $coordinator_note = $line[5];
+                // $address = $line[4];
+                $coordinator_note = $line[4];
+                $hr_note=$line[6];
+                $manager_note=$line[7];
+                $am_note=$line[8];
+
             $name='';
             // echo "hi";
             // var_dump($student_email,$sid);
@@ -50,8 +54,13 @@ if(isset($_POST['importSubmitfeedback'])){
                     $db->query("UPDATE IGNORE applied_table 
                     SET 
                     Status = Coalesce(NULLIF('$phone',''),Status), 
-                    Note = Coalesce(NULLIF('$address',''),Note), 
+                    -- Note = Coalesce(NULLIF('$address',''),Note), 
                     coordinator_note=Coalesce(NULLIF('$coordinator_note',''),coordinator_note),
+                    hr_note=Coalesce(NULLIF('$hr_note',''),hr_note),
+                    manager_note=Coalesce(NULLIF('$manager_note',''),manager_note),
+                    
+                    Note=Coalesce(NULLIF('$am_note',''),Note),
+
                     Status_update = NOW() 
                     WHERE posting_id = $sid and student_id=$name");
 
@@ -65,7 +74,7 @@ if(isset($_POST['importSubmitfeedback'])){
                 }else{
                     // echo "new";
                     // Insert member data in the database
-                    $db->query("INSERT IGNORE INTO applied_table (posting_id,student_id,applied_at,Status,Note,coordinator_note,Status_update) VALUES ('".$sid."', '".$name."','".$email."', '".$phone."', '".$address."','".$coordinator_note."',NOW())");
+                    $db->query("INSERT IGNORE INTO applied_table (posting_id,student_id,applied_at,Status,Note,coordinator_note,Status_update,hr_note,manager_note,Note) VALUES ('".$sid."', '".$name."','".$email."', '".$phone."','".$coordinator_note."',NOW(),'".$hr_note."','".$manager_note."','".$am_note."')");
                 }
             }
             

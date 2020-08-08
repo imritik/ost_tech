@@ -19,7 +19,8 @@ $description=$_POST['description'];
 $vendors=$_POST['coordinator'];
 $recruiters=$_POST['recruiter'];
 $postingid=$_GET['jid'];
-// var_dump($postingid);
+$coordinator=$_POST['cc'];
+// var_dump($coordinator);
 // var_dump($recruiters);
 // var_dump($vendors);
 if(is_string($vendors)){
@@ -64,7 +65,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',vendor='$vendors',recruiter='$recruiters' where posting_id='$postingid' and email='$email'");
+                    $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',vendor='$vendors',recruiter='$recruiters',coordinator='$coordinator' where posting_id='$postingid' and email='$email'");
                 //   var_dump("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',vendor='$vendors',recruiter='$recruiters where posting_id='$postingid' and email='$email'");
                     if($insert){
                         // $statusMsg = "The job has been uploaded successfully.";
@@ -85,7 +86,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',vendor='$vendors',recruiter='$recruiters' where posting_id='$postingid' and email='$email'");
+            $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',vendor='$vendors',recruiter='$recruiters',coordinator='$coordinator' where posting_id='$postingid' and email='$email'");
                 //   var_dump("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',vendor='$vendors',recruiter='$recruiters where posting_id='$postingid' and email='$email'");
             
             if($insert){

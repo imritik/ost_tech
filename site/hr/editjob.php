@@ -153,15 +153,35 @@ if(!empty($_GET['jid'])){
                             <label for="job-url">Website (Optional)</label>
                             <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" >
                         </div>
+                         <div class="form-group" id="job-cc-group">
+                            <label for="job-email">Coordinator ( Assigned: <?php echo $row22['coordinator']; ?>)</label>
+                            <br>
+                            <select  name="cc" required>
+                             <option value="" >Select Coordinator</option>
+
+            <!-- -------php code to gather posted jobs---- -->
+            <?php
+
+            $query = $db->query("SELECT * FROM admins where role='cc'");
+                
+            if($query ->num_rows >0){
+            while($row = $query->fetch_assoc()){
+
+            echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['Full_name'].')' . '</option>';
+            ?>
+            <?php }} ?>
+
+                            </select>
+                        </div>
                          <div class="form-group" id="job-coordinator-group"style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
- <select id="companies" name="coordinator" class="multiselect"  multiple="multiple">
+ <select id="companies" name="coordinator" class="multiselect"  multiple="multiple" required >
 </select>
                         </div>
 
                                 <div class="form-group" id="job-recruiter-group"style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
- <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple">
+ <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple" required>
 </select>
                         </div>
                         <div class="row text-center">
@@ -319,8 +339,20 @@ $(function() {
     $recruiters=array();
     // $companies_name=array();
     // gathering companies
-
+$sqlcomp='';
+$sqlrec='';
+if(isset($_SESSION['emailhr'])){
 $sqlcomp = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
+$sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
+
+
+}
+else{
+$sqlrec = "SELECT * FROM admins where role='recruiters'";
+$sqlcomp = "SELECT * FROM admins where role='vendors'";
+
+    
+}
 $resultcomp = $db->query($sqlcomp);
 
 if ($resultcomp ->num_rows >0) {
@@ -332,7 +364,6 @@ if ($resultcomp ->num_rows >0) {
     }
 }
 
-$sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
 $resultrec = $db->query($sqlrec);
 
 if ($resultrec ->num_rows >0) {

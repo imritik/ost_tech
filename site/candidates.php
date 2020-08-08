@@ -307,7 +307,7 @@ function formToggle(ID){
                                         if($query ->num_rows >0){
                                             while($row = $query->fetch_assoc()){
 
-                                                echo '<option value="' . $row['posting_id'] . '">' . $row['job_title'] .' ('.$row['Job_type'].')' . '</option>';
+                                                echo '<option value="' . $row['posting_id'] . '">' . $row['job_title'] .' ('.$row['Job_type'].')'.' ('.$row['company_name'].')' . '</option>';
                                         ?>
                                             <?php }} ?>
 
@@ -409,7 +409,7 @@ function formToggle(ID){
                                
                                </form>
                               
-                               <button id="btnshortlistall" class="btn btn-sm" style="background:aliceblue;display:none">Shortlist All</button>
+                               <button id="btnshortlistall" class="btn btn-sm" style="background:aliceblue;display:none">Send Job</button>
 
                         
  </div>
@@ -870,12 +870,13 @@ $(".studentcheckbox").click(function(){
 
             }
         });
+        console.log(favorites);
 
     });
 
 
 $('#btnshortlistall').click(function(){
-   
+   console.log(favorites);
 favorites.forEach(function(stid){
     shortlist(stid);
 })
