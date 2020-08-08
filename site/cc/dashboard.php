@@ -179,11 +179,32 @@ if(!empty($_GET['jid'])){
                     }
                 // }
                 ?>
+              <div class="col-md-12 head" style="display: flex;">
+        <div class="float-right">
+            <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
+        </div>
+        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
+
+    </div>
+    <!-- CSV file upload form -->
+    <div class="col-md-12" id="importFrm" style="display: none;">
+    <br>
+        <form action="../csv_v2/importData.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <br>
+            <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
+        </form>
+        <br>
+    </div>
+    <br>
+    <br>
 
 <ul class="nav nav-tabs">
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
-    <li class='hold'><a  onclick="setstatus('hold')">Processed&nbsp;<span></span></a></li>
+    <!-- <li class='hold'><a  onclick="setstatus('hold')">Processed&nbsp;<span></span></a></li> -->
+    <li class='processed'><a  onclick="setstatus('processed')">Processed&nbsp;<span></span></a></li>
+
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
     <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
@@ -206,9 +227,9 @@ if(!empty($_GET['jid'])){
     <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
     <th>Resume</th>
       
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
+    <!-- <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th> -->
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment" readonly></th>
     
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
@@ -313,14 +334,16 @@ $query='';
                     <td><?php echo $row1['expected_ctc'];?></td>
                     <td><?php echo $row1['notice_period']?></td>
                     <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
-                    <td><?php echo $hrcomment[$x];?></td>
+                    <!-- <td><?php echo $hrcomment[$x];?></td>
                     <td><?php echo $managercomment[$x];?></td>
-                    <td><?php echo $recruitercomment[$x];?></td>
+                    <td><?php echo $recruitercomment[$x];?></td> -->
                     <td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
                     <td>
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
                             <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
+                            <option value="processed" <?php if (   $status== 'processed')  echo 'selected = "selected"'; ?>>Processed</option>
+                          
                             <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
                             <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
                             <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
@@ -437,7 +460,14 @@ $query='';
  <!-- ============ JOBS END ============ -->
 
 <script>
-
+function formToggle(ID){
+    var element = document.getElementById(ID);
+    if(element.style.display === "none"){
+        element.style.display = "block";
+    }else{
+        element.style.display = "none";
+    }
+}
                             
   function deletejobpart(x){
                             $.ajax({
@@ -986,6 +1016,68 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
         });
         }
 
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+          function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+            
+            for (var i = 1; i < rows.length; i++) {
+
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                
+                // for (var j = 0; j < cols.length; j++) 
+                    // row.push(cols[j].innerText);
+                console.log(cols[2].innerText);
+                
+                csv.push(cols[2].innerText);  
+                console.log(csv);      
+            }
+
+              $.ajax({
+                    url: "../setstudbyemail.php",
+                    type:'post',
+                    data: { role: csv }
+                }).done(function(response) {
+                                // alert(response);
+                                //do something with the response
+                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
+        window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportstudbyemail.php";
+                               
+                            })
+                            .fail(function() {
+                                alert("error in exporting");
+                            });
+
+
+            // Download CSV file
+            // downloadCSV(csv.join("\n"), filename);
+        }
      </script>
 
 

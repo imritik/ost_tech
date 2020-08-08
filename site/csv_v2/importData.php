@@ -276,4 +276,4 @@ $update=mysqli_query($db,"UPDATE IGNORE Student SET
 // Redirect to the listing page
 
 // echo $qstring;
-header("Location: ../candidates.php".$qstring);
+header('Location: ' . $_SERVER['HTTP_REFERER'].$qstring);
