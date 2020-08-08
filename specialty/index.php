@@ -213,7 +213,7 @@ $jobcount1=$querycat1 ->num_rows;
                         if(!sizeof($arrlength)){
 
                     ?>
-                    <table class="table" >
+                    <table class="table table-bordered table-striped" >
                     <tr class="filters">
                       <th>Job Title</th>
     <th>Company</th>
@@ -243,7 +243,9 @@ $jobcount1=$querycat1 ->num_rows;
                                     <tr>
                                 
                                         <td>
-                                        <?php echo $row1['job_title']; ?>
+                    <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
+
+                                        <!-- <?php echo $row1['job_title']; ?> -->
                                     
                                     </td>
                                         <td><?php echo $row1['company_name']; ?></td>

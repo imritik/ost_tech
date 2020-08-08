@@ -267,10 +267,10 @@ function downloadCSV(csv, filename) {
                 
                 // for (var j = 0; j < cols.length; j++) 
                     // row.push(cols[j].innerText);
-                console.log(cols[2].innerText);
+                // console.log(cols[4].innerText);
                 
-                csv.push(cols[2].innerText);  
-                console.log(csv);      
+                csv.push(cols[4].innerText);  
+                // console.log(csv);      
             }
 
               $.ajax({

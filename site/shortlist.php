@@ -21,5 +21,5 @@ else{
             $statusMsg = "Error in shorlisting";
         } 
 }
-  echo $statusMsg;
+  echo $statusMsg.$stud_id;
 ?>

@@ -1033,6 +1033,7 @@ $rowtest=[]
                             })
                             .done(function(response) {
                                 // alert(response);
+                                console.log(response);
                                 //do something with the response
                                 $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
                                
@@ -1218,7 +1219,7 @@ $rowtest=[]
         // Number of items and limits the number of items per page
         // var numberOfItems = $("#jar .content").length;
         var numberOfItems = $('.table').find('tbody tr:has(td)').length;
-        var limitPerPage = 100;
+        var limitPerPage = 60;
         // Total pages rounded upwards
         var totalPages = Math.ceil(numberOfItems / limitPerPage);
         // Number of buttons at the top, not counting prev/next,
