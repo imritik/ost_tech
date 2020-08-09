@@ -182,22 +182,23 @@ $jobcount1=$querycat1 ->num_rows;
             <div class="container">
 
              <div class="row">
-                            <div class="col-md-2 fixed-top">
+                    <div class="col-md-2 fixed-top">
 
                         <ul id="menu" class="nav nav-pills nav-stacked">
-                        <li class="menu-item-btn active" ><a href="#">Home</a></li>
-                        <li id="getappliedjobs"><a href="#">Applied Jobs</a></li>
+                            <li class="menu-item-btn active" ><a href="#">Home</a></li>
+                            <li id="getappliedjobs"><a href="#">Applied Jobs</a></li>
 
-                        <li id="getnotappliedjobs"><a href="index.php">Suggested Jobs</a></li>
-                        <li><a href="#">Messages</a></li>
-                        <li><a href="auth.php">Edit Profile</a></li>
+                            <li id="getnotappliedjobs"><a href="index.php">Suggested Jobs</a></li>
+                            <li><a href="#">Messages</a></li>
+                            <li><a href="auth.php">Edit Profile</a></li>
 
                         </ul>
-                        </div>
-                                    <div class="col-md-10 notappliedjobsdiv">
+                    </div>
+                    <div class="col-md-10">
                                         <div class="col-xl-12 col-lg-12 col-xs-12">
-                                            <h3 class="section-title">
-                                                <b><span id="newjob"></span></b>&nbsp;New Job(s) Found</h3>
+                                            <h3 class="section-title notappliedjobsdiv">
+                                                <b><span id="newjob"></span></b>&nbsp;New Job(s) Found
+                                            </h3>
 
                                             <div class="item-listing">
                                                 
@@ -205,102 +206,81 @@ $jobcount1=$querycat1 ->num_rows;
                                                 <!-- ----fetching jobs offered---- -->
 
 
-                                                <?php
+                                                                            <?php
+                                                                            
+                                                if(sizeof($jobids)){
+
+                                                    $arrlength = count($jobids);
+                                                    // var_dump(sizeof($arrlength));
+                                                    if(sizeof($arrlength)){
+
+                                                ?>
+                                                <table class="table table-bordered table-striped notappliedjobsdiv" >
+                                                <tr class="filters">
+                                                <th>Job Title</th>
+                                                    <th>Company</th>
+                                                    <th>Location</th>
+                                                    <th>Status</th>
                                                 
-                    if(sizeof($jobids)){
+                                                    <th>Job Description</th>
+                                                    <th>Applied At</th>
+                                                
+                                                    </tr>
+                                                <tbody>
+                                                <?php
+                                                    }
+                                                    for($x = 0; $x < $arrlength; $x++) {
+                                                    
 
-                        $arrlength = count($jobids);
-                        if(!sizeof($arrlength)){
+                                                    // Get offers from the database
+                                                    $query = $db->query("SELECT *
+                                                    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Offer'");
 
-                    ?>
-                    <table class="table table-bordered table-striped" >
-                    <tr class="filters">
-                      <th>Job Title</th>
-    <th>Company</th>
-    <th>Location</th>
-    <th>Status</th>
-   
-    <th>Job Description</th>
-    <th>Applied At</th>
-                    
-                        </tr>
-                        <tbody>
-                    <?php
-                        }
-                        for($x = 0; $x < $arrlength; $x++) {
-                        
+                                                    if($query ->num_rows ==1){
+                                                        $row1 = $query->fetch_assoc();
+                                                        $notapplied=$notapplied+1;
+                                                        
+                                                    ?>
+                                                
+                                                                <tr>
+                                                            
+                                                                    <td>
+                                                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
 
-                        // Get offers from the database
-                        $query = $db->query("SELECT *
-                        FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Offer'");
+                                                                    <!-- <?php echo $row1['job_title']; ?> -->
+                                                                
+                                                                </td>
+                                                                    <td><?php echo $row1['company_name']; ?></td>
+                                                            
+                                                                    <td><?php echo $row1['Job_location']; ?></td>
+                                                                    <td><?php echo $row1['Status']; ?></td>
+                                                                    <td>
+                                                <a href='../site/uploads/jd/<?php echo $jobids[$x];?>/<?php echo $row1["description_file"];?>' target="blank">&nbsp;(View)</a>
+                                                </td>
+                                                            
+                                                                    <td><?php echo $row1['Status_update'];?>
+                                                                    </td>
+                                                                
+                                                                </tr>
 
-                        if($query ->num_rows ==1){
-                            $row1 = $query->fetch_assoc();
-                            $notapplied=$notapplied+1;
-                            
-                        ?>
-                    
-                                    <tr>
-                                
-                                        <td>
-                    <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
+                                                    
 
-                                        <!-- <?php echo $row1['job_title']; ?> -->
-                                    
-                                    </td>
-                                        <td><?php echo $row1['company_name']; ?></td>
-                                
-                                        <td><?php echo $row1['Job_location']; ?></td>
-                                        <td></td>
-                                
-                                        <td><?php echo $row1['Status_update'];?>
-                                        </td>
-                                    
-                                    </tr>
-
-                        <!-- <div class="list-item">
-                            <div class="list-item-main-info">
-                                <p class="list-item-title">
-                                    <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=4hvt" target="blank" ><?php echo $row1['job_title']; ?> </a>
-                                </p>
-
-                                <div class="list-item-meta">
-                                    <a href="#" class="list-item-tag item-badge job-type-contract"><?php echo $row1['Job_type']; ?></a>
-                                    <span class="list-item-company"><?php echo $row1['company_name']; ?></span>
-                                </div>
-                            </div>
-
-                            <div class="list-item-secondary-info">
-                                <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
-                                <time class="list-item-time" datetime="2017-01-01"><?php echo $row1['posting_time']; ?></time>
-                            </div>
-                        </div> -->
-
-                    <?php 
-                    }}
-                    ?>
-                    <?php
-                    }
-                    else{
-                        echo "No job offered";
-                    }
-                    ?>
+                                                <?php 
+                                                }}
+                                                ?>
+                                                <?php
+                                                }
+                                                else{
+                                                    echo "No job offered";
+                                                }
+                                                ?>
 
 
                                             </div>
                                         </div>
-                                        
-
-                                    </div>
-                                <!-- </div> -->
-                        <!-- </div> -->
-   
-    <!-- --------------------------------------------------------------------------- -->
-<!-- <div class="container"> -->
-    <div class="col-md-10 appliedjobsdiv" style="display:none;overflow:scroll" >
 
 
-    <div class="col-xl-12 col-lg-12 col-xs-12">
+    <div class="col-xl-12 col-lg-12 col-xs-12 appliedjobsdiv"style="display:none;overflow:scroll;">
                         <h3 class="section-title">
                             <b><span id="appliedjob"></span></b>&nbsp;Applied Job(s) Found.</h3>
 
@@ -320,8 +300,8 @@ if(sizeof($jobids)){
      if(sizeof($arrlength)){
 
 ?>
-<div class="container">
- <table class="table table-bordered table-striped">
+<!-- <div class="container"> -->
+ <table class="table table-bordered table-striped appliedjobsdiv" style="display:none">
 <tr class="filters">
     <th>Job Title</th>
     <th>Company</th>
@@ -369,26 +349,7 @@ if(sizeof($jobids)){
                 
                 </tr>
 
-    <!-- <div class="list-item">
-        <div class="list-item-main-info">
-            <p class="list-item-title">
-                <a href="single-job.php?jpi=<?php echo $jobids[$x]; ?>&apl=5a" target="blank" ><?php echo $row1['job_title']; ?> </a>
-            </p>
-
-            <div class="list-item-meta">
-                <a href="#" class="list-item-tag item-badge job-type-contract"><?php echo $row1['Job_type']; ?></a>
-                <span class="list-item-company"><?php echo $row1['company_name']; ?></span>
-            </div>
-        </div>
-
-        <div class="list-item-secondary-info">
-       
-            <p class="list-item-location"><?php echo $row1['Job_location']; ?></p>
-            <time class="list-item-time" datetime="2017-01-01"><?php echo $applieddate[$i]; ?></time>
-            <br>
-            <a href="#" class="list-item-tag item-badge" style="font-size:13px;"><b> <?php echo $statusarr[$i]; ?></b></a>
-        </div>
-    </div> -->
+  
 
 <?php 
 $i=$i+1;
@@ -406,20 +367,20 @@ else{
 ?>
  </tbody>
     </table>
-    </div>
+    <!-- </div> -->
 
                         </div>
                     </div>
-                    
 
-                </div>
+
+                                        
+
+                    </div>
+                     
+   
+
             </div>
-    </div>
-    
-    
-    </div>
-    </div>
-    <!-- </div> -->
+   
     </main>
 <br>
     <footer class="footer">
@@ -467,7 +428,7 @@ else{
             $('.notappliedjobsdiv').hide();
             $('.appliedjobsdiv').show();
             // $('#getappliedjobs').hide();
-            $('#getnotappliedjobs').show();
+            // $('#getnotappliedjobs').show();
 
 
         });
