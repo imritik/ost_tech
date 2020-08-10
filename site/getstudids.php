@@ -19,7 +19,7 @@ $updatedon=array();
 // for($x=0;$x<$arrlen;$x++){
 
 
-$query = "SELECT * FROM applied_table where posting_id='$pid' and Status!='Offer'";
+$query = "SELECT * FROM applied_table where posting_id='$pid' and Status!='Shared'";
 if (!$result = mysqli_query($db, $query)) {
     exit(mysqli_error($db));
 }

@@ -283,7 +283,7 @@ $query='';
 <td><input class="form-control" id="manager_comment<?php echo $ssid;?>"></td>
                     <td>
                      <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-         <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
+         <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shareded</option>
                         <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
                         <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
                         <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>

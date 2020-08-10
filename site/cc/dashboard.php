@@ -203,11 +203,12 @@ if(!empty($_GET['jid'])){
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">New Arrival&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
     <!-- <li class='hold'><a  onclick="setstatus('hold')">Processed&nbsp;<span></span></a></li> -->
+    <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Process&nbsp;<span></span></a></li>
+
     <li class='processed'><a  onclick="setstatus('processed')">Processed&nbsp;<span></span></a></li>
 
-    <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
-    <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
+    <li class='Shared'><a  onclick="setstatus('Shared')">Shareded&nbsp;<span></span></a></li>
 
 </ul>
 
@@ -253,11 +254,15 @@ $query='';
 
         }
         else if($status=='to_process'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
 
         }
+        else if($status=='shortlist'){
+            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN('rejected','hold','Shared','processed') ORDER BY Status_update DESC";
+
+    }
         else{
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
 
         }
             if (!$result = mysqli_query($db, $query)) {
@@ -340,7 +345,7 @@ $query='';
                     <td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
                     <td>
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-                            <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
+                            <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
                             <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
                             <option value="processed" <?php if (   $status== 'processed')  echo 'selected = "selected"'; ?>>Processed</option>
                           
@@ -806,8 +811,8 @@ function combine(){
                                 data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
                             })
                             .done(function(response) {
-                                alert(response);
-                                location.reload();
+                                // alert(response);
+                                // location.reload();
                                
                             })
                             .fail(function() {
@@ -989,6 +994,7 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
              var sidc=[];
             var jobid=[];
                 is_checked=!is_checked;
+            var i=0;
 
         $('tr').each(function(i, obj) {
                 if($('tr').not(':first').is(":visible")) {
@@ -1007,13 +1013,22 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
                                     var ps2='';
                                 updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
                             }
+                            i=i+1;
                      }
                     else{
                         console.log("here");
                        
                     }
                 }
+                 if(i==$('tr').length-1){
+
+                    // console.log(i,$('tr').length-1,"reload");
+                    location.reload();
+
+                }
         });
+                                // location.reload();
+
         }
 
 

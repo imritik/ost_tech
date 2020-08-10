@@ -13,8 +13,8 @@ if(isset($_SESSION['emailemp'])){
 $jidd=$_REQUEST['jid'];
 $statusjob='has_applied';
 if($_REQUEST['status']){
-            if($_REQUEST['status']=='Offer'){
-                $statusjob='Offer';
+            if($_REQUEST['status']=='Shared'){
+                $statusjob='Shared';
             }
             else if($_REQUEST['status']=='rejected'){
                 $statusjob='rejected';
@@ -48,7 +48,7 @@ else if($statusjob=='rejected'){
     $query = "SELECT * FROM applied_table where posting_id='$jidd' and Note ='rejected'";
 }
 else{
-    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Offer' and Note!='rejeted'";
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Shared' and Note!='rejeted'";
 
 }
 if (!$result = mysqli_query($db, $query)) {

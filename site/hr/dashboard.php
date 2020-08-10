@@ -187,9 +187,9 @@ if(!empty($_GET['jid'])){
 <ul class="nav nav-tabs">
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">Probable duplicates&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
-    <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
+    <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Process&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
-    <li class='Offer'><a  onclick="setstatus('Offer')">Offered&nbsp;<span></span></a></li>
+    <li class='Shared'><a  onclick="setstatus('Shared')">Shared&nbsp;<span></span></a></li>
 
 </ul>
 
@@ -235,11 +235,15 @@ $query='';
 
         }
         else if($status=='to_process'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
 
         }
+        else if($status=='shortlist'){
+            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN ('hold','rejected','Shared') ORDER BY Status_update DESC";
+
+    }
         else{
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
 
         }
             if (!$result = mysqli_query($db, $query)) {
@@ -322,7 +326,7 @@ $query='';
                     <td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
                     <td>
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-                            <option value="Offer"  <?php if ( $status== 'Offer')  echo 'selected = "selected"'; ?>   >Offered</option>
+                            <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
                             <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
                             <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
                             <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>

@@ -127,7 +127,7 @@ $querycat = $db->query("SELECT * FROM employer_account order by added_on DESC");
 if($querycat ->num_rows >0){
     while($row = $querycat->fetch_assoc()){
         ?>
-                        <!-- Job offer 1 -->
+                        <!-- Job Shared 1 -->
                         <a href="editcompany.php?jid=<?php echo $row['email'];?>" target="blank" class="featured applied list-item" style="display:none;">
 
                             <div class="row" >

@@ -13,8 +13,8 @@ if(isset($_SESSION['emailemp'])){
 $jidd=$_REQUEST['jid'];
 $statusjob='has_applied';
 if($_REQUEST['status']){
-            if($_REQUEST['status']=='Offer'){
-                $statusjob='Offer';
+            if($_REQUEST['status']=='Shared'){
+                $statusjob='Shared';
             }
             else{
                 $statusjob='has_applied';
@@ -35,11 +35,11 @@ include '../dbConfig.php';
 
 <?php
 // List Users
-if($statusjob=='Offer'){
+if($statusjob=='Shared'){
     $query = "SELECT * FROM applied_table where posting_id='$jidd'";
 }
 else{
-    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Offer'";
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and Status !='Shared'";
 }
 if (!$result = mysqli_query($db, $query)) {
     exit(mysqli_error($db));
@@ -179,7 +179,7 @@ if(sizeof($studids)){
     <div class="form-group">
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
     </div>
-    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Offer");'>View Offered Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
+    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Shared");'>View Shareded Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
 <div style="display:none"  class="text-center tobe-reused">
    <select id="admins_email" style="color:black;height:40px;"> 
 

@@ -172,7 +172,7 @@ $querycat = $db->query("SELECT * FROM Job_Posting order by posting_time DESC");
 if($querycat ->num_rows >0){
     while($row = $querycat->fetch_assoc()){
         ?>
-                        <!-- Job offer 1 -->
+                        <!-- Job Shared 1 -->
                         <a href="showcandidates.php?jid=<?php echo $row['posting_id']; ?>" target="blank" class="featured applied list-item" style="display:none;">
 
                             <div class="row" >

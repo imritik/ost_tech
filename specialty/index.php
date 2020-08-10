@@ -78,7 +78,7 @@ $jobcount=$querycat ->num_rows;
  $statusarr=array();
  $notearr=array();
  $applieddate=array();
-                $querycat1 = $db->query("SELECT * FROM applied_table WHERE student_id='$studentid' and Status!='Offer'");
+                $querycat1 = $db->query("SELECT * FROM applied_table WHERE student_id='$studentid' and Status!='Shared'");
 $jobcount1=$querycat1 ->num_rows;
                 if($querycat1 ->num_rows >0){
                     // $jobids=array();
@@ -147,7 +147,7 @@ $jobcount1=$querycat1 ->num_rows;
                                 <br> you’ve always wanted.
                             </h2>
                             <p class="page-subtitle">
-                                <span class="text-theme"><?php echo $jobcount; ?></span>  jobs offered in the last
+                                <span class="text-theme"><?php echo $jobcount; ?></span>  jobs Shareded in the last
                             </p>
                         </div>
                     </div>
@@ -203,7 +203,7 @@ $jobcount1=$querycat1 ->num_rows;
                                             <div class="item-listing">
                                                 
 
-                                                <!-- ----fetching jobs offered---- -->
+                                                <!-- ----fetching jobs Shareded---- -->
 
 
                                                                             <?php
@@ -232,9 +232,9 @@ $jobcount1=$querycat1 ->num_rows;
                                                     for($x = 0; $x < $arrlength; $x++) {
                                                     
 
-                                                    // Get offers from the database
+                                                    // Get Shareds from the database
                                                     $query = $db->query("SELECT *
-                                                    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Offer'");
+                                                    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status='Shared'");
 
                                                     if($query ->num_rows ==1){
                                                         $row1 = $query->fetch_assoc();
@@ -271,7 +271,7 @@ $jobcount1=$querycat1 ->num_rows;
                                                 <?php
                                                 }
                                                 else{
-                                                    echo "No job offered";
+                                                    echo "No job Shareded";
                                                 }
                                                 ?>
 
@@ -320,7 +320,7 @@ if(sizeof($jobids)){
 
     // Get images from the database
     $query =  $db->query("SELECT *
-    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status!='Offer'");
+    FROM applied_table inner join Job_Posting on  applied_table.posting_id=Job_Posting.posting_id where applied_table.posting_id='$jobids[$x]' and applied_table.student_id='$studentid' and applied_table.Status!='Shared'");
 
     if($query ->num_rows==1){
         $row1 = $query->fetch_assoc();

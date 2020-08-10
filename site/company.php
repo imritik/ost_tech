@@ -229,7 +229,7 @@
 
                         <div class="jobs">
 
-                            <!-- Job offer 1 -->
+                            <!-- Job Shared 1 -->
                             <a href="#">
                                 <div class="featured"></div>
                                 <img src="images/job1.jpg" alt="" class="img-circle" />
@@ -244,7 +244,7 @@
                                 </div>
                             </a>
 
-                            <!-- Job offer 2 -->
+                            <!-- Job Shared 2 -->
                             <a href="#">
                                 <div class="featured"></div>
                                 <img src="images/job2.jpg" alt="" class="img-circle" />
@@ -259,7 +259,7 @@
                                 </div>
                             </a>
 
-                            <!-- Job offer 3 -->
+                            <!-- Job Shared 3 -->
                             <a href="#">
                                 <img src="images/job3.jpg" alt="" class="img-circle" />
                                 <div class="title">
@@ -273,7 +273,7 @@
                                 </div>
                             </a>
 
-                            <!-- Job offer 4 -->
+                            <!-- Job Shared 4 -->
                             <a href="#">
                                 <img src="images/job4.jpg" alt="" class="img-circle" />
                                 <div class="title">
@@ -287,7 +287,7 @@
                                 </div>
                             </a>
 
-                            <!-- Job offer 5 -->
+                            <!-- Job Shared 5 -->
                             <a href="#">
                                 <img src="images/job5.jpg" alt="" class="img-circle" />
                                 <div class="title">
@@ -301,7 +301,7 @@
                                 </div>
                             </a>
 
-                            <!-- Job offer 6 -->
+                            <!-- Job Shared 6 -->
                             <a href="#">
                                 <img src="images/job1.jpg" alt="" class="img-circle" />
                                 <div class="title">

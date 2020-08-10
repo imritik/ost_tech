@@ -9,6 +9,6 @@ $prevResult = $db->query($prevQuery);
 $reponse=array();
 $row = $prevResult->fetch_assoc();
 $reponse=$row;
-echo(json_encode(array(unserialize($row['hr']),unserialize($row['vendor']),unserialize($row['manager']),unserialize($row['coordinator']))));
+echo(json_encode(array(unserialize($row['hr']),unserialize($row['vendor']),unserialize($row['manager']),unserialize($row['coordinator']),unserialize($row['am']))));
 // echo json_encode($reponse);
 ?>

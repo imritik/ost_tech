@@ -13,8 +13,8 @@ if(isset($_SESSION['emailemp'])){
 $jidd=$_REQUEST['jid'];
 $statusjob='has_applied';
 if($_REQUEST['status']){
-            if($_REQUEST['status']=='Offer'){
-                $statusjob='Offer';
+            if($_REQUEST['status']=='Shared'){
+                $statusjob='Shared';
             }
             else{
                 $statusjob='has_applied';
@@ -35,11 +35,11 @@ include '../dbConfig.php';
 
 <?php
 // List Users
-if($statusjob=='Offer'){
+if($statusjob=='Shared'){
     $query = "SELECT * FROM applied_table where posting_id='$jidd'";
 }
 else{
-    $query = "SELECT * FROM applied_table where posting_id='$jidd' and coordinator_note !='rejected' and Status !='Offer' and note!='rejected'";
+    $query = "SELECT * FROM applied_table where posting_id='$jidd' and coordinator_note !='rejected' and Status !='Shared' and note!='rejected'";
 }
 if (!$result = mysqli_query($db, $query)) {
     exit(mysqli_error($db));
