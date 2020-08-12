@@ -179,7 +179,7 @@ if(sizeof($studids)){
     <div class="form-group">
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
     </div>
-    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Shared");'>View Shareded Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
+    <div class="alert alert-info tobehidden text-center"><?php echo sizeof($studids); ?> Student(s) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' href='../job-details.php?jpi=<?php echo $jidd;?>' target='blank'>(View Job details)</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("Shared");'>View Shared Students</a>&nbsp;&nbsp;&nbsp;<a class='btn btn-sm btn-info' onclick='urlchange("has_applied");'>View students applied</a> </div>
 <div style="display:none"  class="text-center tobe-reused">
    <select id="admins_email" style="color:black;height:40px;"> 
 

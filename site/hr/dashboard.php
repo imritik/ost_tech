@@ -186,10 +186,11 @@ if(!empty($_GET['jid'])){
 
 <ul class="nav nav-tabs">
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">Probable duplicates&nbsp;<span></span></a></li>
-    <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
-    <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Process&nbsp;<span></span></a></li>
-    <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
-    <li class='Shared'><a  onclick="setstatus('Shared')">Shared&nbsp;<span></span></a></li>
+    <li class='hold'><a  onclick="setstatus('hold')">Hold&nbsp;<span></span></a></li>
+    <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Discussion&nbsp;<span></span></a></li>
+    <li class='rejected'><a  onclick="setstatus('rejected')">Closed&nbsp;<span></span></a></li>
+    <li class='Shared'><a  onclick="setstatus('Shared')">To Process&nbsp;<span></span></a></li>
+    <li class='Offered'><a  onclick="setstatus('Offered')">Offered&nbsp;<span></span></a></li>
 
 </ul>
 
@@ -212,7 +213,7 @@ if(!empty($_GET['jid'])){
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment" readonly></th>
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment*" readonly></th>
     
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
    
@@ -239,7 +240,7 @@ $query='';
 
         }
         else if($status=='shortlist'){
-            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN ('hold','rejected','Shared') ORDER BY Status_update DESC";
+            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN ('hold','rejected','Shared','Offered') ORDER BY Status_update DESC";
 
     }
         else{
@@ -312,7 +313,7 @@ $query='';
                     <td>
                     <?php echo $row1['stud_name'];?>
                     &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
                    
                    </td>
                     <td><?php echo $row1['email'];?></td>
@@ -329,8 +330,10 @@ $query='';
                             <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
                             <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
                             <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
-                            <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
-                            <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
+                            <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Close</option>
+                            <option value="Offered" <?php if (   $status== 'Offered')  echo 'selected = "selected"'; ?>>Offered</option>
+                           
+                            <!-- <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option> -->
                         </select>
                     </td>
                 
@@ -783,8 +786,8 @@ function combine(){
                                 data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
                             })
                             .done(function(response) {
-                                alert(response);
-                                location.reload();
+                                // alert(response);
+                                // location.reload();
                                
                             })
                             .fail(function() {
@@ -895,24 +898,61 @@ function urlchange(cat){
 
      function showlastjob(id){
         //  alert(id);
-        jid=<?php echo $_GET['jid'];?>
-        //  ajax request to fetch job stats
-                            $.ajax({
-                                url: '../jobstats.php',
+          $.ajax({
+                                url: '../thiscompanystats.php',
                                 type: 'POST',
                             
-                                data: {param1: id,param2:jid},
+                                data: {param1: id,param2:'<?php echo $hrcompany;?>'},
                             })
                             .done(function(response) {
-                                // alert(response);
+                                // console.log(response);
                                 data=JSON.parse(response)
-                                console.log(data,typeof(data));
-                                // location.reload();
-var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,   Applied_at: '+data.Status_update.slice(0,10)
-                                $('#'+id).tooltip('hide')
-                                .attr('data-original-title',newtext)
-                                .tooltip('show');
-                               
+                             
+                                // data=response;
+                                console.log(data);
+                                // console.log(data.length);
+
+                                var html = "<table border='1|1'class='table table-striped'>";
+                                for (var i = 0; i < data.length; i++) {
+                                    // console.log(data[i]);
+                                     var cname=data[i][0];
+                        // console.log(cname);
+                                        for(var j=0;j<data[i].length;j++){
+                                                if(data[i][j]){
+                                                    // console.log(data[i][j].length);
+                       
+                                                             var res = data[i][j];
+                                                             console.log(res);
+                                                            for(k=0;k<res.length;k++){
+                                                                if(res[k]){
+                                                                console.log(res[k]);
+
+                                                                }
+                                                                var line = res[k].split("$");
+                                                                // console.log(line);
+                                                                if(line[1] && line[0] && line[2]){
+                                                                          html+="<tr>";
+                                                                        html+="<td>"+cname+"</td>";
+
+                                                                        html+="<td>"+line[1]+"</td>";
+                                                                        html+="<td>"+line[0]+"</td>";
+                                                                        html+="<td>"+line[2]+"</td>";
+                                                                        html+="</tr>";
+                                                                }
+                                                              
+
+                                                            }
+                                                           
+                                                 }
+
+                                        }
+                                }
+                                html+="</table>";
+
+                                $('.modal-title').html("This company feedback");
+                                $('.thisjob').html(html);
+                                // Display Modal
+                                $('#myModal').modal('show'); 
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
@@ -948,6 +988,7 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
 
                                 }
                                 html+="</table>";
+                                $('.modal-title').html("This job feedback");
 
                                 $('.thisjob').html(html);
                                 // Display Modal
@@ -966,11 +1007,13 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
              var sidc=[];
             var jobid=[];
                 is_checked=!is_checked;
+            var commentcheck=false;
+            var i=0;
 
         $('tr').each(function(i, obj) {
                 if($('tr').not(':first').is(":visible")) {
 
-                    if(is_checked){
+                    // if(is_checked){
    // alert('hi');
                             $(this).find('.studentcheckbox1').prop('checked',true)
                             if($(this).find('.studentcheckbox1').prop('checked') == true){
@@ -982,13 +1025,31 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
                                     var ps2='';
-                                updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
-                            }
-                     }
-                    else{
-                        console.log("here");
-                       
-                    }
+                                if(hrfeedback!=''){
+                                        commentcheck=true;
+                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                                    }
+                                    else{
+
+                                    } 
+                                console.log(commentcheck);
+                                }
+                            i=i+1;
+
+                    //  }
+                  
+                }
+                  if(i==$('tr').length-1){
+console.log(commentcheck);
+                        if(!commentcheck){
+                        alert("Add a comment to save status");
+                        }
+                    // console.log(i,$('tr').length-1,"reload");
+                    // else{
+                    location.reload();
+
+                    // }
+
                 }
         });
         }

@@ -64,7 +64,9 @@ $ps2=$_POST['param6'];
                 if($prevResult->num_rows >0){
                      while($row = $prevResult->fetch_assoc()){
                          $feedback_unserialize=unserialize($row['hr']);
+                        //  var_dump($row['hr'],unserialize($row['hr']));
                         $feedbackstring=$ps1.'$'.$_SESSION['emailhr'].'$'.date("Y-m-d");
+                        // var_dump($feedbackstring,$feedback_unserialize);
                         array_push($feedback_unserialize,$feedbackstring);
                         $feedback_string=serialize($feedback_unserialize);
                     $db->query("UPDATE IGNORE interaction_log SET hr='$feedback_string' WHERE posting_id = $posting_id and stud_id=$stud_id");
