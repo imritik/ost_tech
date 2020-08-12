@@ -79,6 +79,7 @@ $jobs=array();
 $jobs_details=array();
 $to_admin_data=array();
 $company_names=array();
+$currentCompEmail='';
 if ($result ->num_rows ==1) {
     while($row1 = $result->fetch_assoc()) {
         $companies=json_decode(stripslashes($row1['company']));
@@ -188,6 +189,7 @@ if(!empty($_GET['jid'])){
                             $postid=$row22['posting_id'];
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
+                            $currentCompEmail=$row22['email'];
                     echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                    </div>
                     <br>
@@ -953,7 +955,7 @@ function urlchange(cat){
                                 url: '../thiscompanystats.php',
                                 type: 'POST',
                             
-                                data: {param1: id,param2:'<?php echo $hrcompany;?>'},
+                                data: {param1: id,param2:'<?php echo $currentCompEmail;?>'},
                             })
                             .done(function(response) {
                                 // console.log(response);

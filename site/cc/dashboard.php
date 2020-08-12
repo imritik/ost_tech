@@ -72,6 +72,8 @@ $page="job";
 
 <!-- ----jobs using php -->
  <?php
+$currentCompEmail='';
+
  // ------collect all jobs of company here
                     $sqljob="SELECT * FROM Job_Posting where coordinator='$coordinator_email'";
                     $resultjob = $db->query($sqljob);
@@ -168,6 +170,8 @@ if(!empty($_GET['jid'])){
                             $postid=$row22['posting_id'];
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
+                            $currentCompEmail=$row22['email'];
+
                     echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                    </div>
                     <br>
@@ -931,7 +935,7 @@ function urlchange(cat){
                                 url: '../thiscompanystats.php',
                                 type: 'POST',
                             
-                                data: {param1: id,param2:'<?php echo $hrcompany;?>'},
+                                data: {param1: id,param2:'<?php echo $currentCompEmail;?>'},
                             })
                             .done(function(response) {
                                 // console.log(response);
