@@ -1110,7 +1110,8 @@ function urlchange(cat){
                         // }
                     // console.log(i,$('tr').length-1,"reload");
                     // else{
-                    location.reload();
+                    // location.reload();
+                    setTimeout(function(){  location.reload(); }, 1000);
 
                     // }
 
