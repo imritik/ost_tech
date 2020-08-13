@@ -233,9 +233,10 @@ if(!empty($_GET['jid'])){
     <!-- <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th> -->
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment*" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Last comment" readonly></th>
     
+    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment*" readonly></th>
+    <th>History</th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
    
    
@@ -349,9 +350,13 @@ $query='';
                     <!-- <td><?php echo $hrcomment[$x];?></td>
                     <td><?php echo $managercomment[$x];?></td>
                     <td><?php echo $recruitercomment[$x];?></td> -->
-                    <td><input class="form-control" id="hr_comment<?php echo $ssid;?>" required></td>
                     <td><?php echo $coordinatorcomment[$x];?></td> 
-                   
+
+                    <td><input class="form-control" id="hr_comment<?php echo $ssid;?>" required></td>
+                      <td>
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
+                    
+                    </td>
                     <td>
                        <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>

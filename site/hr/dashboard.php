@@ -214,7 +214,7 @@ if(!empty($_GET['jid'])){
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment*" readonly></th>
-    
+    <th>History</th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
    
    
@@ -313,7 +313,6 @@ $query='';
                     <td>
                     <?php echo $row1['stud_name'];?>
                     &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
                    
                    </td>
                     <td><?php echo $row1['email'];?></td>
@@ -325,6 +324,10 @@ $query='';
                     <td><?php echo $managercomment[$x];?></td>
                     <td><?php echo $recruitercomment[$x];?></td>
                     <td><input class="form-control" id="hr_comment<?php echo $ssid;?>"></td>
+                    <td>
+                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
+                    
+                    </td>
                     <td>
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
@@ -1025,6 +1028,7 @@ function urlchange(cat){
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
                                     var ps2='';
+                                    console.log(notevalue);
                                 if(hrfeedback!=''){
                                         commentcheck=true;
                                         updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
@@ -1032,7 +1036,7 @@ function urlchange(cat){
                                     else{
 
                                     } 
-                                console.log(commentcheck);
+                                // console.log(commentcheck);
                                 }
                             i=i+1;
 
@@ -1040,10 +1044,7 @@ function urlchange(cat){
                   
                 }
                   if(i==$('tr').length-1){
-console.log(commentcheck);
-                        if(!commentcheck){
-                        alert("Add a comment to save status");
-                        }
+
                     // console.log(i,$('tr').length-1,"reload");
                     // else{
                     location.reload();

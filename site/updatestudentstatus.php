@@ -53,6 +53,8 @@ $ps2=$_POST['param6'];
 
   }
    if($stud_status=="hr" && $ps1!=''){
+//    if($stud_status=="hr"){
+
 // var_dump("in hr");
         $insert = $db->query("UPDATE applied_table SET hr_note='$ps1',Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
     //    var_dump("UPDATE applied_table SET hr_note='$stud_note',Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
