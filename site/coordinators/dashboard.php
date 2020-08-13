@@ -357,7 +357,7 @@ $query='';
                     <?php echo $row1['stud_name'];?>
                     &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
                     <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
+                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
                    
                    </td>
                     <td><?php echo $row1['email'];?></td>
@@ -1035,11 +1035,13 @@ function urlchange(cat){
                                     if(data[i]){
                                         for(var j=0;j<data[i].length;j++){
                                             var res = data[i][j].split("$");
-                                            html+="<tr>";
-                                            html+="<td>"+res[1]+"</td>";
-                                            html+="<td>"+res[0]+"</td>";
-                                            html+="<td>"+res[2]+"</td>";
-                                            html+="</tr>";
+                                           if(res[0]&&res[1]&&res[2]){
+                                                html+="<tr>";
+                                                html+="<td>"+res[1]+"</td>";
+                                                html+="<td>"+res[0]+"</td>";
+                                                html+="<td>"+res[2]+"</td>";
+                                                html+="</tr>";
+                                            }
                                         }
 
                                     }
@@ -1086,13 +1088,13 @@ function urlchange(cat){
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
                                     var ps2='';
-                                    if(hrfeedback!=''){
-                                        commentcheck=true;
+                                    // if(hrfeedback!=''){
+                                    //     commentcheck=true;
                                         updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
-                                    }
-                                    else{
+                                    // }
+                                    // else{
 
-                                    }
+                                    // }
                             }
                             i=i+1;
                      }
@@ -1103,9 +1105,9 @@ function urlchange(cat){
                 }
                 if(i==$('tr').length-1){
 
-                        if(!commentcheck){
-                        alert("Add a comment to save status");
-                        }
+                        // if(!commentcheck){
+                        // alert("Add a comment to save status");
+                        // }
                     // console.log(i,$('tr').length-1,"reload");
                     // else{
                     location.reload();

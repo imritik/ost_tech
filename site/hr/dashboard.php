@@ -979,11 +979,14 @@ function urlchange(cat){
                                     if(data[i]){
                                         for(var j=0;j<data[i].length;j++){
                                             var res = data[i][j].split("$");
-                                            html+="<tr>";
-                                            html+="<td>"+res[1]+"</td>";
-                                            html+="<td>"+res[0]+"</td>";
-                                            html+="<td>"+res[2]+"</td>";
-                                            html+="</tr>";
+                                            if(res[0]&&res[1]&&res[2]){
+                                                html+="<tr>";
+                                                html+="<td>"+res[1]+"</td>";
+                                                html+="<td>"+res[0]+"</td>";
+                                                html+="<td>"+res[2]+"</td>";
+                                                html+="</tr>";
+                                            }
+                                         
                                         }
 
                                     }
@@ -1029,13 +1032,13 @@ function urlchange(cat){
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
                                     var ps2='';
                                     console.log(notevalue);
-                                if(hrfeedback!=''){
-                                        commentcheck=true;
+                                // if(hrfeedback!=''){
+                                //         commentcheck=true;
                                         updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
-                                    }
-                                    else{
+                                    // }
+                                    // else{
 
-                                    } 
+                                    // } 
                                 // console.log(commentcheck);
                                 }
                             i=i+1;
