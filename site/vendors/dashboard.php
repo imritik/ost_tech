@@ -219,7 +219,7 @@ if(!empty($_GET['jid'])){
 
 <ul class="nav nav-tabs" style="padding: 0 339px;">
     <li class='uploaded'><a  onclick="setstatus('uploaded')">Upload CV&nbsp;<span></span></a></li>
-    <li class='shared'><a  onclick="setstatus('shared')">To Process&nbsp;<span></span></a></li>
+    <li class='Shared'><a  onclick="setstatus('Shared')">To Process&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
 
@@ -256,15 +256,15 @@ if(!empty($_GET['jid'])){
         if($status=='uploaded'){
                $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='Shared' or applied_table.duplicate_status='probable')";
         }
-        else if($status=='shared'){
-
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='Shared'";
-
-        }
         else{
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
 
+                // $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='Shared'";
+            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and applied_table.Status='$status'";
         }
+        // else{
+        //         $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
+
+        // }
             if (!$result = mysqli_query($db, $query)) {
                 exit(mysqli_error($db));
             }
@@ -281,7 +281,9 @@ if(!empty($_GET['jid'])){
 
         if(sizeof($studids)){
             // $number = 1;
+            $studids=array_unique($studids);
             $arrlength = count($studids);
+            
         // var_dump($studids);
         ?>
         <script>
@@ -310,9 +312,7 @@ if(!empty($_GET['jid'])){
               
                     <td>
                     <?php echo $row1['stud_name'];?>
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
-                    -->
+                   
                    </td>
                     <td><?php echo $row1['email'];?></td>
                     <td><?php echo $row1['contact'];?></td>

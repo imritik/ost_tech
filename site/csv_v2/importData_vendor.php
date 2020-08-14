@@ -85,12 +85,12 @@ if(isset($_POST['importSubmit'])){
                 // Check whether member already exists in the database with the same email
                 if($studlistobtain==''){
                           $prevQuery = "SELECT * FROM Student WHERE (email = '$email' or contact='$phone' and stud_name='$name')";
-                          $nameQuery = "SELECT * FROM Student WHERE (stud_name='$name' and email!='$email' or contact!='$phone')";
+                          $nameQuery = "SELECT * FROM Student WHERE stud_name='$name'";
                 
                 }
                 else{
                     $prevQuery = "SELECT * FROM Student WHERE (email = '$email' or contact='$phone' and stud_name='$name') and student_id in ($studlistobtain)";
-                    $nameQuery = "SELECT * FROM Student WHERE (stud_name='$name' and email!='$email' or contact!='$phone') and student_id in ($studlistobtain)";
+                    $nameQuery = "SELECT * FROM Student WHERE stud_name='$name' and student_id in ($studlistobtain)";
                 
                 }
               

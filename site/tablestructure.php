@@ -168,6 +168,7 @@ $query='';
 
         if(sizeof($studids)){
             // $number = 1;
+             $studids=array_unique($studids);
             $arrlength = count($studids);
         // var_dump($studids);
         ?>
@@ -292,9 +293,6 @@ $query='';
                                 <td><?php echo $rowcomp['stud_name'];?></td>
                                 <td><?php echo $rowcomp['email'];?></td>
 
-                                <!-- <td><?php echo $rowcomp['curr_ctc'];?></td>
-                                <td><?php echo $rowcomp['expected_ctc'];?></td>
-                                <td><?php echo $rowcomp['notice_period']?></td> -->
                                 <td><a href='<?php echo $duplinks;?>' target='blank'>View</a></td>
                                 <tr>
                                
