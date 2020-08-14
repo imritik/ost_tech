@@ -182,7 +182,7 @@ if(!empty($_GET['jid'])){
                     <div class="row" style="text-align:center">
                      <?php
  // ------collect all jobs of company here
-                    $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid' and vendor='$vendoremail'";
+                    $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid' and vendor LIKE '%$vendoremail%'";
                     $result22 = $db->query($sql22);
                     if ($result22 ->num_rows > 0) {
                         while($row22 = $result22->fetch_assoc()) {
@@ -219,7 +219,7 @@ if(!empty($_GET['jid'])){
 
 <ul class="nav nav-tabs" style="padding: 0 339px;">
     <li class='uploaded'><a  onclick="setstatus('uploaded')">Upload CV&nbsp;<span></span></a></li>
-    <li class='shared'><a  onclick="setstatus('shared')">Shared&nbsp;<span></span></a></li>
+    <li class='shared'><a  onclick="setstatus('shared')">To Process&nbsp;<span></span></a></li>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
     <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
 
@@ -232,6 +232,7 @@ if(!empty($_GET['jid'])){
 <tr class="filters">
     <th>Name</th>
     <th>Email</th>
+    <th>Contact</th>
     <th>Current CTC</th>
     <th>Expected CTC</th>
     <th>Notice period</th>
@@ -253,11 +254,11 @@ if(!empty($_GET['jid'])){
             $studids=array();
 
         if($status=='uploaded'){
-               $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='hold' or applied_table.duplicate_status='probable')";
+               $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='Shared' or applied_table.duplicate_status='probable')";
         }
         else if($status=='shared'){
 
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='hold'";
+                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='Shared'";
 
         }
         else{
@@ -314,6 +315,8 @@ if(!empty($_GET['jid'])){
                     -->
                    </td>
                     <td><?php echo $row1['email'];?></td>
+                    <td><?php echo $row1['contact'];?></td>
+
                
                     <td><?php echo $row1['curr_ctc'];?></td>
                     <td><?php echo $row1['expected_ctc'];?></td>
@@ -653,6 +656,7 @@ function remove(array, element) {
                                 console.log(data.list);
                                 console.log("setting sids");
                                 document.cookie="sids="+data.list+";path=/";
+                                console.log(document.cookie);
 
                                clearuri();
 

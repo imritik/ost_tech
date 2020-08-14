@@ -75,6 +75,7 @@ if(!empty($_GET['status'])){
              <b>HR<b> (<?php echo $hremail; ?>)
             </div>
             <div id="menu-open" class="pull-right">
+            <a onclick="redirect();">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                <a href="../../logout/logout.php">Logout</a>
             </div>
 
@@ -156,7 +157,7 @@ if(!empty($_GET['jid'])){
                          <div class="form-group" id="job-cc-group">
                             <label for="job-email">Coordinator ( Assigned: <?php echo $row22['coordinator']; ?>)</label>
                             <br>
-                            <select  name="cc" required>
+                            <select  name="cc" >
                              <option value="" >Select Coordinator</option>
 
             <!-- -------php code to gather posted jobs---- -->
@@ -173,15 +174,20 @@ if(!empty($_GET['jid'])){
 
                             </select>
                         </div>
+                          <div class="form-group" id="job-manager-group"style="background:cadetblue;">
+                            <label for="job-email">Manager</label>
+ <select id="companies" name="manager" class="multiselectmanagers"  multiple="multiple"  >
+</select>
+                        </div>
                          <div class="form-group" id="job-coordinator-group"style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
- <select id="companies" name="coordinator" class="multiselect"  multiple="multiple" required >
+ <select id="companies" name="coordinator" class="multiselect"  multiple="multiple"  >
 </select>
                         </div>
 
                                 <div class="form-group" id="job-recruiter-group"style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
- <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple" required>
+ <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple" >
 </select>
                         </div>
                         <div class="row text-center">
@@ -331,28 +337,49 @@ if($query ->num_rows >0){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
 
 <script>
+
+
+function redirect(){
+    console.log("here");
+       var referringURL = document.referrer;
+       var local = referringURL.substring(referringURL.indexOf("?"), referringURL.length);
+       	var currentQueryString = window.location.search;
+			if (currentQueryString) {
+				// return true;
+                console.log(true);
+                var x=history.go(-1);
+                console.log(x);
+			} else {
+			    // return false;
+                console.log(false);
+                    var x=history.go(-1);
+                console.log(x);
+
+			}
+}
 // ----multiselect part----
 
 $(function() {
     <?php
     $companies=array();
     $recruiters=array();
-    // $companies_name=array();
+    $managers=array();
     // gathering companies
 $sqlcomp='';
 $sqlrec='';
+$sqlmanag='';
+
 if(isset($_SESSION['emailhr'])){
-$sqlcomp = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
-$sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
-
-
+    $sqlcomp = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
+    $sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
+    $sqlmanag="SELECT * FROM admins where role='manager'  and company='$hrcompany'";
 }
 else{
-$sqlrec = "SELECT * FROM admins where role='recruiters'";
-$sqlcomp = "SELECT * FROM admins where role='vendors'";
-
-    
+    $sqlrec = "SELECT * FROM admins where role='recruiters'";
+    $sqlcomp = "SELECT * FROM admins where role='vendors'";
+    $sqlmanag="SELECT * FROM admins where role='manager'";  
 }
+
 $resultcomp = $db->query($sqlcomp);
 
 if ($resultcomp ->num_rows >0) {
@@ -375,6 +402,17 @@ if ($resultrec ->num_rows >0) {
     }
 }
 
+$resultrmanag = $db->query($sqlmanag);
+
+if ($resultmanag ->num_rows >0) {
+   
+    while($rowmanag = $resultmanag->fetch_assoc()) {
+        array_push($managers,$rowmanag['email']);
+        // var_dump($rowmanag['email']);
+        // array_push($companies_name,$rowcomp['company_name']);
+
+    }
+}
 
     ?>
   var name =<?php echo json_encode($companies) ?>;
@@ -408,6 +446,25 @@ var name1 =<?php echo json_encode($recruiters) ?>;
       includeSelectAllOption: true
     })
     // .multiselect('selectAll', false)
+    .multiselect('updateButtonText');
+
+    // checkSelection(name);
+
+// });
+
+
+var name2 =<?php echo json_encode($managers) ?>;
+  $.map(name2, function (x) {
+    return $('.multiselectmanagers').append("<option>" + x + "</option>");
+  });
+  
+  $('.multiselectmanagers')
+    .multiselect({
+      allSelectedText: 'All',
+      maxHeight: 200,
+      includeSelectAllOption: true
+    })
+    // .multiselect('selectAll', true)
     .multiselect('updateButtonText');
 
     // checkSelection(name);

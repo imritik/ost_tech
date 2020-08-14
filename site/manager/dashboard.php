@@ -75,8 +75,10 @@ $page="job";
 <!-- ----jobs using php -->
  <?php
  // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany'";
+                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and manager LIKE '%$hremail%'";
+                    // var_dump($sqljob);
                     $resultjob = $db->query($sqljob);
+                    // var_dump($resultjob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {
                             $postid=$rowjob['posting_id'];
@@ -126,239 +128,8 @@ $page="job";
 </div> 
         <div class="tab-pane active" id="tab_a">
         
-        <?php
+                      <?php include '../tablestructure.php'; ?>
 
-if(!empty($_GET['jid'])){
-    $jid=$_GET['jid'];
-    ?>
-
-    <script>
-   $('#'+<?php echo $jid;?>).addClass('active');    
-    </script>
-    <?php
-// ------collect all jobs of company here
-                    $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid'";
-                    $result22 = $db->query($sql22);
-                    if ($result22 ->num_rows > 0) {
-                        while($row22 = $result22->fetch_assoc()) {
-                            $postid=$row22['posting_id'];
-                            $jobtitle=$row22['job_title'];
-                            $cname=$row22['company_name'];
-                    echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
-                  
-                    ';
-                            
-                            }
-                    }
-                    else{
-                        echo '<p style="font-size:x-large">Invalid Job</p>';
-                    }
-                // }
-                ?>
-
-<ul class="nav nav-tabs">
-    <li class='hold'><a  onclick="setstatus('hold')">To be processed&nbsp;<span></span></a></li>
-    <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
-    <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
-
-  </ul>
-
-  <div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
-       <div class="tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
-      <table class="table" style="transform: rotateX(180deg);" id="display-table">
-<tr class="filters">
-<th style="color:black;display:flex;"><input type="checkbox" id="selectall" disabled>Select  </th>
-    <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
-   
-    <th><input type="text" class="form-control width-auto" placeholder="Current CTC"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
-   
-    <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
-    <th>Resume</th>
-    
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment" readonly></th>
-    
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
-   
-   
-    </tr>
-    <tbody>
-    <?php 
-}
-    if(!empty($_GET['jid'])&& !empty($_GET['status'])){
-                $jid=$_GET['jid'];
-                $status=$_GET['status'];
-                ?>
-                 <script>
-   $('.<?php echo $status;?>').addClass('active');    
-    </script>
-    <?php
-$query='';
-        if($status=='new_arrival'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status_update >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)";
-
-        }
-        else if($status=='to_process'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
-
-        }
-        else{
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
-
-        }
-            if (!$result = mysqli_query($db, $query)) {
-                exit(mysqli_error($db));
-            }
-            $studids=array();
-            $hrcomment=array();
-            $recruitercomment=array();
-            $managercomment=array();
-            // $studstatuss=array();
-            
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    array_push($studids,$row['student_id']);
-                
-                    array_push($hrcomment,$row['hr_note']);
-                    array_push($managercomment,$row['manager_note']);
-                    array_push($recruitercomment,$row['recruiter_note']);
-
-                } 
-            }
-
-
-        if(sizeof($studids)){
-            // $number = 1;
-            $arrlength = count($studids);
-        // var_dump($studids);
-        ?>
-        <script>
-         $('.<?php echo $status;?>').find( "span" ).html('(<?php echo $arrlength;?>)'); 
-        </script>
-        <?php
-            for($x = 0; $x < $arrlength; $x++) {
-            
-            
-
-            // Get images from the database
-            $query = $db->query("SELECT * FROM Student WHERE student_id='$studids[$x]'");
-
-        
-
-            if($query ->num_rows ==1){
-            $row1 = $query->fetch_assoc();
-                // echo $row1;
-            $sturesume=$row1["resume"];
-            $ssid=$row1['student_id'];
-            $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$sturesume;
-            //    echo $ssid;
-            // while ($row = mysqli_fetch_assoc($result)) {
-                ?>
-                <tr>
-                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk" disabled></td>
-              
-                    <td>
-                    <?php echo $row1['stud_name'];?>
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
-                   
-                   </td>
-                    <td><?php echo $row1['email'];?></td>
-               
-                    <td><?php echo $row1['curr_ctc'];?></td>
-                    <td><?php echo $row1['expected_ctc'];?></td>
-              
-                    <td><?php echo $row1['notice_period']?>
-                    </td>
-                    <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
-                    <td><?php echo $hrcomment[$x];?></td>
-                    <td><?php echo $managercomment[$x];?></td>
-                   
-                    <td><?php echo $recruitercomment[$x];?></td>
-<td><input class="form-control" id="manager_comment<?php echo $ssid;?>"></td>
-                    <td>
-                     <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-         <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shareded</option>
-                        <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
-                        <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
-                        <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Reject</option>
-                        <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option>
-                    
-    </select>
-                    </td>
-                
-                </tr>
-                <?php
-                // $number++;
-            // }
-            }}
-
-            ?>
-
-          
-
-            <?php
-            // $users .= '</table>';
-
-        }
-            else{
-                // $users='No Student found!';
-      ?>         
-       <div style="transform: rotateX(180deg);">
-        <p>No Candidate(s) found! </p>
-        </div>
-<?php
-            }
-    }
-
-
-    ?>
-
-    </tbody>
-    </table>
-    </div>
-    <br>
-    <br>
-  
-        <div style="float:right;">
-                <button class="btn btn-primary" onclick="saveStatus()">Save</button>
-        </div>
-           
-    </div>
-   
-  </div>
-            <!-- -------------------------------------- -->
-        </div>
-       
-</div><!-- tab content -->
-</div>
-</div>
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center">This Job Feedbacks</h4>
-      </div>
-      <div class="modal-body thisjob">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 </body>
  <!-- ============ JOBS END ============ -->
 
@@ -617,8 +388,8 @@ $('#admins_email').on('change', function () {
                                 data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
                             })
                             .done(function(response) {
-                                alert(response);
-                                location.reload();
+                                // alert(response);
+                                // location.reload();
                                
                             })
                             .fail(function() {
@@ -727,26 +498,64 @@ function urlchange(cat){
          $('.df4').toggle();
      }
 
+    
      function showlastjob(id){
         //  alert(id);
-          jid=<?php echo $_GET['jid'];?>
-        //  ajax request to fetch job stats
-                            $.ajax({
-                                url: '../jobstats.php',
+          $.ajax({
+                                url: '../thiscompanystats.php',
                                 type: 'POST',
                             
-                                data: {param1: id,param2:jid},
+                                data: {param1: id,param2:'<?php echo $currentCompEmail;?>'},
                             })
                             .done(function(response) {
-                                // alert(response);
+                                // console.log(response);
                                 data=JSON.parse(response)
-                                console.log(data,typeof(data));
-                                // location.reload();
-var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,   Applied_at: '+data.Status_update.slice(0,10)
-                                $('#'+id).tooltip('hide')
-                                .attr('data-original-title',newtext)
-                                .tooltip('show');
-                               
+                             
+                                // data=response;
+                                console.log(data);
+                                // console.log(data.length);
+
+                                var html = "<table border='1|1'class='table table-striped'>";
+                                for (var i = 0; i < data.length; i++) {
+                                    // console.log(data[i]);
+                                     var cname=data[i][0];
+                        // console.log(cname);
+                                        for(var j=0;j<data[i].length;j++){
+                                                if(data[i][j]){
+                                                    // console.log(data[i][j].length);
+                       
+                                                             var res = data[i][j];
+                                                             console.log(res);
+                                                            for(k=0;k<res.length;k++){
+                                                                if(res[k]){
+                                                                console.log(res[k]);
+
+                                                                }
+                                                                var line = res[k].split("$");
+                                                                // console.log(line);
+                                                                if(line[1] && line[0] && line[2]){
+                                                                          html+="<tr>";
+                                                                        html+="<td>"+cname+"</td>";
+
+                                                                        html+="<td>"+line[1]+"</td>";
+                                                                        html+="<td>"+line[0]+"</td>";
+                                                                        html+="<td>"+line[2]+"</td>";
+                                                                        html+="</tr>";
+                                                                }
+                                                              
+
+                                                            }
+                                                           
+                                                 }
+
+                                        }
+                                }
+                                html+="</table>";
+
+                                $('.modal-title').html("This company feedback");
+                                $('.thisjob').html(html);
+                                // Display Modal
+                                $('#myModal').modal('show'); 
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
@@ -770,11 +579,13 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
                                     if(data[i]){
                                         for(var j=0;j<data[i].length;j++){
                                             var res = data[i][j].split("$");
-                                            html+="<tr>";
-                                            html+="<td>"+res[1]+"</td>";
-                                            html+="<td>"+res[0]+"</td>";
-                                            html+="<td>"+res[2]+"</td>";
-                                            html+="</tr>";
+                                           if(res[0]&&res[1]&&res[2]){
+                                                html+="<tr>";
+                                                html+="<td>"+res[1]+"</td>";
+                                                html+="<td>"+res[0]+"</td>";
+                                                html+="<td>"+res[2]+"</td>";
+                                                html+="</tr>";
+                                            }
                                         }
 
                                     }
@@ -782,6 +593,7 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
 
                                 }
                                 html+="</table>";
+                                $('.modal-title').html("This job feedback");
 
                                 $('.thisjob').html(html);
                                 // Display Modal
@@ -791,34 +603,57 @@ var newtext='Last Job Status: '+data.Status+'\n  , Feedback: '+data.Note+'\n   ,
                                 alert("error while fetching stats");
                             });
      }
-
-  function saveStatus(){
+         function saveStatus(){
              var sidc=[];
             var jobid=[];
                 is_checked=!is_checked;
+            var i=0;
+            var commentcheck=false;
 
         $('tr').each(function(i, obj) {
+            // console.log($('tr').length);
+            // console.log(i);
                 if($('tr').not(':first').is(":visible")) {
 
                     if(is_checked){
    // alert('hi');
                             $(this).find('.studentcheckbox1').prop('checked',true)
                             if($(this).find('.studentcheckbox1').prop('checked') == true){
-                                // console.log($(this).find('.studentcheckbox1').val());
+                                console.log($(this).find('.studentcheckbox1').val());
                                 var selectedID=$(this).find('.studentcheckbox1').val();
-                                // console.log($('#manager_comment'+selectedID).val());
-                                // console.log($('#updatenotebtn'+selectedID).val());
+                                console.log($('#hr_comment'+selectedID).val());
+                                console.log($('#updatenotebtn'+selectedID).val());
                                     var statusvalue="manager";
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
-                                    var hrfeedback=$('#manager_comment'+selectedID).val();
+                                    var hrfeedback=$('#hr_comment'+selectedID).val();
                                     var ps2='';
-                                updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                                    // if(hrfeedback!=''){
+                                    //     commentcheck=true;
+                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                                    // }
+                                    // else{
+
+                                    // }
                             }
+                            i=i+1;
                      }
                     else{
                         console.log("here");
                        
                     }
+                }
+                if(i==$('tr').length-1){
+
+                        // if(!commentcheck){
+                        // alert("Add a comment to save status");
+                        // }
+                    // console.log(i,$('tr').length-1,"reload");
+                    // else{
+                    // location.reload();
+                    setTimeout(function(){  location.reload(); }, 1000);
+
+                    // }
+
                 }
         });
         }
