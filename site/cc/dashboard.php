@@ -26,24 +26,25 @@ $page="job";
     <link rel="shortcut icon" href="images/favicon.png">
 
     <!-- Main Stylesheet -->
-    <link href="../css/style.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <style>
- .fill{
+        .fill{
             width:-webkit-fill-available;
         }
         .width-auto{
             width:auto;
         }
-</style>
+    </style>
 
 </head>
 
 <body style='padding:0'>
 
  <!-- ============ HEADER START ============ -->
- <header>
+<header>
         <div id="header-background"></div>
         <div class="container">
             <div class="pull-left">
@@ -54,7 +55,7 @@ $page="job";
             </div>
 
         </div>
-    </header>
+</header>
     <br>
     <br>
     <br>
@@ -830,9 +831,6 @@ function downloadCSV(csv, filename) {
                                 alert("error in exporting");
                             });
 
-
-            // Download CSV file
-            // downloadCSV(csv.join("\n"), filename);
         }
      </script>
 

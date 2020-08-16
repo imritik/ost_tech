@@ -42,7 +42,33 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     }
                 // }
                 ?>
-    <div class="col-md-12 head" style="display: flex;">
+
+                <?php 
+
+if(isset($_SESSION['emailvendors'])){
+
+    ?>
+    <div class="col-md-12" style="text-align:center">
+                    <div class="float-right">
+                        <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
+                    </div>
+                </div>
+                <!-- CSV file upload form -->
+                <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
+                <br>
+                    <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?>" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" />
+                        <br>
+                        <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
+                    </form>
+                    <br>
+                </div>
+                <?php
+
+}
+else{
+    ?>
+<div class="col-md-12 head" style="display: flex;">
         <div class="float-right">
             <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
         </div>
@@ -59,24 +85,53 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
         </form>
         <br>
     </div>
+
+
+    <?php
+
+}
+                ?>
+    
     <br>
     <br>
 
 <ul class="nav nav-tabs">
+ <?php
+    if(isset($_SESSION['emailvendors'])){
+
+?>
+    <li class='uploaded'><a  onclick="setstatus('uploaded')">Upload CV&nbsp;<span></span></a></li>
+<?php
+    }
+    ?>
 <?php
 if(isset($_SESSION['emailhr'])){
     ?>
     <li class='new_arrival'><a  onclick="setstatus('new_arrival')">Probable duplicates&nbsp;<span></span></a></li>
 <?php
 }
+if(!isset($_SESSION['emailvendors'])){
+
 ?>
+
     <li class='Shared'><a  onclick="setstatus('Shared')">To Process&nbsp;<span></span></a></li>
     <li class='hold'><a  onclick="setstatus('hold')">Hold&nbsp;<span></span></a></li>
+    <?php
+    }
+    ?>
     <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Discussion&nbsp;<span></span></a></li>
 
     <!-- <li class='processed'><a  onclick="setstatus('processed')">Processed&nbsp;<span></span></a></li> -->
     <li class='rejected'><a  onclick="setstatus('rejected')">Closed&nbsp;<span></span></a></li>
+
+    <?php
+    if(!isset($_SESSION['emailvendors'])){
+
+?>
     <li class='Offered'><a  onclick="setstatus('Offered')">Offered&nbsp;<span></span></a></li>
+    <?php
+    }
+    ?>
 
 </ul>
 
@@ -105,12 +160,26 @@ if(isset($_SESSION['emailhr'])){
     <!-- <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th> -->
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Last comment" readonly></th>
+   <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
+        ?>
+        
+        <?php
+        }
+        else{
+            ?>
+            <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Last comment" readonly></th>
+        
+            <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment*" readonly></th>
+            <th>History</th>
+            <?php
+        }
+
+   ?>
+
    
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Your comment*" readonly></th>
-    <th>History</th>
+    
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Status" readonly></th>
-   
+ 
    
    
     </tr>
@@ -126,22 +195,47 @@ if(isset($_SESSION['emailhr'])){
     </script>
     <?php
 $query='';
-        if($status=='new_arrival'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and duplicate_status='probable'";
+$vendoremail=$_SESSION['emailvendors'];
+
+        if(isset($_SESSION['emailvendors'])){
+
+
+                if($status=='uploaded'){
+                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='shortlist' or applied_table.duplicate_status='probable')";
+                }
+                else{
+
+                // $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='Shared'";
+                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and applied_table.Status='$status'";
+                }
+
 
         }
-        else if($status=='to_process'){
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
-
-        }
-        else if($status=='shortlist'){
-            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN('rejected','hold','Shared','processed','Offered') ORDER BY Status_update DESC";
-
-    }
         else{
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
+
+                    if($status=='new_arrival'){
+                            $query = "SELECT * FROM applied_table where posting_id='$jid' and duplicate_status='probable'";
+
+                    }
+
+                    else if($status=='to_process'){
+                            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
+
+                    }
+
+                    else if($status=='shortlist'){
+                        $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN('rejected','hold','Shared','processed','Offered') ORDER BY Status_update DESC";
+
+                    }
+                    else{
+                            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' ORDER BY Status_update DESC";
+
+                    }
 
         }
+
+
+        
             if (!$result = mysqli_query($db, $query)) {
                 exit(mysqli_error($db));
             }
@@ -150,6 +244,7 @@ $query='';
             $recruitercomment=array();
             $managercomment=array();
             $amcomment=array();
+            $vendorcomment=array();
             // $studstatuss=array();
              $coordinatorcomment=array();
             
@@ -161,6 +256,8 @@ $query='';
                     array_push($managercomment,$row['manager_note']);
                     array_push($recruitercomment,$row['recruiter_note']);
                     array_push($coordinatorcomment,$row['coordinator_note']);
+                    array_push($vendorcomment,$row['vendor_note']);
+
 
 
                 } 
@@ -221,7 +318,34 @@ $query='';
                     <td><?php echo $row1['curr_ctc'];?></td>
                     <td><?php echo $row1['expected_ctc'];?></td>
                     <td><?php echo $row1['notice_period']?></td>
-                    <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
+                              <!-- Add resume -->
+                              
+                    <td>
+                    <?php if($status=='uploaded'){
+                        ?>
+                        <form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
+                                        <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
+                                        <button type='submit' id='upl_resume' class='editresume' value='Upload Resume' ><i class="fa fa-upload" aria-hidden="true"></i>
+                        </button>
+                        </form>
+                        <?php
+
+                    } 
+
+                else{
+                    
+                    ?>
+                    
+                    
+                    <a href='<?php echo $resumelinks;?>' target='blank'>View</a>
+                    
+                    
+                    </td>
+                <?php
+                }
+                ?>
+
+
                     <?php
                         if(isset($_SESSION['emailhr'])){
                             ?>
@@ -229,6 +353,8 @@ $query='';
                         <?php
                         }
                         ?>
+
+
                         <?php
                          if(isset($_SESSION['emailmanager'])){
                             ?>
@@ -251,13 +377,26 @@ $query='';
                         <?php
                         }
                         ?>
+
+
+                        <?php
+                         if(isset($_SESSION['emailvendors'])&& $status!='uploaded'){
+                            ?>
+                            <td><?php echo $vendorcomment[$x];?></td>
                             <td><input class="form-control" id="hr_comment<?php echo $ssid;?>" required></td>
-                    
-                    <td>
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                    
-                    </td>
+                            <td>
+                            &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
+                            
+                            </td>
+                        <?php
+                        }
+                        ?>
+
+
+                    <?php 
+
+                    if(!isset($_SESSION['emailvendors'])){
+                        ?>
                     <td>
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
@@ -268,6 +407,22 @@ $query='';
                             <!-- <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option> -->
                         </select>
                     </td>
+                    <?php
+                    }
+
+
+                    else{
+                        ?>
+                          <td>
+                        <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
+                            <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
+
+                            <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Backed out</option>
+                        </select>
+                    </td>
+                        <?php
+                    }
+                    ?>
                 
                 </tr>
                 <?php if($status=='new_arrival'){

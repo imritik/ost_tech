@@ -148,7 +148,7 @@ if(isset($_POST['importSubmit'])){
                                                         $stud_id=$row22['student_id'];
                                                         $testquery=$db->query("SELECT * FROM applied_table where posting_id='$jobid' and student_id='$stud_id'");
                                                         if($testquery->num_rows>0){
-                                                                 $insertapply=$db->query("UPDATE IGNORE applied_table SET duplicate_status='probable',Status='Shared',Status_update=NOW() where posting_id='$jobid' and student_id='$stud_id'");
+                                                                 $insertapply=$db->query("UPDATE IGNORE applied_table SET duplicate_status='probable',Status='shortlist',Status_update=NOW() where posting_id='$jobid' and student_id='$stud_id'");
                                                                     if($insertapply){
                                                                         // echo"2";
                                                                         $qstring='&status=succ';
@@ -161,7 +161,7 @@ if(isset($_POST['importSubmit'])){
 
                                                         }
                                                         else{
-                                                                    $insertapply=$db->query("INSERT IGNORE INTO applied_table(posting_id,student_id,applied_at,Status,duplicate_status) VALUES ('$jobid',$stud_id,NOW(),'Shared','probable')");
+                                                                    $insertapply=$db->query("INSERT IGNORE INTO applied_table(posting_id,student_id,applied_at,Status,duplicate_status) VALUES ('$jobid',$stud_id,NOW(),'shortlist','probable')");
                                                                     if($insertapply){
                                                                         $qstring='&status=succ';
                                                                     }
@@ -203,7 +203,7 @@ if(isset($_POST['importSubmit'])){
                                 if ($result22 ->num_rows ==1) {
                                     while($row22 = $result22->fetch_assoc()) {
                                         $stud_id=$row22['student_id'];
-                                        $insertapply=$db->query("INSERT IGNORE INTO applied_table(posting_id,student_id,applied_at,Status) VALUES ('$jobid',$stud_id,NOW(),'Shared')");
+                                        $insertapply=$db->query("INSERT IGNORE INTO applied_table(posting_id,student_id,applied_at,Status) VALUES ('$jobid',$stud_id,NOW(),'shortlist')");
                                         if($insertapply){
                                             $qstring='&status=succ';
                                         }
