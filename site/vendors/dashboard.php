@@ -230,7 +230,7 @@ function formToggle(ID){
     }
 
 function showpage(postid){
-    document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     console.log(postid);
     getjobids(postid);
 }
