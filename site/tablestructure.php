@@ -224,7 +224,11 @@ $vendoremail=$_SESSION['emailvendors'];
                     }
 
                     else if($status=='shortlist'){
-                        $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN('rejected','hold','Shared','processed','Offered') ORDER BY Status_update DESC";
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status NOT IN('rejected','hold','Shared','processed','Offered') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
+                        
+
+                        // $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN('rejected','hold','Shared','processed','Offered') ORDER BY Status_update DESC";
 
                     }
                     else{
@@ -309,8 +313,14 @@ $vendoremail=$_SESSION['emailvendors'];
                     <td class="headcol">
                     <?php echo $row1['stud_name'];?>
                     <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
+                    <?php
+                         if(!isset($_SESSION['emailvendors'])){
+                            ?>
                     &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
                    
+                   <?php
+                         }
+                         ?>
                    </td>
                     <td><?php echo $row1['email'];?></td>
                     <td><?php echo $row1['contact'];?></td>
@@ -377,12 +387,19 @@ $vendoremail=$_SESSION['emailvendors'];
                         <?php
                         }
                         ?>
+                          <?php
+                         if(isset($_SESSION['emailvendors'])&&$status!='uploaded'){
+                            ?>
+                            <td><?php echo $vendorcomment[$x];?></td>
+
+                        <?php
+                        }
+                        ?>
 
 
                         <?php
-                         if(isset($_SESSION['emailvendors'])&& $status!='uploaded'){
+                         if( $status!='uploaded'){
                             ?>
-                            <td><?php echo $vendorcomment[$x];?></td>
                             <td><input class="form-control" id="hr_comment<?php echo $ssid;?>" required></td>
                             <td>
                             &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
