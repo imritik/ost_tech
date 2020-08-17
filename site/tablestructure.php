@@ -1,5 +1,25 @@
 <style>
-
+    #table-listing {
+        width: 300px;
+    }
+    
+    .table-scrollable {
+        width: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border: 1px solid #dddddd;
+        margin: 10px 0;
+    }
+    
+    .table th {
+        white-space: nowrap;
+    }
+    
+    .table td {
+        vertical-align: top;
+        border-bottom: 1px solid #ddd;
+        padding: 2px 5px;
+    }
 </style>
 <?php
 if(!empty($_GET['jid'])){
@@ -137,13 +157,13 @@ if(!isset($_SESSION['emailvendors'])){
 
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-       <div class="form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
-       <!-- <div class="form-group tobehidden"style="overflow-x:auto;" >  -->
+       <!-- <div class="table-scrollable form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto"> -->
+       <div class="table-scrollable form-group tobehidden"style="overflow-x:auto;" > 
 
-      <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);">
-      <!-- <table id="example" class="table table-striped table-condensed"> -->
+      <!-- <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0"> -->
+      <table id="example" class="table table-striped table-condensed" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
 
-      <thead>
+      <thead class="header">
 <tr class="filters" style="background: white">
 
     <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
@@ -184,7 +204,7 @@ if(!isset($_SESSION['emailvendors'])){
    
     </tr>
     </thead>
-    <tbody>
+    <tbody class="results">
                 <?php }
     if(!empty($_GET['jid'])&& !empty($_GET['status'])){
                 $jid=$_GET['jid'];
@@ -547,5 +567,76 @@ $vendoremail=$_SESSION['emailvendors'];
 </div>
 
 <script>
+  function app_handle_listing_horisontal_scroll(listing_obj) {
+        //get table object   
+        table_obj = $('.table', listing_obj);
 
+        //get count fixed collumns params
+        count_fixed_collumns = table_obj.attr('data-count-fixed-columns')
+
+        if (count_fixed_collumns > 0) {
+            //get wrapper object
+            wrapper_obj = $('.table-scrollable', listing_obj);
+
+            wrapper_left_margin = 0;
+
+            table_collumns_width = new Array();
+            table_collumns_margin = new Array();
+
+            //calculate wrapper margin and fixed column width
+            $('th', table_obj).each(function(index) {
+                if (index < count_fixed_collumns) {
+                    wrapper_left_margin += $(this).outerWidth();
+                    table_collumns_width[index] = $(this).outerWidth();
+                }
+            })
+
+            //calcualte margin for each column  
+            $.each(table_collumns_width, function(key, value) {
+                if (key == 0) {
+                    table_collumns_margin[key] = wrapper_left_margin;
+                } else {
+                    next_margin = 0;
+                    $.each(table_collumns_width, function(key_next, value_next) {
+                        if (key_next < key) {
+                            next_margin += value_next;
+                        }
+                    });
+
+                    table_collumns_margin[key] = wrapper_left_margin - next_margin;
+                }
+            });
+
+            //set wrapper margin               
+            if (wrapper_left_margin > 0) {
+                wrapper_obj.css('cssText', 'margin-left:' + wrapper_left_margin + 'px !important; width: auto')
+            }
+
+            //set position for fixed columns
+            $('tr', table_obj).each(function() {
+
+                //get current row height
+                current_row_height = $(this).outerHeight();
+
+                $('th,td', $(this)).each(function(index) {
+
+                    //set row height for all cells
+                    $(this).css('height', current_row_height)
+
+                    //set position 
+                    if (index < count_fixed_collumns) {
+                        $(this).css('position', 'absolute')
+                            .css('margin-left', '-' + table_collumns_margin[index] + 'px')
+                            .css('width', table_collumns_width[index])
+
+                        $(this).addClass('table-fixed-cell')
+                    }
+                })
+            })
+        }
+    }
+
+    $(function() {
+        app_handle_listing_horisontal_scroll($('#home'))
+    })
 </script>
