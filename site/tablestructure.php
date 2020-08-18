@@ -633,6 +633,9 @@ $vendoremail=$_SESSION['emailvendors'];
                     }
                 })
             })
+
+            if(table_obj[1]){
+
               $('tr', table_obj[1]).each(function() {
 
                 //get current row height
@@ -651,6 +654,8 @@ $vendoremail=$_SESSION['emailvendors'];
                     }
                 })
             })
+            }
+
         }
     }
 
