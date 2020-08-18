@@ -399,6 +399,59 @@ function combine(){
 }
 
 
+    //  function FilterRow($input){
+    //        console.log("in filter function",$input);
+    //        $tobeshown=[];
+    //     $visible_rows=[];
+
+    //         if(!$input.length){
+    //             var rows = $('.table tr');
+    //             rows.show();
+    //         }
+    //     //    loop through the filters here
+    //     for(var i = 0; i < $input.length; i++){
+    //             inputContent = $input[i].val().toLowerCase(),
+    //             // $panel = $input[i].parents('.filterable'),
+    //             column = $('.filters th').index($input[i].parents('th')),
+    //             $table = $('.table'),
+    //             $rows = $table.find('tbody tr');
+    //             // console.log($rows);
+    //             if($visible_rows.length && inputContent!=''){
+    //                 // console.log("filtered rows here");
+    //                 $rows=$visible_rows;
+    //             }
+    //             else{
+    //                 // console.log("all rows here");
+    //             }
+
+    //             if(inputContent=='#'){
+    //                 // console.log("blank search will be there");
+    //                 var $filteredRows = $rows.filter(function() {
+    //                         var value = $(this).find('td').eq(column).text().trim()!='';
+    //                         return value === true;
+    //                         // console.log(value);
+    //                 });
+    //             }
+    //             else{
+    //                         /* Dirtiest filter function ever ;) */
+    //                         var $filteredRows = $rows.filter(function() {
+    //                                         var value = $(this).find('td').eq(column).text().toLowerCase();
+    //                                         return value.indexOf(inputContent) === -1;
+    //                         });
+    //             }
+    //                 $rows.show();
+    //                 $filteredRows.slice(1).hide();
+
+    //                 $tobeshown=$table.find('tbody tr:visible');
+    //                         $visible_rows=$tobeshown;
+    //                         console.log($visible_rows);
+
+    //                 // ===--------------
+    //                 console.log($filteredRows,"filtered");
+    //     }
+    //         }
+
+
      function FilterRow($input){
            console.log("in filter function",$input);
            $tobeshown=[];
@@ -417,8 +470,9 @@ function combine(){
                 $rows = $table.find('tbody tr');
                 // console.log($rows);
                 if($visible_rows.length && inputContent!=''){
-                    // console.log("filtered rows here");
+                    console.log("filtered rows here");
                     $rows=$visible_rows;
+                    console.log($rows);
                 }
                 else{
                     // console.log("all rows here");
@@ -441,10 +495,13 @@ function combine(){
                 }
                     $rows.show();
                     $filteredRows.slice(1).hide();
+                    console.log($filteredRows);
+                    console.log($filteredRows.hide());
+
 
                     $tobeshown=$table.find('tbody tr:visible');
                             $visible_rows=$tobeshown;
-                            console.log($visible_rows);
+                            console.log($visible_rows,"visible");
 
                     // ===--------------
                     console.log($filteredRows,"filtered");
