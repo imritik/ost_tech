@@ -1,5 +1,5 @@
 <style>
-    #table-listing {
+    /* #table-listing {
         width: 300px;
     }
     
@@ -19,8 +19,11 @@
         vertical-align: top;
         border-bottom: 1px solid #ddd;
         padding: 2px 5px;
-    }
+    } */
 </style>
+
+
+
 <?php
 if(!empty($_GET['jid'])){
     $jid=$_GET['jid'];
@@ -62,6 +65,12 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     }
                 // }
                 ?>
+
+
+
+
+
+
 
                 <?php 
 
@@ -115,6 +124,10 @@ else{
     <br>
     <br>
 
+
+
+
+
 <ul class="nav nav-tabs">
  <?php
     if(isset($_SESSION['emailvendors'])){
@@ -155,13 +168,18 @@ if(!isset($_SESSION['emailvendors'])){
 
 </ul>
 
+
+
+
+
+
   <div class="tab-content">
-    <div id="home" class="tab-pane fade in active" style="max-height:500px">
+    <div id="home" class="tab-pane fade in active" >
        <!-- <div class="table-scrollable form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto"> -->
-       <div class="table-scrollable form-group tobehidden"style="overflow-x:auto;max-height:500px" > 
+       <div class="table-scrollable form-group tobehidden"style="transform: rotateX(180deg);overflow-x:auto;max-height:500px" > 
 
       <!-- <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0"> -->
-      <table id="example" class="table table-striped table-condensed" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
+      <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
 
       <thead class="header">
 <tr class="filters" style="background: white">
@@ -204,6 +222,11 @@ if(!isset($_SESSION['emailvendors'])){
    
     </tr>
     </thead>
+
+
+
+
+
     <tbody class="results">
                 <?php }
     if(!empty($_GET['jid'])&& !empty($_GET['status'])){
@@ -526,6 +549,9 @@ $vendoremail=$_SESSION['emailvendors'];
     </tbody>
     </table>
 
+
+
+
     </div>
 <br>
     <br>
@@ -544,6 +570,10 @@ $vendoremail=$_SESSION['emailvendors'];
 </div><!-- tab content -->
 </div>
 </div>
+
+
+
+
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -565,6 +595,11 @@ $vendoremail=$_SESSION['emailvendors'];
 
   </div>
 </div>
+
+
+
+
+
 
 <script>
   function app_handle_listing_horisontal_scroll(listing_obj) {
@@ -660,6 +695,6 @@ $vendoremail=$_SESSION['emailvendors'];
     }
 
     $(function() {
-        app_handle_listing_horisontal_scroll($('#home'))
+        // app_handle_listing_horisontal_scroll($('#home'))
     })
 </script>
