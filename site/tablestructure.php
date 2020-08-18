@@ -536,7 +536,7 @@ $vendoremail=$_SESSION['emailvendors'];
         }
             else{
            ?>         
-       <div >
+       <div style="transform:rotateX(180deg)" >
         <p>No Candidate(s) found! </p>
         </div>
 <?php

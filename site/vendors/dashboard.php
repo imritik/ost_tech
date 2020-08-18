@@ -430,8 +430,9 @@ function combine(){
                 $rows = $table.find('tbody tr');
                 // console.log($rows);
                 if($visible_rows.length && inputContent!=''){
-                    // console.log("filtered rows here");
+                    console.log("filtered rows here");
                     $rows=$visible_rows;
+                    console.log($rows);
                 }
                 else{
                     // console.log("all rows here");
@@ -454,10 +455,13 @@ function combine(){
                 }
                     $rows.show();
                     $filteredRows.slice(1).hide();
+                    console.log($filteredRows);
+                    console.log($filteredRows.hide());
+
 
                     $tobeshown=$table.find('tbody tr:visible');
                             $visible_rows=$tobeshown;
-                            console.log($visible_rows);
+                            console.log($visible_rows,"visible");
 
                     // ===--------------
                     console.log($filteredRows,"filtered");
