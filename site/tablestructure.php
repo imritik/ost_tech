@@ -156,9 +156,9 @@ if(!isset($_SESSION['emailvendors'])){
 </ul>
 
   <div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
+    <div id="home" class="tab-pane fade in active" style="max-height:500px">
        <!-- <div class="table-scrollable form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto"> -->
-       <div class="table-scrollable form-group tobehidden"style="overflow-x:auto;" > 
+       <div class="table-scrollable form-group tobehidden"style="overflow-x:auto;max-height:500px" > 
 
       <!-- <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0"> -->
       <table id="example" class="table table-striped table-condensed" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
@@ -355,7 +355,7 @@ $vendoremail=$_SESSION['emailvendors'];
                         ?>
                         <form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
                                         <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
-                                        <button type='submit' id='upl_resume' class='editresume' value='Upload Resume' ><i class="fa fa-upload" aria-hidden="true"></i>
+                                        <button type='submit' id='upl_resume' class='editresume btn btn-xs btn-success' value='Upload Resume' >Upload&nbsp;<i class="fa fa-upload" aria-hidden="true"></i>
                         </button>
                         </form>
                         <?php
@@ -482,7 +482,7 @@ $vendoremail=$_SESSION['emailvendors'];
 ?>
                                 <tr>
                                 <!-- <td><input type="checkbox" class="studentcheckbox1comp" value="<?php echo $rowcomp['student_id'];?>" name="chkcomp"></td></td> -->
-                                <td><?php echo $rowcomp['stud_name'];?></td>
+                                <td><?php echo $rowcomp['stud_name'];?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td><?php echo $rowcomp['email'];?></td>
 
                                 <td><a href='<?php echo $duplinks;?>' target='blank'>View</a></td>
@@ -570,7 +570,7 @@ $vendoremail=$_SESSION['emailvendors'];
   function app_handle_listing_horisontal_scroll(listing_obj) {
         //get table object   
         table_obj = $('.table', listing_obj);
-
+        // table_obj=table_obj[0];
         //get count fixed collumns params
         count_fixed_collumns = table_obj.attr('data-count-fixed-columns')
 
@@ -630,6 +630,24 @@ $vendoremail=$_SESSION['emailvendors'];
                             .css('width', table_collumns_width[index])
 
                         $(this).addClass('table-fixed-cell')
+                    }
+                })
+            })
+              $('tr', table_obj[1]).each(function() {
+
+                //get current row height
+                current_row_height = $(this).outerHeight();
+
+                $('th,td', $(this)).each(function(index) {
+
+                    //set row height for all cells
+                    $(this).css('height', 0)
+
+                    //set position 
+                    if (index < count_fixed_collumns) {
+                        $(this).css("all","unset")
+
+                        $(this).removeClass('table-fixed-cell')
                     }
                 })
             })
