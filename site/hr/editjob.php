@@ -190,6 +190,19 @@ if(!empty($_GET['jid'])){
  <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple" >
 </select>
                         </div>
+
+                               <div class="form-group" id="job-type-group">
+                            <label for="job-type">Duplicates Evaluation Basis</label>
+                            <select class="form-control" name="duplicates" id="job-type" required>
+									<option>Choose</option>
+									<option value="0" <?php if ($row22['duplicate_basis'] == '0')  echo 'selected = "selected"'; ?>>Project Basis</option>
+									<option value="3" <?php if ($row22['duplicate_basis'] == '3')  echo 'selected = "selected"'; ?>>Last 3 months</option>
+									<option value="6" <?php if ($row22['duplicate_basis'] == '6')  echo 'selected = "selected"'; ?>>Last 6 months</option>
+									<option value="9" <?php if ($row22['duplicate_basis'] == '9')  echo 'selected = "selected"'; ?>>Last 9 months</option>
+									<option value="12"<?php if ($row22['duplicate_basis'] == '12')  echo 'selected = "selected"'; ?> >Last 12 months</option>
+
+								</select>
+                        </div>
                         <div class="row text-center">
                     <p>&nbsp;</p>
                     <button type="submit" name="submit" id="register" class="btn btn-primary btn-lg">Update <i class="fa fa-arrow-right"></i></button>
@@ -284,6 +297,21 @@ if($query ->num_rows >0){
                    <select id="companies" class="multiselectrecruiters" name="recruiter" multiple="multiple">
 </select>
                         </div>
+
+                          <div class="form-group" id="job-type-group">
+                            <label for="job-type">Duplicates Evaluation Basis</label>
+                            <select class="form-control" name="duplicates" id="job-type" required>
+									<option>Choose</option>
+									<option value="0" >Project Basis</option>
+									<option value="3" >Last 3 months</option>
+									<option value="6" >Last 6 months</option>
+									<option value="9" >Last 9 months</option>
+									<option value="12" >Last 12 months</option>
+
+								</select>
+                        </div>
+
+
                         <div class="row text-center">
                     <p>&nbsp;</p>
                     <button type="submit" name="submit" id="register" class="btn btn-primary btn-lg">Post <i class="fa fa-arrow-right"></i></button>

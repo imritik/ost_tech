@@ -16,6 +16,9 @@ $url=$_POST['weburl'];
 $description=$_POST['description'];
 $vendors=$_POST['coordinator'];
 $recruiters=$_POST['recruiter'];
+$basis=$_POST['duplicates'];
+
+// var_dump($basis);
 // $postingid=$_GET['jid'];
 $postingid=rand(pow(10, $digits-1), pow(10, $digits)-1);
 // var_dump($email);
@@ -64,7 +67,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,company_url,posting_time,vendor,recruiter) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$url."',NOW(),'".$vendors."','".$recruiters."')");
+                    $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,duplicate_basis,company_url,posting_time,vendor,recruiter) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$basis."','".$url."',NOW(),'".$vendors."','".$recruiters."')");
                     if($insert){
                         // $statusMsg = "The job has been uploaded successfully.";
                         $statusMsg='?status=succjob';
@@ -84,7 +87,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,company_url,posting_time,vendor,recruiter) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$url."',NOW(),'".$vendors."','".$recruiters."')");
+            $insert = $db->query("INSERT into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,duplicate_basis,company_url,posting_time,vendor,recruiter) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$basis."','".$url."',NOW(),'".$vendors."','".$recruiters."')");
             if($insert){
                 // $statusMsg = "The job has been uploaded successfully.";
                 $statusMsg='?status=succjob';

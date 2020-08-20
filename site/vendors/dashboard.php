@@ -186,6 +186,29 @@ $currentCompEmail='';
  <!-- ============ JOBS END ============ -->
 
 <script>
+
+ function setPage() {
+        var uri = window.location.toString();
+                    console.log(uri.indexOf("?"));
+                                if (uri.indexOf("?") > 0) {
+                                   
+                                    window.stop();
+                                }
+                                else{
+                                    $('ul li:first').click();
+
+                                }
+   
+    }
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        // setPage();
+                    setTimeout(setPage(), 1000);
+
+    });
+
+    
 function formToggle(ID){
     var element = document.getElementById(ID);
     if(element.style.display === "none"){

@@ -1,4 +1,4 @@
-<span class="label label-primary" style="font-size: inherit;"><b>Manage</b>&nbsp;</span>&nbsp;&nbsp;
+<!-- <span class="label label-primary" style="font-size: inherit;"><b>Manage</b>&nbsp;</span>&nbsp;&nbsp; -->
 <input class="radio" type="radio" name="alg_Type" id="HP" value="job" onclick="location.href='dashboard.php'" <?php echo ($page == 'job') ? 'checked="checked"' : ''; ?> /> <label class="choice" for="HP">Jobs</label>
 &nbsp;&nbsp;
 <input class="radio" type="radio" name="alg_Type" id="HP" value="vendor" onclick="location.href='showvendors.php'" <?php echo ($page == 'vendor') ? 'checked="checked"' : ''; ?>/> <label class="choice" for="HP">Vendors</label>

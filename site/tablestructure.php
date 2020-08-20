@@ -176,7 +176,7 @@ if(!isset($_SESSION['emailvendors'])){
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active" >
        <!-- <div class="table-scrollable form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto"> -->
-       <div class="table-scrollable form-group tobehidden"style="transform: rotateX(180deg);overflow-x:auto;max-height:500px" > 
+       <div class="table-scrollable form-group tobehidden"style="transform: rotateX(180deg);overflow-x:auto;" > 
 
       <!-- <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0"> -->
       <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
@@ -249,7 +249,7 @@ $vendoremail=$_SESSION['emailvendors'];
                 else{
 
                 // $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='Shared'";
-                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and applied_table.Status='$status'";
+                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail'and Student.resume!='' and applied_table.Status='$status'";
                 }
 
 
@@ -304,6 +304,8 @@ $vendoremail=$_SESSION['emailvendors'];
                     array_push($recruitercomment,$row['recruiter_note']);
                     array_push($coordinatorcomment,$row['coordinator_note']);
                     array_push($vendorcomment,$row['vendor_note']);
+                    array_push($amcomment,$row['Note']);
+
 
 
 

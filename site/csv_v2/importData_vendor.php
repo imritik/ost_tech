@@ -18,6 +18,24 @@ if(isset($_POST['importSubmit'])){
     $duplicatecandidates=array();
     $duplicatestatus=array();
     $jobid=$_GET['jid'];
+
+    $curr_comp_name='';
+    $current_basis='';
+    // -----capture comp name and duplicate basis
+
+            $getbasis="SELECT * FROM Job_Posting WHERE posting_id='$jobid'";
+            $basisresult=$db->query($getbasis);
+             if($basisresult->num_rows >0){
+                   while($rowbasis = $basisresult->fetch_assoc()){
+                        $curr_comp_name=$rowbasis['company_name'];
+                        $current_basis=$rowbasis['duplicate_basis'];
+                }
+            }
+
+// var_dump($curr_comp_name,$current_basis);
+// var_dump($current_basis!='0');
+
+    // ---------------------------------------------
             $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
             // Skip the first line
             fgetcsv($csvFile);
@@ -80,6 +98,10 @@ if(isset($_POST['importSubmit'])){
 
 
 
+
+
+
+                // --------------------------------------------
                 $prevQuery='';
                 $nameQuery='';
                 // Check whether member already exists in the database with the same email
@@ -94,7 +116,6 @@ if(isset($_POST['importSubmit'])){
                 
                 }
               
-                // var_dump($nameQuery);
                 
                 $prevResult = $db->query($prevQuery);
                 $no='';
@@ -102,23 +123,17 @@ if(isset($_POST['importSubmit'])){
                 // check name for probable duplicate
                 $nameResult = $db->query($nameQuery);
 
-                // var_dump($prevQuery);
-                // var_dump($prevResult);
+               
                 if($prevResult->num_rows >0){
                         
-                        // echo "old";
+                        // echo "sure duplicate";
                         while($row = $prevResult->fetch_assoc()){
                              array_push($duplicatecandidates,$row['student_id']);
                              array_push($duplicatestatus,"Duplicate");
                         }
 
-                // if(!$update){
-                    // echo "here";
-                    // $qstring = '&status=err';/
-                // }
-                // else{
+               
                     $qstring = '&status=succ';
-                // }
                 }
 
 
@@ -128,36 +143,44 @@ if(isset($_POST['importSubmit'])){
                         
                         // echo "old";
                         while($rowname = $nameResult->fetch_assoc()){
-                            //  array_push($duplicatecandidates,$rowname['student_id']);
-                            //  array_push($duplicatestatus,"Probable Duplicate");
-// var_dump($rowname);
+                          
                                     $insert=$db->query("INSERT IGNORE INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
                                    
-                                //    var_dump("INSERT IGNORE INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
-                                //   var_dump($insert);
+                                
                                    if(!$insert){
-                                        // echo "srry";
+                                    //    echo"1";
                                         $qstring = '&status=err';
                                     }
                                     else{
 
+                                            //maybe duplicate
+                                    //    echo"2";
+
                                                 $sql22="SELECT * FROM Student WHERE email='$email'";
                                                 $result22 = $db->query($sql22);
                                                 if ($result22 ->num_rows ==1) {
+
+
+                                                if($current_basis!='0'){
+                                                //month basis
+                                                // var_dump("month");
                                                     while($row22 = $result22->fetch_assoc()) {
                                                         $stud_id=$row22['student_id'];
-                                                        $testquery=$db->query("SELECT * FROM applied_table where posting_id='$jobid' and student_id='$stud_id'");
+                                                        $testquery=$db->query("SELECT Job_Posting.*, applied_table.* FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id AND Job_Posting.company_name='$curr_comp_name' and applied_table.student_id='$stud_id' and applied_table.applied_at >= DATE_SUB(CURDATE(), INTERVAL $current_basis MONTH)");
+                                                        // var_dump("SELECT Job_Posting.*, applied_table.* FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id AND Job_Posting.company_name='$curr_comp_name' and applied_table.student_id='$stud_id' and applied_table.applied_at >= DATE_SUB(CURDATE(), INTERVAL $current_basis MONTH)");
+                                                        
                                                         if($testquery->num_rows>0){
-                                                                 $insertapply=$db->query("UPDATE IGNORE applied_table SET duplicate_status='probable',Status='shortlist',Status_update=NOW() where posting_id='$jobid' and student_id='$stud_id'");
-                                                                    if($insertapply){
-                                                                        // echo"2";
-                                                                        $qstring='&status=succ';
-                                                                    }
-                                                                    else{
-                                                                        // echo"3";
+                                                            // echo"old record";
+                                                                //  $insertapply=$db->query("UPDATE IGNORE applied_table SET duplicate_status='probable',Status='shortlist',Status_update=NOW() where posting_id='$jobid' and student_id='$stud_id'");
+                                                                //     if($insertapply){
+                                                                //         // echo"2";
+                                                                //         $qstring='&status=succ';
+                                                                //     }
+                                                                //     else{
+                                                                //         // echo"3";
 
-                                                                        $qstring='&status=err';
-                                                                    }
+                                                                //         $qstring='&status=err';
+                                                                //     }
 
                                                         }
                                                         else{
@@ -173,30 +196,58 @@ if(isset($_POST['importSubmit'])){
 
                                                     }
                                                 }
+
+
+                                            else{
+                                                // var_dump("project");
+
+                                                    while($row22 = $result22->fetch_assoc()) {
+                                                        $stud_id=$row22['student_id'];
+                                                        $testquery=$db->query("SELECT * FROM applied_table where posting_id='$jobid' and student_id='$stud_id'");
+                                                        if($testquery->num_rows>0){
+                                                                //  $insertapply=$db->query("UPDATE IGNORE applied_table SET duplicate_status='probable',Status='shortlist',Status_update=NOW() where posting_id='$jobid' and student_id='$stud_id'");
+                                                                //     if($insertapply){
+                                                                //         // echo"2";
+                                                                //         $qstring='&status=succ';
+                                                                //     }
+                                                                //     else{
+                                                                //         // echo"3";
+
+                                                                //         $qstring='&status=err';
+                                                                //     }
+
+                                                        }
+                                                        else{
+                                                                    $insertapply=$db->query("INSERT IGNORE INTO applied_table(posting_id,student_id,applied_at,Status,duplicate_status) VALUES ('$jobid',$stud_id,NOW(),'shortlist','probable')");
+                                                                    if($insertapply){
+                                                                        $qstring='&status=succ';
+                                                                    }
+                                                                    else{
+                                                                        $qstring='&status=err';
+                                                                    }
+                                                        }
+                                                      
+
+                                                    }
+                                                }
+
+
+
+                                        }
+
                                     }
-
-                        }
-
-                // if(!$update){
-                    // echo "here";
-                    // $qstring = '&status=err';/
-                // }
-                // else{
-                    // $qstring = '&status=succ';
-                // }
-                }
-                
+                                }
+                            }
+                        else{
 
 
-
-                else{
-                    // Insert member data in the database
-                    $insert=$db->query("INSERT IGNORE INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
-                    if(!$insert){
-                        // echo "srry1";
-                        $qstring = '&status=err';
-                    }
-                    else{
+                                       $insert=$db->query("INSERT IGNORE INTO Student (id,stud_name, email, contact,pass,Alternate_emails,total_exp,curr_company,ctc_fixed,ctc_variable,curr_ctc,expected_ctc,designation,notice_period,curr_loc,preferred_loc,prev_comp,prev_comp_other,ug_college,ug_degree,pg_college,pg_degree,add_courses,resume,cv_parsed,ug_city,ug_agg,ug_yoc,pg_city,pg_agg,pg_yoc,linkedin,fb,twitter,is_active,turnup_rate,source,callers_comment,Uploaded_by,tech,updated_on, modified_on,cv_upload_date,latest_application_date,applied_for,applied_to,profile_segment) VALUES ('$sid','$name', '$email', '$phone', '$pass', '$additional_email','$total_exp', '$comp','$designation' ,'$ctc_fix','$ctc_variable','$cctc','$expected_ctc','$notice_period', '$curr_loc','$pre_loc','$prev_companies','$prev_comp_other','$ug_college', '$ug_degree','$pg_college', '$pg_degree','$add_courses','$resume', '$cv_parsed', '$ug_city', '$ug_agg', '$ug_yoc', '$pg_city', '$pg_agg', '$pg_yoc','$linkedin','$fb','$twitter','$is_active','$turnup_rate','$source','$callers_comment','$uploaded_by','$tech',NOW(), NOW(),'$cv_upload_date','$latest_application_date','$applied_for','$applied_to','$profile_segment')");
+                                if(!$insert){
+                                    // echo "srry1";
+                                    $qstring = '&status=err';
+                                }
+                                else{
+                                    // echo"4";
 
                                 $sql22="SELECT * FROM Student WHERE email='$email'";
                                 $result22 = $db->query($sql22);
@@ -213,11 +264,10 @@ if(isset($_POST['importSubmit'])){
 
                                     }
                                 }
-                    }
-                
-                }
+                            }
+                        }
+
             }
-            // var_dump($duplicatecandidates);
             $duplicatecandidates=implode(",",$duplicatecandidates);
             $duplicatestatus=implode(",",$duplicatestatus);
             setcookie("vendorduplicate",$duplicatecandidates, time()+36000 , '/' );
@@ -225,9 +275,7 @@ if(isset($_POST['importSubmit'])){
             // Close opened CSV file
             fclose($csvFile);
             
-            // $qstring = '?status=succ';
         }else{
-            // echo "here1";/
             $qstring = '&status=err';
         }
     }else{
@@ -235,6 +283,10 @@ if(isset($_POST['importSubmit'])){
     }
 }
 // Redirect to the listing page
-// 
+//             }
+//         }
+//     }
+// }
+// echo $qstring;
 header("Location:". $_SERVER['HTTP_REFERER'].$qstring);
 ?>

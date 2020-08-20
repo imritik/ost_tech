@@ -40,7 +40,7 @@ $page="job";
 
 </head>
 
-<body style='padding:0'>
+<body style='padding:0' >
 
  <!-- ============ HEADER START ============ -->
  <header>
@@ -89,7 +89,7 @@ $page="job";
                         echo '<li><a>No Job(s)</a></li>';
                     }
                ?>
-               <li><a href="editjob.php" class="label label-success" style="font-size:inherit" target="blank">Post a new job</a></li>
+               <li><a href="editjob.php" class="label label-success" style="font-size:inherit">Post a new job</a></li>
 
 </ul>
 </div>
@@ -153,6 +153,28 @@ $page="job";
 
 <script>
 
+
+        
+  function setPage() {
+        var uri = window.location.toString();
+                    console.log(uri.indexOf("?"));
+                                if (uri.indexOf("?") > 0) {
+                                   
+                                    window.stop();
+                                }
+                                else{
+                                    $('ul li:first').click();
+
+                                }
+   
+    }
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        // setPage();
+                    setTimeout(setPage(), 1000);
+
+    });
                             
   function deletejobpart(x){
                             $.ajax({
@@ -295,10 +317,10 @@ $('#admins_email').on('change', function () {
          console.log(newArray1);
 
           if(newArray1.length){
-         $('#combine').show();
+            $('#combine').show();
          }
          else{
-         $('#combine').hide();
+             $('#combine').hide();
 
          }
     });
@@ -817,6 +839,7 @@ function urlchange(cat){
         });
         }
 
+
      </script>
 
 
@@ -856,4 +879,6 @@ function urlchange(cat){
     <!-- jQuery S../ettings -->
     <script src="../js/settings.js"></script>
     <!-- ============ CONTACT END ============ -->
+
+    
 </html>
