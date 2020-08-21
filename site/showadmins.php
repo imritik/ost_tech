@@ -59,13 +59,13 @@ include '../dbConfig.php';
                 <!-- <li><a href="csv_v2/index.php" target="blank">Add Candidates</a></li> -->
                 <!-- <li><a href="import-csv/index.php" target="blank">Add Company</a></li> -->
                 <!-- <li><a href="sendmails.php">Send Mails</a></li> -->
+                <li><a href="companies.php">Companies</a></li>
                 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="showadmins.php">Admin details</a></li>
-                 <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
+                 <!-- <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li>
                  <li><a href="../admin_jobs/cc/login.php" target="blank">Coordinator</a></li>
-                <!-- <li><a class="link-register">Register</a></li> -->
-                <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li>
+                <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li> -->
 
                 <li><a class="link-login" href="../logout/logout.php">Logout</a></li>
             </ul>
