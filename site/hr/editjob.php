@@ -94,6 +94,10 @@ if(!empty($_GET['status'])){
 <?php } ?>
        <?php
 
+       $curr_managers='';
+       $curr_vendors='';
+       $curr_recruiters='';
+
 if(!empty($_GET['jid'])){
     $jid=$_GET['jid'];
 
@@ -103,6 +107,13 @@ if(!empty($_GET['jid'])){
                     $result22 = $db->query($sql22);
                     if ($result22 ->num_rows ==1) {
                         while($row22 = $result22->fetch_assoc()) {
+                        // var_dump($row22['manager'],json_decode($row22['manager']));
+                            $curr_managers=json_decode($row22['manager']);
+                            $curr_vendors=json_decode($row22['vendor']);
+                            $curr_recruiters=json_decode($row22['recruiter']);
+
+                        // var_dump($curr_managers);
+
                             ?>
 
 <form  action="updatejob.php?jid=<?php echo $jid;?>" method="post" enctype="multipart/form-data">
@@ -289,21 +300,21 @@ if($query ->num_rows >0){
 
                          <div class="form-group" id="job-manager-group"style="background:cadetblue;">
                             <label for="job-email">Manager</label>
- <select id="companies1" name="manager" class="multiselectmanagers"  multiple="multiple"  >
-</select>
+                            <select id="companies1" name="manager" class="multiselectmanagers"  multiple="multiple"  >
+                            </select>
                         </div>
 
                          <div class="form-group" id="job-coordinator-group" style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
                             <select id="companies2" name="coordinator" class="multiselect"  multiple="multiple">
-</select>
+                            </select>
                         </div>
 
                                 <div class="form-group" id="job-recruiter-group" style="background:cadetblue;">
-                            <label for="job-email">Recruiter</label>
-                   <select id="companies3" class="multiselectrecruiters" name="recruiter" multiple="multiple">
-</select>
-                        </div>
+                                    <label for="job-email">Recruiter</label>
+                                    <select id="companies3" class="multiselectrecruiters" name="recruiter" multiple="multiple">
+                                        </select>
+                            </div>
 
                           <div class="form-group" id="job-type-group">
                             <label for="job-type">Duplicates Evaluation Basis</label>
@@ -451,8 +462,25 @@ if ($resultmanag ->num_rows >0) {
 
     ?>
   var name =<?php echo json_encode($companies) ?>;
+
+
+ <?php if(!$curr_vendors){
+     $curr_vendors=array();
+ } ?>
+ <?php if(!$curr_managers){
+     $curr_managers=array();
+ } ?>
+ <?php if(!$curr_recruiters){
+     $curr_recruiters=array();
+ } ?>
+
+<?php $i=-1; ?>
+
+
   $.map(name, function (x) {
-    return $('.multiselect').append("<option <?php if(in_array('<script type=‘text/javascript’>document.writeln(x)</script>',array('test.com','vendor@test.com'))){echo ' selected=\"selected\"';} ?>>" + x + "</option>");
+      <?php $i=$i+1; ?>
+
+    return $('.multiselect').append("<option <?php if(in_array($companies[$i],$curr_vendors)){echo ' selected=\"selected\"';} ?>>" + x + "</option>");
   });
   
   $('.multiselect')
@@ -470,8 +498,12 @@ if ($resultmanag ->num_rows >0) {
 
 
 var name1 =<?php echo json_encode($recruiters) ?>;
+<?php $j=-1; ?>
+
   $.map(name1, function (x) {
-    return $('.multiselectrecruiters').append("<option>" + x + "</option>");
+      <?php $j=$j+1; ?>
+
+    return $('.multiselectrecruiters').append("<option <?php if(in_array($recruiters[$j],$curr_recruiters)){echo ' selected=\"selected\"';} ?>>" + x + "</option>");
   });
   
   $('.multiselectrecruiters')
@@ -489,8 +521,12 @@ var name1 =<?php echo json_encode($recruiters) ?>;
 
 
 var name2 =<?php echo json_encode($managers) ?>;
+<?php $k=-1; ?>
   $.map(name2, function (x) {
-    return $('.multiselectmanagers').append("<option>" + x + "</option>");
+      <?php $k=$k+1; ?>
+// <?php echo $managers[$k]; ?>
+      
+    return $('.multiselectmanagers').append("<option <?php if(in_array($managers[$k],$curr_managers)){echo ' selected=\"selected\"';} ?>>" + x + "</option>");
   });
   
   $('.multiselectmanagers')
