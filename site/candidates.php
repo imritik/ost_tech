@@ -459,7 +459,7 @@ function formToggle(ID){
 <!-- ------------------------- -->
         <div class="panel panel-primary filterable">
             <div class="panel-heading">
-                <h3 class="panel-title">Candidates</h3>
+                <h3 class="panel-title">Candidates &nbsp;&nbsp;&nbsp;<span class="search-count" style="font-size: small;letter-spacing: 0.002em;"></span></h3>
                 <div class="pull-right">
                     <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
                 </div>
@@ -497,6 +497,8 @@ function formToggle(ID){
 
                          
 <?php
+
+$search_count='';
 if(isset($_POST['filtersearch'])){
 // var_dump(!empty($_POST['daterange1']));
 
@@ -587,7 +589,12 @@ $sql="SELECT * FROM Student WHERE MATCH(tech,cv_parsed) AGAINST ('$bs' IN BOOLEA
 
     // }
 $result = $db->query($sql);
-
+$search_count=$result->num_rows;
+?>
+<script>
+$('.search-count').html('(<?php echo $search_count; ?>&nbsp; search results)');
+</script>
+<?php
 if ($result ->num_rows >0) {
    
     while($row1 = $result->fetch_assoc()) {

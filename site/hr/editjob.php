@@ -176,18 +176,18 @@ if(!empty($_GET['jid'])){
                         </div>
                           <div class="form-group" id="job-manager-group"style="background:cadetblue;">
                             <label for="job-email">Manager</label>
- <select id="companies" name="manager" class="multiselectmanagers"  multiple="multiple"  >
+ <select id="companies1" name="manager" class="multiselectmanagers"  multiple="multiple"  >
 </select>
                         </div>
                          <div class="form-group" id="job-coordinator-group"style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
- <select id="companies" name="coordinator" class="multiselect"  multiple="multiple"  >
+ <select id="companies2" name="coordinator" class="multiselect"  multiple="multiple"  >
 </select>
                         </div>
 
                                 <div class="form-group" id="job-recruiter-group"style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
- <select id="companies" name="recruiter" class="multiselectrecruiters"  multiple="multiple" >
+ <select id="companies3" name="recruiter" class="multiselectrecruiters"  multiple="multiple" >
 </select>
                         </div>
 
@@ -286,15 +286,22 @@ if($query ->num_rows >0){
                             <label for="job-url">Website (Optional)</label>
                             <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" >
                         </div>
+
+                         <div class="form-group" id="job-manager-group"style="background:cadetblue;">
+                            <label for="job-email">Manager</label>
+ <select id="companies1" name="manager" class="multiselectmanagers"  multiple="multiple"  >
+</select>
+                        </div>
+
                          <div class="form-group" id="job-coordinator-group" style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
-                            <select id="companies" name="coordinator" class="multiselect"  multiple="multiple">
+                            <select id="companies2" name="coordinator" class="multiselect"  multiple="multiple">
 </select>
                         </div>
 
                                 <div class="form-group" id="job-recruiter-group" style="background:cadetblue;">
                             <label for="job-email">Recruiter</label>
-                   <select id="companies" class="multiselectrecruiters" name="recruiter" multiple="multiple">
+                   <select id="companies3" class="multiselectrecruiters" name="recruiter" multiple="multiple">
 </select>
                         </div>
 
@@ -430,7 +437,7 @@ if ($resultrec ->num_rows >0) {
     }
 }
 
-$resultrmanag = $db->query($sqlmanag);
+$resultmanag = $db->query($sqlmanag);
 
 if ($resultmanag ->num_rows >0) {
    
@@ -445,7 +452,7 @@ if ($resultmanag ->num_rows >0) {
     ?>
   var name =<?php echo json_encode($companies) ?>;
   $.map(name, function (x) {
-    return $('.multiselect').append("<option>" + x + "</option>");
+    return $('.multiselect').append("<option <?php if(in_array('<script type=‘text/javascript’>document.writeln(x)</script>',array('test.com','vendor@test.com'))){echo ' selected=\"selected\"';} ?>>" + x + "</option>");
   });
   
   $('.multiselect')
