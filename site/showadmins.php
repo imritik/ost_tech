@@ -94,12 +94,20 @@ include '../dbConfig.php';
 
     <!-- ============ HEADER END ============ -->
 <div id="wrapper" style="padding: 4%;height:500px;overflow:scroll">
+
 <table align='center' cellspacing=2 cellpadding=5 id="data_table" border=1 class="table table-striped">
-<tr>
+<!-- <tr>
 <th>Name</th>
 <th>Email</th>
 <th>PAssword</th>
-<th>Role</th>
+<th>Role</th> -->
+<tr class="filters" style="background: white">
+
+    <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
+    <th><input type="text" class="form-control width-auto" placeholder="Password" disabled></th>
+   
+    <th><input type="text" class="form-control width-auto" placeholder="Role" disabled></th>
 </tr>
 <!-- ---------- -->
                         
@@ -348,6 +356,88 @@ $('.editbtn').click(function () {
           });
 
         //   -----------------------------------------------------
+
+     function FilterRow($input){
+           console.log("in filter function",$input);
+           $tobeshown=[];
+        $visible_rows=[];
+
+            if(!$input.length){
+                var rows = $('.table tr');
+                rows.show();
+            }
+        //    loop through the filters here
+        for(var i = 0; i < $input.length; i++){
+                inputContent = $input[i].val().toLowerCase(),
+                // $panel = $input[i].parents('.filterable'),
+                column = $('.filters th').index($input[i].parents('th')),
+                $table = $('.table'),
+                $rows = $table.find('tbody tr');
+                // console.log($rows);
+                if($visible_rows.length && inputContent!=''){
+                    console.log("filtered rows here");
+                    $rows=$visible_rows;
+                    console.log($rows);
+                }
+                else{
+                    // console.log("all rows here");
+                }
+
+                if(inputContent=='#'){
+                    // console.log("blank search will be there");
+                    var $filteredRows = $rows.filter(function() {
+                            var value = $(this).find('td').eq(column).text().trim()!='';
+                            return value === true;
+                            // console.log(value);
+                    });
+                }
+                else{
+                            /* Dirtiest filter function ever ;) */
+                            var $filteredRows = $rows.filter(function() {
+                                            var value = $(this).find('td').eq(column).text().toLowerCase();
+                                            return value.indexOf(inputContent) === -1;
+                            });
+                }
+                    $rows.show();
+                    $filteredRows.slice(1).hide();
+                    $filteredRows=$filteredRows.slice(1);
+                    console.log($filteredRows);
+                    console.log($filteredRows.slice(1));
+
+
+                    $tobeshown=$table.find('tbody tr:visible');
+                            $visible_rows=$tobeshown;
+                            console.log($visible_rows,"visible");
+
+                    // ===--------------
+                    console.log($filteredRows,"filtered");
+        }
+            }
+    
+    $('.filters input').keyup(function(e) {
+        console.log(e);
+            console.log($(this));
+            var inputs = $(".filters input");
+            var input_array=[];
+            var $input = $(this);
+        
+            for(var i = 0; i < inputs.length; i++){
+                // alert($(inputs[i]).val());
+                if($(inputs[i]).val()!=''){
+                    input_array.push($(inputs[i]));
+                    //  FilterRow($(inputs[i]));
+                }
+                else{
+                        //  var $input = $(this);
+                        // FilterRow($input);
+                }
+            }
+                console.log(input_array);
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            FilterRow(input_array);
+            // getVisibleRows();
+        });
     
     </script>
 
