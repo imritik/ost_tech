@@ -1,15 +1,21 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['coordinatoremp'])){
-    // echo $_SESSION['company'];
+if(isset($_SESSION['coordinatoremp'])||isset($_SESSION['emailmanager'])){
   }
   else{
-    // echo "alert('no session exist')";
     header("location: ../../admin_jobs/admin_home.php");
   }
 include '../../dbConfig.php';
-$coordinator_email=$_SESSION['coordinatoremp'];
+// $coordinator_email=$_SESSION['coordinatoremp'];
+$coordinator_email='';
+
+if(isset($_SESSION['emailmanager'])){
+    $coordinator_email=$_SESSION['emailmanager'];
+}
+else if(isset($_SESSION['coordinatoremp'])){
+    $coordinator_email=$_SESSION['coordinatoremp'];
+}
 
 $page="job";
   ?>
@@ -29,12 +35,19 @@ $page="job";
     <link href="../css/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
  .fill{
             width:-webkit-fill-available;
         }
         .width-auto{
             width:auto;
+        }
+
+        .panel-title{
+            font-size: smaller;
+    padding: 0;
         }
 </style>
 
@@ -47,13 +60,11 @@ $page="job";
         <div id="header-background"></div>
         <div class="container">
             <div class="pull-left">
-             <b>Account Manager<b> (<?php echo $coordinator_email; ?>)
+             <b>Monitoring Dashboard<b> (<?php echo $coordinator_email; ?>)
             </div>
             <div id="menu-open" class="pull-right">
-              <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a onclick="redirect();">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                <a href="../add_admin.php">Add Account Manager(AM)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              
                <a href="../../logout/logout.php">Logout</a>
             </div>
 
@@ -76,7 +87,7 @@ $page="job";
 
 <!-- ----jobs using php -->
  <?php
- $sql="SELECT * FROM admins WHERE email='$coordinator_email'";
+ $sql="SELECT * FROM admins WHERE managed_by='$coordinator_email'";
 $result = $db->query($sql);
 $companies=array();
 $jobs=array();
@@ -84,9 +95,123 @@ $jobs_details=array();
 $to_admin_data=array();
 $company_names=array();
 $currentCompEmail='';
-if ($result ->num_rows ==1) {
+if ($result ->num_rows>0) {
+    $i=0;
     while($row1 = $result->fetch_assoc()) {
-        $companies=json_decode(stripslashes($row1['company']));
+        $thisunique_id=uniqid();
+        // var_dump($row1['email']);
+        $under_email=$row1['email'];
+        ?>
+        <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#<?php echo $thisunique_id; ?>"><?php echo $under_email; ?><span class='<?php echo $thisunique_id; ?>'></span></a>
+        </h4>
+      </div>
+      <div id="<?php echo $thisunique_id;?>" class="panel-collapse collapse">
+        <div class="panel-body">
+        
+
+        <!-- level 2 managers....scaling upto 2 level -->
+                    <?php
+            $sqlunder="SELECT * FROM admins WHERE managed_by='$under_email'";
+            $resultunder = $db->query($sqlunder);
+
+            if ($resultunder ->num_rows>0) {
+                $i=0;
+                while($rowunder = $resultunder->fetch_assoc()) {
+                    $secondunique_id=uniqid();
+                      $under2_email=$rowunder['email'];
+                            ?>
+                            <div class="panel-group">
+                        <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#<?php echo $secondunique_id; ?>"><?php echo $under2_email; ?><span class='<?php echo $secondunique_id; ?>'></span></a>
+                            </h4>
+                        </div>
+                        <div id="<?php echo $secondunique_id; ?>" class="panel-collapse collapse">
+                            <div class="panel-body">
+
+
+                                    <ul class="nav nav-pills nav-stacked">
+
+                                    <!-- ----jobs using php -->
+                                    <?php
+                                    $sqlcomp2="SELECT * FROM admins WHERE email='$under2_email'";
+                                    $resultcomp2 = $db->query($sqlcomp2);
+                                    $companies=array();
+                                    $jobs=array();
+                                    $jobs_details=array();
+                                    $to_admin_data=array();
+                                    $company_names=array();
+                                    $currentCompEmail='';
+                                    if ($resultcomp2 ->num_rows ==1) {
+                                        while($row1comp2 = $resultcomp2->fetch_assoc()) {
+                                            $companies=json_decode(stripslashes($row1comp2['company']));
+                                            // $companies=json_decode($row1comp2['company']);
+                                            var_dump($companies);
+                                            // var_dump(array_unique($companies));
+                                            $companies=array_unique($companies);
+                                            if(sizeof($companies)){
+                                                $arrlen=count($companies);
+                                                    for($x=0;$x<$arrlen;$x++){
+                                                        // var_dump($companies[$x]);
+                                                        // ------collect all jobs of company here
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $resultjob = $db->query($sqljob);
+                                                        // if ($resultjob ->num_rows > 0) {
+                                                            ?>
+                                                            <script>
+                                                            $('.<?php echo $secondunique_id; ?>').html('(<?php echo $resultjob ->num_rows; ?>)');
+                                                            </script>
+                                                            <?php                                                            while($rowjob = $resultjob->fetch_assoc()) {
+                                                                $postid=$rowjob['posting_id'];
+                                                                $jobtitle=$rowjob['job_title'];
+                                                                $cname=$rowjob['company_name'];
+                                                                echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'</a></li>';
+                                                                }
+                                                        // }
+                                                    
+                                                    }
+                                                }
+                                                else{
+                                                            echo '<li><a>No Job(s)</a></li>';
+                                                        }
+                                            }
+                                        }
+                                                ?>
+                                    </ul>
+                            </div>
+                            <!-- <div class="panel-footer">Panel Footer</div> -->
+                        </div>
+                        </div>
+                    </div>
+                <?php
+                }
+                }
+
+                // showing this manager jobs
+
+?>
+<ul class="nav nav-pills nav-stacked">
+
+<!-- ----jobs using php -->
+ <?php
+ $sqlcomp="SELECT * FROM admins WHERE email='$under_email'";
+$resultcomp = $db->query($sqlcomp);
+$companies=array();
+$jobs=array();
+$jobs_details=array();
+$to_admin_data=array();
+$company_names=array();
+$currentCompEmail='';
+if ($resultcomp ->num_rows ==1) {
+    while($row1comp = $resultcomp->fetch_assoc()) {
+        // $companies=json_decode(stripslashes($row1['company']));
+        $companies=json_decode($row1comp['company']);
+        // var_dump($companies);
         // var_dump(array_unique($companies));
         $companies=array_unique($companies);
         if(sizeof($companies)){
@@ -97,11 +222,16 @@ if ($result ->num_rows ==1) {
                     $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
                     $resultjob = $db->query($sqljob);
                     // if ($resultjob ->num_rows > 0) {
+                        ?>
+                        <script>
+                        $('.<?php echo $thisunique_id; ?>').html('(<?php echo $resultjob ->num_rows; ?>)');
+                        </script>
+                        <?php
                         while($rowjob = $resultjob->fetch_assoc()) {
                             $postid=$rowjob['posting_id'];
                             $jobtitle=$rowjob['job_title'];
                             $cname=$rowjob['company_name'];
-                            echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'  ('.$cname.")".'</a></li>';
+                            echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'</a></li>';
                             }
                     // }
                    
@@ -113,7 +243,18 @@ if ($result ->num_rows ==1) {
         }
     }
                ?>
-               <!-- <li><a href="editjob.php" class="label label-success" style="font-size:inherit" target="blank">Post a new job</a></li> -->
+</ul>
+     
+        </div>
+        <!-- <div class="panel-footer">Panel Footer</div> -->
+      </div>
+    </div>
+  </div>
+        <?php
+       
+        }
+    }
+               ?>
 
 </ul>
 </div>
@@ -175,7 +316,56 @@ if ($result ->num_rows ==1) {
 </body>
  <!-- ============ JOBS END ============ -->
 
+
 <script>
+// $(document).on('click',function(){
+// $('.collapse').collapse('hide');
+// })
+</script>
+<script>
+
+
+ function setPage() {
+        var uri = window.location.toString();
+                    console.log(uri.indexOf("?"));
+                                if (uri.indexOf("?") > 0) {
+                                   
+                                    window.stop();
+                                }
+                                else{
+                                    $('ul li:first').click();
+
+                                }
+   
+    }
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        // setPage();
+                    setTimeout(setPage(), 1000);
+
+    });
+  
+
+function redirect(){
+    console.log("here");
+       var referringURL = document.referrer;
+       var local = referringURL.substring(referringURL.indexOf("?"), referringURL.length);
+       	var currentQueryString = window.location.search;
+			if (currentQueryString) {
+				// return true;
+                console.log(true);
+                var x=history.go(-1);
+                console.log(x);
+			} else {
+			    // return false;
+                console.log(false);
+                    var x=history.go(-1);
+                console.log(x);
+
+			}
+}
+
 
  function setPage() {
         var uri = window.location.toString();

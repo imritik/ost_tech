@@ -54,6 +54,9 @@ $page="job";
              <b>Manager<b> (<?php echo $hremail; ?>)
             </div>
             <div id="menu-open" class="pull-right">
+                <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <a href="../add_admin.php">Add manager</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                <a href="../../logout/logout.php">Logout</a>
             </div>
 
@@ -134,6 +137,28 @@ $page="job";
  <!-- ============ JOBS END ============ -->
 
 <script>
+
+
+ function setPage() {
+        var uri = window.location.toString();
+                    console.log(uri.indexOf("?"));
+                                if (uri.indexOf("?") > 0) {
+                                   
+                                    window.stop();
+                                }
+                                else{
+                                    $('ul li:first').click();
+
+                                }
+   
+    }
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        // setPage();
+                    setTimeout(setPage(), 1000);
+
+    });
 
 function showpage(postid){
     document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
