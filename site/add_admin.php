@@ -509,15 +509,23 @@ $(function() {
     // $companies_name=array();
     // gathering companies
 
-$sqlcomp = "SELECT * FROM employer_account";
+$sqlcomp = "SELECT * FROM admins where email='$curr_email'and role='$curr_role'";
 $resultcomp = $db->query($sqlcomp);
 
-if ($resultcomp ->num_rows >0) {
+if ($resultcomp ->num_rows ==1) {
    
     while($rowcomp = $resultcomp->fetch_assoc()) {
-        array_push($companies,$rowcomp['email']);
-        // array_push($companies_name,$rowcomp['company_name']);
+        // var_dump($rowcomp);
+        if($curr_role=='manager'){
+             array_push($companies,$rowcomp['email']);
 
+        }
+        else{
+            $companies=json_decode(stripslashes($rowcomp['company']));
+
+        }
+        // array_push($companies_name,$rowcomp['company_name']);
+// var_dump($companies);
     }
 }
 
@@ -525,6 +533,7 @@ if ($resultcomp ->num_rows >0) {
     ?>
   var name =<?php echo json_encode($companies) ?>;
   $.map(name, function (x) {
+      console.log(x);
     return $('.multiselect').append("<option>" + x + "</option>");
   });
   
