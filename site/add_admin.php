@@ -82,7 +82,8 @@ else{
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Password" disabled></th>
-   
+   <th>Companies</th>
+    <th>Contact</th>
     <th><input type="text" class="form-control width-auto" placeholder="Role" disabled></th>
 </tr>
 <!-- ---------- -->
@@ -104,6 +105,11 @@ if ($result ->num_rows >0) {
         <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
         <td contenteditable="false"><?php echo $row1["email"];?></td>
         <td contenteditable="false"><?php echo $row1["password"];?></td>
+   <td contenteditable="false" style="background:cadetblue">
+       <select  class="multiselect" name="select[]" multiple="multiple"></select>
+        </td>
+
+        <td contenteditable="false"><?php echo $row1["contact"];?></td>
 
         <td contenteditable="false">
             <select role='<?php echo $row1["role"];?>' value="<?php echo $row1['role'];?>" class="btn btn-success btn-sm role">
@@ -141,6 +147,11 @@ if ($result ->num_rows >0) {
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
 <td><input type="text" id="new_age"></td>
+<td style="background:cadetblue">
+<select id="companies" class="multiselect" multiple="multiple">
+</select>
+</td>
+<td><input type="text" id="new_contact"></td>
 <td>
     <select id="new_role" class="btn btn-success btn-sm">
     <option value="<?php echo $curr_role; ?>"><?php echo $curr_role; ?></option>
@@ -184,7 +195,15 @@ function add_row()
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
  var new_age=document.getElementById("new_age").value;
+ var new_companies=document.getElementById("companies").value;
+
  var new_role=document.getElementById("new_role").value;
+ var new_contact=document.getElementById("new_contact").value;
+
+ if(typeof(new_companies)=='string'){
+ new_companies = [new_companies];
+}
+
 if(new_country=='' || new_name=='' || new_age=='' || new_role==''){
     alert("fill details correctly");
 }
@@ -193,14 +212,18 @@ newadmin={}
 newadmin.name=new_name;
 newadmin.email=new_country;
 newadmin.password=new_age;
+newadmin.company=JSON.stringify(new_companies);
+
 newadmin.role=new_role;
+newadmin.managed_by='<?php echo $curr_email; ?>';
+newadmin.contact=new_contact;
 
 console.log(newadmin);
 
 // ------ajax request to save new admin details-----
 
                              $.ajax({
-                                url: 'saveadmin.php',
+                                url: 'saveunderadmins.php',
                                 type: 'POST',
                             
                                 data: {data:newadmin},
@@ -422,6 +445,7 @@ $('.editbtn').click(function () {
     
     </script>
 
+   
   
     <!-- Modernizr Plugin -->
     <script src="js/modernizr.custom.79639.js"></script>
@@ -472,3 +496,53 @@ $('.editbtn').click(function () {
 
     <!-- jQuery Settings -->
     <script src="js/settings.js"></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js" integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
+
+<script>
+// ----multiselect part----
+
+$(function() {
+    <?php
+    $companies=array();
+    // $companies_name=array();
+    // gathering companies
+
+$sqlcomp = "SELECT * FROM employer_account";
+$resultcomp = $db->query($sqlcomp);
+
+if ($resultcomp ->num_rows >0) {
+   
+    while($rowcomp = $resultcomp->fetch_assoc()) {
+        array_push($companies,$rowcomp['email']);
+        // array_push($companies_name,$rowcomp['company_name']);
+
+    }
+}
+
+
+    ?>
+  var name =<?php echo json_encode($companies) ?>;
+  $.map(name, function (x) {
+    return $('.multiselect').append("<option>" + x + "</option>");
+  });
+  
+  $('.multiselect')
+    .multiselect({
+      allSelectedText: 'All',
+      maxHeight: 200,
+      includeSelectAllOption: true
+    })
+    .multiselect('selectAll', false)
+    .multiselect('updateButtonText');
+
+    // checkSelection(name);
+
+});
+
+// function checkSelection(available,name){
+//     console.log("in check func",available,name);
+// }
+</script>
+

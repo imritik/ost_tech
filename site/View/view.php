@@ -81,7 +81,7 @@ $page="job";
    <br>
     <div class="row">
     <div class="col-md-2 fixed-top">
-<h3>Jobs</h3><span><?php echo $coordinator_email;?></span>
+<h3>Jobs</h3>
 
 <ul class="nav nav-pills nav-stacked">
 
@@ -149,9 +149,14 @@ if ($result ->num_rows>0) {
                                     $currentCompEmail='';
                                     if ($resultcomp2 ->num_rows ==1) {
                                         while($row1comp2 = $resultcomp2->fetch_assoc()) {
-                                            $companies=json_decode(stripslashes($row1comp2['company']));
-                                            // $companies=json_decode($row1comp2['company']);
-                                            var_dump($companies);
+                                             if(isset($_SESSION['coordinatoremp'])){
+                                                $companies=json_decode(stripslashes($row1['company']));
+
+                                                }
+                                                else{
+                                                $companies=json_decode($row1comp['company']);
+
+                                                }
                                             // var_dump(array_unique($companies));
                                             $companies=array_unique($companies);
                                             if(sizeof($companies)){
@@ -209,8 +214,14 @@ $company_names=array();
 $currentCompEmail='';
 if ($resultcomp ->num_rows ==1) {
     while($row1comp = $resultcomp->fetch_assoc()) {
-        // $companies=json_decode(stripslashes($row1['company']));
+        if(isset($_SESSION['coordinatoremp'])){
+        $companies=json_decode(stripslashes($row1['company']));
+
+        }
+        else{
         $companies=json_decode($row1comp['company']);
+
+        }
         // var_dump($companies);
         // var_dump(array_unique($companies));
         $companies=array_unique($companies);
@@ -254,6 +265,9 @@ if ($resultcomp ->num_rows ==1) {
        
         }
     }
+    else{
+        echo "Nothing to see";
+        }
                ?>
 
 </ul>

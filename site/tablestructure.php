@@ -558,7 +558,13 @@ $vendoremail=$_SESSION['emailvendors'];
 <br>
     <br>
       <div style="float:right;">
+      <?php
+      if(!empty($_GET['jid'])){
+          ?>
                 <button class="btn btn-primary" onclick="saveStatus()">Save</button>
+                <?php 
+      }
+      ?>
             </div>
             <br>
             <br>
