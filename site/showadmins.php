@@ -95,6 +95,35 @@ include '../dbConfig.php';
     <!-- ============ HEADER END ============ -->
 <div id="wrapper" style="padding: 4%;height:500px;overflow:scroll">
 
+<!-- ------------try------------------------------------ -->
+
+
+
+<ul class="nav nav-tabs">
+ 
+    <li class='Main'><a  onclick="setstatus('Main')">Main&nbsp;<span></span></a></li>
+
+
+    <li class='am'><a  onclick="setstatus('am')">Account Manager&nbsp;<span></span></a></li>
+
+
+    <li class='vendors'><a  onclick="setstatus('vendors')">Vendors&nbsp;<span></span></a></li>
+    <li class='managers'><a  onclick="setstatus('managers')">HR Manager&nbsp;<span></span></a></li>
+   
+    <li class='cc'><a  onclick="setstatus('cc')">Coordinators&nbsp;<span></span></a></li>
+
+    <!-- <li class='processed'><a  onclick="setstatus('processed')">Processed&nbsp;<span></span></a></li> -->
+    <li class='recruiters'><a  onclick="setstatus('recruiters')">Recruiters&nbsp;<span></span></a></li>
+
+  
+
+</ul>
+
+
+<div class="tab-content">
+    <div id="home" class="tab-pane fade in active" >
+
+
 <table align='center' cellspacing=2 cellpadding=5 id="data_table" border=1 class="table table-striped">
 <!-- <tr>
 <th>Name</th>
@@ -109,13 +138,19 @@ include '../dbConfig.php';
    
     <th><input type="text" class="form-control width-auto" placeholder="Role" disabled></th>
 </tr>
-<!-- ---------- -->
-                        
+ <?php 
+    if(!empty($_GET['status'])){
+                // $jid=$_GET['jid'];
+                $status=$_GET['status'];
+                ?>
+                
+              <script>
+   $('.<?php echo $status;?>').addClass('active');    
+    </script>
 <?php
+                $sql="";
 
-$sql="";
-
-$sql = "SELECT * FROM admins";
+$sql = "SELECT * FROM admins where role='$status'";
 $result = $db->query($sql);
 
 if ($result ->num_rows >0) {
@@ -162,39 +197,48 @@ if ($result ->num_rows >0) {
 } else {
     echo "0 results";
 }
-
 ?>
-
-
-<!-- ------------------- -->
-
 <tr>
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
 <td><input type="text" id="new_age"></td>
 <td>
     <select id="new_role" class="btn btn-success btn-sm">
-    <option value="Main">Main</option>
-    <option value="Level">Level</option>
-    <option value="DL">D.L</option>
-    <option value="recruiters">Recruiter</option>
-    <option value="vendors">Vendor</option>
-    <option value="manager">Manager</option>
-    <option value="am">Account manager</option>
-    <option value="cc">Coordinator</option>
+    <option value="Main"<?php if ($status == 'Main')  echo 'selected = "selected"'; ?>>Main</option>
+            <option value="Level"<?php if ($status == 'Level')  echo 'selected = "selected"'; ?>>Hiring Manager</option>
+            <option value="DL"<?php if ($status == 'DL')  echo 'selected = "selected"'; ?>>D.L</option>
+            <option value="recruiters"<?php if ($status == 'recruiters')  echo 'selected = "selected"'; ?>>Recruiters</option>
+            <option value="vendors"<?php if ($status == 'vendors')  echo 'selected = "selected"'; ?>>Vendors</option>
+            <option value="manager"<?php if ($status == 'manager')  echo 'selected = "selected"'; ?>>HR Manager</option>
+            <option value="am"<?php if ($status == 'am')  echo 'selected = "selected"'; ?>>Account Manager</option>
+            <option value="cc"<?php if ($status == 'cc')  echo 'selected = "selected"'; ?>>Coordinator</option>
+            
  </select>
 </td>
 <td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add Row"></td>
 </tr>
 
 </table>
-</div>
+<?php
+    }
+                ?>
 
-</body>
-</html>
+    </div>
+<div>
+
+<!-- -------------------------------------------------- -->
+
 <script>
 
+  function setstatus(status){
+        var uri = window.location.toString();
+                                if (uri.indexOf("?") > 0) {
+                                    var clean_uri = uri.substring(0, uri.indexOf("?"));
+                                    window.history.replaceState({}, document.title, clean_uri);
+                                }
+            location.replace(window.location.href+'?status='+status);
 
+    }
 
 
 
