@@ -517,7 +517,7 @@ if ($resultcomp ->num_rows ==1) {
     while($rowcomp = $resultcomp->fetch_assoc()) {
         // var_dump($rowcomp);
         if($curr_role=='manager'){
-             array_push($companies,$rowcomp['email']);
+             array_push($companies,$rowcomp['company']);
 
         }
         else{
