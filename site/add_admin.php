@@ -91,6 +91,7 @@ else{
 <?php
 
 $sql="";
+$curr_comp_list='';
 
 $sql = "SELECT * FROM admins where managed_by='$curr_email'";
 $result = $db->query($sql);
@@ -105,8 +106,10 @@ if ($result ->num_rows >0) {
         <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
         <td contenteditable="false"><?php echo $row1["email"];?></td>
         <td contenteditable="false"><?php echo $row1["password"];?></td>
-   <td contenteditable="false" style="background:cadetblue">
-       <select  class="multiselect" name="select[]" multiple="multiple"></select>
+   <td contenteditable="false" style="background:cadetblue;color:white">
+       <!-- <select  class="multiselect" name="select[]" multiple="multiple"></select> -->
+        <?php echo $row1['company']; ?>
+        
         </td>
 
         <td contenteditable="false"><?php echo $row1["contact"];?></td>
