@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['coordinatoremp'])||isset($_SESSION['emailmanager'])){
+if(isset($_SESSION['coordinatoremp'])||isset($_SESSION['emailmanager'])||isset($_SESSION['emailhr'])){
   }
   else{
     header("location: ../../admin_jobs/admin_home.php");
@@ -15,6 +15,9 @@ if(isset($_SESSION['emailmanager'])){
 }
 else if(isset($_SESSION['coordinatoremp'])){
     $coordinator_email=$_SESSION['coordinatoremp'];
+}
+else if(isset($_SESSION['emailhr'])){
+    $coordinator_email=$_SESSION['emailhr'];
 }
 
 $page="job";
@@ -154,7 +157,9 @@ if ($result ->num_rows>0) {
 
                                                 }
                                                 else{
-                                                $companies=json_decode($row1comp['company']);
+                                                // $companies=json_decode($row1comp['company']);
+                                                 array_push($companies,$row1comp['company']);
+
 
                                                 }
                                             // var_dump(array_unique($companies));
@@ -170,10 +175,18 @@ if ($result ->num_rows>0) {
                                                         $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
-                                                        else{
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and manager='$under2_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        
+                                                        else if(isset($_SESSION['emailmanager'])){
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+
+                                                        } 
+
+                                                        else if(isset($_SESSION['emailhr'])){
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
+
+                                                        
                                                         
                                                         $resultjob = $db->query($sqljob);
                                                         // if ($resultjob ->num_rows > 0) {
@@ -229,12 +242,14 @@ if ($resultcomp ->num_rows ==1) {
 
         }
         else{
-        $companies=json_decode($row1comp['company']);
+        // $companies=json_decode($row1comp['company']);
+        array_push($companies,$row1comp['company']);
 
         }
         // var_dump($companies);
         // var_dump(array_unique($companies));
         $companies=array_unique($companies);
+        // var_dump(sizeof($companies));
         if(sizeof($companies)){
             $arrlen=count($companies);
                 for($x=0;$x<$arrlen;$x++){
@@ -245,10 +260,18 @@ if ($resultcomp ->num_rows ==1) {
                                                         $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
-                                                        else{
+                                                        else if(isset($_SESSION['emailmanager'])){
                                                         $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
-                                                        } $resultjob = $db->query($sqljob);
+                                                        } 
+
+                                                        else if(isset($_SESSION['emailhr'])){
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+
+                                                        }
+                                                        // var_dump($sqljob);
+                                                        
+                                                        $resultjob = $db->query($sqljob);
                     // if ($resultjob ->num_rows > 0) {
                         ?>
                         <script>

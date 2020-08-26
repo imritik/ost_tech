@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['coordinatoremp'])||isset($_SESSION['emailmanager'])){
+if(isset($_SESSION['coordinatoremp'])||isset($_SESSION['emailmanager'])||isset($_SESSION['emailhr'])){
     // echo $_SESSION['company'];
   }
   else{
@@ -19,7 +19,10 @@ if(isset($_SESSION['emailmanager'])){
 else if(isset($_SESSION['coordinatoremp'])){
     $coordinator_email=$_SESSION['coordinatoremp'];
 }
-
+else if(isset($_SESSION['emailhr'])){
+    //  $curr_role='hr';
+    $coordinator_email=$_SESSION['emailhr'];
+}
 ?>
 <?php 
 $name=$_POST['data']['name'];

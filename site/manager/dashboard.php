@@ -53,10 +53,10 @@ $page="job";
             <div class="pull-left">
              <b>Manager<b> (<?php echo $hremail; ?>)
             </div>
-            <div id="menu-open" class="pull-right">
+            <!-- <div id="menu-open" class="pull-right">
                 <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                <a href="../add_admin.php">Add manager</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../add_admin.php">Add manager</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                <a href="../../logout/logout.php">Logout</a>
             </div>
 

@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['emailemp'])|| isset($_SESSION['emailmanager'])||isset($_SESSION['coordinatoremp'])){
+if(isset($_SESSION['emailhr'])||isset($_SESSION['emailemp'])|| isset($_SESSION['emailmanager'])||isset($_SESSION['coordinatoremp'])){
     // echo $_SESSION['company'];
   }
   else{
@@ -18,12 +18,17 @@ if(isset($_SESSION['coordinatoremp'])){
     $curr_email=$_SESSION['coordinatoremp'];
 
 }
-else{
+else if(isset($_SESSION['emailmanager'])){
      $curr_role='manager';
     $curr_email=$_SESSION['emailmanager'];
 
 }
+else if(isset($_SESSION['emailhr'])){
+     $curr_role='hr';
+    $curr_email=$_SESSION['emailhr'];
+}
 
+// var_dump($curr_email);
 ?>
 
 
@@ -203,7 +208,12 @@ function add_row()
  var new_role=document.getElementById("new_role").value;
  var new_contact=document.getElementById("new_contact").value;
 
- if(typeof(new_companies)=='string'){
+<?php 
+$checkhrsession=!isset($_SESSION['emailhr']);
+// var_dump($checkhrsession);
+?>
+
+ if(typeof(new_companies)=='string' && <?php echo json_encode($checkhrsession); ?>){
  new_companies = [new_companies];
 }
 
@@ -519,7 +529,7 @@ if ($resultcomp ->num_rows ==1) {
    
     while($rowcomp = $resultcomp->fetch_assoc()) {
         // var_dump($rowcomp);
-        if($curr_role=='manager'){
+        if($curr_role=='manager'||$curr_role=='hr'){
              array_push($companies,$rowcomp['company']);
 
         }
