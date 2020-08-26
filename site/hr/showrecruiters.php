@@ -37,18 +37,8 @@ $page="recruiter";
 <body style='padding:0'>
 
  <!-- ============ HEADER START ============ -->
- <header>
-        <div id="header-background"></div>
-        <div class="container">
-            <div class="pull-left">
-             <b>HR<b> (<?php echo $hremail; ?>)
-            </div>
-            <div id="menu-open" class="pull-right">
-               <a href="../../logout/logout.php">Logout</a>
-            </div>
+               <?php include 'header.php'; ?>
 
-        </div>
-    </header>
     <br>
     <br>
     <br>

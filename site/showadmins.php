@@ -114,6 +114,8 @@ include '../dbConfig.php';
 
     <!-- <li class='processed'><a  onclick="setstatus('processed')">Processed&nbsp;<span></span></a></li> -->
     <li class='recruiters'><a  onclick="setstatus('recruiters')">Recruiters&nbsp;<span></span></a></li>
+    <li class='hr'><a  onclick="setstatus('hr')">HR&nbsp;<span></span></a></li>
+    <li class='DL'><a  onclick="setstatus('DL')">DL&nbsp;<span></span></a></li>
 
   
 
@@ -174,6 +176,8 @@ if ($result ->num_rows >0) {
             <option value="manager"<?php if ($row1['role'] == 'manager')  echo 'selected = "selected"'; ?>>HR Manager</option>
             <option value="am"<?php if ($row1['role'] == 'am')  echo 'selected = "selected"'; ?>>Account Manager</option>
             <option value="cc"<?php if ($row1['role'] == 'cc')  echo 'selected = "selected"'; ?>>Coordinator</option>
+            <option value="hr"<?php if ($row1['role'] == 'hr')  echo 'selected = "selected"'; ?>>HR</option>
+
             </select>
         </td>
        
@@ -212,6 +216,7 @@ if ($result ->num_rows >0) {
             <option value="manager"<?php if ($status == 'manager')  echo 'selected = "selected"'; ?>>HR Manager</option>
             <option value="am"<?php if ($status == 'am')  echo 'selected = "selected"'; ?>>Account Manager</option>
             <option value="cc"<?php if ($status == 'cc')  echo 'selected = "selected"'; ?>>Coordinator</option>
+            <option value="cc"<?php if ($status == 'hr')  echo 'selected = "selected"'; ?>>HR</option>
             
  </select>
 </td>
