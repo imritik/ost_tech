@@ -346,7 +346,9 @@ $vendoremail=$_SESSION['emailvendors'];
                 <?php
 
                 if($status=='new_arrival'){
-
+                    ?>
+                                <input type="checkbox" class="studentcheckbox1comp" value="<?php echo $row1['student_id'];?>" name="chkcomp"></td>
+<?php
                 }
                 else{
                     ?>

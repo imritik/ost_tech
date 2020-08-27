@@ -378,7 +378,7 @@ function combine(){
                                
                             })
                             .fail(function() {
-                                alert("error in combining");
+                                alert("error while combining");
                             });
 }
 

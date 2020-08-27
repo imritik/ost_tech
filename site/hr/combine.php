@@ -22,27 +22,46 @@ $insert1 = $db->query("Select * from Student WHERE email IN ($emails) ORDER BY u
 
               $oldemail=$row['email'];
               $studid=$row['student_id'];
-              $encode_emails=json_encode($emails_array);
+              $encode_emails=json_encode($emails);
 
               $addemails=$db->query("UPDATE IGNORE Student SET Alternate_emails=$encode_emails,modified_on=NOW() WHERE email='$oldemail'");
+  
 
-              $emails_to_delete=array_diff($emails_array,["'".$oldemail."'"]);
-        
-             
-             
-              $emails_to_delete=implode(", ", $emails_to_delete);
-              $deleteother=$db->query("DELETE FROM Student where email IN ($emails_to_delete) ");
-           
+              // var_dump("UPDATE IGNORE Student SET Alternate_emails=$encode_emails,modified_on=NOW() WHERE email='$oldemail'");
 
-              $remove_probable=$db->query("UPDATE IGNORE applied_table SET duplicate_status='' where posting_id='$jobid' and student_id='$studid'");
+
+             if($addemails){
+                  $emails_to_delete=array_diff($emails_array,["'".$oldemail."'"]);
+                  $emails_to_delete=implode(", ", $emails_to_delete);
+                  
+                  
+                  if($emails_to_delete){
+                    // echo "1";
+                     $deleteother=$db->query("DELETE FROM Student where email IN ($emails_to_delete)");
+
+                  // var_dump("DELETE FROM Student where email IN ($emails_to_delete)");
+
+                  }
+                  else{
+                    // echo "2";
+                  }
+
+                 
+
+                     $remove_probable=$db->query("UPDATE IGNORE applied_table SET duplicate_status='',Status_update=NOW() where posting_id='$jobid' and student_id='$studid'");
             
-              if($addemails && $deleteother && $remove_probable){
-                echo "done";
-              }
-              else{
-                echo "try again later";
-              }
-          
+                    if($remove_probable){
+                      echo "done";
+                    }
+                    else{
+                      echo "try again later";
+                    }
+
+                 
+             }
+             else{
+               echo "Error occured";
+             }
             }
           }
 
