@@ -184,7 +184,9 @@ if(!isset($_SESSION['emailvendors'])){
       <thead class="header">
 <tr class="filters" style="background: white">
 
-    <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
+    <!-- <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th> -->
+    <th style="color:black;display:flex;">Select  </th>
+
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Contact"></th>
