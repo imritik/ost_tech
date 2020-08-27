@@ -178,8 +178,9 @@ if(!empty($_GET['jid'])){
                 
             if($query ->num_rows >0){
             while($row = $query->fetch_assoc()){
+                $selected = ($row['email'] ==$row22['coordinator'] ) ? 'selected="selected"'  : "";
 
-            echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['Full_name'].')' . '</option>';
+            echo '<option value="' . $row['email'] . '"'.$selected.' >' . $row['email'] .' ('.$row['Full_name'].')' . '</option>';
             ?>
             <?php }} ?>
 
