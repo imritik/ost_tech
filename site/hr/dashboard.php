@@ -298,7 +298,7 @@ $('#admins_email').on('change', function () {
             $.each($("input[name='chkcomp']:checked"), function(){  
                 console.log($(this).val());          
                 favorite.push($(this).val());
-                jobref.push($(this).closest("tr").find('td:eq(2)').text());
+                jobref.push("'"+$(this).closest("tr").find('td:eq(2)').text()+"'");
             });
             favorites=favorite;
             jobrefs=jobref;
@@ -367,14 +367,14 @@ function combine(){
     console.log(jobrefs);
 
                             $.ajax({
-                                url: 'combine.php',
+                                url: 'combine.php?job=<?php echo $_GET['jid']?>',
                                 type: 'POST',
                             
                                 data: {param1: jobrefs},
                             })
                             .done(function(response) {
                                 alert(response);
-                                // location.reload();
+                                location.reload();
                                
                             })
                             .fail(function() {

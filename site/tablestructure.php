@@ -506,7 +506,7 @@ $vendoremail=$_SESSION['emailvendors'];
 
 ?>
                                 <tr>
-                                <!-- <td><input type="checkbox" class="studentcheckbox1comp" value="<?php echo $rowcomp['student_id'];?>" name="chkcomp"></td></td> -->
+                                <td><input type="checkbox" class="studentcheckbox1comp" value="<?php echo $rowcomp['student_id'];?>" name="chkcomp"></td></td>
                                 <td><?php echo $rowcomp['stud_name'];?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td><?php echo $rowcomp['email'];?></td>
 
