@@ -64,7 +64,15 @@ $page="job";
 <!-- ----jobs using php -->
  <?php
  // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany'";
+
+//  var_dump($hrcompany);
+                    if(preg_match('/"/', $hrcompany)){
+                        $hrcompany=trim($hrcompany,'"');
+                    }
+                    // var_dump($hrcompany);
+                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail'";
+                    // var_dump(preg_match('/"/', $hrcompany));
+                    // var_dump("SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail'");
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {

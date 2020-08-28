@@ -42,9 +42,19 @@ if(!empty($_GET['jid'])){
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
                             $currentCompEmail=$row22['email'];
-                            if(isset($_SESSION['emailhr'])){
+                            if(isset($_SESSION['emailhr'])&& $page!='view_mode'){
 echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
+                    <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
+                    <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
+                    <button id="combine"class="btn btn-primary btn-sm" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
+                    </div>
+                    <br>
+                    ';
+                            }
+                            else if(isset($_SESSION['emailhr'])&& $page=='view_mode'){
+echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
+                    <button class="btn btn-info btn-sm"><a href="../hr/editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
                     <button id="combine"class="btn btn-primary btn-sm" style="display:none;float: right;" onclick="combine();">Same and Combine</button>

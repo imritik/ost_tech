@@ -20,7 +20,7 @@ else if(isset($_SESSION['emailhr'])){
     $coordinator_email=$_SESSION['emailhr'];
 }
 
-$page="job";
+$page="view_mode";
   ?>
 
   <!DOCTYPE html>
@@ -182,7 +182,7 @@ if ($result ->num_rows>0) {
                                                         } 
 
                                                         else if(isset($_SESSION['emailhr'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND hr='$under2_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
 
@@ -266,7 +266,7 @@ if ($resultcomp ->num_rows ==1) {
                                                         } 
 
                                                         else if(isset($_SESSION['emailhr'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND hr='$under_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
                                                         // var_dump($sqljob);

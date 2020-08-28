@@ -247,7 +247,10 @@ if(!empty($_GET['jid'])){
 
 <!-- -------php code to gather posted jobs---- -->
 <?php
-
+  if(preg_match('/"/', $hrcompany)){
+                        $hrcompany=trim($hrcompany,'"');
+                    }
+                    
 $query = $db->query("SELECT * FROM employer_account where email='$hrcompany'");
             
 if($query ->num_rows >0){
@@ -417,6 +420,9 @@ $sqlrec='';
 $sqlmanag='';
 
 if(isset($_SESSION['emailhr'])){
+      if(preg_match('/"/', $hrcompany)){
+                        $hrcompany=trim($hrcompany,'"');
+                    }
     $sqlcomp = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
     $sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
     $sqlmanag="SELECT * FROM admins where role='manager'  and company='$hrcompany'";
