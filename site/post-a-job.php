@@ -11,6 +11,7 @@ if(isset($_SESSION['emailemp'])){
     header("location: ../index.php");
   }
   include 'partials/header.php';
+
 ?>
 
 

@@ -18,6 +18,9 @@ $description=$_POST['description'];
 $coordinator=$_POST['coordinator'];
 $postingid=rand(pow(10, $digits-1), pow(10, $digits)-1);
 
+//   $current_user=$_SESSION['emailemp'];
+
+
 // File upload path
 $targetDir = "uploads/jd/".$postingid."/";
  //Check if the directory already exists.
