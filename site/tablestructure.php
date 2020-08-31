@@ -80,7 +80,7 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                     ';
                             }
                             else{
- echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
+ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                             </div><br>
                     ';
                             }
