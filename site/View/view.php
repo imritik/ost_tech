@@ -468,6 +468,25 @@ function formToggle(ID){
                             });
     }
 
+    function holdjob(x){
+        console.log(x);
+                             $.ajax({
+                                url: '../holdjob.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("Try again later!");
+                            });
+    }
+
+
     function repostpart(x){
         console.log(x);
                              $.ajax({

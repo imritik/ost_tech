@@ -41,6 +41,7 @@ if(!empty($_GET['jid'])){
                     if ($result22 ->num_rows > 0) {
                         while($row22 = $result22->fetch_assoc()) {
                             $hold_text='';
+                            $hold_badge_text='';
                             $is_hold=$row22['is_hold'];
                             $postid=$row22['posting_id'];
                             $jobtitle=$row22['job_title'];
@@ -49,12 +50,14 @@ if(!empty($_GET['jid'])){
 // var_dump($is_hold);
                             if($is_hold){
 $hold_text='Make Job Active';
+$hold_badge_text='Freezed';
                             }
                             else{
 $hold_text='Freeze Job';
+$hold_badge_text='Active';
                             }
                             if(isset($_SESSION['emailhr'])&& $page!='view_mode'){
-echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
+echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                     <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
@@ -65,7 +68,7 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     ';
                             }
                             else if(isset($_SESSION['emailhr'])&& $page=='view_mode'){
-echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
+echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                     <button class="btn btn-info btn-sm"><a href="../hr/editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
