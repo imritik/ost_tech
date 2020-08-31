@@ -59,6 +59,8 @@ $hold_badge_text='Active';
                             if(isset($_SESSION['emailhr'])&& $page!='view_mode'){
 echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                     <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
+                    <a class="btn btn-sm btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
+
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
                     <button class="btn btn-warning btn-sm" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
@@ -70,6 +72,7 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                             else if(isset($_SESSION['emailhr'])&& $page=='view_mode'){
 echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                     <button class="btn btn-info btn-sm"><a href="../hr/editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
+                    <a class="btn btn-sm btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
                     <button class="btn btn-warning btn-sm" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
@@ -81,7 +84,9 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                             }
                             else{
  echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
-                            </div><br>
+                            </div>
+                    <a class="btn btn-sm btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
+                    <br><br>
                     ';
                             }
                    
