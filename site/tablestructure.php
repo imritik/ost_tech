@@ -33,20 +33,32 @@ if(!empty($_GET['jid'])){
    $('#'+<?php echo $jid;?>).addClass('active');    
     </script>
     <?php
+
+    $is_hold='';
 // ------collect all jobs of company here
                     $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid'";
                     $result22 = $db->query($sql22);
                     if ($result22 ->num_rows > 0) {
                         while($row22 = $result22->fetch_assoc()) {
+                            $hold_text='';
+                            $is_hold=$row22['is_hold'];
                             $postid=$row22['posting_id'];
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
                             $currentCompEmail=$row22['email'];
+// var_dump($is_hold);
+                            if($is_hold){
+$hold_text='Make Job Active';
+                            }
+                            else{
+$hold_text='Freeze Job';
+                            }
                             if(isset($_SESSION['emailhr'])&& $page!='view_mode'){
 echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     <button class="btn btn-info btn-sm"><a href="editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
+                    <button class="btn btn-warning btn-sm" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
                     <button id="combine"class="btn btn-primary btn-sm" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
                     <br>
@@ -57,6 +69,8 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'</p>
                     <button class="btn btn-info btn-sm"><a href="../hr/editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <button class="btn btn-danger btn-sm" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-sm" onclick="repostpart(\''.$postid.'\');">Repost</button>
+                    <button class="btn btn-warning btn-sm" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
+                   
                     <button id="combine"class="btn btn-primary btn-sm" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
                     <br>
@@ -106,6 +120,9 @@ if(isset($_SESSION['emailvendors'])){
 
 }
 else{
+
+    if(!$is_hold){
+
     ?>
 <div class="col-md-12 head" style="display: flex;">
         <div class="float-right">
@@ -127,7 +144,7 @@ else{
 
 
     <?php
-
+    }
 }
                 ?>
     
