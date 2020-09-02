@@ -50,10 +50,10 @@ $page="job";
              <b>Account Manager<b> (<?php echo $coordinator_email; ?>)
             </div>
             <div id="menu-open" class="pull-right">
-              <!-- <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="../View/view.php">Summary</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 <a href="../add_admin.php">Add Account Manager(AM)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               -->
+              
                <a href="../../logout/logout.php">Logout</a>
             </div>
 

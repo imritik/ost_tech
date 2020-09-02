@@ -87,7 +87,6 @@ $page="job";
                         echo '<li><a>No Job(s)</a></li>';
                     }
                ?>
-               <li><a href="editjob.php" class="label label-success" style="font-size:inherit">Post a new job</a></li>
 
 </ul>
 </div>
@@ -166,6 +165,15 @@ $page="job";
                                 }
    
     }
+
+    function formToggle(ID){
+    var element = document.getElementById(ID);
+    if(element.style.display === "none"){
+        element.style.display = "block";
+    }else{
+        element.style.display = "none";
+    }
+}
 
     $( document ).ready(function() {
         console.log( "ready!" );
