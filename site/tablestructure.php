@@ -241,7 +241,13 @@ if(!isset($_SESSION['emailvendors'])){
     <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
    
     <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th>
+    <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
+                        ?>
     <th>Resume</th>
+    <?php
+    }
+    ?>
+
       
     <!-- <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
     <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
@@ -406,7 +412,8 @@ $vendoremail=$_SESSION['emailvendors'];
                 ?>
               
                     <td class="headcol">
-                    <?php echo $row1['stud_name'];?>
+                    <a href='<?php echo $resumelinks;?>' target='blank'><?php echo $row1['stud_name'];?></a>
+                   
                     <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
                     <?php
                          if(!isset($_SESSION['emailvendors'])){
@@ -425,14 +432,16 @@ $vendoremail=$_SESSION['emailvendors'];
                     <td><?php echo $row1['notice_period']?></td>
                               <!-- Add resume -->
                               
-                    <td>
                     <?php if($status=='uploaded'){
                         ?>
+                    <td>
+
                         <form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
                                         <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
                                         <button type='submit' id='upl_resume' class='editresume btn btn-xs btn-success' value='Upload Resume' >Upload&nbsp;<i class="fa fa-upload" aria-hidden="true"></i>
                         </button>
                         </form>
+                        </td>
                         <?php
 
                     } 
@@ -442,10 +451,9 @@ $vendoremail=$_SESSION['emailvendors'];
                     ?>
                     
                     
-                    <a href='<?php echo $resumelinks;?>' target='blank'>View</a>
+                   <!-- <td> <a href='<?php echo $resumelinks;?>' target='blank'>View</a></td> -->
                     
                     
-                    </td>
                 <?php
                 }
                 ?>
@@ -454,7 +462,8 @@ $vendoremail=$_SESSION['emailvendors'];
                     <?php
                         if(isset($_SESSION['emailhr'])){
                             ?>
-                            <td><?php echo $hrcomment[$x];?></td>
+<td>
+                            <?php echo $hrcomment[$x];?></td>
                         <?php
                         }
                         ?>
@@ -463,14 +472,16 @@ $vendoremail=$_SESSION['emailvendors'];
                         <?php
                          if(isset($_SESSION['emailmanager'])){
                             ?>
-                            <td><?php echo $managercomment[$x];?></td>
+<td>
+                            <?php echo $managercomment[$x];?></td>
                         <?php
                         }
                         ?>
                         <?php
                          if(isset($_SESSION['ccemp'])){
                             ?>
-                            <td><?php echo $coordinatorcomment[$x];?></td>
+<td>
+                            <?php echo $coordinatorcomment[$x];?></td>
                         <?php
                         }
                         ?>
@@ -478,19 +489,20 @@ $vendoremail=$_SESSION['emailvendors'];
                         <?php
                          if(isset($_SESSION['coordinatoremp'])){
                             ?>
-                            <td><?php echo $amcomment[$x];?></td>
+<td>
+                            <?php echo $amcomment[$x];?></td>
                         <?php
                         }
                         ?>
                           <?php
                          if(isset($_SESSION['emailvendors'])&&$status!='uploaded'){
                             ?>
-                            <td><?php echo $vendorcomment[$x];?></td>
+<td>
+                            <?php echo $vendorcomment[$x];?></td>
 
                         <?php
                         }
                         ?>
-
 
                         <?php
                          if( $status!='uploaded'){
