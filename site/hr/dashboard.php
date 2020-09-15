@@ -30,12 +30,12 @@ $page="job";
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
- .fill{
+ /* .fill{
             width:-webkit-fill-available;
         }
         .width-auto{
             width:auto;
-        }
+        } */
 </style>
 
 </head>
@@ -143,7 +143,8 @@ $page="job";
 </div> 
         <div class="tab-pane active" id="tab_a">
         
-              <?php include '../tablestructure.php'; ?>
+              <?php include '../table2.php'; ?>
+
 
 </body>
  <!-- ============ JOBS END ============ -->
@@ -704,111 +705,111 @@ function urlchange(cat){
          $('.df4').toggle();
      }
 
-     function showlastjob(id){
-        //  alert(id);
-          $.ajax({
-                                url: '../thiscompanystats.php',
-                                type: 'POST',
+    //  function showlastjob(id){
+    //     //  alert(id);
+    //       $.ajax({
+    //                             url: '../thiscompanystats.php',
+    //                             type: 'POST',
                             
-                                data: {param1: id,param2:'<?php echo $hrcompany;?>'},
-                            })
-                            .done(function(response) {
-                                // console.log(response);
-                                data=JSON.parse(response)
+    //                             data: {param1: id,param2:'<?php echo $hrcompany;?>'},
+    //                         })
+    //                         .done(function(response) {
+    //                             // console.log(response);
+    //                             data=JSON.parse(response)
                              
-                                // data=response;
-                                console.log(data);
-                                // console.log(data.length);
+    //                             // data=response;
+    //                             console.log(data);
+    //                             // console.log(data.length);
 
-                                var html = "<table border='1|1'class='table table-striped'>";
-                                for (var i = 0; i < data.length; i++) {
-                                    // console.log(data[i]);
-                                     var cname=data[i][0];
-                        // console.log(cname);
-                                        for(var j=0;j<data[i].length;j++){
-                                                if(data[i][j]){
-                                                    // console.log(data[i][j].length);
+    //                             var html = "<table border='1|1'class='table table-striped'>";
+    //                             for (var i = 0; i < data.length; i++) {
+    //                                 // console.log(data[i]);
+    //                                  var cname=data[i][0];
+    //                     // console.log(cname);
+    //                                     for(var j=0;j<data[i].length;j++){
+    //                                             if(data[i][j]){
+    //                                                 // console.log(data[i][j].length);
                        
-                                                             var res = data[i][j];
-                                                             console.log(res);
-                                                            for(k=0;k<res.length;k++){
-                                                                if(res[k]){
-                                                                console.log(res[k]);
+    //                                                          var res = data[i][j];
+    //                                                          console.log(res);
+    //                                                         for(k=0;k<res.length;k++){
+    //                                                             if(res[k]){
+    //                                                             console.log(res[k]);
 
-                                                                }
-                                                                var line = res[k].split("$");
-                                                                // console.log(line);
-                                                                if(line[1] && line[0] && line[2]){
-                                                                          html+="<tr>";
-                                                                        html+="<td>"+cname+"</td>";
+    //                                                             }
+    //                                                             var line = res[k].split("$");
+    //                                                             // console.log(line);
+    //                                                             if(line[1] && line[0] && line[2]){
+    //                                                                       html+="<tr>";
+    //                                                                     html+="<td>"+cname+"</td>";
 
-                                                                        html+="<td>"+line[1]+"</td>";
-                                                                        html+="<td>"+line[0]+"</td>";
-                                                                        html+="<td>"+line[2]+"</td>";
-                                                                        html+="</tr>";
-                                                                }
+    //                                                                     html+="<td>"+line[1]+"</td>";
+    //                                                                     html+="<td>"+line[0]+"</td>";
+    //                                                                     html+="<td>"+line[2]+"</td>";
+    //                                                                     html+="</tr>";
+    //                                                             }
                                                               
 
-                                                            }
+    //                                                         }
                                                            
-                                                 }
+    //                                              }
 
-                                        }
-                                }
-                                html+="</table>";
+    //                                     }
+    //                             }
+    //                             html+="</table>";
 
-                                $('.modal-title').html("This company feedback");
-                                $('.thisjob').html(html);
-                                // Display Modal
-                                $('#myModal').modal('show'); 
-                            })
-                            .fail(function() {
-                                alert("error while fetching stats");
-                            });
-     }
+    //                             $('.modal-title').html("This company feedback");
+    //                             $('.thisjob').html(html);
+    //                             // Display Modal
+    //                             $('#myModal').modal('show'); 
+    //                         })
+    //                         .fail(function() {
+    //                             alert("error while fetching stats");
+    //                         });
+    //  }
 
-     function showthisjob(id){
-        //  ajax request to fetch job stats
-                            $.ajax({
-                                url: '../thisjobstats.php',
-                                type: 'POST',
+    //  function showthisjob(id){
+    //     //  ajax request to fetch job stats
+    //                         $.ajax({
+    //                             url: '../thisjobstats.php',
+    //                             type: 'POST',
                             
-                                data: {param1: id,param2:<?php echo $_GET['jid'];?>},
-                            })
-                            .done(function(response) {
-                                data=JSON.parse(response)
-                                console.log(data);
+    //                             data: {param1: id,param2:<?php echo $_GET['jid'];?>},
+    //                         })
+    //                         .done(function(response) {
+    //                             data=JSON.parse(response)
+    //                             console.log(data);
 
-                                var html = "<table border='1|1'class='table table-striped'>";
-                                for (var i = 0; i < data.length; i++) {
-                                    if(data[i]){
-                                        for(var j=0;j<data[i].length;j++){
-                                            var res = data[i][j].split("$");
-                                            if(res[0]&&res[1]&&res[2]){
-                                                html+="<tr>";
-                                                html+="<td>"+res[1]+"</td>";
-                                                html+="<td>"+res[0]+"</td>";
-                                                html+="<td>"+res[2]+"</td>";
-                                                html+="</tr>";
-                                            }
+    //                             var html = "<table border='1|1'class='table table-striped'>";
+    //                             for (var i = 0; i < data.length; i++) {
+    //                                 if(data[i]){
+    //                                     for(var j=0;j<data[i].length;j++){
+    //                                         var res = data[i][j].split("$");
+    //                                         if(res[0]&&res[1]&&res[2]){
+    //                                             html+="<tr>";
+    //                                             html+="<td>"+res[1]+"</td>";
+    //                                             html+="<td>"+res[0]+"</td>";
+    //                                             html+="<td>"+res[2]+"</td>";
+    //                                             html+="</tr>";
+    //                                         }
                                          
-                                        }
+    //                                     }
 
-                                    }
+    //                                 }
 
 
-                                }
-                                html+="</table>";
-                                $('.modal-title').html("This job feedback");
+    //                             }
+    //                             html+="</table>";
+    //                             $('.modal-title').html("This job feedback");
 
-                                $('.thisjob').html(html);
-                                // Display Modal
-                                $('#myModal').modal('show'); 
-                            })
-                            .fail(function() {
-                                alert("error while fetching stats");
-                            });
-     }
+    //                             $('.thisjob').html(html);
+    //                             // Display Modal
+    //                             $('#myModal').modal('show'); 
+    //                         })
+    //                         .fail(function() {
+    //                             alert("error while fetching stats");
+    //                         });
+    //  }
 
      function setclick(){
          $(".nav-pills li:first").trigger('click');
