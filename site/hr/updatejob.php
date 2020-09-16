@@ -2,11 +2,10 @@
 // Include the database configuration file
 session_start();
 include '../../dbConfig.php';
+error_reporting(E_ALL & ~E_NOTICE);
 $statusMsg = '';
-
 // $digits = 4;
 // echo rand(pow(10, $digits-1), pow(10, $digits)-1);
-
 // $compnametemp= $_POST['companyname']; 
 $compname=$_POST['companyname'];
 $email=$_POST['email'];
@@ -26,6 +25,7 @@ $basis=$_POST['duplicates'];
 
 // var_dump($coordinator);
 // var_dump($recruiters);
+// var_dump(IFNULL($recruiters,recruiter));
 // var_dump($vendors);
 
 if(is_string($vendors)){
@@ -109,20 +109,25 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 else{
             // Insert image file name into database
             $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',
-            vendor=IFNULL($vendors,vendor),
-            recruiter=IFNULL($recruiters,recruiter),
+            vendor=IFNULL('$vendors',vendor),
+            
+            recruiter=IFNULL('$recruiters',recruiter),
+
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
-            manager=IFNULL($managers,manager),
+            manager=IFNULL('$managers',manager),
             duplicate_basis='$basis'
 
              where posting_id='$postingid' and email='$email'");
 
 
             //       var_dump("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',
-            // vendor=IFNULL($vendors,vendor),
-            // recruiter=IFNULL($recruiters,recruiter),
-            // coordinator=IFNULL($coordinator,coordinator),
-            // manager=IFNULL($managers,manager)
+            // vendor=IFNULL('$vendors',vendor),
+            
+            // recruiter=Coalesce(NULLIF('$recruiters',''),recruiter),
+
+            // coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
+
+            // manager=IFNULL('$managers',manager)
             //  where posting_id='$postingid' and email='$email'");
 
 
@@ -145,6 +150,6 @@ else{
    
     
 // Display status message
-// echo $statusMsg;
-header('Location:'.$_SERVER["HTTP_REFERER"].$statusMsg);
+echo $statusMsg;
+// header('Location:'.$_SERVER["HTTP_REFERER"].$statusMsg);
 ?>
