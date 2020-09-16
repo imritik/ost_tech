@@ -150,6 +150,6 @@ else{
    
     
 // Display status message
-echo $statusMsg;
-// header('Location:'.$_SERVER["HTTP_REFERER"].$statusMsg);
+// echo $statusMsg;
+header('Location:'.$_SERVER["HTTP_REFERER"].$statusMsg);
 ?>
