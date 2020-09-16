@@ -1,3 +1,9 @@
+<!-- <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head> -->
 <style>
     /* #table-listing {
         width: 300px;
@@ -602,10 +608,17 @@ Notice Period: <?php echo $row1['notice_period'];?>
                     
                     </div></td>
 
-                    <td><div class="hide hide<?php echo $ssid;?> interaction<?php echo $ssid;?>" style="width: 210px;
-    text-align: center;
-    max-width: 210px;
-    height: auto;">I am shown when someone hovers over the div above.</div></td>
+                    <td>
+                    <div class="hide hide<?php echo $ssid;?> interaction<?php echo $ssid;?>" style="width: 210px;text-align: center;max-width: 210px;height: auto;">
+
+                     <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
+                        <div id="showthisjob<?php echo $ssid;?>" class="collapse">
+                        </div>
+                     <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany<?php echo $ssid;?>">Show Full</button>
+                        <div id="showthiscompany<?php echo $ssid;?>" class="collapse">
+                        </div>
+                    </div>
+    </td>
                 
                 </tr>
                 <?php if($status=='new_arrival'){
@@ -731,6 +744,7 @@ $('#example tr').hover(function() {
     $('.hide'+id).removeClass('hide');
     // $(this).removeClass('hover');
     showlastjob(id);
+    showthisjob(id);
 
 }, function() {
 
@@ -890,7 +904,9 @@ $('#example tr').hover(function() {
                                 // $('.thisjob').html(html);
                                 // // Display Modal
                                 // $('#myModal').modal('show'); 
-                                $('.interaction'+id).html(html);
+                                $('#showthiscompany'+id).html(html);
+                                // console.log($('#showthisjob'+id).html(html));
+                                // console.log($('.interaction'+id+' .showthisjob'));
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
@@ -929,11 +945,13 @@ $('#example tr').hover(function() {
 
                                 }
                                 html+="</table>";
-                                $('.modal-title').html("This job feedback");
+                                // $('.modal-title').html("This job feedback");
 
-                                $('.thisjob').html(html);
-                                // Display Modal
-                                $('#myModal').modal('show'); 
+                                // $('.thisjob').html(html);
+                                // // Display Modal
+                                // $('#myModal').modal('show');
+                                $('#showthisjob'+id).html(html);
+
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
