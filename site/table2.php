@@ -599,7 +599,7 @@ $vendoremail=$_SESSION['emailvendors'];
 
                             <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
                             <label><input type="radio" name="colorRadio" class="uncheck" value="green<?php echo $ssid;?>">Interaction History</label>
-                            <div class="red<?php echo $ssid;?> box">
+                            <div class="red<?php echo $ssid;?> box" style="display:none;">
                             Email :  <?php echo $row1['email'];?><br>
                             Contact: <?php echo $row1['contact'];?><br>
                             Current Comp: <?php echo $row1['curr_company'];?><br>
@@ -608,7 +608,7 @@ $vendoremail=$_SESSION['emailvendors'];
                             E CTC: <?php echo $row1['expected_ctc'];?><br>
                             Notice Period: <?php echo $row1['notice_period'];?><br>
                             </div>
-                            <div class="green<?php echo $ssid;?> box">
+                            <div class="green<?php echo $ssid;?> box"style="display:none;">
                             
                                             <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
                                                 <div id="showthisjob<?php echo $ssid;?>" class="collapse">
@@ -756,6 +756,8 @@ $('#example tr').hover(function() {
     // $(this).removeClass('hover');
     showlastjob(id);
     showthisjob(id);
+    // $("input:radio[class=uncheck]:first").attr('checked', true);
+
 
 }, function() {
 
