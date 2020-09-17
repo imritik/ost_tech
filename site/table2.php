@@ -48,13 +48,13 @@
   color: red;
 } */
 .hover { background-color:yellow; }
-  pre {
-    text-align: left;
-   white-space: pre-wrap;
-  word-break: keep-all;
-    font-size: small;
-    font-weight: lighter;
+
+  .box{
+      border: 2px solid;
+    padding: 10px;
   }
+
+
 </style>
 
 
@@ -310,7 +310,7 @@ if(!isset($_SESSION['emailvendors'])){
    
    <th style="width: 250px;
     text-align: center;">Details</th>
-   <th style="width:210px;text-align: center">Interaction History</th>
+   <th style="width:210px;text-align: center"></th>
     </tr>
     </thead>
 
@@ -584,40 +584,39 @@ $vendoremail=$_SESSION['emailvendors'];
                         <?php
                     }
                     ?>
-                    <td>
-                    <div class="hide hide<?php echo $ssid;?>" style="width: 250px;
-    text-align: center;
-    max-width: 250px;
-    height: auto;font-size:sma">
-                    <pre>
-Email :  <?php echo $row1['email'];?>
+                    <td colspan="2">
+                    <div class="hide hide<?php echo $ssid;?>">
 
-Contact: <?php echo $row1['contact'];?>
+                            <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
+                            <label><input type="radio" name="colorRadio" class="uncheck" value="green<?php echo $ssid;?>">Interaction History</label>
+                            <div class="red<?php echo $ssid;?> box">
+                            Email :  <?php echo $row1['email'];?><br>
+                            Contact: <?php echo $row1['contact'];?><br>
+                            Current Comp: <?php echo $row1['curr_company'];?><br>
+                            Designation: <?php echo $row1['desgination'];?><br>
+                            C CTC: <?php echo $row1['curr_ctc'];?><br>
+                            E CTC: <?php echo $row1['expected_ctc'];?><br>
+                            Notice Period: <?php echo $row1['notice_period'];?><br>
+                            </div>
+                            <div class="green<?php echo $ssid;?> box">
+                            
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
+                                                <div id="showthisjob<?php echo $ssid;?>" class="collapse">
+                                                </div>
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany<?php echo $ssid;?>">Show Full</button>
+                                                <div id="showthiscompany<?php echo $ssid;?>" class="collapse">
+                                                </div>
+                            
+                            </div>
 
-Current Comp: <?php echo $row1['curr_company'];?>
-
-Designation: <?php echo $row1['desgination'];?>
-
-C CTC: <?php echo $row1['curr_ctc'];?>
-
-E CTC: <?php echo $row1['expected_ctc'];?>
-
-Notice Period: <?php echo $row1['notice_period'];?>
-                    </pre>
                     
-                    
-                    </div></td>
-
-                    <td>
-                    <div class="hide hide<?php echo $ssid;?> interaction<?php echo $ssid;?>" style="width: 210px;text-align: center;max-width: 210px;height: auto;">
-
-                     <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
-                        <div id="showthisjob<?php echo $ssid;?>" class="collapse">
-                        </div>
-                     <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany<?php echo $ssid;?>">Show Full</button>
-                        <div id="showthiscompany<?php echo $ssid;?>" class="collapse">
-                        </div>
                     </div>
+                    <!-- </td> -->
+
+                    <!-- <td> -->
+                    <!-- <div class="hide hide<?php echo $ssid;?> interaction<?php echo $ssid;?>" style="width: 210px;text-align: center;max-width: 210px;height: auto;">
+
+                    </div> -->
     </td>
                 
                 </tr>
@@ -742,6 +741,8 @@ $('#example tr').hover(function() {
     var id=$(this).attr("data-id");
    
     $('.hide'+id).removeClass('hide');
+    // $('.box').removeClass('hide');
+
     // $(this).removeClass('hover');
     showlastjob(id);
     showthisjob(id);
@@ -751,8 +752,25 @@ $('#example tr').hover(function() {
     var id=$(this).attr("data-id");
     // $(this).addClass('hover');
     $('.hide'+id).addClass('hide');
+    //   $("input:radio[class^=uncheck]").each(function(i) {
+
+	//       this.checked = false;
+	// 		});
+    // $('.box').addClass('hide');
+
 
 });
+
+
+$(document).ready(function(){
+    $('input[type="radio"]').click(function(){
+        var inputValue = $(this).attr("value");
+        var targetBox = $("." + inputValue);
+        $(".box").not(targetBox).hide();
+        $(targetBox).show();
+    });
+});
+
 
   function app_handle_listing_horisontal_scroll(listing_obj) {
         //get table object   
