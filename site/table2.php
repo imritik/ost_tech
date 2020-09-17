@@ -96,10 +96,10 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                     <button class="btn btn-info btn-xs"><a href="editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
 
-                    <button class="btn btn-danger btn-xs" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
+                    <button class="btn btn-info btn-xs" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-xs" onclick="repostpart(\''.$postid.'\');">Repost</button>
-                    <button class="btn btn-warning btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
-                    <button id="combine"class="btn btn-primary btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
+                    <button class="btn btn-info btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
+                    <button id="combine"class="btn btn-info btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
                     <br>
                     ';
@@ -108,11 +108,11 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
 echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                     <button class="btn btn-info btn-xs"><a href="../hr/editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
-                    <button class="btn btn-danger btn-xs" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
+                    <button class="btn btn-info btn-xs" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-xs" onclick="repostpart(\''.$postid.'\');">Repost</button>
-                    <button class="btn btn-warning btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
+                    <button class="btn btn-info btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
                    
-                    <button id="combine"class="btn btn-primary btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
+                    <button id="combine"class="btn btn-info btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
                     <br>
                     ';
@@ -139,16 +139,28 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
 
 
 
-                <?php 
+ 
+    <div style="float:right;">
+      <?php
+      if(!empty($_GET['jid'])){
+
+
+          ?>
+
+
+                         <?php 
 
 if(isset($_SESSION['emailvendors'])){
 
     ?>
     <div class="col-md-12" style="text-align:center">
                     <div class="float-right">
-                        <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
+                        <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="formToggle('importFrm');"><i class="plus"></i> <i class="fa fa-upload" aria-hidden="true"></i></a>
                     </div>
-                </div>
+
+                </div>&nbsp;
+                       <button class="btn btn-primary" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+</button>
                 <!-- CSV file upload form -->
                 <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
                 <br>
@@ -169,10 +181,12 @@ else{
     ?>
 <div class="col-md-12 head" style="display: flex;">
         <div class="float-right">
-            <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
+            <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
         </div>
-        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button>
-
+        &nbsp;&nbsp;
+        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary"><i class="fa fa-download" aria-hidden="true"></i></button>
+       &nbsp;&nbsp;<button class="btn btn-primary" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+</button>
     </div>
     <!-- CSV file upload form -->
     <div class="col-md-12" id="importFrm" style="display: none;">
@@ -189,11 +203,7 @@ else{
     <?php
     }
     ?>
-    <div style="float:right;">
-      <?php
-      if(!empty($_GET['jid'])){
-          ?>
-                <button class="btn btn-primary" onclick="saveStatus()">Save</button>
+         
                 <?php 
       }
       ?>
