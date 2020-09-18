@@ -866,41 +866,38 @@ function urlchange(cat){
         }
 
 
-     function exportTableToCSV(filename) {
-            var csv = [];
-            var rows = document.querySelectorAll("table tr");
+    //  function exportTableToCSV(filename) {
+    //         var csv = [];
+    //         var rows = document.querySelectorAll("table tr");
             
-            for (var i = 1; i < rows.length; i++) {
+    //         for (var i = 1; i < rows.length; i++) {
 
-                var row = [], cols = rows[i].querySelectorAll("td, th");
+    //             var row = [], cols = rows[i].querySelectorAll("td, th");
                 
-                // for (var j = 0; j < cols.length; j++) 
-                    // row.push(cols[j].innerText);
-                console.log(cols[2].innerText);
+    //             // for (var j = 0; j < cols.length; j++) 
+    //                 // row.push(cols[j].innerText);
+    //             console.log(cols[0].children[0].defaultValue);
                 
-                csv.push(cols[2].innerText);  
-                console.log(csv);      
-            }
+    //             csv.push(cols[0].children[0].defaultValue);  
+    //             console.log(csv);      
+    //         }
 
-              $.ajax({
-                    url: "../setstudbyemail.php",
-                    type:'post',
-                    data: { role: csv }
-                }).done(function(response) {
-                                // alert(response);
-                                //do something with the response
-                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
-        window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportstudbyemail.php";
+    //           $.ajax({
+    //                 url: "../set_session.php",
+    //                 type:'post',
+    //                 data: { role: csv }
+    //             }).done(function(response) {
+    //     window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportshortliststud.php";
                                
-                            })
-                            .fail(function() {
-                                alert("error in exporting");
-                            });
+    //                         })
+    //                         .fail(function() {
+    //                             alert("error in exporting");
+    //                         });
 
 
-            // Download CSV file
-            // downloadCSV(csv.join("\n"), filename);
-        }
+    //         // Download CSV file
+    //         // downloadCSV(csv.join("\n"), filename);
+    //     }
 
      </script>
 

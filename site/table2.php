@@ -304,9 +304,9 @@ if(!isset($_SESSION['emailvendors'])){
         }
         else{
             ?>
-            <th ><input type="text" class="form-control width-auto1" style="background:white;" placeholder="Last comment" readonly></th>
+            <!-- <th>Last comment</th> -->
         
-            <th ><input type="text" class="form-control width-auto1" style="background:white;" placeholder="Your comment*" readonly></th>
+            <th >Your comment*</th>
             <!-- <th>History</th> -->
             <?php
         }
@@ -315,7 +315,7 @@ if(!isset($_SESSION['emailvendors'])){
 
    
     
-    <th ><input type="text" class="form-control width-auto1" style="background:white;" placeholder="Status" readonly></th>
+    <th >Status</th>
  
    
    <th style="width: 250px;
@@ -506,7 +506,7 @@ $vendoremail=$_SESSION['emailvendors'];
                 ?>
 
 
-                    <?php
+                    <!-- <?php
                         if(isset($_SESSION['emailhr'])){
                             ?>
 <td>
@@ -549,7 +549,7 @@ $vendoremail=$_SESSION['emailvendors'];
 
                         <?php
                         }
-                        ?>
+                        ?> -->
 
                         <?php
                          if( $status!='uploaded'){
@@ -595,11 +595,13 @@ $vendoremail=$_SESSION['emailvendors'];
                     }
                     ?>
                     <td colspan="2">
-                    <div class="hide hide<?php echo $ssid;?>">
+                    <div class="hide hide<?php echo $ssid;?>" style="text-align:center">
 
                             <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
                             <label><input type="radio" name="colorRadio" class="uncheck" value="green<?php echo $ssid;?>">Interaction History</label>
-                            <div class="red<?php echo $ssid;?> box" style="display:none;">
+                           
+                           
+                            <div class="red<?php echo $ssid;?> box" style="display:none;text-align: justify;">
                             Email :  <?php echo $row1['email'];?><br>
                             Contact: <?php echo $row1['contact'];?><br>
                             Current Comp: <?php echo $row1['curr_company'];?><br>
@@ -608,7 +610,9 @@ $vendoremail=$_SESSION['emailvendors'];
                             E CTC: <?php echo $row1['expected_ctc'];?><br>
                             Notice Period: <?php echo $row1['notice_period'];?><br>
                             </div>
-                            <div class="green<?php echo $ssid;?> box"style="display:none;">
+                           
+                           
+                            <div class="green<?php echo $ssid;?> box"style="display:none;"\>
                             
                                             <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
                                                 <div id="showthisjob<?php echo $ssid;?>" class="collapse">
@@ -987,6 +991,40 @@ $(document).ready(function(){
                                 alert("error while fetching stats");
                             });
      }
+
+          function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+            
+            for (var i = 1; i < rows.length; i++) {
+
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                
+                // for (var j = 0; j < cols.length; j++) 
+                    // row.push(cols[j].innerText);
+                console.log(cols[0].children[0].defaultValue);
+                
+                csv.push(cols[0].children[0].defaultValue);  
+                console.log(csv);      
+            }
+
+              $.ajax({
+                    url: "../set_session.php",
+                    type:'post',
+                    data: { role: csv }
+                }).done(function(response) {
+        window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportshortliststud.php";
+                               
+                            })
+                            .fail(function() {
+                                alert("error in exporting");
+                            });
+
+
+            // Download CSV file
+            // downloadCSV(csv.join("\n"), filename);
+        }
+        
     $(function() {
         // app_handle_listing_horisontal_scroll($('#home'))
     })
