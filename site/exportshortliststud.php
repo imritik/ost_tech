@@ -2,11 +2,11 @@
 session_start();
 include '../dbConfig.php';
 
-if(isset($_SESSION['emailemp'])){
-  }
-  else{
-    header("location: ../index.php");
-  }
+// if(isset($_SESSION['emailemp'])){
+//   }
+//   else{
+//     header("location: ../index.php");
+//   }
   
 $studlist= $_SESSION['studlist'];
 //get records from database

@@ -155,11 +155,11 @@ if(isset($_SESSION['emailvendors'])){
     ?>
     <div class="col-md-12" style="text-align:center">
                     <div class="float-right">
-                        <a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="formToggle('importFrm');"><i class="plus"></i> <i class="fa fa-upload" aria-hidden="true"></i></a>
+                        <a href="javascript:void(0);" class="btn btn-success btn-xs" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i> <i class="fa fa-upload" aria-hidden="true"></i></a>
                     </div>
 
                 </div>&nbsp;
-                       <button class="btn btn-primary" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                       <button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
 </button>
                 <!-- CSV file upload form -->
                 <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
@@ -181,15 +181,15 @@ else{
     ?>
 <div class="col-md-12 head" style="display: flex;">
         <div class="float-right">
-            <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
+            <a href="javascript:void(0);" class="btn btn-success" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
         </div>
         &nbsp;&nbsp;
-        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary"><i class="fa fa-download" aria-hidden="true"></i></button>
-       &nbsp;&nbsp;<button class="btn btn-primary" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
+       &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
 </button>
     </div>
     <!-- CSV file upload form -->
-    <div class="col-md-12" id="importFrm" style="display: none;">
+    <div id="importFrm" style="display: none;">
     <br>
         <form action="../csv_v2/importData.php" method="post" enctype="multipart/form-data">
             <input type="file" name="file" />
@@ -278,7 +278,7 @@ if(!isset($_SESSION['emailvendors'])){
     <!-- <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th> -->
     <th style="color:black;">Select  </th>
 
-    <th><input type="text" class="form-control width-auto1" placeholder="Name"></th>
+    <th>Name</th>
     <!-- <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Contact"></th>
    
@@ -1024,7 +1024,7 @@ $(document).ready(function(){
             // Download CSV file
             // downloadCSV(csv.join("\n"), filename);
         }
-        
+
     $(function() {
         // app_handle_listing_horisontal_scroll($('#home'))
     })

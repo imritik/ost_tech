@@ -215,6 +215,15 @@ if(!empty($_GET['jid'])){
 
 								</select>
                         </div>
+
+                            <div class="form-group" id="job-type-group">
+                            <label for="job-type">Fill number of levels (max. 7)</label>
+                                <br> <input type="text" class="form-control" id="member" name="member" min="1" max="7"  value="2"><br />
+                                    <a href="#" id="filldetails" onclick="addFields()">Show Managers</a>
+                                    <div id="container"/>
+                        </div>
+
+
                         <div class="row text-center">
                     <p>&nbsp;</p>
                     <button type="submit" name="submit" id="register" class="btn btn-primary btn-lg">Update <i class="fa fa-arrow-right"></i></button>
@@ -320,18 +329,27 @@ if($query ->num_rows >0){
                                         </select>
                             </div>
 
-                          <div class="form-group" id="job-type-group">
+                        <div class="form-group" id="job-type-group">
                             <label for="job-type">Duplicates Evaluation Basis</label>
-                            <select class="form-control" name="duplicates" id="job-type" required>
-									<option>Choose</option>
-									<option value="0" >Project Basis</option>
-									<option value="3" >Last 3 months</option>
-									<option value="6" >Last 6 months</option>
-									<option value="9" >Last 9 months</option>
-									<option value="12" >Last 12 months</option>
+                                    <select class="form-control" name="duplicates" id="job-type" required>
+                                            <option>Choose</option>
+                                            <option value="0" >Project Basis</option>
+                                            <option value="3" >Last 3 months</option>
+                                            <option value="6" >Last 6 months</option>
+                                            <option value="9" >Last 9 months</option>
+                                            <option value="12" >Last 12 months</option>
 
-								</select>
+                                    </select>
                         </div>
+
+                        <div class="form-group" id="job-type-group">
+                            <label for="job-type">Fill number of levels (max. 7)</label>
+                                <br> <input type="text" class="form-control" id="member" name="member" min="1" max="7"  value=""><br />
+                                    <a href="#" id="filldetails" onclick="addFields()">Add Managers</a>
+                                    <div id="container"/>
+                        </div>
+
+
 
 
                         <div class="row text-center">
@@ -388,6 +406,8 @@ if($query ->num_rows >0){
 
 <script>
 
+
+     
 
 function redirect(){
     console.log("here");
@@ -549,6 +569,42 @@ var name2 =<?php echo json_encode($managers) ?>;
 
 });
 
+
+function addFields(){
+            var number = document.getElementById("member").value;
+            var container = document.getElementById("container");
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+
+            if(number<8){
+
+                var temp=<?php echo json_encode($curr_managers) ?>;
+// console.log(temp);
+                for (i=0;i<number;i++){
+                container.appendChild(document.createTextNode("Level " + (i+1)));
+                  var values = <?php echo json_encode($managers) ?>
+
+                    var select = document.createElement("select");
+                    select.name = "managers";
+                    select.id = "level"+(i+1);
+                    select.className="form-control";
+
+                    for (const val of values) {
+                        var option = document.createElement("option");
+                        option.value = val;
+                        option.text = val.charAt(0).toUpperCase() + val.slice(1);
+                        // $("#level"+i+" > [value=" + temp + "]").attr("selected", "true");
+                        select.appendChild(option);
+                    }
+
+                container.appendChild(select);
+                $("#level"+(i+1)).val(temp[i]);
+                container.appendChild(document.createElement("br"));
+                }
+            }
+            
+        }
 
 // }
 </script>
