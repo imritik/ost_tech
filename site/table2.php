@@ -221,12 +221,12 @@ else{
 
 <ul class="nav nav-tabs">
  <?php
-    if(isset($_SESSION['emailvendors'])){
+    // if(isset($_SESSION['emailvendors'])){
 
 ?>
     <li class='uploaded'><a  onclick="setstatus('uploaded')">Upload CV&nbsp;<span></span></a></li>
 <?php
-    }
+    // }
     ?>
 <?php
 if(isset($_SESSION['emailhr'])){
@@ -788,6 +788,17 @@ $(document).ready(function(){
 });
 
 
+  function setstatus(status){
+        var uri = window.location.toString();
+                                if (uri.indexOf("&") > 0) {
+                                    var clean_uri = uri.substring(0, uri.indexOf("&"));
+                                    window.history.replaceState({}, document.title, clean_uri);
+                                }
+            location.replace(window.location.href+'&status='+status);
+
+    }
+
+    
   function app_handle_listing_horisontal_scroll(listing_obj) {
         //get table object   
         table_obj = $('.table', listing_obj);
