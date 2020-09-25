@@ -29,6 +29,7 @@
 #example {
   table-layout: auto !important;
   width: 943px !important;  
+  /* border:none !important; */
 }
     /* .width-auto1{
         width:inherit;
@@ -53,7 +54,9 @@
       border: 2px solid;
     padding: 10px;
   }
-
+/* tr td:last-child{
+    border:none !important;
+} */
 
 </style>
 
@@ -191,7 +194,7 @@ else{
     <!-- CSV file upload form -->
     <div id="importFrm" style="display: none;">
     <br>
-        <form action="../csv_v2/importData.php" method="post" enctype="multipart/form-data">
+        <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?> method="post" enctype="multipart/form-data">
             <input type="file" name="file" />
             <br>
             <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
@@ -201,6 +204,21 @@ else{
 
 
     <?php
+    }
+    else{
+        ?>
+
+        <div class="col-md-12 head" style="display: flex;">
+        <!-- <div class="float-right">
+            <a href="javascript:void(0);" class="btn btn-success" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
+        </div> -->
+        &nbsp;&nbsp;
+        <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
+       &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+</button>
+    </div>
+
+        <?php
     }
     ?>
          
@@ -568,7 +586,7 @@ $vendoremail=$_SESSION['emailvendors'];
 
                     if(!isset($_SESSION['emailvendors'])){
                         ?>
-                    <td>
+                    <td style="border-right: 1px solid #E7E7E7;">
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
                             <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
@@ -584,7 +602,7 @@ $vendoremail=$_SESSION['emailvendors'];
 
                     else{
                         ?>
-                          <td>
+                          <td style="border-right: 1px solid black;">
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
 
@@ -798,7 +816,7 @@ $(document).ready(function(){
 
     }
 
-    
+
   function app_handle_listing_horisontal_scroll(listing_obj) {
         //get table object   
         table_obj = $('.table', listing_obj);

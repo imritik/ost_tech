@@ -242,27 +242,27 @@ function showpage(postid){
     getjobids(postid);
 }
   function getjobids(x){
-
+console.log(x,"gtejobids");
 // getting ids of student applied for jobs
-                            //     $.ajax({
-                            //     url: '../getstudids.php',
-                            //     type: 'POST',
-                            //     data: {param2:x},
-                            //     dataType:"json",
-                            //     success:function(){console.log("seach succsss");},
-                            //     error:function(data){console.log(data);}
-                            // }).done(function(data){
-                            //     console.log(data);
-                            //     console.log(data.list);
-                            //     console.log("setting sids");
-                            //     document.cookie="sids="+data.list+";path=/";
+                                $.ajax({
+                                url: '../getstudids.php',
+                                type: 'POST',
+                                data: {param2:x},
+                                dataType:"json",
+                                success:function(){console.log("seach succsss");},
+                                error:function(data){console.log(data);}
+                            }).done(function(data){
+                                console.log(data);
+                                console.log(data.list);
+                                console.log("setting sids");
+                                document.cookie="sids="+data.list+";path=/";
 
                                clearuri();
 
                                 location.replace(window.location.href.split('#')[0]+'?jid='+x);
-                            }
                                 
-                            // });
+                            });
+  }
     
 
     function clearuri(){
