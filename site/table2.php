@@ -28,7 +28,7 @@
     } */
 #example {
   table-layout: auto !important;
-  width: 943px !important;  
+  width: 487px !important;  
   /* border:none !important; */
 }
     /* .width-auto1{
@@ -269,12 +269,12 @@ if(!isset($_SESSION['emailvendors'])){
 
 
   <div class="tab-content">
-    <div id="home" class="tab-pane fade in active" >
+    <div id="home" class="col-md-12 tab-pane fade in active" >
        <!-- <div class="table-scrollable form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto"> -->
-       <div class="table-scrollable form-group tobehidden"style="transform: rotateX(180deg);overflow-x:auto;" > 
+       <div class="table-scrollable col-md-7 form-group tobehidden"style="max-height:500px;overflow-y:scroll;" > 
 
       <!-- <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0"> -->
-      <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
+      <table id="example" class="table table-striped table-condensed" style="" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
 
       <thead class="header">
 <tr class="filters" style="background: white">
@@ -283,25 +283,13 @@ if(!isset($_SESSION['emailvendors'])){
     <th style="color:black;">Select  </th>
 
     <th>Name</th>
-    <!-- <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Contact"></th>
-   
-    <th><input type="text" class="form-control width-auto" placeholder="Current CTC"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Expected CTC"></th>
-   
-    <th><input type="text" class="form-control width-auto" placeholder="Notice period"></th> -->
-    <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
+     <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
                         ?>
     <th>Resume</th>
     <?php
     }
     ?>
-
-      
-    <!-- <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="HR comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Manager comment" readonly></th>
-    <th ><input type="text" class="form-control width-auto" style="background:white;" placeholder="Recruiter comment" readonly></th> -->
-   <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
+ <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
         ?>
         
         <?php
@@ -321,10 +309,7 @@ if(!isset($_SESSION['emailvendors'])){
     
     <th >Status</th>
  
-   
-   <th style="width: 250px;
-    text-align: center;">Details</th>
-   <th style="width:210px;text-align: center"></th>
+
     </tr>
     </thead>
 
@@ -619,7 +604,7 @@ $vendoremail='';
                         <?php
                     }
                     ?>
-                    <td colspan="2">
+                    <!-- <td colspan="2">
                     <div class="hide hide<?php echo $ssid;?>" style="text-align:center">
 
                             <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
@@ -650,13 +635,8 @@ $vendoremail='';
 
                     
                     </div>
-                    <!-- </td> -->
-
-                    <!-- <td> -->
-                    <!-- <div class="hide hide<?php echo $ssid;?> interaction<?php echo $ssid;?>" style="width: 210px;text-align: center;max-width: 210px;height: auto;">
-
-                    </div> -->
-    </td>
+                   
+    </td> -->
                 
                 </tr>
                 <?php if($status=='new_arrival'){
@@ -717,16 +697,55 @@ $vendoremail='';
             }
     }
 
-
     ?>
 
     </tbody>
     </table>
-
-
-
-
     </div>
+
+
+    <!-- ---------extra info div here------------------------------- -->
+
+<div class="col-md-5">
+
+
+  <div class="hide hide<?php echo $ssid;?>" style="text-align:center">
+
+                            <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
+                            <label><input type="radio" name="colorRadio" class="uncheck" value="green<?php echo $ssid;?>">Interaction History</label>
+                           
+                           
+                            <div class="red<?php echo $ssid;?> box" style="display:none;text-align: justify;">
+                            Email :  <?php echo $row1['email'];?><br>
+                            Contact: <?php echo $row1['contact'];?><br>
+                            Current Comp: <?php echo $row1['curr_company'];?><br>
+                            Designation: <?php echo $row1['desgination'];?><br>
+                            C CTC: <?php echo $row1['curr_ctc'];?><br>
+                            E CTC: <?php echo $row1['expected_ctc'];?><br>
+                            Notice Period: <?php echo $row1['notice_period'];?><br>
+                            </div>
+                           
+                           
+                            <div class="green<?php echo $ssid;?> box"style="display:none;"\>
+                            
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
+                                                <div id="showthisjob<?php echo $ssid;?>" class="collapse">
+                                                </div>
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany<?php echo $ssid;?>">Show Full</button>
+                                                <div id="showthiscompany<?php echo $ssid;?>" class="collapse">
+                                                </div>
+                            
+                            </div>
+
+                    
+                    </div>
+
+</div>
+
+
+
+
+    <!-- -------------------------------------------------------------- -->
 <br>
     <br>
       <!-- ---------------save button -->
@@ -775,7 +794,7 @@ $vendoremail='';
 
 <script>
 $('#example tr').hover(function() {
-    // console.log("hi");
+    console.log("hi");
 
     var id=$(this).attr("data-id");
    
