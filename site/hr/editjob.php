@@ -186,11 +186,11 @@ if(!empty($_GET['jid'])){
 
                             </select>
                         </div>
-                          <div class="form-group" id="job-manager-group"style="background:cadetblue;">
+                          <!-- <div class="form-group" id="job-manager-group"style="background:cadetblue;">
                             <label for="job-email">Manager</label>
  <select id="companies1" name="manager" class="multiselectmanagers"  multiple="multiple"  >
 </select>
-                        </div>
+                        </div> -->
                          <div class="form-group" id="job-coordinator-group"style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
  <select id="companies2" name="coordinator" class="multiselect"  multiple="multiple"  >
@@ -218,7 +218,7 @@ if(!empty($_GET['jid'])){
 
                             <div class="form-group" id="job-type-group">
                             <label for="job-type">Fill number of levels (max. 7)</label>
-                                <br> <input type="text" class="form-control" id="member" name="member" min="1" max="7"  value="2"><br />
+                                <br> <input type="text" class="form-control" id="member" name="member" min="1" max="7"  value="<?php echo $row22['levels']; ?>"><br />
                                     <a href="#" id="filldetails" onclick="addFields()">Show Managers</a>
                                     <div id="container"/>
                         </div>
@@ -311,11 +311,11 @@ if($query ->num_rows >0){
                             <input type="text" name="weburl" class="form-control" id="job-url" value="<?php echo $row22['company_url'];?>" placeholder="https://" >
                         </div>
 
-                         <div class="form-group" id="job-manager-group"style="background:cadetblue;">
+                         <!-- <div class="form-group" id="job-manager-group"style="background:cadetblue;">
                             <label for="job-email">Manager</label>
                             <select id="companies1" name="manager" class="multiselectmanagers"  multiple="multiple"  >
                             </select>
-                        </div>
+                        </div> -->
 
                          <div class="form-group" id="job-coordinator-group" style="background:cadetblue;">
                             <label for="job-email">Vendor</label>
@@ -586,7 +586,7 @@ function addFields(){
                   var values = <?php echo json_encode($managers) ?>
 
                     var select = document.createElement("select");
-                    select.name = "managers";
+                    select.name = "managers[]";
                     select.id = "level"+(i+1);
                     select.className="form-control";
 

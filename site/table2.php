@@ -104,7 +104,7 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                     <button class="btn btn-info btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
                     <button id="combine"class="btn btn-info btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
-                    <br>
+                    
                     ';
                             }
                             else if(isset($_SESSION['emailhr'])&& $page=='view_mode'){
@@ -117,15 +117,13 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                    
                     <button id="combine"class="btn btn-info btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
-                    <br>
+                    
                     ';
                             }
                             else{
  echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
                             </div>
-                    <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
-                    <br><br>
-                    ';
+                    <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>';
                             }
                    
                             }
@@ -135,24 +133,12 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                     }
                 // }
                 ?>
-
-
-
-
-
-
-
  
     <div style="float:right;">
       <?php
       if(!empty($_GET['jid'])){
-
-
           ?>
-
-
                          <?php 
-
 if(isset($_SESSION['emailvendors'])){
 
     ?>
@@ -357,7 +343,23 @@ if(!isset($_SESSION['emailvendors'])){
     </script>
     <?php
 $query='';
-$vendoremail=$_SESSION['emailvendors'];
+$vendoremail='';
+ if(isset($_SESSION['emailvendors'])){
+     $vendoremail=$_SESSION['emailvendors'];
+ }
+ else  if(isset($_SESSION['ccemp'])){
+     $vendoremail=$_SESSION['ccemp'];
+
+ }
+ else  if(isset($_SESSION['coordinatoremp'])){
+     $vendoremail=$_SESSION['coordinatoremp'];
+
+ }
+ else if(isset($_SESSION['emailhr'])){
+     $vendoremail=$_SESSION['emailhr'];
+
+
+ }
 
         if(isset($_SESSION['emailvendors'])){
 
@@ -375,6 +377,11 @@ $vendoremail=$_SESSION['emailvendors'];
         }
         else{
 
+
+
+                if($status=='uploaded'){
+                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='shortlist' or applied_table.duplicate_status='probable')";
+                }
                     if($status=='new_arrival'){
                             $query = "SELECT * FROM applied_table where posting_id='$jid' and duplicate_status='probable'";
 

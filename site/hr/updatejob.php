@@ -19,8 +19,16 @@ $vendors=$_POST['coordinator'];
 $recruiters=$_POST['recruiter'];
 $postingid=$_GET['jid'];
 $coordinator=$_POST['cc'];
-$managers=$_POST['manager'];
+// $managers=$_POST['managers'];
 $basis=$_POST['duplicates'];
+$levels=$_POST['member'];
+$managers=array();
+// var_dump($levels);
+for($i=0;$i<$levels;$i++){
+    array_push($managers,$_POST['managers'][$i]);
+}
+
+// $new_managers=$_POST['managers'];
 // var_dump($basis);
 
 // var_dump($coordinator);
@@ -44,7 +52,13 @@ else{
 $recruiters=json_encode($recruiters);
 }
 
+
+
 // var_dump($managers);
+// var_dump($new_managers);
+
+
+
 if(is_string($managers)){
 $managers=explode(",",$managers);
 $managers=json_encode($managers);
@@ -81,7 +95,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',
+                    $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',levels='$levels',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',
                     vendor=IFNULL($vendors,vendor),
             recruiter=IFNULL($recruiters,recruiter),
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
@@ -108,7 +122,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',
+            $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',levels='$levels',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',
             vendor=IFNULL('$vendors',vendor),
             
             recruiter=IFNULL('$recruiters',recruiter),

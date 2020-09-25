@@ -17,11 +17,21 @@ $url=$_POST['weburl'];
 $description=$_POST['description'];
 $vendors=$_POST['coordinator'];
 $recruiters=$_POST['recruiter'];
-$managers=$_POST['manager'];
+// $managers=$_POST['managers'];
 
 $basis=$_POST['duplicates'];
+$levels=$_POST['member'];
+
+
+$managers=array();
+// var_dump($levels);
+for($i=0;$i<$levels;$i++){
+    array_push($managers,$_POST['managers'][$i]);
+}
+// $new_managers=$_POST['managers'];
 
 $uploaded_by_hr=$_SESSION['emailhr'];
+
 
 // var_dump($vendors,$managers);
 // var_dump($basis);
@@ -44,7 +54,6 @@ else{
 $recruiters=json_encode($recruiters);
 }
 
-// var_dump($managers);
 if(is_string($managers)){
 $managers=explode(",",$managers);
 $managers=json_encode($managers);
@@ -56,6 +65,13 @@ else{
 // var_dump($vendors);
 // var_dump($recruiters);
 // File upload path
+
+// var_dump($managers);
+// var_dump($new_managers);
+
+
+
+
 $targetDir = "uploads/jd/".$postingid."/";
  //Check if the directory already exists.
  if(!is_dir($targetDir)){
@@ -83,7 +99,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,duplicate_basis,company_url,posting_time,manager,vendor,recruiter,hr) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$basis."','".$url."',NOW(),IFNULL('$managers',manager),IFNULL('$vendors',vendor),IFNULL('$recruiters',recruiter),'".$uploaded_by_hr."')");
+                    $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,description_file,levels,duplicate_basis,company_url,posting_time,manager,vendor,recruiter,hr) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$fileName."','".$levels."','".$basis."','".$url."',NOW(),IFNULL('$managers',manager),IFNULL('$vendors',vendor),IFNULL('$recruiters',recruiter),'".$uploaded_by_hr."')");
                     if($insert){
                         // $statusMsg = "The job has been uploaded successfully.";
                         $statusMsg='?status=succjob';
@@ -103,7 +119,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,duplicate_basis,company_url,posting_time,manager,vendor,recruiter,hr) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$basis."','".$url."',NOW(),IFNULL('$managers',manager),IFNULL('$vendors',vendor),IFNULL('$recruiters',recruiter),'".$uploaded_by_hr."')");
+            $insert = $db->query("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,levels,duplicate_basis,company_url,posting_time,manager,vendor,recruiter,hr) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$levels."','".$basis."','".$url."',NOW(),IFNULL('$managers',manager),IFNULL('$vendors',vendor),IFNULL('$recruiters',recruiter),'".$uploaded_by_hr."')");
         //   var_dump("INSERT IGNORE into Job_Posting (posting_id,company_name,email,job_title,Job_type,Job_location,job_description,duplicate_basis,company_url,posting_time,manager,vendor,recruiter) VALUES ('".$postingid."','".$compname."' ,'".$email."','".$title."','".$type."','".$location."','".$description."','".$basis."','".$url."',NOW(),IFNULL($managers,manager),IFNULL($vendors,vendor),IFNULL($recruiters,recruiter))");
         //   var_dump($insert);
           
