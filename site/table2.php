@@ -690,7 +690,7 @@ $vendoremail='';
         }
             else{
            ?>         
-       <div style="transform:rotateX(180deg)" >
+       <div>
         <p>No Candidate(s) found! </p>
         </div>
 <?php
@@ -708,31 +708,33 @@ $vendoremail='';
 
 <div class="col-md-5">
 
+<div class="contains_text" style="text-align:center;padding: 20px;"><p>Nothing to be displayed.</p>
+<p>Please hover on candidate's name to view details</p>
+</div>
+  <div class="hide contains_resume" style="text-align:center">
 
-  <div class="hide hide<?php echo $ssid;?>" style="text-align:center">
-
-                            <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
-                            <label><input type="radio" name="colorRadio" class="uncheck" value="green<?php echo $ssid;?>">Interaction History</label>
+                            <label><input type="radio" class="uncheck" name="colorRadio" value="red"> Mini Resume</label>
+                            <label><input type="radio" name="colorRadio" class="uncheck" value="green">Interaction History</label>
                            
                            
-                            <div class="red<?php echo $ssid;?> box" style="display:none;text-align: justify;">
-                            Email :  <?php echo $row1['email'];?><br>
+                            <div class="red box" style="display:none;text-align: justify;">
+                            <!-- Email :  <?php echo $row1['email'];?><br>
                             Contact: <?php echo $row1['contact'];?><br>
                             Current Comp: <?php echo $row1['curr_company'];?><br>
                             Designation: <?php echo $row1['desgination'];?><br>
                             C CTC: <?php echo $row1['curr_ctc'];?><br>
                             E CTC: <?php echo $row1['expected_ctc'];?><br>
-                            Notice Period: <?php echo $row1['notice_period'];?><br>
+                            Notice Period: <?php echo $row1['notice_period'];?><br> -->
                             </div>
                            
                            
-                            <div class="green<?php echo $ssid;?> box"style="display:none;"\>
+                            <div class="green box"style="display:none;"\>
                             
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
-                                                <div id="showthisjob<?php echo $ssid;?>" class="collapse">
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob">Show less</button>
+                                                <div id="showthisjob" class="collapse">
                                                 </div>
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany<?php echo $ssid;?>">Show Full</button>
-                                                <div id="showthiscompany<?php echo $ssid;?>" class="collapse">
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
+                                                <div id="showthiscompany" class="collapse">
                                                 </div>
                             
                             </div>
@@ -798,10 +800,14 @@ $('#example tr').hover(function() {
 
     var id=$(this).attr("data-id");
    
-    $('.hide'+id).removeClass('hide');
+    // $('.hide'+id).removeClass('hide');
     // $('.box').removeClass('hide');
+    $('.contains_resume').removeClass('hide');
+
+    $('.contains_text').addClass('hide');
 
     // $(this).removeClass('hover');
+    getminicv(id);
     showlastjob(id);
     showthisjob(id);
     // $("input:radio[class=uncheck]:first").attr('checked', true);
@@ -811,7 +817,9 @@ $('#example tr').hover(function() {
 
     var id=$(this).attr("data-id");
     // $(this).addClass('hover');
-    $('.hide'+id).addClass('hide');
+    // $('.contains_resume').addClass('hide');
+    // $('.contains_text').removeClass('hide');
+
     //   $("input:radio[class^=uncheck]").each(function(i) {
 
 	//       this.checked = false;
@@ -993,7 +1001,7 @@ $(document).ready(function(){
                                 // $('.thisjob').html(html);
                                 // // Display Modal
                                 // $('#myModal').modal('show'); 
-                                $('#showthiscompany'+id).html(html);
+                                $('#showthiscompany').html(html);
                                 // console.log($('#showthisjob'+id).html(html));
                                 // console.log($('.interaction'+id+' .showthisjob'));
                             })
@@ -1039,13 +1047,78 @@ $(document).ready(function(){
                                 // $('.thisjob').html(html);
                                 // // Display Modal
                                 // $('#myModal').modal('show');
-                                $('#showthisjob'+id).html(html);
+                                $('#showthisjob').html(html);
 
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
                             });
      }
+
+
+   function getminicv(id){
+        //  ajax request to fetch job stats
+                            $.ajax({
+                                url: '../getminicv.php',
+                                type: 'POST',
+                            
+                                data: {param1: id},
+                            })
+                            .done(function(response) {
+                                data=JSON.parse(response);
+                                console.log(data,data.length);
+
+                                var html = "<table border='1|1'class='table table-striped'>";
+                                // for (var i = 0; i < data.length; i++) {
+                                    // if(data[i]){
+                                    //     for(var j=0;j<data[i].length;j++){
+                                    //         var res = data[i][j].split("$");
+                                    //         if(res[0]&&res[1]&&res[2]){
+                                        var headers=["Email","Contact","Curr Company","Designation","Curr CTC","Expected CTC","Notice Period"];
+                                                // html+="<tr>";
+                                                // html+="<td>Email</td>";
+                                                // html+="<td>Contact</td>";
+                                                // html+="<td>Curr. Company</td>";
+                                                // html+="<td>Designation</td>";
+                                                // html+="<td>Curr. CTC</td>";
+                                                // html+="<td>Expected CTC</td>";
+                                                // html+="<td>Notice Period</td>";
+                                                // html+="</tr>";
+                                        for(var j=0;j<data.length;j++){
+                                              
+                                                html+="<tr>";
+                                                html+="<td>"+headers[j]+"</td>";
+                                                html+="<td>"+data[j]+"</td>";
+                                                // html+="<td>"+data[2]+"</td>";
+                                                // html+="<td>"+data[3]+"</td>";
+                                                // html+="<td>"+data[4]+"</td>";
+                                                // html+="<td>"+data[5]+"</td>";
+                                                // html+="<td>"+data[6]+"</td>";
+
+                                                html+="</tr>";
+                                            }
+                                         
+                                    //     }
+
+                                    // }
+
+
+                                // }
+                                html+="</table>";
+                                // $('.modal-title').html("This job feedback");
+
+                                // $('.thisjob').html(html);
+                                // // Display Modal
+                                // $('#myModal').modal('show');
+                                $('.red').html(html);
+
+                            })
+                            .fail(function() {
+                                console.log("fsile");
+                                alert("error while fetching stats");
+                            });
+     }
+
 
           function exportTableToCSV(filename) {
             var csv = [];
