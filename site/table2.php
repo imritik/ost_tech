@@ -676,9 +676,18 @@ $vendoremail='';
                                             <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob">Show less</button>
                                                 <div id="showthisjob" class="collapse">
                                                 </div>
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
+
+                                                <?php if($_GET['status']=="Shared"){
+                                                    ?>
+<button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
                                                 <div id="showthiscompany" class="collapse">
                                                 </div>
+
+                                                    <?php
+
+                                                }
+                                                ?>
+                                            
                             
                             </div>
 
