@@ -1,62 +1,20 @@
-<!-- <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head> -->
 <style>
-    /* #table-listing {
-        width: 300px;
-    }
     
-    .table-scrollable {
-        width: auto;
-        overflow-x: auto;
-        overflow-y: hidden;
-        border: 1px solid #dddddd;
-        margin: 10px 0;
-    }
-    
-    .table th {
-        white-space: nowrap;
-    }
-    
-    .table td {
-        vertical-align: top;
-        border-bottom: 1px solid #ddd;
-        padding: 2px 5px;
-    } */
 #example {
   table-layout: auto !important;
-  width: 487px !important;  
+  width: 560px !important;  
   /* border:none !important; */
 }
-    /* .width-auto1{
-        width:inherit;
-    } */
-    /* th{
-        width:50px;
-    } */
-    /* td{
-        width:inherit;
-    } */
-    /* .hide {
-  display: none;
-} */
-    
-/* :hover + .hide {
-  display: block;
-  color: red;
-} */
+
 .hover { background-color:yellow; }
 
-  .box{
-      border: 2px solid;
-    padding: 10px;
-  }
-/* tr td:last-child{
-    border:none !important;
-} */
+
+.btn{
+    opacity:0.8
+}
+.btn:hover {opacity: 1;
+font-size:13px
+}
 
 </style>
 
@@ -169,13 +127,21 @@ else{
 
     ?>
 <div class="col-md-12 head" style="display: flex;">
-        <div class="float-right">
-            <a href="javascript:void(0);" class="btn btn-success" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
-        </div>
+       
+         <div id="importFrm">
+    
+        <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?> method="post" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            
+            <input type="submit" class="btn btn-primary btn-xs" name="importSubmit" value="IMPORT Candidates">
+        </form>
+        
+    </div>
         &nbsp;&nbsp;
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
        &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
 </button>
+<br>
     </div>
     <!-- CSV file upload form -->
     <div id="importFrm" style="display: none;">
@@ -195,9 +161,7 @@ else{
         ?>
 
         <div class="col-md-12 head" style="display: flex;">
-        <!-- <div class="float-right">
-            <a href="javascript:void(0);" class="btn btn-success" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
-        </div> -->
+       
         &nbsp;&nbsp;
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
        &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -243,13 +207,24 @@ if(!isset($_SESSION['emailvendors'])){
 ?>
 
     <li class='Shared'><a  onclick="setstatus('Shared')">To Process&nbsp;<span></span></a></li>
+    <?php
+    }
+    ?>
+
+   
+
+    <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Discussion&nbsp;<span></span></a></li>
+
+     <?php
+    if(!isset($_SESSION['emailvendors'])){
+
+?>
+
     <li class='hold'><a  onclick="setstatus('hold')">Hold&nbsp;<span></span></a></li>
     <?php
     }
     ?>
-    <li class='shortlist'><a  onclick="setstatus('shortlist')">Under Discussion&nbsp;<span></span></a></li>
 
-    <!-- <li class='processed'><a  onclick="setstatus('processed')">Processed&nbsp;<span></span></a></li> -->
     <li class='rejected'><a  onclick="setstatus('rejected')">Closed&nbsp;<span></span></a></li>
 
     <?php
@@ -271,7 +246,7 @@ if(!isset($_SESSION['emailvendors'])){
   <div class="tab-content">
     <div id="home" class="col-md-12 tab-pane fade in active" >
        <!-- <div class="table-scrollable form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto"> -->
-       <div class="table-scrollable col-md-7 form-group tobehidden"style="max-height:500px;overflow-y:scroll;" > 
+       <div class="table-scrollable col-md-8 form-group tobehidden"style="max-height:500px;overflow-y:scroll;" > 
 
       <!-- <table id="example" class="table table-striped table-condensed" style="transform: rotateX(180deg);" data-count-fixed-columns="2" cellpadding="0" cellspacing="0"> -->
       <table id="example" class="table table-striped table-condensed" style="" data-count-fixed-columns="2" cellpadding="0" cellspacing="0">
@@ -279,8 +254,7 @@ if(!isset($_SESSION['emailvendors'])){
       <thead class="header">
 <tr class="filters" style="background: white">
 
-    <!-- <th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th> -->
-    <th style="color:black;">Select  </th>
+    <th style="color:black;"> </th>
 
     <th>Name</th>
      <?php if(isset($_SESSION['emailvendors'])&& $_GET['status']=='uploaded'){
@@ -296,10 +270,9 @@ if(!isset($_SESSION['emailvendors'])){
         }
         else{
             ?>
-            <!-- <th>Last comment</th> -->
         
             <th >Your comment*</th>
-            <!-- <th>History</th> -->
+            <th>level</th>
             <?php
         }
 
@@ -354,7 +327,6 @@ $vendoremail='';
                 }
                 else{
 
-                // $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='Shared'";
                     $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail'and Student.resume!='' and applied_table.Status='$status'";
                 }
 
@@ -382,7 +354,6 @@ $vendoremail='';
                             $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status NOT IN('rejected','hold','Shared','processed','Offered') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
                         
 
-                        // $query = "SELECT * FROM applied_table where posting_id='$jid' and Status NOT IN('rejected','hold','Shared','processed','Offered') ORDER BY Status_update DESC";
 
                     }
                     else{
@@ -463,7 +434,7 @@ $vendoremail='';
                 }
                 else{
                     ?>
-                <input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk" disabled></td>
+                <input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk" style="display:none" disabled></td>
 <?php
                 }
                 ?>
@@ -471,23 +442,15 @@ $vendoremail='';
                     <td class="headcol">
                     <a href='<?php echo $resumelinks;?>' target='blank'><?php echo $row1['stud_name'];?></a>
                    
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
                     <?php
                          if(!isset($_SESSION['emailvendors'])){
                             ?>
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>"type="button" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a> -->
                    
                    <?php
                          }
                          ?>
                    </td>
-                    <!-- <td><?php echo $row1['email'];?></td>
-                    <td><?php echo $row1['contact'];?></td>
-
-                    <td><?php echo $row1['curr_ctc'];?></td>
-                    <td><?php echo $row1['expected_ctc'];?></td>
-                    <td><?php echo $row1['notice_period']?></td> -->
-                              <!-- Add resume -->
+             
                               
                     <?php if($status=='uploaded'){
                         ?>
@@ -508,7 +471,6 @@ $vendoremail='';
                     ?>
                     
                     
-                   <!-- <td> <a href='<?php echo $resumelinks;?>' target='blank'>View</a></td> -->
                     
                     
                 <?php
@@ -516,59 +478,13 @@ $vendoremail='';
                 ?>
 
 
-                    <!-- <?php
-                        if(isset($_SESSION['emailhr'])){
-                            ?>
-<td>
-                            <?php echo $hrcomment[$x];?></td>
-                        <?php
-                        }
-                        ?>
-
-
-                        <?php
-                         if(isset($_SESSION['emailmanager'])){
-                            ?>
-<td>
-                            <?php echo $managercomment[$x];?></td>
-                        <?php
-                        }
-                        ?>
-                        <?php
-                         if(isset($_SESSION['ccemp'])){
-                            ?>
-<td>
-                            <?php echo $coordinatorcomment[$x];?></td>
-                        <?php
-                        }
-                        ?>
-                        
-                        <?php
-                         if(isset($_SESSION['coordinatoremp'])){
-                            ?>
-<td>
-                            <?php echo $amcomment[$x];?></td>
-                        <?php
-                        }
-                        ?>
-                          <?php
-                         if(isset($_SESSION['emailvendors'])&&$status!='uploaded'){
-                            ?>
-<td>
-                            <?php echo $vendorcomment[$x];?></td>
-
-                        <?php
-                        }
-                        ?> -->
+                  
 
                         <?php
                          if( $status!='uploaded'){
                             ?>
                             <td><input class="form-control" id="hr_comment<?php echo $ssid;?>" required></td>
-                            <!-- <td>
-                            &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                            
-                            </td> -->
+                          
                         <?php
                         }
                         ?>
@@ -578,6 +494,15 @@ $vendoremail='';
 
                     if(!isset($_SESSION['emailvendors'])){
                         ?>
+                        <td>
+                        <select class="form-control">
+                            <option value="l1">L1</option>
+                            <option value="l2">L2</option>
+                            <option value="l3">L3</option>
+
+                        </select>
+                        
+                        </td>
                     <td style="border-right: 1px solid #E7E7E7;">
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
                             <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
@@ -604,39 +529,7 @@ $vendoremail='';
                         <?php
                     }
                     ?>
-                    <!-- <td colspan="2">
-                    <div class="hide hide<?php echo $ssid;?>" style="text-align:center">
-
-                            <label><input type="radio" class="uncheck" name="colorRadio" value="red<?php echo $ssid;?>"> Mini Resume</label>
-                            <label><input type="radio" name="colorRadio" class="uncheck" value="green<?php echo $ssid;?>">Interaction History</label>
-                           
-                           
-                            <div class="red<?php echo $ssid;?> box" style="display:none;text-align: justify;">
-                            Email :  <?php echo $row1['email'];?><br>
-                            Contact: <?php echo $row1['contact'];?><br>
-                            Current Comp: <?php echo $row1['curr_company'];?><br>
-                            Designation: <?php echo $row1['desgination'];?><br>
-                            C CTC: <?php echo $row1['curr_ctc'];?><br>
-                            E CTC: <?php echo $row1['expected_ctc'];?><br>
-                            Notice Period: <?php echo $row1['notice_period'];?><br>
-                            </div>
-                           
-                           
-                            <div class="green<?php echo $ssid;?> box"style="display:none;"\>
-                            
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob<?php echo $ssid;?>">Show less</button>
-                                                <div id="showthisjob<?php echo $ssid;?>" class="collapse">
-                                                </div>
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany<?php echo $ssid;?>">Show Full</button>
-                                                <div id="showthiscompany<?php echo $ssid;?>" class="collapse">
-                                                </div>
-                            
-                            </div>
-
-                    
-                    </div>
                    
-    </td> -->
                 
                 </tr>
                 <?php if($status=='new_arrival'){
@@ -691,7 +584,65 @@ $vendoremail='';
             else{
            ?>         
        <div>
-        <p>No Candidate(s) found! </p>
+        <!-- <p>No Candidate(s) found! </p> -->
+
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+
+      
         </div>
 <?php
             }
@@ -706,25 +657,17 @@ $vendoremail='';
 
     <!-- ---------extra info div here------------------------------- -->
 
-<div class="col-md-5">
+<div class="col-md-4">
 
-<div class="contains_text" style="text-align:center;padding: 20px;"><p>Nothing to be displayed.</p>
-<p>Please hover on candidate's name to view details</p>
-</div>
-  <div class="hide contains_resume" style="text-align:center">
 
-                            <label><input type="radio" class="uncheck" name="colorRadio" value="red"> Mini Resume</label>
+  <div class="contains_resume" style="text-align:center">
+
+                            <label><input type="radio" class="uncheck" name="colorRadio" value="red"> Micro CV</label>
                             <label><input type="radio" name="colorRadio" class="uncheck" value="green">Interaction History</label>
                            
                            
                             <div class="red box" style="display:none;text-align: justify;">
-                            <!-- Email :  <?php echo $row1['email'];?><br>
-                            Contact: <?php echo $row1['contact'];?><br>
-                            Current Comp: <?php echo $row1['curr_company'];?><br>
-                            Designation: <?php echo $row1['desgination'];?><br>
-                            C CTC: <?php echo $row1['curr_ctc'];?><br>
-                            E CTC: <?php echo $row1['expected_ctc'];?><br>
-                            Notice Period: <?php echo $row1['notice_period'];?><br> -->
+                          
                             </div>
                            
                            
@@ -741,6 +684,11 @@ $vendoremail='';
 
                     
                     </div>
+
+
+                    <div class="contains_text" style="text-align:center;padding: 20px;"><p>Nothing to be displayed.</p>
+<p>Please hover on candidate's name to view details</p>
+</div>
 
 </div>
 
@@ -800,32 +748,19 @@ $('#example tr').hover(function() {
 
     var id=$(this).attr("data-id");
    
-    // $('.hide'+id).removeClass('hide');
-    // $('.box').removeClass('hide');
-    $('.contains_resume').removeClass('hide');
-
     $('.contains_text').addClass('hide');
 
     // $(this).removeClass('hover');
     getminicv(id);
     showlastjob(id);
     showthisjob(id);
-    // $("input:radio[class=uncheck]:first").attr('checked', true);
+    $("input:radio[class=uncheck]:first").attr('checked', true).trigger("click");
 
 
 }, function() {
 
     var id=$(this).attr("data-id");
-    // $(this).addClass('hover');
-    // $('.contains_resume').addClass('hide');
-    // $('.contains_text').removeClass('hide');
-
-    //   $("input:radio[class^=uncheck]").each(function(i) {
-
-	//       this.checked = false;
-	// 		});
-    // $('.box').addClass('hide');
-
+    
 
 });
 
@@ -854,8 +789,7 @@ $(document).ready(function(){
   function app_handle_listing_horisontal_scroll(listing_obj) {
         //get table object   
         table_obj = $('.table', listing_obj);
-        // table_obj=table_obj[0];
-        //get count fixed collumns params
+       
         count_fixed_collumns = table_obj.attr('data-count-fixed-columns')
 
         if (count_fixed_collumns > 0) {
@@ -997,13 +931,8 @@ $(document).ready(function(){
                                 }
                                 html+="</table>";
 
-                                // $('.modal-title').html("This company feedback");
-                                // $('.thisjob').html(html);
-                                // // Display Modal
-                                // $('#myModal').modal('show'); 
                                 $('#showthiscompany').html(html);
-                                // console.log($('#showthisjob'+id).html(html));
-                                // console.log($('.interaction'+id+' .showthisjob'));
+                                
                             })
                             .fail(function() {
                                 alert("error while fetching stats");
@@ -1042,11 +971,7 @@ $(document).ready(function(){
 
                                 }
                                 html+="</table>";
-                                // $('.modal-title').html("This job feedback");
-
-                                // $('.thisjob').html(html);
-                                // // Display Modal
-                                // $('#myModal').modal('show');
+                               
                                 $('#showthisjob').html(html);
 
                             })
@@ -1068,33 +993,16 @@ $(document).ready(function(){
                                 data=JSON.parse(response);
                                 console.log(data,data.length);
 
-                                var html = "<table border='1|1'class='table table-striped'>";
-                                // for (var i = 0; i < data.length; i++) {
-                                    // if(data[i]){
-                                    //     for(var j=0;j<data[i].length;j++){
-                                    //         var res = data[i][j].split("$");
-                                    //         if(res[0]&&res[1]&&res[2]){
+                                var html = "<table border='1|1'class='table'>";
+                                
                                         var headers=["Email","Contact","Curr Company","Designation","Curr CTC","Expected CTC","Notice Period"];
-                                                // html+="<tr>";
-                                                // html+="<td>Email</td>";
-                                                // html+="<td>Contact</td>";
-                                                // html+="<td>Curr. Company</td>";
-                                                // html+="<td>Designation</td>";
-                                                // html+="<td>Curr. CTC</td>";
-                                                // html+="<td>Expected CTC</td>";
-                                                // html+="<td>Notice Period</td>";
-                                                // html+="</tr>";
+                                             
                                         for(var j=0;j<data.length;j++){
                                               
                                                 html+="<tr>";
                                                 html+="<td>"+headers[j]+"</td>";
                                                 html+="<td>"+data[j]+"</td>";
-                                                // html+="<td>"+data[2]+"</td>";
-                                                // html+="<td>"+data[3]+"</td>";
-                                                // html+="<td>"+data[4]+"</td>";
-                                                // html+="<td>"+data[5]+"</td>";
-                                                // html+="<td>"+data[6]+"</td>";
-
+                                              
                                                 html+="</tr>";
                                             }
                                          
@@ -1105,11 +1013,7 @@ $(document).ready(function(){
 
                                 // }
                                 html+="</table>";
-                                // $('.modal-title').html("This job feedback");
-
-                                // $('.thisjob').html(html);
-                                // // Display Modal
-                                // $('#myModal').modal('show');
+                               
                                 $('.red').html(html);
 
                             })

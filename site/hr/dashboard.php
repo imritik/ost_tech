@@ -49,7 +49,7 @@ $page="job";
     <br>
     <br>
     <br>
-<div class="container">
+<div class="container" style="font-size:12px">
 
 <div class="row" style="display: flex;justify-content: center;">
 <?php include 'radio.php';?>
