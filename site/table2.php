@@ -20,6 +20,29 @@ tr{
   /* border-bottom: 1.5px solid #b5b3b3; */
 }
 
+ .df2{
+        position: fixed;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 42%;
+    background: aliceblue;
+    padding: 58px;
+    }
+    .df3{
+        position:fixed;
+        left:0;
+        bottom:0;
+        height:100%;
+    }
+    .df4{
+        position:fixed;
+        left:60%;
+        bottom:50%;
+        top:50%;
+        height:100%;
+    }
+
 </style>
 
 
@@ -437,15 +460,10 @@ $vendoremail='';
                 ?>
               
                     <td class="headcol">
-                    <a href='<?php echo $resumelinks;?>' target='blank'><?php echo $row1['stud_name'];?></a>
-                   
-                    <?php
-                         if(!isset($_SESSION['emailvendors'])){
-                            ?>
-                   
-                   <?php
-                         }
-                         ?>
+                    <!-- <a href='<?php echo $resumelinks;?>' target='blank'><?php echo $row1['stud_name'];?></a> -->
+
+                <a id="<?php echo $ssid;?>" onclick="showcvform('<?php echo $resumelinks;?>','<?php echo $ssid;?>')"><?php echo $row1['stud_name'];?>&nbsp;&nbsp; <i class="fa fa-external-link" aria-hidden="true"></i></a>
+
                    </td>
              
                               
@@ -590,6 +608,8 @@ $vendoremail='';
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+
         </tr>
 
         <tr style="height:45px">
@@ -597,6 +617,32 @@ $vendoremail='';
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+        </tr>
+        <tr style="height:45px">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
         </tr>
         <tr style="height:45px">
         <td></td>
@@ -609,36 +655,24 @@ $vendoremail='';
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+
         </tr>
         <tr style="height:45px">
         <td></td>
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+
         </tr>
         <tr style="height:45px">
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        </tr>
-        <tr style="height:45px">
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        </tr>
-        <tr style="height:45px">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        </tr>
-        <tr style="height:45px">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+
         </tr>
 
       
@@ -1066,4 +1100,70 @@ $(document).ready(function(){
     $(function() {
         // app_handle_listing_horisontal_scroll($('#home'))
     })
+
+
+    // ------------split screen-------------------------------------------------------------------------
+</script>
+    <div class='df2' style='display:none'>
+ 
+
+                <div class="contains_resume" style="text-align:center">
+
+                            <label><input type="radio" class="uncheck" name="colorRadio" value="red"> Micro CV</label>
+                            <label><input type="radio" name="colorRadio" class="uncheck" value="green">Interaction History</label>
+                           
+                           
+                            <div class="red box" style="display:none;text-align: justify;">
+                          
+                            </div>
+                           
+                           
+                            <div class="green box"style="display:none;"\>
+                            
+                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob">Show less</button>
+                                                <div id="showthisjob" class="collapse">
+                                                </div>
+
+                                              
+                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
+                                                <div id="showthiscompany" class="collapse">
+                                                </div>
+
+                            </div>
+
+                    
+                </div>
+ 
+    </div>
+
+ <div class='df3'style='display:none'>
+ <iframe name='cv' data-src="http://www.w3schools.com" src="../loaders_form/form.php?jid=2" width="750" style="background:#ffffff;height:inherit"></iframe>
+ </div>
+ <div class='df4' style='display:none'><button onclick='showform();'><i class="fa fa-close" style="font-size:30px;color:red"></i></button></div>
+ <script>
+ var frm = ['cv'];
+ var hrf=[];
+ function setSource() {
+            for(i=0, l=frm.length; i<l; i++) {
+                document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
+            }
+        }
+     function showform(){
+        //  $('.df2').toggle();
+         $('.df3').toggle();
+         $('.df4').toggle();
+
+
+     }
+     function showcvform(x,y){
+         console.log(x,y);
+         var hrf1 = [x];
+         hrf=hrf1;
+         setSource();
+        //  $('.df2').toggle();
+         $('.df3').toggle();
+         $('.df4').toggle();
+
+
+     }
 </script>

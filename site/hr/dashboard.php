@@ -672,45 +672,45 @@ function urlchange(cat){
 }
     
 
- var frm = ['cv'];
- var hrf=[];
- function setSource() {
-     console.log("in set source");
-            for(i=0, l=frm.length; i<l; i++) {
-                document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
-            }
-        }
-     function showform(){
-        $('.tobehidden').removeClass('blur');
-        $('.tobe-reused').removeClass('df3');
-        $('.tobe-reused').toggle();
-         $('.df2').toggle();
-         $('.df3').toggle();
-         $('.df4').toggle();
+//  var frm = ['cv'];
+//  var hrf=[];
+//  function setSource() {
+//      console.log("in set source");
+//             for(i=0, l=frm.length; i<l; i++) {
+//                 document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
+//             }
+//         }
+//      function showform(){
+//         $('.tobehidden').removeClass('blur');
+//         $('.tobe-reused').removeClass('df3');
+//         $('.tobe-reused').toggle();
+//          $('.df2').toggle();
+//          $('.df3').toggle();
+//          $('.df4').toggle();
 
 
-     }
+//      }
 
-     function showcvform(x,y){
-         $('.tobe-reused').hide();
-         $('.tobe-reused').addClass('df3');
-         console.log(x);
-         var hrf1 = [x];
-         hrf=hrf1;
-        var favorite=[];
-        var jobref=['<?php echo $jidd;?>'];
-        favorite.push(y);
-        favorites=favorite;
-        jobrefs=jobref;
-        var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
-        newArray1=newArray;
-        console.log(newArray1);
-         setSource();
-         $('.tobehidden').addClass('blur');
-         $('.df2').toggle();
-         $('.df3').toggle();
-         $('.df4').toggle();
-     }
+//      function showcvform(x,y){
+//          $('.tobe-reused').hide();
+//          $('.tobe-reused').addClass('df3');
+//          console.log(x);
+//          var hrf1 = [x];
+//          hrf=hrf1;
+//         var favorite=[];
+//         var jobref=['<?php echo $jidd;?>'];
+//         favorite.push(y);
+//         favorites=favorite;
+//         jobrefs=jobref;
+//         var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+//         newArray1=newArray;
+//         console.log(newArray1);
+//          setSource();
+//          $('.tobehidden').addClass('blur');
+//          $('.df2').toggle();
+//          $('.df3').toggle();
+//          $('.df4').toggle();
+//      }
 
     //  function showlastjob(id){
     //     //  alert(id);
