@@ -8,6 +8,7 @@ $stud_status=$_POST['param3'];
 $stud_note=$_POST['param4'];
 $ps1=$_POST['param5'];
 $ps2=$_POST['param6'];
+$levelbtn=$_POST['param7'];
 // var_dump($stud_status);
  // Insert image file name into database
 //   $insert1 = $db->query("UPDATE Student SET profile_segment='$ps1',profile_segment2='$ps2', modified_on=NOW() WHERE student_id=$stud_id");
@@ -63,6 +64,7 @@ $ps2=$_POST['param6'];
         $insert = $db->query("UPDATE applied_table SET 
         hr_note=Coalesce(NULLIF('$ps1',''),hr_note)
         ,Status='$stud_note',
+        level='$levelbtn',
          Status_update=NOW()
           WHERE posting_id='$posting_id' and student_id='$stud_id'");
     //    var_dump("UPDATE applied_table SET hr_note='$stud_note',Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");

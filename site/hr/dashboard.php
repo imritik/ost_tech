@@ -162,8 +162,12 @@ $page="job";
                                 }
                                 else{
                                     $('ul li:first').click();
+                            
+
+
 
                                 }
+
    
     }
 
@@ -259,7 +263,10 @@ console.log(x,"gtejobids");
 
                                clearuri();
 
-                                location.replace(window.location.href.split('#')[0]+'?jid='+x);
+                                location.replace(window.location.href.split('#')[0]+'?jid='+x+'&status=Shared');
+
+                                // setTimeout( setstatus('Shared'), 1000);
+
                                 
                             });
   }
@@ -273,15 +280,15 @@ console.log(x,"gtejobids");
                                 }
 
     }
-    function setstatus(status){
-        var uri = window.location.toString();
-                                if (uri.indexOf("&") > 0) {
-                                    var clean_uri = uri.substring(0, uri.indexOf("&"));
-                                    window.history.replaceState({}, document.title, clean_uri);
-                                }
-            location.replace(window.location.href+'&status='+status);
+    // function setstatus(status){
+    //     var uri = window.location.toString();
+    //                             if (uri.indexOf("&") > 0) {
+    //                                 var clean_uri = uri.substring(0, uri.indexOf("&"));
+    //                                 window.history.replaceState({}, document.title, clean_uri);
+    //                             }
+    //         location.replace(window.location.href+'&status='+status);
 
-    }
+    // }
 </script>
  <script>
          var favorites = [];
@@ -585,14 +592,14 @@ function combine(){
 
     }
 
-    function updatestatusofeach(x,y,z,q,a,b){
+    function updatestatusofeach(x,y,z,q,a,b,c){
 
-                console.log(x,y,z,q,a,b);
+                console.log(x,y,z,q,a,b,c);
                 $.ajax({
                                 url: '../updatestudentstatus.php',
                                 type: 'POST',
                             
-                                data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
+                                data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b,param7:c},
                             })
                             .done(function(response) {
                                 // alert(response);
@@ -833,14 +840,17 @@ function urlchange(cat){
                                 var selectedID=$(this).find('.studentcheckbox1').val();
                                 console.log($('#hr_comment'+selectedID).val());
                                 console.log($('#updatenotebtn'+selectedID).val());
+                                console.log($('#levelbtn'+selectedID).val());
+
                                     var statusvalue="hr";
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
+                                    var levelbtn=$('#levelbtn'+selectedID).val();
                                     var ps2='';
                                     console.log(notevalue);
                                 // if(hrfeedback!=''){
                                 //         commentcheck=true;
-                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2,levelbtn);
                                     // }
                                     // else{
 

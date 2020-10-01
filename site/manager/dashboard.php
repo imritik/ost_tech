@@ -183,7 +183,7 @@ function showpage(postid){
 
                                clearuri();
 
-                                location.replace(window.location.href.split('#')[0]+'?jid='+x);
+                                location.replace(window.location.href.split('#')[0]+'?jid='+x+'&status=shortlist');
                             }
                                 
                             // });

@@ -13,7 +13,11 @@
     opacity:0.8
 }
 .btn:hover {opacity: 1;
-font-size:13px
+/* font-size:13px */
+}
+
+tr{
+  /* border-bottom: 1.5px solid #b5b3b3; */
 }
 
 </style>
@@ -23,6 +27,7 @@ font-size:13px
 <?php
 if(!empty($_GET['jid'])){
     $jid=$_GET['jid'];
+    $level_in_job='';
     ?>
 
     <script>
@@ -43,6 +48,7 @@ if(!empty($_GET['jid'])){
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
                             $currentCompEmail=$row22['email'];
+                            $level_in_job=$row22['levels'];
 // var_dump($is_hold);
                             if($is_hold){
 $hold_text='Make Job Active';
@@ -128,15 +134,9 @@ else{
     ?>
 <div class="col-md-12 head" style="display: flex;">
        
-         <div id="importFrm">
-    
-        <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?> method="post" enctype="multipart/form-data">
-            <input type="file" name="file" />
-            
-            <input type="submit" class="btn btn-primary btn-xs" name="importSubmit" value="IMPORT Candidates">
-        </form>
-        
-    </div>
+              <div class="float-right">
+            <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');" data-toggle="tooltip" title="Add Candidates"><i class="plus"></i><i class="fa fa-upload" aria-hidden="true"></i></a>
+        </div>
         &nbsp;&nbsp;
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
        &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -149,7 +149,7 @@ else{
         <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?> method="post" enctype="multipart/form-data">
             <input type="file" name="file" />
             <br>
-            <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
+            <input type="submit" class="btn btn-primary btn-xs" name="importSubmit" value="IMPORT">
         </form>
         <br>
     </div>
@@ -374,8 +374,8 @@ $vendoremail='';
             $managercomment=array();
             $amcomment=array();
             $vendorcomment=array();
-            // $studstatuss=array();
              $coordinatorcomment=array();
+             $level=array();
             
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -387,6 +387,7 @@ $vendoremail='';
                     array_push($coordinatorcomment,$row['coordinator_note']);
                     array_push($vendorcomment,$row['vendor_note']);
                     array_push($amcomment,$row['Note']);
+                    array_push($level,$row['level']);
 
 
 
@@ -398,7 +399,6 @@ $vendoremail='';
             // $number = 1;
              $studids=array_unique($studids);
             $arrlength = count($studids);
-        // var_dump($studids);
         ?>
         <script>
          $('.<?php echo $status;?>').find( "span" ).html('(<?php echo $arrlength;?>)'); 
@@ -415,14 +415,11 @@ $vendoremail='';
 
             if($query ->num_rows ==1){
             $row1 = $query->fetch_assoc();
-                // echo $row1;
             $sturesume=$row1["resume"];
             $ssid=$row1['student_id'];
             $sname=$row1['stud_name'];
             $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$sturesume;
-            //    echo $ssid;
-            // while ($row = mysqli_fetch_assoc($result)) {
-                ?>
+             ?>
                 <tr data-id="<?php echo $ssid;?>">
                 <td>
                 <?php
@@ -495,11 +492,19 @@ $vendoremail='';
                     if(!isset($_SESSION['emailvendors'])){
                         ?>
                         <td>
-                        <select class="form-control">
-                            <option value="l1">L1</option>
-                            <option value="l2">L2</option>
-                            <option value="l3">L3</option>
-
+ 
+                        <select class="form-control" id="levelbtn<?php echo $ssid;?>">
+                        
+                        <?php 
+                        $selected=false;
+                        for($i=0;$i<$level_in_job;$i++){
+                            if($level[$x]=="l'.($i+1).'"){  
+                                $selected=true;
+                            }
+                            echo '<option value="l'.($i+1).'" selected='.$selected.' >L'.($i+1).'</option>';
+                        }
+                        ?>
+                       
                         </select>
                         
                         </td>
@@ -510,7 +515,6 @@ $vendoremail='';
                             <option value="Offered" <?php if (   $status== 'Offered')  echo 'selected = "selected"'; ?>>Offered</option>
                             <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
                             <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Close</option>
-                            <!-- <option value="blacklist"<?php if ($status == 'blacklist')  echo 'selected = "selected"'; ?>>Blacklist</option> -->
                         </select>
                     </td>
                     <?php
@@ -542,7 +546,6 @@ $vendoremail='';
 
                                 $sqlcomp = "SELECT * FROM Student where stud_name='$sname' and student_id!='$studids[$x]' ORDER BY updated_on DESC";
                                 $resultcomp = $db->query($sqlcomp);
-// var_dump($resultcomp);
                                 if ($resultcomp ->num_rows >0) {
                                 
                                     while($rowcomp = $resultcomp->fetch_assoc()) {
@@ -575,16 +578,12 @@ $vendoremail='';
                 ?>
                
                 <?php
-                // $number++;
-            // }
             }}
-            // $users .= '</table>';
 
         }
             else{
            ?>         
        <div>
-        <!-- <p>No Candidate(s) found! </p> -->
 
         <tr style="height:45px">
         <td></td>
@@ -677,16 +676,12 @@ $vendoremail='';
                                                 <div id="showthisjob" class="collapse">
                                                 </div>
 
-                                                <?php if($_GET['status']=="Shared"){
-                                                    ?>
+                                              
 <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
                                                 <div id="showthiscompany" class="collapse">
                                                 </div>
 
-                                                    <?php
-
-                                                }
-                                                ?>
+                              
                                             
                             
                             </div>
@@ -785,7 +780,9 @@ $(document).ready(function(){
 
 
   function setstatus(status){
+      console.log("set status called");
         var uri = window.location.toString();
+        console.log(uri);
                                 if (uri.indexOf("&") > 0) {
                                     var clean_uri = uri.substring(0, uri.indexOf("&"));
                                     window.history.replaceState({}, document.title, clean_uri);

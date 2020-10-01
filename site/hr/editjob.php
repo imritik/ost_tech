@@ -345,7 +345,7 @@ if($query ->num_rows >0){
                         <div class="form-group" id="job-type-group">
                             <label for="job-type">Fill number of levels (max. 7)</label>
                                 <br> <input type="text" class="form-control" id="member" name="member" min="1" max="7"  value=""><br />
-                                    <a href="#" id="filldetails" onclick="addFields()">Add Managers</a>
+                                    <a href="#" id="filldetails" onclick="addFields()">Add Managers *</a>
                                     <div id="container"/>
                         </div>
 
