@@ -403,14 +403,14 @@ $('#admins_email').on('change', function () {
 
     }
 
-    function updatestatusofeach(x,y,z,q,a,b){
+      function updatestatusofeach(x,y,z,q,a,b,c){
 
-                console.log(x,y,z,q,a,b);
+                console.log(x,y,z,q,a,b,c);
                 $.ajax({
                                 url: '../updatestudentstatus.php',
                                 type: 'POST',
                             
-                                data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
+                                data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b,param7:c},
                             })
                             .done(function(response) {
                                 // alert(response);
@@ -651,10 +651,12 @@ function urlchange(cat){
                                     var statusvalue="manager";
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
+                                    var levelbtn=$('#levelbtn'+selectedID).val();
+
                                     var ps2='';
                                     // if(hrfeedback!=''){
                                     //     commentcheck=true;
-                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2,levelbtn);
                                     // }
                                     // else{
 

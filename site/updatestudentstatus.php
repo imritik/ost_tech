@@ -21,7 +21,8 @@ $levelbtn=$_POST['param7'];
   if($stud_status=="am"){
         $insert = $db->query("UPDATE applied_table SET
          Note=Coalesce(NULLIF('$ps1',''),Note),
-        Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
+        Status='$stud_note',
+        level='$levelbtn', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
       
         if($ps1!=''){
 
@@ -110,7 +111,8 @@ $levelbtn=$_POST['param7'];
 // var_dump("in hr");
         $insert = $db->query("UPDATE applied_table SET 
         coordinator_note=Coalesce(NULLIF('$ps1',''),coordinator_note),
-        Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
+        Status='$stud_note',
+        level='$levelbtn', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
     //    var_dump("UPDATE applied_table SET hr_note='$stud_note',Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
 
 
@@ -152,7 +154,8 @@ $levelbtn=$_POST['param7'];
 // var_dump("in hr");
         $insert = $db->query("UPDATE applied_table SET
          manager_note=Coalesce(NULLIF('$ps1',''),manager_note),
-         Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
+         Status='$stud_note',
+        level='$levelbtn', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");
     //    var_dump("UPDATE applied_table SET
     //      manager_note=Coalesce(NULLIF('$ps1',''),manager_note),
     //      Status='$stud_note', Status_update=NOW() WHERE posting_id='$posting_id' and student_id='$stud_id'");

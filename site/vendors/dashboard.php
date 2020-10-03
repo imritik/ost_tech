@@ -799,6 +799,8 @@ function urlchange(cat){
                                     var notevalue=$('#updatenotebtn'+selectedID).val();
                                     var hrfeedback=$('#hr_comment'+selectedID).val();
                                     var ps2='';
+                                    // var levelbtn=$('#levelbtn'+selectedID).val();
+
                                     //   if(hrfeedback!=''){
                                     //     commentcheck=true;
                                         updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
