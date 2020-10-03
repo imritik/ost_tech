@@ -25,7 +25,7 @@ tr{
     right: 0;
     bottom: 0;
     height: 100%;
-    width: 42%;
+    width: 43%;
     background: aliceblue;
     padding: 58px;
     }
@@ -36,11 +36,11 @@ tr{
         height:100%;
     }
     .df4{
-        position:fixed;
-        left:60%;
-        bottom:50%;
-        top:50%;
-        height:100%;
+           position: fixed;
+    left: 96%;
+    bottom: 50%;
+    top: 14%;
+    height: 100%;
     }
 
 </style>
@@ -975,7 +975,7 @@ $(document).ready(function(){
                                 
                             })
                             .fail(function() {
-                                alert("error while fetching stats");
+                                // alert("error while fetching stats");
                             });
      }
 
@@ -1016,7 +1016,7 @@ $(document).ready(function(){
 
                             })
                             .fail(function() {
-                                alert("error while fetching stats");
+                                // alert("error while fetching stats");
                             });
      }
 
@@ -1059,7 +1059,7 @@ $(document).ready(function(){
                             })
                             .fail(function() {
                                 console.log("fsile");
-                                alert("error while fetching stats");
+                                // alert("error while fetching stats");
                             });
      }
 
@@ -1104,45 +1104,17 @@ $(document).ready(function(){
 
     // ------------split screen-------------------------------------------------------------------------
 </script>
-    <div class='df2' style='display:none'>
- <br>
- <br>
-
-
-
-                <!-- <div class="contains_resume" style="text-align:center">
-
-                            <label><input type="radio" class="uncheck" name="colorRadio" value="red"> Micro CV</label>
-                            <label><input type="radio" name="colorRadio" class="uncheck" value="green">Interaction History</label>
-                           
-                           
-                            <div class="red box" style="display:none;text-align: justify;">
-                          
-                            </div>
-                           
-                           
-                            <div class="green box"style="display:none;"\>
-                            
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob">Show less</button>
-                                                <div id="showthisjob" class="collapse">
-                                                </div>
-
-                                              
-                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
-                                                <div id="showthiscompany" class="collapse">
-                                                </div>
-
-                            </div>
-
-                    
-                </div> -->
- 
+    <div class='df2' style='display:none;text-align:center'>
+            <br>
+            <br>
+            <div class="level-status" style="display: flex;justify-content: center;"></div>
+            <div class="comment-box" style="display: flex;justify-content: center;"></div>
     </div>
 
  <div class='df3'style='display:none'>
  <iframe name='cv' data-src="http://www.w3schools.com" src="../loaders_form/form.php?jid=2" width="750" style="background:#ffffff;height:inherit"></iframe>
  </div>
- <div class='df4' style='display:none'><button onclick='showform();'><i class="fa fa-close" style="font-size:30px;color:red"></i></button></div>
+ <div class='df4' style='display:none'><button style="background:transparent" onclick='showform();'><i class="fa fa-close" style="font-size: 15px;color: gray;"></i></button></div>
  <script>
  var frm = ['cv'];
  var hrf=[];
@@ -1163,8 +1135,13 @@ $(document).ready(function(){
          var hrf1 = [x];
          hrf=hrf1;
 
-         $('.df2').append($('#example').find('tr[data-id='+y+'] td:not(:first-child):not(:nth-child(2))'));
-         $('.df2').append($('.savestatusbtn'));
+         $('.level-status').append($('#example').find('tr[data-id='+y+'] td:not(:first-child):not(:nth-child(2)):not(:nth-child(3))'));
+        //  $('.df2').append('<br>');
+         $('.comment-box').append($('#example').find('tr[data-id='+y+'] td:nth-child(3)'));
+         $('.df2').append('<br>');
+
+         $('.comment-box').append($('.savestatusbtn'));
+         $('.savestatusbtn').html('Save')
          $('.df2').append($('.contains_resume'));
          setSource();
          $('.df2').toggle();
@@ -1173,4 +1150,16 @@ $(document).ready(function(){
 
 
      }
+
+     document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        if (evt.keyCode == 27) {
+            // alert('Esc key pressed.');
+            showform();
+            
+            setTimeout(() => {
+                location.reload()
+            }, 500); 
+        }
+    };
 </script>
