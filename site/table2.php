@@ -131,12 +131,16 @@ if(isset($_SESSION['emailvendors'])){
     ?>
     <div class="col-md-12" style="text-align:center">
                     <div class="float-right">
-                        <a href="javascript:void(0);" class="btn btn-success btn-xs" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i> <i class="fa fa-upload" aria-hidden="true"></i></a>
-                    </div>
-
-                </div>&nbsp;
-                       <button class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
-</button>
+                        <a href="javascript:void(0);" class="btn btn-success" data-toggle="tooltip" title="Add Candidates" onclick="formToggle('importFrm');"><i class="plus"></i> <i class="fa fa-upload" aria-hidden="true"></i></a>
+                   &nbsp;&nbsp;
+                            <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
+                        &nbsp;
+                                        <button class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </button>
+                   
+                   </div>
+ 
+                </div>
                 <!-- CSV file upload form -->
                 <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
                 <br>
@@ -295,13 +299,18 @@ if(!isset($_SESSION['emailvendors'])){
             ?>
         
             <th >Your comment*</th>
-            <th>level</th>
             <?php
         }
 
    ?>
 
-   
+   <?php if(!isset($_SESSION['emailvendors'])){
+
+?>
+            <th>level</th>
+<?php
+   }
+   ?>
     
     <th >Status</th>
  

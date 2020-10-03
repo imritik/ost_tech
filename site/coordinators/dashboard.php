@@ -264,7 +264,7 @@ function showpage(postid){
 
                                clearuri();
 
-                                location.replace(window.location.href.split('#')[0]+'?jid='+x);
+                                location.replace(window.location.href.split('#')[0]+'?jid='+x+'&status=Shared');
                             }
                                 
                             // });
@@ -278,15 +278,15 @@ function showpage(postid){
                                 }
 
     }
-    function setstatus(status){
-        var uri = window.location.toString();
-                                if (uri.indexOf("&") > 0) {
-                                    var clean_uri = uri.substring(0, uri.indexOf("&"));
-                                    window.history.replaceState({}, document.title, clean_uri);
-                                }
-            location.replace(window.location.href+'&status='+status);
+    // function setstatus(status){
+    //     var uri = window.location.toString();
+    //                             if (uri.indexOf("&") > 0) {
+    //                                 var clean_uri = uri.substring(0, uri.indexOf("&"));
+    //                                 window.history.replaceState({}, document.title, clean_uri);
+    //                             }
+    //         location.replace(window.location.href+'&status='+status);
 
-    }
+    // }
 </script>
  <script>
          var favorites = [];
@@ -670,150 +670,150 @@ function urlchange(cat){
 }
     
 
- var frm = ['cv'];
- var hrf=[];
- function setSource() {
-     console.log("in set source");
-            for(i=0, l=frm.length; i<l; i++) {
-                document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
-            }
-        }
-     function showform(){
-        $('.tobehidden').removeClass('blur');
-        $('.tobe-reused').removeClass('df3');
-        $('.tobe-reused').toggle();
-         $('.df2').toggle();
-         $('.df3').toggle();
-         $('.df4').toggle();
+//  var frm = ['cv'];
+//  var hrf=[];
+//  function setSource() {
+//      console.log("in set source");
+//             for(i=0, l=frm.length; i<l; i++) {
+//                 document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
+//             }
+//         }
+//      function showform(){
+//         $('.tobehidden').removeClass('blur');
+//         $('.tobe-reused').removeClass('df3');
+//         $('.tobe-reused').toggle();
+//          $('.df2').toggle();
+//          $('.df3').toggle();
+//          $('.df4').toggle();
 
 
-     }
+//      }
 
-     function showcvform(x,y){
-         $('.tobe-reused').hide();
-         $('.tobe-reused').addClass('df3');
-         console.log(x);
-         var hrf1 = [x];
-         hrf=hrf1;
-        var favorite=[];
-        var jobref=['<?php echo $jidd;?>'];
-        favorite.push(y);
-        favorites=favorite;
-        jobrefs=jobref;
-        var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
-        newArray1=newArray;
-        console.log(newArray1);
-         setSource();
-         $('.tobehidden').addClass('blur');
-         $('.df2').toggle();
-         $('.df3').toggle();
-         $('.df4').toggle();
-     }
+//      function showcvform(x,y){
+//          $('.tobe-reused').hide();
+//          $('.tobe-reused').addClass('df3');
+//          console.log(x);
+//          var hrf1 = [x];
+//          hrf=hrf1;
+//         var favorite=[];
+//         var jobref=['<?php echo $jidd;?>'];
+//         favorite.push(y);
+//         favorites=favorite;
+//         jobrefs=jobref;
+//         var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+//         newArray1=newArray;
+//         console.log(newArray1);
+//          setSource();
+//          $('.tobehidden').addClass('blur');
+//          $('.df2').toggle();
+//          $('.df3').toggle();
+//          $('.df4').toggle();
+//      }
 
-     function showlastjob(id){
-        //  alert(id);
-          $.ajax({
-                                url: '../thiscompanystats.php',
-                                type: 'POST',
+//      function showlastjob(id){
+//         //  alert(id);
+//           $.ajax({
+//                                 url: '../thiscompanystats.php',
+//                                 type: 'POST',
                             
-                                data: {param1: id,param2:'<?php echo $currentCompEmail;?>'},
-                            })
-                            .done(function(response) {
-                                // console.log(response);
-                                data=JSON.parse(response)
+//                                 data: {param1: id,param2:'<?php echo $currentCompEmail;?>'},
+//                             })
+//                             .done(function(response) {
+//                                 // console.log(response);
+//                                 data=JSON.parse(response)
                              
-                                // data=response;
-                                console.log(data);
-                                // console.log(data.length);
+//                                 // data=response;
+//                                 console.log(data);
+//                                 // console.log(data.length);
 
-                                var html = "<table border='1|1'class='table table-striped'>";
-                                for (var i = 0; i < data.length; i++) {
-                                    // console.log(data[i]);
-                                     var cname=data[i][0];
-                        // console.log(cname);
-                                        for(var j=0;j<data[i].length;j++){
-                                                if(data[i][j]){
-                                                    // console.log(data[i][j].length);
+//                                 var html = "<table border='1|1'class='table table-striped'>";
+//                                 for (var i = 0; i < data.length; i++) {
+//                                     // console.log(data[i]);
+//                                      var cname=data[i][0];
+//                         // console.log(cname);
+//                                         for(var j=0;j<data[i].length;j++){
+//                                                 if(data[i][j]){
+//                                                     // console.log(data[i][j].length);
                        
-                                                             var res = data[i][j];
-                                                             console.log(res);
-                                                            for(k=0;k<res.length;k++){
-                                                                if(res[k]){
-                                                                console.log(res[k]);
+//                                                              var res = data[i][j];
+//                                                              console.log(res);
+//                                                             for(k=0;k<res.length;k++){
+//                                                                 if(res[k]){
+//                                                                 console.log(res[k]);
 
-                                                                }
-                                                                var line = res[k].split("$");
-                                                                // console.log(line);
-                                                                if(line[1] && line[0] && line[2]){
-                                                                          html+="<tr>";
-                                                                        html+="<td>"+cname+"</td>";
+//                                                                 }
+//                                                                 var line = res[k].split("$");
+//                                                                 // console.log(line);
+//                                                                 if(line[1] && line[0] && line[2]){
+//                                                                           html+="<tr>";
+//                                                                         html+="<td>"+cname+"</td>";
 
-                                                                        html+="<td>"+line[1]+"</td>";
-                                                                        html+="<td>"+line[0]+"</td>";
-                                                                        html+="<td>"+line[2]+"</td>";
-                                                                        html+="</tr>";
-                                                                }
+//                                                                         html+="<td>"+line[1]+"</td>";
+//                                                                         html+="<td>"+line[0]+"</td>";
+//                                                                         html+="<td>"+line[2]+"</td>";
+//                                                                         html+="</tr>";
+//                                                                 }
                                                               
 
-                                                            }
+//                                                             }
                                                            
-                                                 }
+//                                                  }
 
-                                        }
-                                }
-                                html+="</table>";
+//                                         }
+//                                 }
+//                                 html+="</table>";
 
-                                $('.modal-title').html("This company feedback");
-                                $('.thisjob').html(html);
-                                // Display Modal
-                                $('#myModal').modal('show'); 
-                            })
-                            .fail(function() {
-                                alert("error while fetching stats");
-                            });
-     }
+//                                 $('.modal-title').html("This company feedback");
+//                                 $('.thisjob').html(html);
+//                                 // Display Modal
+//                                 $('#myModal').modal('show'); 
+//                             })
+//                             .fail(function() {
+//                                 alert("error while fetching stats");
+//                             });
+//      }
 
-     function showthisjob(id){
-        //  ajax request to fetch job stats
-                            $.ajax({
-                                url: '../thisjobstats.php',
-                                type: 'POST',
+//      function showthisjob(id){
+//         //  ajax request to fetch job stats
+//                             $.ajax({
+//                                 url: '../thisjobstats.php',
+//                                 type: 'POST',
                             
-                                data: {param1: id,param2:<?php echo $_GET['jid'];?>},
-                            })
-                            .done(function(response) {
-                                data=JSON.parse(response)
-                                console.log(data);
+//                                 data: {param1: id,param2:<?php echo $_GET['jid'];?>},
+//                             })
+//                             .done(function(response) {
+//                                 data=JSON.parse(response)
+//                                 console.log(data);
 
-                                var html = "<table border='1|1'class='table table-striped'>";
-                                for (var i = 0; i < data.length; i++) {
-                                    if(data[i]){
-                                        for(var j=0;j<data[i].length;j++){
-                                            var res = data[i][j].split("$");
-                                           if(res[0]&&res[1]&&res[2]){
-                                                html+="<tr>";
-                                                html+="<td>"+res[1]+"</td>";
-                                                html+="<td>"+res[0]+"</td>";
-                                                html+="<td>"+res[2]+"</td>";
-                                                html+="</tr>";
-                                            }
-                                        }
+//                                 var html = "<table border='1|1'class='table table-striped'>";
+//                                 for (var i = 0; i < data.length; i++) {
+//                                     if(data[i]){
+//                                         for(var j=0;j<data[i].length;j++){
+//                                             var res = data[i][j].split("$");
+//                                            if(res[0]&&res[1]&&res[2]){
+//                                                 html+="<tr>";
+//                                                 html+="<td>"+res[1]+"</td>";
+//                                                 html+="<td>"+res[0]+"</td>";
+//                                                 html+="<td>"+res[2]+"</td>";
+//                                                 html+="</tr>";
+//                                             }
+//                                         }
 
-                                    }
+//                                     }
 
 
-                                }
-                                html+="</table>";
-                                $('.modal-title').html("This job feedback");
+//                                 }
+//                                 html+="</table>";
+//                                 $('.modal-title').html("This job feedback");
 
-                                $('.thisjob').html(html);
-                                // Display Modal
-                                $('#myModal').modal('show'); 
-                            })
-                            .fail(function() {
-                                alert("error while fetching stats");
-                            });
-     }
+//                                 $('.thisjob').html(html);
+//                                 // Display Modal
+//                                 $('#myModal').modal('show'); 
+//                             })
+//                             .fail(function() {
+//                                 alert("error while fetching stats");
+//                             });
+//      }
 
      function setclick(){
          $(".nav-pills li:first").trigger('click');
