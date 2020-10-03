@@ -148,7 +148,7 @@ $currentCompEmail='';
 </div> 
         <div class="tab-pane active" id="tab_a">
         
-                    <?php include '../tablestructure.php'; ?>
+                    <?php include '../table2.php'; ?>
 
 </body>
  <!-- ============ JOBS END ============ -->
