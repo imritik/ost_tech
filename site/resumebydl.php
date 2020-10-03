@@ -5,7 +5,7 @@ include '../dbConfig.php';
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
-if(isset($_SESSION['emaildl'] )|| isset($_SESSION['emailvendors'])){
+if(isset($_SESSION['emaildl'] )|| isset($_SESSION['emailvendors'])|| isset($_SESSION['emailrecruiters'])){
 
   }
   else{
@@ -13,7 +13,7 @@ if(isset($_SESSION['emaildl'] )|| isset($_SESSION['emailvendors'])){
   }
 $statusMsg = '';
 $studid=$_POST['var'];
-print $studid;
+// print $studid;
 // File upload path
 
          // -----check if directory exists----------------------------------------

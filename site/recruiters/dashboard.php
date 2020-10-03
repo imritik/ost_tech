@@ -6,11 +6,14 @@ if(isset($_SESSION['emailrecruiters'])){
   }
   else{
     // echo "alert('no session exist')";
-    header("location: ../../index.php");
+    header("location: ../../admin_jobs/admin_home.php");
   }
 include '../../dbConfig.php';
 $vendoremail=$_SESSION['emailrecruiters'];
+
+$page="job";
   ?>
+
   <!DOCTYPE html>
 <html>
 <head>
@@ -23,83 +26,43 @@ $vendoremail=$_SESSION['emailrecruiters'];
     <link rel="shortcut icon" href="images/favicon.png">
 
     <!-- Main Stylesheet -->
-    <link href="../css/style.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
+
+    <style>
+        .fill{
+            width:-webkit-fill-available;
+        }
+        .width-auto{
+            width:auto;
+        }
+    </style>
 
 </head>
 
-<body>
+<body style='padding:0'>
 
-    <!-- ============ PAGE LOADER START ============ -->
-
-    <div id="loader">
-        <i class="fa fa-cog fa-4x fa-spin"></i>
-    </div>
-
-    <!-- ============ PAGE LOADER END ============ -->
-
-    <!-- ============ NAVBAR START ============ -->
-
-    <div class="fm-container">
-        <!-- Menu -->
-        <div class="menu">
-            <div class="button-close text-right">
-                <a class="fm-button"><i class="fa fa-close fa-2x"></i></a>
-            </div>
-            <ul class="nav">
-                <li><a class="link-login" href=""+window.location.href onclick="clearuri()">Home</a></li>
-
-               <?php
- // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting WHERE vendor='$vendoremail'";
-                    $resultjob = $db->query($sqljob);
-                    if ($resultjob ->num_rows > 0) {
-                        while($rowjob = $resultjob->fetch_assoc()) {
-                            $postid=$rowjob['posting_id'];
-                            $jobtitle=$rowjob['job_title'];
-                            $cname=$rowjob['company_name'];
-                    echo '<li id="'.$postid.'" name="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#" style="width:max-content;padding: 10px;" >'.$jobtitle.'  (<small class="company_name"> '.$cname.' </small>)</a> </li>';
-                            
-                            }
-                    }
-                    else{
-                        echo '<li><a class="link-login">No Jobs</a></li>';
-                    }
-               ?>
-                <li><a class="link-login" href="../../logout/logout.php">Logout</a></li>
-            </ul>
-        </div>
-        <!-- end Menu -->
-    </div>
-
-    <!-- ============ NAVBAR END ============ -->
-
-    <!-- ============ HEADER START ============ -->
-
-    <header>
+ <!-- ============ HEADER START ============ -->
+<header>
         <div id="header-background"></div>
         <div class="container">
             <div class="pull-left">
-                <div id="logo">
-                    <a href="#"><img src="images/logo.png" alt="TalentChords" /></a>
-                </div>
+             <b>Recruiter<b> (<?php echo $vendoremail; ?>)
             </div>
             <div id="menu-open" class="pull-right">
-              <a class="link-login" style="font-size:large"><?php echo $_SESSION['emailvendors'];?></a>
-&nbsp;
-                <a class="fm-button"><i class="fa fa-bars fa-lg"></i></a>
+               <a href="../../logout/logout.php">Logout</a>
             </div>
 
         </div>
-    </header>
+</header>
+    <br>
+    <br>
+    <br>
+<div class="container">
 
-    <!-- ============ HEADER END ============ -->
-
-    <!-- ============ TITLE START ============ -->
-
-    <section id="title" style="padding: 40px 0;">
+<div class="row" style="display: flex;justify-content: center;">
+<!-- <?php include 'radio.php';?> -->
     <?php
 // Load the database configuration file
 // include_once 'dbConfig.php';
@@ -132,397 +95,120 @@ if(!empty($_GET['status'])){
     <div class="alert <?php echo $statusType; ?>"><?php echo $statusMsg; ?></div>
 </div>
 <?php } ?>
+</div>
+   <br>
+    <div class="row">
+    <div class="col-md-2 fixed-top">
+<h3>Jobs</h3><span><?php echo $coordinator_email;?></span>
 
+<ul class="nav nav-pills nav-stacked">
 
-<?php
+<!-- ----jobs using php -->
+ <?php
+$currentCompEmail='';
 
-if(!empty($_GET['jid'])){
-    $jid=$_GET['jid'];
-
-                ?>
-
-                <div class="container">
-                        <div class="row">
-                        <!-- <div class="col-md-6 head"> -->
-
-                    <!-- <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary">Export to CSV File</button> -->
-                    <!-- </div> -->
-                        <div class="col-md-12" style="text-align:center">
-                    <div class="float-right">
-                        <a href="javascript:void(0);" class="btn btn-success" onclick="formToggle('importFrm');"><i class="plus"></i> Add candidates</a>
-                    </div>
-                </div>
-                <!-- CSV file upload form -->
-                <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
-                <br>
-                    <form action="../csv_v2/importData_vendor.php?jid=<?php echo $jid;?>" method="post" enctype="multipart/form-data">
-                        <input type="file" name="file" />
-                        <br>
-                        <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORT">
-                    </form>
-                    <br>
-                </div>
-                        </div>
-                        <!-- <br> -->
-                        <!-- -----------filters---- -->
-            </div>
-
-                </section>
-
-                <!-- ============ TITLE END ============ -->
-
-                <!-- ============ JOBS START ============ -->
-
-                <section id="jobs"style="padding: 40px 0;">
-                    <div class="container">
-                    <div class="row" style="text-align:center">
-                     <?php
  // ------collect all jobs of company here
-                    $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid' and vendor='$vendoremail'";
-                    $result22 = $db->query($sql22);
-                    if ($result22 ->num_rows > 0) {
-                        while($row22 = $result22->fetch_assoc()) {
-                            $postid=$row22['posting_id'];
-                            $jobtitle=$row22['job_title'];
-                            $cname=$row22['company_name'];
-                    echo '<p style="font-size:x-large"><b>JobCode:</b>'.$postid.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> JobTitle:</b>'.$jobtitle.' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Company:</b>'.$cname.'</p>';
+                    $sqljob="SELECT * FROM Job_Posting where recruiter LIKE '%$vendoremail%'";
+                    $resultjob = $db->query($sqljob);
+                    if ($resultjob ->num_rows > 0) {
+                        while($rowjob = $resultjob->fetch_assoc()) {
+                            $postid=$rowjob['posting_id'];
+                            $jobtitle=$rowjob['job_title'];
+                            $cname=$rowjob['company_name'];
+                    echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'  ('.$cname.")".'</a></li>';
                             
                             }
                     }
                     else{
-                        echo '<p style="font-size:x-large">Invalid Job</p>';
+                        echo '<li><a>No Job(s)</a></li>';
                     }
                ?>
-                    </div>
-   
+               <!-- <li><a href="editjob.php" class="label label-success" style="font-size:inherit" target="blank">Post a new job</a></li> -->
 
+</ul>
+</div>
+<div class="tab-content col-md-10">
+<div style="display:none"  class="text-center tobe-reused">
+<div style="display:flex;justify-content: center;">
+   <!-- <select id="admins_email" class="form-control" style="width:50%"> 
 
- <div class="tab-pane active" id="tab_a">
-        
+        <option value="" >Select Managerr</option>
+
         <?php
 
-if(!empty($_GET['jid'])){
-    $jid=$_GET['jid'];
-    ?>
-
-    <script>
-   $('#'+<?php echo $jid;?>).addClass('active');    
-    </script>
-    <?php
-// /
-                }
-                ?>
-
-<ul class="nav nav-tabs" style="padding: 0 339px;">
-    <li class='uploaded'><a  onclick="setstatus('uploaded')">Uploaded CV&nbsp;<span></span></a></li>
-    <li class='shared'><a  onclick="setstatus('shared')">Shared&nbsp;<span></span></a></li>
-    <li class='shortlist'><a  onclick="setstatus('shortlist')">Shortlisted&nbsp;<span></span></a></li>
-    <li class='rejected'><a  onclick="setstatus('rejected')">Rejected&nbsp;<span></span></a></li>
-
-  </ul>
-
-  <div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
-       <div class="form-group tobehidden" style="transform: rotateX(180deg);overflow-x:auto">
-      <table class="table" style="transform: rotateX(180deg);">
-<tr class="filters">
-<th style="color:black;display:flex;"><input type="checkbox" id="selectall">Select  </th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Current CTC</th>
-    <th>Expected CTC</th>
-    <th>Notice period</th>
-    <th>Resume</th>
-   
-    </tr>
-    <tbody>
-    <?php 
-
-    if(!empty($_GET['jid'])&& !empty($_GET['status'])){
-                $jid=$_GET['jid'];
-                $status=$_GET['status'];
-                ?>
-                 <script>
-   $('.<?php echo $status;?>').addClass('active');    
-    </script>
-    <?php
-$query='';
-        if($status=='uploaded'){
-                $query = "SELECT * FROM Student where Uploaded_by='$vendoremail'";
-
-        }
-        else if($status=='shared'){
-
-                    // -----get students id forwarded 
-
-                            // List Users
-                    $query1 = "SELECT * FROM to_admin where recieved_email='$vendoremail' and job_id_ref='$jid'";
-                    if (!$result1 = mysqli_query($db, $query1)) {
-                        exit(mysqli_error($db));
-                    }
-                    if (mysqli_num_rows($result1) > 0) {
-                        while ($row1 = mysqli_fetch_assoc($result1)) {
-                            $data1=json_decode(stripslashes($row1['stud_id']));
-                                        foreach($data1 as $d){
-                                            array_push($list,$d);
-                        } 
-                    }
-                }
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
-
-        }
-        else{
-                $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status'";
-
-        }
-            if (!$result = mysqli_query($db, $query)) {
-                exit(mysqli_error($db));
-            }
-            $studids=array();
-            // $studstatuss=array();
+        $query = $db->query("SELECT * FROM coordinators");
             
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    array_push($studids,$row['student_id']);
-                } 
-            }
-            else{
-                $studids=$list;
-            }
+        if($query ->num_rows >0){
+        while($row = $query->fetch_assoc()){
 
-
-        if(sizeof($studids)){
-            // $number = 1;
-            $arrlength = count($studids);
-        // var_dump($studids);
+        echo '<option value="' . $row['email'] . '">' . $row['email'] .' ('.$row['name'].')' . '</option>';
         ?>
-        <script>
-         $('.<?php echo $status;?>').find( "span" ).html('(<?php echo $arrlength;?>)'); 
-        </script>
-        <?php
-            for($x = 0; $x < $arrlength; $x++) {
-            
-            
+        <?php }} ?>
 
-            // Get images from the database
-            $query = $db->query("SELECT * FROM Student WHERE student_id='$studids[$x]'");
+    </select>
 
-        
-
-            if($query ->num_rows ==1){
-            $row1 = $query->fetch_assoc();
-                // echo $row1;
-            $sturesume=$row1["resume"];
-            $ssid=$row1['student_id'];
-            $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studids[$x].'/'.$sturesume;
-            //    echo $ssid;
-            // while ($row = mysqli_fetch_assoc($result)) {
-                ?>
-                <tr>
-                <td><input type="checkbox" class="studentcheckbox1" value="<?php echo $ssid;?>" name="chk"></td>
-              
-                    <td>
-                    <?php echo $row1['stud_name'];?>
-                    <!-- &nbsp;&nbsp;<a id="<?php echo $ssid;?>" type="button" onclick="showthisjob(this.id)"><i class="fa fa-eye"></i></a>
-                    &nbsp;&nbsp;<a id="<?php echo $ssid;?>"data-toggle="tooltip" title="" onclick="showlastjob(this.id)"><i class="fa fa-info-circle"></i></a>
-                    -->
-                   </td>
-                    <td><?php echo $row1['email'];?></td>
-               
-                    <td><?php echo $row1['curr_ctc'];?></td>
-                    <td><?php echo $row1['expected_ctc'];?></td>
-              
-                    <td><?php echo $row1['notice_period']?>
-                    </td>
-                    <td><a href='<?php echo $resumelinks;?>' target='blank'>View</a></td>
-                
-                </tr>
-                <?php
-                // $number++;
-            // }
-            }}
-            // $users .= '</table>';
-
-        }
-            else{
-                // $users='No Student found!';
-                echo "No Candidates";
-            }
-    }
-
-
-    ?>
-
-    </tbody>
-    </table>
+    <button id="send_ids" class="btn btn-primary"  onclick="sendids();">Send</button>
     </div>
-    </div>
+    <br>
    
+    <div style="display:flex;justify-content: center;">
+    <div> -->
+    <!-- <label>Feedback</label> -->
+    <!-- <select id="updatenotebtn" class="form-control">
+        <option value="hold" >Hold</option>
+        <option value="shortlist" >Shortlist</option>
+        <option value="rejected" >Reject</option>
+        <option value="blacklist">Blacklist</option>
+    </select> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!-- <input id="hrfeedback" class="form-control" name="hrfeedback" placeholder="detailed feedback" value="feedback" required> -->
+  <!-- </div> -->
   </div>
-            <!-- -------------------------------------- -->
-        </div>
-       
-<!-- </div> -->
-            <!-- <br> -->
-                                      
-
-
-                                <!-- -------php code to fetch data from two tables---- -->
-
-                            
-            <?php
-            // if(isset($_POST['showstudentlist'])){
-            if (isset($_COOKIE["vendorduplicate"])){
-                ?>
-
-  <table class="table table-bordered">
-                                                <thead>
-                                                    <tr class="filters">
-                    <th style="color:black;display:flex;"> <input type="checkbox" id="selectall">&nbsp;Select</th>
-                                                      
-                                                        <th>College </th>
-                                                        <th>Name</th>
-                                                        <th>Contact</th>
-                                                        <th>Email</th>
-                                                        <th>Registered on</th>
-                                                        <th style="color:black">Resume</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                <div class="alert alert-warning text-center" role="alert">
-                                                <p>Duplicates will be shown here</p>
-                                                <p id="duplicates-number" style="color:red"></p>
-                                                <button id="mark-duplicate" class="btn btn-xs btn-danger" style="display:none" onclick="removeduplicates();">Mark as duplicate</button>
-                                                </div>
-
-
-                <?php
+  <!-- <br> -->
+    <!-- <select class="btn btn-info" id="updatestatusbtn"  onchange="updatestatus();">
+                    <option value="Round 1">Round 1</option>
+                    <option value="Round 2">Round 2</option>
+                    <option value="Round 3">Round 3</option>
+                    <option value="Round 4">Round 4</option>
+    </select> -->
+                    <!-- &nbsp; -->
+                    <!-- <button class="btn btn-info" onclick="updatestatus();">Save</button> -->
+     <!-- <button id="rejectbtn"  class="btn btn-danger" onclick="rejectstud();"><i class="fa fa-minus-circle" aria-hidden="true"></i>Reject</button> -->
+                    <!-- <br> -->
             
-                $studlistobtain=explode(",",$_COOKIE['vendorduplicate']);
-                $duplicatestatus=explode(",",$_COOKIE['duplicatestatus']);
-                
-                if(sizeof($studlistobtain)){
-                    $arrlen=count($studlistobtain);
-                    ?>
-                    <script>
-                    document.getElementById("duplicates-number").innerHTML='<?php echo $arrlen; ?> Duplicate(s) Found';
-                    </script>
-                    <?php
-                    // echo $arrlen;
-                    // echo $studlistobtain[1];
-                        for($x=0;$x<$arrlen;$x++){
-                        $sql = "SELECT * FROM Student where student_id='$studlistobtain[$x]'";
-                        $result = $db->query($sql);
-                        
-                        if ($result ->num_rows >0) {
-                        
-                            while($row1 = $result->fetch_assoc()) {
-                                $resumelinks='http://talentchords.com/jobs/specialty/uploads/'.$studlistobtain[$x].'/'.$row1['resume'];
-                                ?>
-                                <tr >
-        <td><input type="checkbox" class="studentcheckbox" value="<?php echo $row1['student_id']; ?>" name="id[]"></td>
+</div> 
+        <div class="tab-pane active" id="tab_a">
+        
+                    <?php include '../table2.php'; ?>
 
-                                <td  > <?php echo $row1["college_name"];?></td>
-                                <!-- <td ><?php echo $row1["college_location"];?></td> -->
-                                <!-- <td ><?php echo $row1["student_id"];?></td> -->
-                                <td  ><?php echo $row1["stud_name"];?></td>
-                                <td  ><?php echo $row1["contact"];?></td>
-                                <td  ><a href="mailto:<?php echo $row1["email"];?>"><?php echo $row1["email"];?></a></td>
-                                <!-- <td  ><?php echo $jobtitleobtain[$x];?></td> -->
-                                <!-- <td  ><?php echo $statusobtain[$x];?></td> -->
-                                <!-- <td  ><?php echo $noteobtain[$x];?></td> -->
-                                <!-- <td class="applied" ><?php echo $appliedobtain[$x];?></td> -->
-                                <!-- <td  ><?php echo $updatedonobtain[$x];?></td> -->
-                                <td  ><?php echo $row1['updated_on'];?></td>
-                                <td  ><a href="../../specialty/uploads/<?php echo $row1["student_id"];?>/<?php echo $row1["resume"];?>" target="blank">View</a></td>
-<td><?php echo $duplicatestatus[$x];?></td>
+</body>
+ <!-- ============ JOBS END ============ -->
 
-  <td style='display:flex'>
-                <!-- Add resume -->
-                <form id="<?php echo $row1["student_id"];?>" tag='<?php echo $row1["resume"];?>' class='form_resume' enctype="multipart/form-data" resumeid='<?php echo $row1["student_id"];?>'>
-                <input type='file' name='upd_resume' id='resumefile<?php echo $row1["student_id"];?>'>
-                <button type='submit' id='upl_resume' class='editresume' value='Upload Resume' ><i class="fa fa-upload" aria-hidden="true"></i>
-</button>
-</form>
-                </td>
-                                </tr>
-                        
-                            <?php   
-                            }
-                
-                }
-                else{
-                    echo "No Duplicates";
-                }
-
-            } 
-            
-            }
-            }
-            // }
-            ?>
-                                <!-- ----------------- -->
-                            
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                </section>
-
-
-                <?php
-
-}
-else{
-
-      $jobcount="SELECT * FROM Job_Posting WHERE vendor='$vendoremail'";
-    $jobcountresult = $db->query($jobcount);
-    $jobcountrows=$jobcountresult->num_rows;
-
-     $studcount="SELECT * FROM Student WHERE Uploaded_by='$vendoremail'";
-    $studcountresult = $db->query($studcount);
-    $studcountrows=$studcountresult->num_rows;
-
-
-
-    echo "
-    <div class='alert alert-info text-center' style='font-size:20px'>
-    <p>Served  <b>".$studcountrows."</b> candidate(s) for <b>".$jobcountrows." </b> Client(s)</p>
-    <p>Select a job to add more candidates.</p>
-    </div>
-    ";
-}
-
-?>
-       
-    <!-- ============ JOBS END ============ -->
-
-<?php include '../partials/footer.php' ?>
-
-    <!-- ============ CONTACT END ============ -->
-
-<!-- Show/hide CSV upload form -->
 <script>
-   
 
-    function clearuri(){
+ function setPage() {
         var uri = window.location.toString();
+                    console.log(uri.indexOf("?"));
                                 if (uri.indexOf("?") > 0) {
-                                    var clean_uri = uri.substring(0, uri.indexOf("?"));
-                                    window.history.replaceState({}, document.title, clean_uri);
+                                   
+                                    window.stop();
                                 }
+                                else{
+                                    $('ul li:first').click();
 
-    }
-    function setstatus(status){
-        var uri = window.location.toString();
-                                if (uri.indexOf("&") > 0) {
-                                    var clean_uri = uri.substring(0, uri.indexOf("&"));
-                                    window.history.replaceState({}, document.title, clean_uri);
                                 }
-            location.replace(window.location.href+'&status='+status);
-
+   
     }
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        // setPage();
+                    setTimeout(setPage(), 1000);
+
+    });
+
+    
 function formToggle(ID){
     var element = document.getElementById(ID);
     if(element.style.display === "none"){
@@ -531,98 +217,47 @@ function formToggle(ID){
         element.style.display = "none";
     }
 }
+                            
+  function deletejobpart(x){
+                            $.ajax({
+                                url: '../deletejob.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error while deleting!");
+                            });
+    }
+
+    function repostpart(x){
+        console.log(x);
+                             $.ajax({
+                                url: '../repost.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                               
+                            })
+                            .fail(function() {
+                                alert("error in reposting");
+                            });
+    }
 
 function showpage(postid){
-    document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     console.log(postid);
     getjobids(postid);
 }
-
-// ----checkbox select--
-
- var favorites = [];
-
-   
-$(".studentcheckbox").click(function(){
-
-    var favorite=[];
-        $.each($("input[name='id[]']:checked"), function(){            
-            favorite.push($(this).val());
-        });
-        favorites=favorite;
-     console.log(favorites);
-
-     if(favorites.length){
-            $('#mark-duplicate').show();
-     }
-     else{
-            $('#mark-duplicate').hide();
-     }
- 
-
-});
-
-    // -----for selecting all student at once---
-    $("#selectall").click(function () {
-
-        var jobarr=[]
-        $('tr').each(function(i, obj) {
-            //test
-            console.log(obj);
-            if($(this).is(":visible")) {
-            
-            // console.log(obj);
-            if($(this).find('.studentcheckbox').prop('checked') == false){
-                $(this).find('.studentcheckbox').prop('checked',true);
-                jobarr.push($(this).find('.studentcheckbox').val());
-                favorites=jobarr;
-                console.log(favorites);
-
-            }
-            else{
-                $(this).find('.studentcheckbox').prop('checked',false);
-                jobarr=[];
-                favorites=jobarr;
-                console.log(favorites);
-
-            }
-
-            }
-        });
-
-          if(favorites.length){
-            $('#mark-duplicate').show();
-     }
-     else{
-            $('#mark-duplicate').hide();
-     }
-
-    });
-</script>
-  <script>
-
-function remove(array, element) {
-    // console.log("in remove",element,array);
-  const index = array.indexOf(element);
-  array.splice(index, 1);
-}
-
-  function removeduplicates(){
-      console.log(favorites);
-     <?php  $originalduplicates=explode(",",$_COOKIE['vendorduplicate']); ?>
-      console.log(<?php echo json_encode($originalduplicates);?>);
-
-      for(i=0;i<favorites.length;i++){
-            remove(<?php echo json_encode($originalduplicates);?>,favorites[i]);
-      }
-      
-    
-        setcookie("vendorduplicate",'<?php echo implode(",",$originalduplicates); ?>');
-    //   remove the selected student id from cookie duplicatevendors
-
-
-  }
-    function getjobids(x){
+  function getjobids(x){
 
 // getting ids of student applied for jobs
                                 $.ajax({
@@ -640,22 +275,11 @@ function remove(array, element) {
 
                                clearuri();
 
-                                location.replace(window.location.href.split('#')[0]+'?jid='+x);
+                                location.replace(window.location.href.split('#')[0]+'?jid='+x+'&status=shortlist');
                             });
                                 
-                            // });
-    }
-
-  
-    </script>
-
-   <script>
-$('#job-company').val(document.cookie.split(';')[0].split('=')[1]);
-         </script>   
-
-         
-    <script>
-
+                            }
+    
 
     function clearuri(){
         var uri = window.location.toString();
@@ -665,49 +289,552 @@ $('#job-company').val(document.cookie.split(';')[0].split('=')[1]);
                                 }
 
     }
-       function setjscookie(){
-        document.cookie="daterange1="+$('#dr1').val();
-        document.cookie="daterange2="+$('#dr2').val();
-        var txttitle = $('#dr1').val();
-        var txtcategory = $('#dr2').val();
-        display(txttitle,txtcategory);
+    // function setstatus(status){
+    //     var uri = window.location.toString();
+    //                             if (uri.indexOf("&") > 0) {
+    //                                 var clean_uri = uri.substring(0, uri.indexOf("&"));
+    //                                 window.history.replaceState({}, document.title, clean_uri);
+    //                             }
+    //         location.replace(window.location.href+'&status='+status);
 
-       }
+    // }
+</script>
+ <script>
+         var favorites = [];
+        var jobrefs=[];
+        var newArray1=[];
+        var is_checked=false;
 
 
-// -------------------------------
+$('#admins_email').on('change', function () {
+    $('#send_ids').prop('disabled', !$(this).val());
+}).trigger('change');
 
-function display(startDate,endDate) {
-    console.log(startDate,endDate);
-    //alert(startDate)
-    startDateArray= startDate.split("-");
-    endDateArray= endDate.split("-");
-    
-    var startDateTimeStamp = new Date(startDate).getTime();
-   var endDateTimeStamp = new Date(endDate).getTime();
-console.log(startDateTimeStamp);
+   
+    $(".studentcheckbox1").click(function(){
+        //  $('.tobe-reused').show();
 
-console.log(endDateTimeStamp);
-    $("tr").each(function() {
-        console.log("in table");
-        var rowDate = $(this).find('td:nth-child(12)').text();
-        
-        rowDate=rowDate.substring(0,11);
-        // console.log(rowDate);
-        rowDateArray= rowDate.split("-");
+        var favorite=[];
+        var jobref=[];
+            $.each($("input[name='chk']:checked"), function(){  
+                console.log($(this).val());          
+                favorite.push($(this).val());
+                jobref.push($(this).closest("tr").find('td:eq(2)').text());
+            });
+            favorites=favorite;
+            jobrefs=jobref;
+            var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+            newArray1=newArray;
+         console.log(newArray1);
+
+         if(newArray1.length){
+         $('.tobe-reused').show();
+         }
+         else{
+         $('.tobe-reused').hide();
+
+         }
+         
      
-var rowDateTimeStamp =  new Date(rowDate).getTime();
 
-console.log(rowDateTimeStamp);
-        
-        if(startDateTimeStamp<=rowDateTimeStamp && rowDateTimeStamp<=endDateTimeStamp) {
-            $(this).css("display","block");
-        } else {
-            $(this).css("display","none");
-        }
     });
+
+    // for selecting comp names
+
+
+
+    $(".studentcheckbox1comp").click(function(){
+        //  $('.tobe-reused').show();
+        var favorite=[];
+        var jobref=[];
+            $.each($("input[name='chkcomp']:checked"), function(){  
+                console.log($(this).val());          
+                favorite.push($(this).val());
+                jobref.push($(this).closest("tr").find('td:eq(2)').text());
+            });
+            favorites=favorite;
+            jobrefs=jobref;
+            var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+            newArray1=newArray;
+         console.log(newArray1);
+
+          if(newArray1.length){
+         $('#combine').show();
+         }
+         else{
+         $('#combine').hide();
+
+         }
+    });
+
+    // -----for selecting all student at once---
+    $("#selectall").click(function () {
+        // $('.tobe-reused').toggle();
+        
+        var sidc=[];
+        var jobid=[];
+                is_checked=!is_checked;
+
+        $('tr').each(function(i, obj) {
+                if($('tr').not(':first').is(":visible")) {
+
+                    if(is_checked){
+   // alert('hi');
+                            $(this).find('.studentcheckbox1').prop('checked',true)
+                            if($(this).find('.studentcheckbox1').prop('checked') == true){
+                                console.log($(this).find('.studentcheckbox1').val());
+                                sidc.push($(this).find('.studentcheckbox1').val());
+                                jobid.push($(this).find('.studentcheckbox1').closest("tr").find('td:eq(2)').text());
+                                favorites=sidc;
+                                jobrefs=jobid;
+                            }
+
+                 
+                     }
+                    else{
+                        console.log("here");
+                        $(this).find('.studentcheckbox1').prop('checked',false);
+                        favorites=sidc;
+                        jobrefs=jobid;
+                    }
+                }
+                // }
+        });
+
+        var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+        newArray1=newArray;
+         console.log(newArray1);
+           if(newArray1.length){
+         $('.tobe-reused').show();
+         }
+         else{
+         $('.tobe-reused').hide();
+
+         }
+   
+    });
+
+
+function combine(){
+    console.log(jobrefs);
+
+                            $.ajax({
+                                url: 'combine.php',
+                                type: 'POST',
+                            
+                                data: {param1: jobrefs},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                // location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in combining");
+                            });
 }
 
+
+     function FilterRow($input){
+           console.log("in filter function",$input);
+           $tobeshown=[];
+        $visible_rows=[];
+
+            if(!$input.length){
+                var rows = $('.table tr');
+                rows.show();
+            }
+        //    loop through the filters here
+        for(var i = 0; i < $input.length; i++){
+                inputContent = $input[i].val().toLowerCase(),
+                // $panel = $input[i].parents('.filterable'),
+                column = $('.filters th').index($input[i].parents('th')),
+                $table = $('.table'),
+                $rows = $table.find('tbody tr');
+                // console.log($rows);
+                if($visible_rows.length && inputContent!=''){
+                    console.log("filtered rows here");
+                    $rows=$visible_rows;
+                    console.log($rows);
+                }
+                else{
+                    // console.log("all rows here");
+                }
+
+                if(inputContent=='#'){
+                    // console.log("blank search will be there");
+                    var $filteredRows = $rows.filter(function() {
+                            var value = $(this).find('td').eq(column).text().trim()!='';
+                            return value === true;
+                            // console.log(value);
+                    });
+                }
+                else{
+                            /* Dirtiest filter function ever ;) */
+                            var $filteredRows = $rows.filter(function() {
+                                            var value = $(this).find('td').eq(column).text().toLowerCase();
+                                            return value.indexOf(inputContent) === -1;
+                            });
+                }
+                    $rows.show();
+                    $filteredRows.slice(1).hide();
+                    console.log($filteredRows);
+                    console.log($filteredRows.hide());
+
+
+                    $tobeshown=$table.find('tbody tr:visible');
+                            $visible_rows=$tobeshown;
+                            console.log($visible_rows,"visible");
+
+                    // ===--------------
+                    console.log($filteredRows,"filtered");
+        }
+            }
+    
+    $('.filters input').keyup(function(e) {
+        console.log(e);
+            console.log($(this));
+            var inputs = $(".filters input").slice(1);
+            var input_array=[];
+            var $input = $(this);
+        
+            for(var i = 0; i < inputs.length; i++){
+                // alert($(inputs[i]).val());
+                if($(inputs[i]).val()!=''){
+                    input_array.push($(inputs[i]));
+                    //  FilterRow($(inputs[i]));
+                }
+                else{
+                        //  var $input = $(this);
+                        // FilterRow($input);
+                }
+            }
+                console.log(input_array);
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            FilterRow(input_array);
+            // getVisibleRows();
+        });
+
+    function updatestatus(){
+
+        var statusvalue="hr";
+        var notevalue=$('#updatenotebtn').val();
+        var hrfeedback=$('#hrfeedback').val();
+        newArray1.forEach(function(obj){
+
+            var stid=obj.split(',')[0];
+            var jid="<?php echo $_GET['jid']?>";
+            var ps1="";
+            var ps2="";
+         
+
+            // call to function for updating status
+            updatestatusofeach(stid,jid,statusvalue,notevalue,hrfeedback,ps2);
+        });
+
+    }
+
+    function rejectstud(){
+
+                  newArray1.forEach(function(obj){
+
+                        var stid=obj.split(',')[0];
+                        var jid=obj.split(',')[1];
+
+
+                            // call to function for rejecting student
+                            rejectstudeach(stid,jid);
+        });
+
+    }
+
+    function updatestatusofeach(x,y,z,q,a,b){
+
+                console.log(x,y,z,q,a,b);
+                $.ajax({
+                                url: '../updatestudentstatus.php',
+                                type: 'POST',
+                            
+                                data: {param1: x,param2:y,param3:z,param4:q,param5:a,param6:b},
+                            })
+                            .done(function(response) {
+                                console.log(response);
+                                // location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in updating status");
+                            });
+
+    }
+
+    function rejectstudeach(x,y){
+                console.log(x,y);
+
+                $.ajax({
+                                url: 'rejectstudent.php',
+                                type: 'POST',
+                            
+                                data: {param1: x,param2:y},
+                            })
+                            .done(function(response) {
+                                // alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("error in rejecting");
+                            });
+
+    }
+
+
+function sendids(){
+    var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+    var stid=[];
+    var jid=[];
+    newArray.forEach(function(obj){
+
+        stid=obj.split(',')[0];
+        jid="<?php echo $_GET['jid']?>";
+        });
+            // ------------
+            var x= $('#admins_email').val();
+            var y=JSON.stringify(stid);
+            var z=JSON.stringify(jid);
+            var w='<?php echo $_SESSION['emailhr'];?>';
+
+            // ----inserting----
+            $.ajax({
+                                        url: '../am_toadmin.php',
+                                        type: 'POST',
+                                    
+                                        data: {param1: x,param2:JSON.stringify(favorites),param3:z,param4:w},
+                                    })
+                                    .done(function(response) {
+                                        // alert(response);
+                                    $('#send_ids').html('sent!');
+                                    })
+                                    .fail(function() {
+                                        alert("error while sending");
+                                    });
+
+}
+
+function urlchange(cat){
+   
+
+    window.location=window.location.protocol + "//" + window.location.host + window.location.pathname + '?jid=<?php echo $jidd;?>&status='+cat;
+}
+    
+
+//  var frm = ['cv'];
+//  var hrf=[];
+//  function setSource() {
+//      console.log("in set source");
+//             for(i=0, l=frm.length; i<l; i++) {
+//                 document.querySelector('iframe[name="'+frm[i]+'"]').src = hrf[i];
+//             }
+//         }
+//      function showform(){
+//         $('.tobehidden').removeClass('blur');
+//         $('.tobe-reused').removeClass('df3');
+//         $('.tobe-reused').toggle();
+//          $('.df2').toggle();
+//          $('.df3').toggle();
+//          $('.df4').toggle();
+
+
+//      }
+
+//      function showcvform(x,y){
+//          $('.tobe-reused').hide();
+//          $('.tobe-reused').addClass('df3');
+//          console.log(x);
+//          var hrf1 = [x];
+//          hrf=hrf1;
+//         var favorite=[];
+//         var jobref=['<?php echo $jidd;?>'];
+//         favorite.push(y);
+//         favorites=favorite;
+//         jobrefs=jobref;
+//         var newArray = favorites.map((e, i) => e +','+ jobrefs[i]);
+//         newArray1=newArray;
+//         console.log(newArray1);
+//          setSource();
+//          $('.tobehidden').addClass('blur');
+//          $('.df2').toggle();
+//          $('.df3').toggle();
+//          $('.df4').toggle();
+//      }
+
+//     function showlastjob(id){
+//         //  alert(id);
+//           $.ajax({
+//                                 url: '../thiscompanystats.php',
+//                                 type: 'POST',
+                            
+//                                 data: {param1: id,param2:'<?php echo $currentCompEmail;?>'},
+//                             })
+//                             .done(function(response) {
+//                                 // console.log(response);
+//                                 data=JSON.parse(response)
+                             
+//                                 // data=response;
+//                                 console.log(data);
+//                                 // console.log(data.length);
+
+//                                 var html = "<table border='1|1'class='table table-striped'>";
+//                                 for (var i = 0; i < data.length; i++) {
+//                                     // console.log(data[i]);
+//                                      var cname=data[i][0];
+//                         // console.log(cname);
+//                                         for(var j=0;j<data[i].length;j++){
+//                                                 if(data[i][j]){
+//                                                     // console.log(data[i][j].length);
+                       
+//                                                              var res = data[i][j];
+//                                                              console.log(res);
+//                                                             for(k=0;k<res.length;k++){
+//                                                                 if(res[k]){
+//                                                                 console.log(res[k]);
+
+//                                                                 }
+//                                                                 var line = res[k].split("$");
+//                                                                 // console.log(line);
+//                                                                 if(line[1] && line[0] && line[2]){
+//                                                                           html+="<tr>";
+//                                                                         html+="<td>"+cname+"</td>";
+
+//                                                                         html+="<td>"+line[1]+"</td>";
+//                                                                         html+="<td>"+line[0]+"</td>";
+//                                                                         html+="<td>"+line[2]+"</td>";
+//                                                                         html+="</tr>";
+//                                                                 }
+                                                              
+
+//                                                             }
+                                                           
+//                                                  }
+
+//                                         }
+//                                 }
+//                                 html+="</table>";
+
+//                                 $('.modal-title').html("This company feedback");
+//                                 $('.thisjob').html(html);
+//                                 // Display Modal
+//                                 $('#myModal').modal('show'); 
+//                             })
+//                             .fail(function() {
+//                                 alert("error while fetching stats");
+//                             });
+//      }
+
+//      function showthisjob(id){
+//         //  ajax request to fetch job stats
+//                             $.ajax({
+//                                 url: '../thisjobstats.php',
+//                                 type: 'POST',
+                            
+//                                 data: {param1: id,param2:<?php echo $_GET['jid'];?>},
+//                             })
+//                             .done(function(response) {
+//                                 data=JSON.parse(response)
+//                                 console.log(data);
+
+//                                 var html = "<table border='1|1'class='table table-striped'>";
+//                                 for (var i = 0; i < data.length; i++) {
+//                                     if(data[i]){
+//                                         for(var j=0;j<data[i].length;j++){
+//                                             var res = data[i][j].split("$");
+//                                            if(res[0]&&res[1]&&res[2]){
+//                                                 html+="<tr>";
+//                                                 html+="<td>"+res[1]+"</td>";
+//                                                 html+="<td>"+res[0]+"</td>";
+//                                                 html+="<td>"+res[2]+"</td>";
+//                                                 html+="</tr>";
+//                                             }
+//                                         }
+
+//                                     }
+
+
+//                                 }
+//                                 html+="</table>";
+//                                 $('.modal-title').html("This job feedback");
+
+//                                 $('.thisjob').html(html);
+//                                 // Display Modal
+//                                 $('#myModal').modal('show'); 
+//                             })
+//                             .fail(function() {
+//                                 alert("error while fetching stats");
+//                             });
+//      }
+     function setclick(){
+         $(".nav-pills li:first").trigger('click');
+     }
+
+       function saveStatus(){
+             var sidc=[];
+            var jobid=[];
+                is_checked=!is_checked;
+            var i=0;
+            var commentcheck=false;
+
+        $('tr').each(function(i, obj) {
+                if($('tr').not(':first').is(":visible")) {
+
+                    if(is_checked){
+   // alert('hi');
+                            $(this).find('.studentcheckbox1').prop('checked',true)
+                            if($(this).find('.studentcheckbox1').prop('checked') == true){
+                                console.log($(this).find('.studentcheckbox1').val());
+                                var selectedID=$(this).find('.studentcheckbox1').val();
+                                console.log($('#hr_comment'+selectedID).val());
+                                console.log($('#updatenotebtn'+selectedID).val());
+                                    var statusvalue="recruiter";
+                                    var notevalue=$('#updatenotebtn'+selectedID).val();
+                                    var hrfeedback=$('#hr_comment'+selectedID).val();
+                                    var ps2='';
+                                    // var levelbtn=$('#levelbtn'+selectedID).val();
+
+                                    //   if(hrfeedback!=''){
+                                    //     commentcheck=true;
+                                        updatestatusofeach(selectedID,'<?php echo $_GET['jid'];?>',statusvalue,notevalue,hrfeedback,ps2);
+                                    // }
+                                    // else{
+
+                                    // }
+                                 }
+
+                            i=i+1;
+                     }
+                    else{
+                        console.log("here");
+                       
+                    }
+                }
+                 if(i==$('tr').length-1){
+
+                        // if(!commentcheck){
+                        // alert("Add a comment to save status");
+                        // }
+                    // console.log(i,$('tr').length-1,"reload");
+                    // else{
+                   setTimeout(function(){  location.reload(); }, 1000);
+
+                    // }
+
+                }
+        });
+                                // location.reload();
+
+        }
+
+  
 
     
 // ===================================================for updating resume------------------
@@ -780,13 +907,13 @@ $(".form_resume").on('submit',(function(e) {
                         }).done(function(data){
                             alert(data);
                             console.log(data);
+                   setTimeout(function(){  location.reload(); }, 300);
+
                         });
    
 }));
 
 
-
-// ----------------------------------------
 
 function downloadCSV(csv, filename) {
     var csvFile;
@@ -814,25 +941,75 @@ function downloadCSV(csv, filename) {
     downloadLink.click();
 }
 
-        function exportTableToCSV(filename) {
-            var csv = [];
-            var rows = document.querySelectorAll('table tr:not([style*="display:none"]):not([style*="display: none"])');
+        //   function exportTableToCSV(filename) {
+        //     var csv = [];
+        //     var rows = document.querySelectorAll("table tr");
             
-            for (var i = 0; i < rows.length; i++) {
-                var row = [], cols = rows[i].querySelectorAll("td, th");
+        //     for (var i = 1; i < rows.length; i++) {
+
+        //         var row = [], cols = rows[i].querySelectorAll("td, th");
                 
-                for (var j = 0; j < cols.length; j++) 
-                    row.push(cols[j].innerText);
+        //         // for (var j = 0; j < cols.length; j++) 
+        //             // row.push(cols[j].innerText);
+        //         console.log(cols[2].innerText);
                 
-                csv.push(row.join(","));        
-            }
+        //         csv.push(cols[2].innerText);  
+        //         console.log(csv);      
+        //     }
 
-            // Download CSV file
-            downloadCSV(csv.join("\n"), filename);
-        }
-    </script>
- 
-</body>
+        //       $.ajax({
+        //             url: "../setstudbyemail.php",
+        //             type:'post',
+        //             data: { role: csv }
+        //         }).done(function(response) {
+        //                         // alert(response);
+        //                         //do something with the response
+        //                         // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
+        // window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportstudbyemail.php";
+                               
+        //                     })
+        //                     .fail(function() {
+        //                         alert("error in exporting");
+        //                     });
+
+        // }
+     </script>
 
 
+    
+    <!-- Modernizr Plugin -->
+    <script src="../js/modernizr.custom.79639.js"></script>
+    <!-- jQuery (../necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstra../p Plugins -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- Retina P../lugin -->
+    <script src="../js/retina.min.js"></script>
+    <!-- ScrollRe../veal Plugin -->
+    <script src="../js/scrollReveal.min.js"></script>
+    <!-- Flex Men../u Plugin -->
+    <script src="../js/jquery.flexmenu.js"></script>
+    <!-- Slider P../lugin -->
+    <script src="../js/jquery.ba-cond.min.js"></script>
+    <script src="../js/jquery.slitslider.js"></script>
+    <!-- Carousel../ Plugin -->
+    <script src="../js/owl.carousel.min.js"></script>
+    <!-- Parallax../ Plugin -->
+    <script src="../js/parallax.js"></script>
+    <!-- Counteru../p Plugin -->
+    <script src="../js/jquery.counterup.min.js"></script>
+    <script src="../js/waypoints.min.js"></script>
+    <!-- No UI Sl../ider Plugin -->
+    <script src="../js/jquery.nouislider.all.min.js"></script>
+    <!-- Bootstra../p Wysiwyg Plugin -->
+    <script src="../js/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Flickr P../lugin -->
+    <script src="../js/jflickrfeed.min.js"></script>
+    <!-- Fancybox../ Plugin -->
+    <script src="../js/fancybox.pack.js"></script>
+    <!-- Magic Fo../rm Processing -->
+    <script src="../js/magic.js"></script>
+    <!-- jQuery S../ettings -->
+    <script src="../js/settings.js"></script>
+    <!-- ============ CONTACT END ============ -->
 </html>

@@ -25,7 +25,7 @@ $prevResult = $db->query($prevQuery);
 $row = $prevResult->fetch_assoc();
 // $reponse=$row;
 // var_dump($response);
-array_push($response,array([$jobtitle[$i]],unserialize($row['hr']),unserialize($row['vendor']),unserialize($row['manager']),unserialize($row['coordinator']),unserialize($row['am'])));
+array_push($response,array([$jobtitle[$i]],unserialize($row['hr']),unserialize($row['vendor']),unserialize($row['manager']),unserialize($row['coordinator']),unserialize($row['am']),unserialize($row['recruiter'])));
 }
 
 // echo(json_encode(array(unserialize($row['hr']),unserialize($row['vendor']),unserialize($row['manager']),unserialize($row['coordinator']),unserialize($row['am']))));
