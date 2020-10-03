@@ -135,7 +135,7 @@ if(isset($_SESSION['emailvendors'])){
                     </div>
 
                 </div>&nbsp;
-                       <button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                       <button class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
 </button>
                 <!-- CSV file upload form -->
                 <div class="" id="importFrm" style="display: none;text-align: -webkit-center;">
@@ -162,7 +162,7 @@ else{
         </div>
         &nbsp;&nbsp;
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
-       &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+       &nbsp;&nbsp;<button class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
 </button>
 <br>
     </div>
@@ -187,7 +187,7 @@ else{
        
         &nbsp;&nbsp;
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
-       &nbsp;&nbsp;<button class="btn btn-primary" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+       &nbsp;&nbsp;<button  class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
 </button>
     </div>
 
@@ -498,7 +498,7 @@ $vendoremail='';
                         <?php
                          if( $status!='uploaded'){
                             ?>
-                            <td><input class="form-control" id="hr_comment<?php echo $ssid;?>" required></td>
+                            <td><input class="form-control" placeholder="add comment" id="hr_comment<?php echo $ssid;?>" required></td>
                           
                         <?php
                         }
@@ -1105,9 +1105,12 @@ $(document).ready(function(){
     // ------------split screen-------------------------------------------------------------------------
 </script>
     <div class='df2' style='display:none'>
- 
+ <br>
+ <br>
 
-                <div class="contains_resume" style="text-align:center">
+
+
+                <!-- <div class="contains_resume" style="text-align:center">
 
                             <label><input type="radio" class="uncheck" name="colorRadio" value="red"> Micro CV</label>
                             <label><input type="radio" name="colorRadio" class="uncheck" value="green">Interaction History</label>
@@ -1132,7 +1135,7 @@ $(document).ready(function(){
                             </div>
 
                     
-                </div>
+                </div> -->
  
     </div>
 
@@ -1149,18 +1152,22 @@ $(document).ready(function(){
             }
         }
      function showform(){
-        //  $('.df2').toggle();
+         $('.df2').toggle();
          $('.df3').toggle();
          $('.df4').toggle();
-
+        location.reload();
 
      }
      function showcvform(x,y){
          console.log(x,y);
          var hrf1 = [x];
          hrf=hrf1;
+
+         $('.df2').append($('#example').find('tr[data-id='+y+'] td:not(:first-child):not(:nth-child(2))'));
+         $('.df2').append($('.savestatusbtn'));
+         $('.df2').append($('.contains_resume'));
          setSource();
-        //  $('.df2').toggle();
+         $('.df2').toggle();
          $('.df3').toggle();
          $('.df4').toggle();
 
