@@ -347,9 +347,14 @@ $vendoremail='';
  }
  else if(isset($_SESSION['emailhr'])){
      $vendoremail=$_SESSION['emailhr'];
-
-
  }
+
+ else if(isset($_SESSION['emailmanager'])){
+     $vendoremail=$_SESSION['emailmanager'];
+ } 
+ else if(isset($_SESSION['emailrecruiters'])){
+     $vendoremail=$_SESSION['emailrecruiters'];
+ } 
 
         if(isset($_SESSION['emailvendors'])){
 

@@ -529,7 +529,7 @@ function showpage(postid){
 
                                clearuri();
 
-                                location.replace(window.location.href.split('#')[0]+'?jid='+x);
+                                location.replace(window.location.href.split('#')[0]+'?jid='+x+'&status=Shared');
                             }
                                 
                             // });
@@ -1143,67 +1143,67 @@ function urlchange(cat){
         }
 
 
-function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
+// function downloadCSV(csv, filename) {
+//     var csvFile;
+//     var downloadLink;
 
-    // CSV file
-    csvFile = new Blob([csv], {type: "text/csv"});
+//     // CSV file
+//     csvFile = new Blob([csv], {type: "text/csv"});
 
-    // Download link
-    downloadLink = document.createElement("a");
+//     // Download link
+//     downloadLink = document.createElement("a");
 
-    // File name
-    downloadLink.download = filename;
+//     // File name
+//     downloadLink.download = filename;
 
-    // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+//     // Create a link to the file
+//     downloadLink.href = window.URL.createObjectURL(csvFile);
 
-    // Hide download link
-    downloadLink.style.display = "none";
+//     // Hide download link
+//     downloadLink.style.display = "none";
 
-    // Add the link to DOM
-    document.body.appendChild(downloadLink);
+//     // Add the link to DOM
+//     document.body.appendChild(downloadLink);
 
-    // Click download link
-    downloadLink.click();
-}
+//     // Click download link
+//     downloadLink.click();
+// }
 
-        function exportTableToCSV(filename) {
-            var csv = [];
-            var rows = document.querySelectorAll("table tr");
+//         function exportTableToCSV(filename) {
+//             var csv = [];
+//             var rows = document.querySelectorAll("table tr");
             
-            for (var i = 1; i < rows.length; i++) {
+//             for (var i = 1; i < rows.length; i++) {
 
-                var row = [], cols = rows[i].querySelectorAll("td, th");
+//                 var row = [], cols = rows[i].querySelectorAll("td, th");
                 
-                // for (var j = 0; j < cols.length; j++) 
-                    // row.push(cols[j].innerText);
-                console.log(cols[2].innerText);
+//                 // for (var j = 0; j < cols.length; j++) 
+//                     // row.push(cols[j].innerText);
+//                 console.log(cols[2].innerText);
                 
-                csv.push(cols[2].innerText);  
-                console.log(csv);      
-            }
+//                 csv.push(cols[2].innerText);  
+//                 console.log(csv);      
+//             }
 
-              $.ajax({
-                    url: "../setstudbyemail.php",
-                    type:'post',
-                    data: { role: csv }
-                }).done(function(response) {
-                                // alert(response);
-                                //do something with the response
-                                // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
-        window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportstudbyemail.php";
+//               $.ajax({
+//                     url: "../setstudbyemail.php",
+//                     type:'post',
+//                     data: { role: csv }
+//                 }).done(function(response) {
+//                                 // alert(response);
+//                                 //do something with the response
+//                                 // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
+//         window.location.href = "http://<?php  echo $_SERVER['SERVER_NAME']; ?>/jobs/site/exportstudbyemail.php";
                                
-                            })
-                            .fail(function() {
-                                alert("error in exporting");
-                            });
+//                             })
+//                             .fail(function() {
+//                                 alert("error in exporting");
+//                             });
 
 
-            // Download CSV file
-            // downloadCSV(csv.join("\n"), filename);
-        }
+//             // Download CSV file
+//             // downloadCSV(csv.join("\n"), filename);
+//         }
 
      </script>
 
