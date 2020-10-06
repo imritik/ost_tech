@@ -1,15 +1,37 @@
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Jobseek - Job Board Responsive HTML Template">
+    <meta name="author" content="Coffeecream Themes, info@coffeecream.eu">
+    <title>Reset Password - TalentChords</title>
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!-- Main Stylesheet -->
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+
+    <!-- -----multiselect part-- -->
+   
+   <!-- -------candidates css -->
+
+   
+</head>
 <?php
 //file name: forgotpassword.php
 //Title:Build your own Forgot Password PHP Script
 $forgot_by=$_GET['fp'];
 
 if(!isset($_GET['email'])){
-	                  echo'<form action="forgotpassword.php?">
+	                  echo'<div class="container col-md-6 col-md-offset-3" style="margin-top:5%;text-align:center"><form action="forgotpassword.php?">
 	                      Enter Your Email Id:
-							 <input type="text" name="email" />
-							 <input type="hidden" name="fp" value="'.$forgot_by.'" />
-	                        <input type="submit" value="Reset My Password" />
-	                         </form>'; exit();
+							 <input type="text" class="form-control" name="email" />
+							 <input type="hidden" class="form-control" name="fp" value="'.$forgot_by.'" />
+							 <br>
+	                        <input type="submit" class="btn btn-primary" value="Reset My Password" />
+	                         </form></div>'; exit();
 				       }
 $email=$_GET['email'];
 $reset_for='';
