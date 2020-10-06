@@ -42,7 +42,7 @@
                                    <input type="submit" class="btn btn-primary btn-block" value="Login">
                                    <div class="form-footer">
                                    <br>
-                                   <a href="../forgot-password/forgotpassword.php" target="blank" style="color:white">Forgot Password ?</a>
+                                   <a href="../forgot-password/forgotpassword.php?fp=empchords" target="blank" style="color:white">Forgot Password ?</a>
                                    </div>
                                    </form>
 </div>

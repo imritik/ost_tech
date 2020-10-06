@@ -3,6 +3,7 @@
 //title:Build your own Forgot Password PHP Script
 session_start();
 $token=$_GET['token'];
+$resetfor=$_GET['fp'];
 // include("settings.php");
 include '../dbConfig.php';
 
@@ -30,7 +31,15 @@ enter your new password:<input type="password" name="password" />
 ';}
 if(isset($_POST['password']))
 {
+$q='';
+if($resetfor=='empchords'){
 $q="update admins set password='".$pass."' where email='".$email."'";
+
+}
+else if($resetfor=='canchords'){
+$q="update Student set pass='".$pass."' where email='".$email."'";
+
+}
 $r=$db->query($q);
 if($r)$db->query("update tokens set used=1 where token='".$token."'");
 // var_dump($q);

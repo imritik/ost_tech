@@ -1,20 +1,35 @@
 <?php
 //file name: forgotpassword.php
 //Title:Build your own Forgot Password PHP Script
+$forgot_by=$_GET['fp'];
+
 if(!isset($_GET['email'])){
-	                  echo'<form action="forgotpassword.php">
+	                  echo'<form action="forgotpassword.php?">
 	                      Enter Your Email Id:
-	                         <input type="text" name="email" />
+							 <input type="text" name="email" />
+							 <input type="hidden" name="fp" value="'.$forgot_by.'" />
 	                        <input type="submit" value="Reset My Password" />
 	                         </form>'; exit();
 				       }
 $email=$_GET['email'];
+$reset_for='';
 // include("settings.php");
 // var_dump($email);
 include '../dbConfig.php';
 
 // connect();
+$q='';
+if($forgot_by=='empchords'){
 $q="select email from admins where email='".$email."'";
+$reset_for='empchords';
+
+}
+else if($forgot_by=='canchords'){
+$q="select email from Student where email='".$email."'";
+$reset_for='canchords';
+
+}
+// var_dump($reset_for);
 $r=$db->query($q);
 $n=$r->num_rows;
 // var_dump($n);
@@ -33,7 +48,8 @@ function getRandomString($length)
         $result .= $validCharacters[$index];
     }
 	return $result;}
- function mailresetlink($to,$token){
+ function mailresetlink($to,$token,$reset_for){
+	//  var_dump($reset_for);
 $subject = "Forgot Password ";
 $uri = 'http://'. $_SERVER['HTTP_HOST'] ;
 $message = '
@@ -42,7 +58,7 @@ $message = '
 <title>Forgot Password</title>
 </head>
 <body>
-<p>Click on the given link to reset your password <a href="'.$uri.'/jobs/forgot-password/reset.php?token='.$token.'">Reset Password</a></p>
+<p>Click on the given link to reset your password <a href="'.$uri.'/jobs/forgot-password/reset.php?token='.$token.'&fp='.$reset_for.'">Reset Password</a></p>
  
 </body>
 </html>
@@ -56,5 +72,7 @@ mail($to,$subject,$message,$headers);
 echo "We have sent the password reset link to your  email id <b>".$to."</b>"; 
 
 }
+	//  var_dump($reset_for);
+
  
-if(isset($_GET['email']))mailresetlink($email,$token);
+if(isset($_GET['email']))mailresetlink($email,$token,$reset_for);

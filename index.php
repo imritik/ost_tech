@@ -400,6 +400,10 @@ include 'dbConfig.php';
                                     </div>
 
                                     <input type="submit" class="btn btn-primary btn-block" value="Login">
+                                    <br>
+                                    <br>
+                                   <a href="forgot-password/forgotpassword.php?fp=canchords" target="blank">Forgot Password ?</a>
+
                                 </form>
                             </li>
                         </ul>
