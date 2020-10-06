@@ -33,7 +33,7 @@ if(isset($_POST['password']))
 $q="update admins set password='".$pass."' where email='".$email."'";
 $r=$db->query($q);
 if($r)$db->query("update tokens set used=1 where token='".$token."'");
-var_dump($q);
+// var_dump($q);
 echo "Your password is changed successfully";
 if(!$r)echo "An error occurred";
 }

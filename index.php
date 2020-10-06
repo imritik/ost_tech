@@ -382,9 +382,9 @@ include 'dbConfig.php';
                         <a href="admin_jobs/admin_home.php" target="blank" class="btn btn-primary get-started-btn mt-1 mb-1">Login as Employer</a>
                     </li>
                   
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a href="student_register/index.php" target="blank" class="btn btn-primary get-started-btn mt-1 mb-1">Register</a>
-                    </li>
+                    </li> -->
                    
                     <li class="nav-item">
                         <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle get-started-btn mt-1 mb-1">Login as Candidate</a>
