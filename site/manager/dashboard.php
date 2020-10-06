@@ -77,6 +77,7 @@ $page="job";
 
 <!-- ----jobs using php -->
  <?php
+ $key='';
  // ------collect all jobs of company here
                     $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and manager LIKE '%$hremail%'";
                     // var_dump($sqljob);
@@ -87,7 +88,10 @@ $page="job";
                             $postid=$rowjob['posting_id'];
                             $jobtitle=$rowjob['job_title'];
                             $cname=$rowjob['company_name'];
-                    echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'</a></li>';
+                            // var_dump(json_decode($rowjob['manager']));
+                            $key = array_search($hremail, json_decode($rowjob['manager']));
+                            // var_dump($key+1);
+                    echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'&nbsp;&nbsp;(L'.($key+1).')</a></li>';
                             
                             }
                     }

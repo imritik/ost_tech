@@ -369,6 +369,38 @@ $vendoremail='';
 
 
         }
+        else if(isset($_SESSION['emailmanager'])){
+
+            $levelofstudent='L'.($key+1);
+
+             if($status=='uploaded'){
+                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='shortlist' or applied_table.duplicate_status='probable')";
+                }
+                    if($status=='new_arrival'){
+                            $query = "SELECT * FROM applied_table where posting_id='$jid' and duplicate_status='probable'";
+
+                    }
+
+                    else if($status=='to_process'){
+                            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' and level='$levelofstudent' ORDER BY Status_update DESC";
+
+                    }
+
+                    else if($status=='shortlist'){
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status NOT IN('rejected','hold','Shared','processed','Offered') and Student.resume!='' and applied_table.level='$levelofstudent' ORDER BY applied_table.Status_update DESC";
+                        
+
+
+                    }
+                    else{
+                            $query = "SELECT * FROM applied_table where posting_id='$jid' and Status ='$status' and level='$levelofstudent' ORDER BY Status_update DESC";
+
+                    }
+
+
+
+        }
         else{
 
 
@@ -431,6 +463,8 @@ $vendoremail='';
 
                 } 
             }
+
+            // var_dump($level);
 
         if(sizeof($studids)){
             // $number = 1;
@@ -528,12 +562,19 @@ $vendoremail='';
                         <select class="form-control" id="levelbtn<?php echo $ssid;?>">
                         
                         <?php 
-                        $selected=false;
+                        $selected='';
                         for($i=0;$i<$level_in_job;$i++){
-                            if($level[$x]=="l'.($i+1).'"){  
-                                $selected=true;
+                            $i1=$i+1;
+                            // var_dump($level[$x],"L$i1");
+
+                            if($level[$x]=="L$i1"){  
+                                $selected='selected=selected';
                             }
-                            echo '<option value="l'.($i+1).'" selected='.$selected.' >L'.($i+1).'</option>';
+                            else{
+                                $selected='';
+                            }
+                            // var_dump($selected);
+                            echo '<option value="L'.($i+1).'" '.$selected.' >L'.($i+1).'</option>';
                         }
                         ?>
                        
