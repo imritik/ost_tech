@@ -30,7 +30,6 @@ include 'dbConfig.php';
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<link href="site/css/style.css" rel="stylesheet">
    
    <style type="text/css">
 
@@ -59,6 +58,7 @@ include 'dbConfig.php';
             padding-right: 16px;
             border-bottom: 1px solid #dfe3e8;
             border-radius: 0;
+            margin-bottom:0;
         }
         
         .nav-link img {
@@ -328,6 +328,12 @@ include 'dbConfig.php';
                 display: block;
             }
         }
+
+        .text-on-image{
+            text-align:center;
+            margin-top:20px;
+            padding-top:231px;
+        }
     </style>
 </head>
 
@@ -419,7 +425,7 @@ include 'dbConfig.php';
                 </ul>
             </div>
         </nav>
-        <div class="page-hero page-hero-lg" style="background-image: url(home.jpg);">
+        <div class="page-hero page-hero-lg" style="height:640px;background:white" >
             <!-- <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -435,81 +441,56 @@ include 'dbConfig.php';
                 </div>
             </div> -->
 
-	<!-- ============ SLIDES START ============ -->
+            <!-- <div class="container"> -->
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" style="height:564px;">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
 
-		<div id="slider" class="sl-slider-wrapper">
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" style="height:inherit">
+                    <div class="item active" style="background:url('site/images/slider1.jpg');height:inherit;margin-top: -19px;">
+                        <!-- <img src="site/images/slider1.jpg" alt="Los Angeles" style="width:100%;"> -->
+                       <div class="text-on-image">
+                        <h1>Need an employee?</h1>
+                            <h3>We've got perfect candidates</h3>
+                            </div>
+                    </div>
 
-			<div class="sl-slider">
-			
-				<div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
-					<div class="sl-slide-inner">
-						<div class="bg-img bg-img-1"></div>
-						<div class="tint"></div>
-						<div class="slide-content">
-							<h2>Looking for a job?</h2>
-							<h3>There’s no better place to start</h3>
-							<p><a href="jobs.html" class="btn btn-lg btn-default">Find a job</a></p>
-						</div>
-					</div>
-				</div>
-			
-				<div class="sl-slide" data-orientation="vertical" data-slice1-rotation="10" data-slice2-rotation="-15" data-slice1-scale="1.5" data-slice2-scale="1.5">
-					<div class="sl-slide-inner">
-						<div class="bg-img bg-img-2"></div>
-						<div class="tint"></div>
-						<div class="slide-content">
-							<h2>Need an employee?</h2>
-							<h3>We've got perfect candidates</h3>
-							<p><a href="candidates.html" class="btn btn-lg btn-default">Post a job</a></p>
-						</div>
-					</div>
-				</div>
-			
-				<div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="3" data-slice2-rotation="3" data-slice1-scale="2" data-slice2-scale="1">
-					<div class="sl-slide-inner">
-						<div class="bg-img bg-img-3"></div>
-						<div class="tint"></div>
-						<div class="slide-content">
-							<h2>Evolving your career?</h2>
-							<h3>Find new opportunities here</h3>
-							<p><a href="jobs.html" class="btn btn-lg btn-default">Find a job</a></p>
-						</div>
-					</div>
-				</div>
-			
-				<div class="sl-slide" data-orientation="vertical" data-slice1-rotation="-5" data-slice2-rotation="25" data-slice1-scale="2" data-slice2-scale="1">
-					<div class="sl-slide-inner">
-						<div class="bg-img bg-img-4"></div>
-						<div class="tint"></div>
-						<div class="slide-content">
-							<h2>Extending your team?</h2>
+                    <div class="item" style="background:url('site/images/slider2.jpg');height:inherit;margin-top: -19px;">
+                        <!-- <img src="site/images/slider2.jpg" alt="Chicago" style="width:100%;"> -->
+                  <div class="text-on-image">
+                      <h1>Extending your team?</h1>
 							<h3>Find a perfect match</h3>
-							<p><a href="candidates.html" class="btn btn-lg btn-default">Find a cadidate</a></p>
-						</div>
-					</div>
-				</div>
+                    </div>
+                    </div> 
+                    <div class="item" style="background:url('site/images/slider3.jpg');height:inherit;margin-top: -19px;">
+                        <!-- <img src="site/images/slider3.jpg" alt="New york" style="width:100%;"> -->
+                   <div class="text-on-image">
+                        <h1>Evolving your career?</h1>
+							<h3>Find new opportunities here</h3>
+                    </div>
+                    </div>
+                    </div>
 
-			</div>
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            <!-- </div> -->
 
-			<nav id="nav-arrows" class="nav-arrows">
-				<span class="nav-arrow-prev">Previous</span>
-				<span class="nav-arrow-next">Next</span>
-			</nav>
-
-			<nav id="nav-dots" class="nav-dots">
-				<span class="nav-dot-current"></span>
-				<span></span>
-				<span></span>
-				<span></span>
-			</nav>
-
-		</div>
-
-		<!-- ============ SLIDES END ============ -->
 
             <!-- <form action="" class="form-filter"> -->
-              
-
+ 
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3 col-xs-12">
