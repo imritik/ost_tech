@@ -488,6 +488,24 @@ function formToggle(ID){
                             });
     }
 
+     function closejob(x){
+        console.log(x);
+                             $.ajax({
+                                url: '../closejob.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("Try again later!");
+                            });
+    }
+
 
     function repostpart(x){
         console.log(x);
