@@ -239,6 +239,24 @@ $page="job";
                             });
     }
 
+    function closejob(x){
+        console.log(x);
+                             $.ajax({
+                                url: '../closejob.php',
+                                type: 'POST',
+                            
+                                data: {param1: x},
+                            })
+                            .done(function(response) {
+                                alert(response);
+                                location.reload();
+                               
+                            })
+                            .fail(function() {
+                                alert("Try again later!");
+                            });
+    }
+
 
 function showpage(postid){
     document.cookie = "vendorduplicate=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

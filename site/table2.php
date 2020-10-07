@@ -59,14 +59,18 @@ if(!empty($_GET['jid'])){
     <?php
 
     $is_hold='';
+    $is_closed='';
 // ------collect all jobs of company here
                     $sql22="SELECT * FROM Job_Posting WHERE posting_id='$jid'";
                     $result22 = $db->query($sql22);
                     if ($result22 ->num_rows > 0) {
                         while($row22 = $result22->fetch_assoc()) {
                             $hold_text='';
+                            $closed_text='';
                             $hold_badge_text='';
+                            $closed_badge_text='';
                             $is_hold=$row22['is_hold'];
+                            $is_closed=$row22['is_closed'];
                             $postid=$row22['posting_id'];
                             $jobtitle=$row22['job_title'];
                             $cname=$row22['company_name'];
@@ -81,26 +85,38 @@ $hold_badge_text='Freezed';
 $hold_text='Freeze Job';
 $hold_badge_text='Active';
                             }
+                            if($is_closed){
+                                $closed_text='Re-Open Job';
+                                $closed_badge_text='Closed';
+                            }
+                            else{
+                                    $closed_text='Close Job';
+                                    $closed_badge_text='Open';
+                            }
                             if(isset($_SESSION['emailhr'])&& $page!='view_mode'){
-echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
+echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'/'.$closed_badge_text.'</span></p>
                     <button class="btn btn-info btn-xs"><a href="editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
 
                     <button class="btn btn-info btn-xs" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-xs" onclick="repostpart(\''.$postid.'\');">Repost</button>
                     <button class="btn btn-info btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
+                    <button class="btn btn-info btn-xs" onclick="closejob(\''.$postid.'\');">'.$closed_text.'</button>
+
                     <button id="combine"class="btn btn-info btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
                     
                     ';
                             }
                             else if(isset($_SESSION['emailhr'])&& $page=='view_mode'){
-echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
+echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'/'.$closed_badge_text.'</span></p>
                     <button class="btn btn-info btn-xs"><a href="../hr/editjob.php?jid='.$postid.'" style="color:white">Edit</a></button>
                     <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>
                     <button class="btn btn-info btn-xs" onclick="deletejobpart(\''.$postid.'\');">Delete</button>
                     <button class="btn btn-info btn-xs" onclick="repostpart(\''.$postid.'\');">Repost</button>
                     <button class="btn btn-info btn-xs" onclick="holdjob(\''.$postid.'\');">'.$hold_text.'</button>
+                    <button class="btn btn-info btn-xs" onclick="closejob(\''.$postid.'\');">'.$closed_text.'</button>
+
                    
                     <button id="combine"class="btn btn-info btn-xs" style="display:none;float: right;" onclick="combine();">Same and Combine</button>
                     </div>
@@ -108,7 +124,7 @@ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp
                     ';
                             }
                             else{
- echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'</span></p>
+ echo '<div><p style="font-size:x-large;margin-bottom:0">'.$jobtitle.'&nbsp;&nbsp;&nbsp;<span class="badge badge-primary">'.$hold_badge_text.'/'.$closed_badge_text.'</span></p>
                             </div>
                     <a class="btn btn-xs btn-info" href="../../job-details.php?jpi='.$postid.'" target="blank">View (Public View)</a>';
                             }
@@ -763,10 +779,10 @@ $vendoremail='';
                             
                             <!-- show in all states ecxcept to process -->
 
-                             <?php if ($_GET['status']!="Shared"){
+                             <?php if ($_GET['status']!="Shared"  || $_GET['status']!='hold'){
                           ?>
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob">Show less</button>
-                                                <div id="showthisjob" class="collapse">
+                                            <!-- <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthisjob">Show less</button> -->
+                                                <div id="showthisjob" >
                                                 </div>
 
                                 <?php
@@ -775,10 +791,10 @@ $vendoremail='';
 
                       <!-- only show in to process state -->
 
-                      <?php if ($_GET['status']=="Shared"){
+                      <?php if ($_GET['status']=="Shared"  || $_GET['status']=='hold'){
                           ?>
-<button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button>
-                                                <div id="showthiscompany" class="collapse">
+<!-- <button type="button" class="btn btn-xs btn-info" data-toggle="collapse" data-target="#showthiscompany">Show Full</button> -->
+                                                <div id="showthiscompany" >
                                                 </div>
 
                               <?php
