@@ -174,17 +174,17 @@ if ($result ->num_rows>0) {
 
                                                         // ------collect all jobs of company here
                                                         if(isset($_SESSION['coordinatoremp'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
                                                         
                                                         else if(isset($_SESSION['emailmanager'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         } 
 
                                                         else if(isset($_SESSION['emailhr'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND hr='$under2_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x]  and is_closed='0' AND hr='$under2_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
 
@@ -259,16 +259,16 @@ if ($resultcomp ->num_rows ==1) {
 
                                                         // ------collect all jobs of company here
                                                         if(isset($_SESSION['coordinatoremp'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
                                                         else if(isset($_SESSION['emailmanager'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         } 
 
                                                         else if(isset($_SESSION['emailhr'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x] AND hr='$under_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x]  and is_closed='0' AND hr='$under_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
 
                                                         }
                                                         // var_dump($sqljob);

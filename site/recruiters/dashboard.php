@@ -108,7 +108,7 @@ if(!empty($_GET['status'])){
 $currentCompEmail='';
 
  // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting where recruiter LIKE '%$vendoremail%'";
+                    $sqljob="SELECT * FROM Job_Posting where recruiter LIKE '%$vendoremail%'  and is_closed='0'";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {

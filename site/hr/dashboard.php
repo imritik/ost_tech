@@ -70,7 +70,7 @@ $page="job";
                         $hrcompany=trim($hrcompany,'"');
                     }
                     // var_dump($hrcompany);
-                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail'";
+                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail' and is_closed='0'";
                     // var_dump(preg_match('/"/', $hrcompany));
                     // var_dump("SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail'");
                     $resultjob = $db->query($sqljob);

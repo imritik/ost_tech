@@ -79,7 +79,7 @@ $page="job";
  <?php
  $key='';
  // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and manager LIKE '%$hremail%'";
+                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and manager LIKE '%$hremail%'  and is_closed='0'";
                     // var_dump($sqljob);
                     $resultjob = $db->query($sqljob);
                     // var_dump($resultjob);

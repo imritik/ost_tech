@@ -76,7 +76,7 @@ $page="job";
 $currentCompEmail='';
 
  // ------collect all jobs of company here
-                    $sqljob="SELECT * FROM Job_Posting where coordinator='$coordinator_email'";
+                    $sqljob="SELECT * FROM Job_Posting where coordinator='$coordinator_email'  and is_closed='0'";
                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {
