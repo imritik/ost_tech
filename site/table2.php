@@ -213,7 +213,6 @@ else{
 ?>
 <button  class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
     </button>
-
     <?php
        }
        ?>
