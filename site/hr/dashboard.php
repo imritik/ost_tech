@@ -12,6 +12,7 @@ include '../../dbConfig.php';
 $hremail=$_SESSION['emailhr'];
 $hrcompany=$_SESSION['companyhr'];
 $page="job";
+$job_status='open_job';
   ?>
 
   <!DOCTYPE html>
@@ -57,23 +58,35 @@ $page="job";
    <br>
     <div class="row">
     <div class="col-md-2 fixed-top">
-<h3>Jobs</h3><span><?php echo $hrcompany;?></span>
+        <h3>Jobs 
+            <span>
+                <select id="job_status" name="job_status" onchange="changeJobStatus(this.value);">
+                <option value="open_job" <?php if($_COOKIE['job_status']=='open_job') echo "selected='selected'" ?>>Opened</option>
+                <option value="close_job"<?php if($_COOKIE['job_status']=='close_job') echo "selected='selected'" ?>>Closed</option>
+                </select>
+            </span>
+        </h3><span><?php echo $hrcompany;?></span>
 
 <ul class="nav nav-pills nav-stacked">
 
 <!-- ----jobs using php -->
  <?php
  // ------collect all jobs of company here
+ if(isset($_COOKIE['job_status'])){
 
-//  var_dump($hrcompany);
+     $jobstatusvalue='';
+        if($_COOKIE['job_status']=='open_job'){
+                $jobstatusvalue=0;
+        }
+        else{
+            $jobstatusvalue=1;
+        }
+       
                     if(preg_match('/"/', $hrcompany)){
                         $hrcompany=trim($hrcompany,'"');
-                    }
-                    // var_dump($hrcompany);
-                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail' and is_closed='0'";
-                    // var_dump(preg_match('/"/', $hrcompany));
-                    // var_dump("SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail'");
-                    $resultjob = $db->query($sqljob);
+                                     }
+                   $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail' and is_closed='$jobstatusvalue'";
+                     $resultjob = $db->query($sqljob);
                     if ($resultjob ->num_rows > 0) {
                         while($rowjob = $resultjob->fetch_assoc()) {
                             $postid=$rowjob['posting_id'];
@@ -86,6 +99,11 @@ $page="job";
                     else{
                         echo '<li><a>No Job(s)</a></li>';
                     }
+ }
+ else{
+
+ }
+       
                ?>
 
 </ul>
@@ -151,7 +169,24 @@ $page="job";
 
 <script>
 
+function changeJobStatus(status){
+    console.log(status);
+    document.cookie="job_status="+status+";path=/";
 
+    <?php 
+        // if(isset($_COOKIE['job_status'])){
+            $job_status=$_COOKIE['job_status'];
+            // var_dump($job_status);
+        // }
+    ?>
+    setTimeout(() => {
+        location.reload();
+
+    }, 500); 
+   setTimeout($('ul li:first').click(), 1000);
+           
+
+}
         
   function setPage() {
         var uri = window.location.toString();

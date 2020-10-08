@@ -207,15 +207,23 @@ else{
        
         &nbsp;&nbsp;
         <button onclick="exportTableToCSV('candidates.csv')" class="btn btn-primary" data-toggle="tooltip" title="Download CSV"><i class="fa fa-download" aria-hidden="true"></i></button>
-       &nbsp;&nbsp;<button  class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
-</button>
+       &nbsp;&nbsp;
+       
+       <?php if(!$jobstatusvalue){
+?>
+<button  class="btn btn-primary savestatusbtn" data-toggle="tooltip" title="Save Status" onclick="saveStatus()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+    </button>
+
+    <?php
+       }
+       ?>
+       
     </div>
 
         <?php
     }
     ?>
-         
-                <?php 
+                    <?php 
       }
       ?>
             </div>
