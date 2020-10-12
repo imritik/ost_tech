@@ -1237,8 +1237,11 @@ $(document).ready(function(){
          $('.comment-box').append($('#example').find('tr[data-id='+y+'] td:nth-child(3)'));
          $('.df2').append('<br>');
 
-         $('.comment-box').append($('.savestatusbtn'));
-         $('.savestatusbtn').html('Save')
+         $('.df2').append($('.savestatusbtn'));
+         $('.savestatusbtn').html('Save');
+         $('.df2').append('<br>');
+         $('.df2').append('<br>');
+
          $('.df2').append($('.contains_resume'));
          setSource();
          $('.df2').toggle();
