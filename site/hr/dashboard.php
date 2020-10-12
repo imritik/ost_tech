@@ -56,11 +56,11 @@ $job_status='open_job';
 <?php include 'radio.php';?>
 </div>
    <br>
-    <div class="row">
+      <div class="row">
     <div class="col-md-2 fixed-top">
         <h3>Jobs 
             <span>
-                <select id="job_status" name="job_status" onchange="changeJobStatus(this.value);">
+                <select id="job_status" name="job_status" onchange="changeJobStatus(this.value);" style="font-size:small;">
                 <option value="open_job" <?php if($_COOKIE['job_status']=='open_job') echo "selected='selected'" ?>>Opened</option>
                 <option value="close_job"<?php if($_COOKIE['job_status']=='close_job') echo "selected='selected'" ?>>Closed</option>
                 </select>
@@ -217,8 +217,8 @@ function changeJobStatus(status){
 
     $( document ).ready(function() {
         console.log( "ready!" );
-        // setPage();
-                    setTimeout(setPage(), 1000);
+     // setPage();
+                      setTimeout(setPage(), 1000);
 
     });
                             

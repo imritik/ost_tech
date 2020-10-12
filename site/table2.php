@@ -1144,6 +1144,12 @@ $(document).ready(function(){
 
                                 // }
                                 html+="</table>";
+
+                                // var html="<pre>";
+                                
+                                // html+=""+data[0]+"/"+data[1]+"/"+data[2];
+                                
+                                // html+="</pre>";
                                
                                 $('.red').html(html);
 

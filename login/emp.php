@@ -57,6 +57,8 @@
               else {
                 $_SESSION['email'.$row['role']]=$row['email'];
                 $_SESSION['company'.$row['role']]=$row['company'];
+            setcookie("job_status","open_job",time()+36000,'/');
+                
 
                 header("location: ../site/".$row['role']."/dashboard.php");
               }

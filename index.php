@@ -425,7 +425,7 @@ include 'dbConfig.php';
                 </ul>
             </div>
         </nav>
-        <div class="page-hero page-hero-lg" style="height:640px;background:white" >
+        <div class="page-hero page-hero-lg" style="height:564px;background:white" >
             <!-- <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -491,12 +491,11 @@ include 'dbConfig.php';
 
             <!-- <form action="" class="form-filter"> -->
  
-                <div class="container">
+                <!-- <div class="container">
                     <div class="row">
                         <div class="col-lg-3 col-xs-12">
                             <label for="job-description" class="sr-only">Job Title</label>
 							<input type="text" id="title-criteria" style="color:black" placeholder="Job title">
-							<!-- <input type="email"> -->
                         </div>
                         <div class="col-lg-3 col-xs-12">
                             <label for="job-location" class="sr-only">Job Location</label>
@@ -519,11 +518,11 @@ include 'dbConfig.php';
                             <button class="btn btn-block" id="search">Search</button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             <!-- </form> -->
         </div>
 
-        <main class="main">
+        <!-- <main class="main">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -538,7 +537,6 @@ include 'dbConfig.php';
                         <div class="item-listing">
                             
 
-                            <!-- ----php code---- -->
 
                             <?php
                         
@@ -580,7 +578,8 @@ $toshow='Today';
                                     
                             </div>
 
-                            <?php }}
+                            <?php 
+                            }}
                                 ?>
 
                           
@@ -593,10 +592,10 @@ $toshow='Today';
                    
                 </div>
             </div>
-        </main>
+        </main> -->
 
        
-        <footer class="footer">
+        <!-- <footer class="footer">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -620,7 +619,7 @@ $toshow='Today';
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> -->
     </div>
     <!-- #page -->
 

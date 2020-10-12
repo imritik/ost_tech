@@ -151,11 +151,33 @@ if(!empty($_GET['jid'])){
 								</select>
                         </div>
                        
-                        <div class="form-group" id="job-description-group">
+                        <div class="form-group" id="job-description-group" style="display:flex;justify-content:space-around">
+                        <div style="width:70%">
                             <label for="job-description">Description</label>
                             <textarea class="textarea form-control" name="description"id="job-description" maxlength="2000" required>
                             <?php echo htmlspecialchars($row22['job_description']); ?>
                             </textarea>
+                            </div>
+                         <div style="width:30%;text-align: center;list-style: none;">
+                                    <label for="job-description">Autofill job</label>
+                                    <?php
+                                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail' and is_closed=1";
+                                    $resultjob = $db->query($sqljob);
+                                    if ($resultjob ->num_rows > 0) {
+                                        while($rowjob = $resultjob->fetch_assoc()) {
+                                            $postid=$rowjob['posting_id'];
+                                            $jobtitle=$rowjob['job_title'];
+                                            $cname=$rowjob['company_name'];
+                                    echo '<li id="'.$postid.'"><a href="editjob.php?jid='.$postid.'">'.$jobtitle.'</a></li>';
+                                            
+                                            }
+                                    }
+                                    else{
+                                        echo '<li><a>No Job(s)</a></li>';
+                                    }
+                                    ?>
+                            </div>
+                      
                         </div>
                         <div class="form-group" id="job-description-file-group">
                             <label for="desc-file">Upload description&nbsp; (<a href='../uploads/jd/<?php echo $jid;?>/<?php echo $row22["description_file"];?>' target="blank">View</a>)</label>
@@ -297,10 +319,31 @@ if($query ->num_rows >0){
 								</select>
                         </div>
                        
-                        <div class="form-group" id="job-description-group">
+                        <div class="form-group" id="job-description-group" style="display:flex;justify-content:space-around">
+                        <div style="width:70%">
                             <label for="job-description">Description</label>
                             <textarea class="textarea form-control" name="description"id="job-description" maxlength="2000" required>
                             </textarea>
+                            </div>
+                              <div style="width:30%;text-align: center;list-style: none;">
+                                    <label for="job-description">Autofill job</label>
+                                    <?php
+                                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail' and is_closed=1";
+                                    $resultjob = $db->query($sqljob);
+                                    if ($resultjob ->num_rows > 0) {
+                                        while($rowjob = $resultjob->fetch_assoc()) {
+                                            $postid=$rowjob['posting_id'];
+                                            $jobtitle=$rowjob['job_title'];
+                                            $cname=$rowjob['company_name'];
+                                    echo '<li id="'.$postid.'"><a href="editjob.php?jid='.$postid.'">'.$jobtitle.'</a></li>';
+                                            
+                                            }
+                                    }
+                                    else{
+                                        echo '<li><a>No Job(s)</a></li>';
+                                    }
+                                    ?>
+                            </div>
                         </div>
                         <div class="form-group" id="job-description-file-group">
                             <label for="desc-file">Upload description&nbsp;</label>

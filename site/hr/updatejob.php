@@ -95,7 +95,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["jobdescriptionfile"]["tmp_name"], $targetFilePath)){
                     // Insert image file name into database
-                    $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',levels='$levels',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',
+                    $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',is_closed=0,is_hold=0,levels='$levels',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',
                     vendor=IFNULL($vendors,vendor),
             recruiter=IFNULL($recruiters,recruiter),
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
@@ -122,7 +122,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
 }
 else{
             // Insert image file name into database
-            $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',levels='$levels',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',
+            $insert = $db->query("UPDATE IGNORE Job_Posting SET job_title='$title',is_closed=0,is_hold=0,levels='$levels',Job_type='$type',Job_location='$location',job_description='$description',company_url='$url',
             vendor=IFNULL('$vendors',vendor),
             
             recruiter=IFNULL('$recruiters',recruiter),
