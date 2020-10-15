@@ -4,12 +4,27 @@
 	    <link href="../site/css/style.css" rel="stylesheet">
 
 </head>
+ <!-- ============ HEADER START ============ -->
+ <header>
+        <div id="header-background"></div>
+        <div class="container">
+        <div class="pull-left">
+             <b>TalentChords</b>
+            </div>
+            <div id="menu-open" class="pull-right">
+            <a onclick="redirect();">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                       </div>
+
+        </div>
+    </header>
 <?php 
 include '../dbConfig.php';
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
 $vendoremail='';
+$currpass='';
  if(isset($_SESSION['emailvendors'])){
      $vendoremail=$_SESSION['emailvendors'];
  }
@@ -41,6 +56,13 @@ $vendoremail='';
   }
 if($vendoremail!=''){
     // change password form and fetch old password here
+      $query = $db->query("SELECT * FROM admins WHERE email='$vendoremail'");
+
+    if($query ->num_rows ==1){
+        $row1 = $query->fetch_assoc();
+        $currpass=$row1['password'];
+    }
+
 }
 else{
     // make password form
@@ -114,7 +136,7 @@ else{
                                                 url: 'updatepassafteredit.php',
                                                 type: 'POST',
                                             
-                                                data: {param1: <?php echo $vendoremail;?>,param2:$('#det2').val()},
+                                                data: {param1: '<?php echo $vendoremail;?>',param2:$('#det2').val()},
                                             
                                             })
                                             .done(function(response) {
@@ -147,4 +169,22 @@ else{
 
 		
 		}
+        function redirect(){
+    console.log("here");
+       var referringURL = document.referrer;
+       var local = referringURL.substring(referringURL.indexOf("?"), referringURL.length);
+       	var currentQueryString = window.location.search;
+			if (currentQueryString) {
+				// return true;
+                console.log(true);
+                var x=history.go(-1);
+                console.log(x);
+			} else {
+			    // return false;
+                console.log(false);
+                    var x=history.go(-1);
+                console.log(x);
+
+			}
+}
 	</script>

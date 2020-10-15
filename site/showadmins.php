@@ -136,7 +136,7 @@ include '../dbConfig.php';
 
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Password" disabled></th>
+    <!-- <th><input type="text" class="form-control width-auto" placeholder="Password" disabled></th> -->
    
     <th><input type="text" class="form-control width-auto" placeholder="Role" disabled></th>
 </tr>
@@ -164,7 +164,7 @@ if ($result ->num_rows >0) {
        
         <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
         <td contenteditable="false"><?php echo $row1["email"];?></td>
-        <td contenteditable="false"><?php echo $row1["password"];?></td>
+        <!-- <td contenteditable="false"><?php echo $row1["password"];?></td> -->
 
         <td contenteditable="false">
             <select role='<?php echo $row1["role"];?>' value="<?php echo $row1['role'];?>" class="btn btn-success btn-sm role">
@@ -205,7 +205,7 @@ if ($result ->num_rows >0) {
 <tr>
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
-<td><input type="text" id="new_age"></td>
+<!-- <td><input type="text" id="new_age"></td> -->
 <td>
     <select id="new_role" class="btn btn-success btn-sm">
     <option value="Main"<?php if ($status == 'Main')  echo 'selected = "selected"'; ?>>Main</option>
@@ -251,7 +251,7 @@ function add_row()
 {
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
- var new_age=document.getElementById("new_age").value;
+//  var new_age=document.getElementById("new_age").value;
  var new_role=document.getElementById("new_role").value;
 if(new_country=='' || new_name=='' || new_age=='' || new_role==''){
     alert("fill details correctly");
@@ -260,7 +260,7 @@ else{
 newadmin={}
 newadmin.name=new_name;
 newadmin.email=new_country;
-newadmin.password=new_age;
+// newadmin.password=new_age;
 newadmin.role=new_role;
 
 console.log(newadmin);
