@@ -147,7 +147,7 @@ $jobcount1=$querycat1 ->num_rows;
                                 <br> you’ve always wanted.
                             </h2>
                             <p class="page-subtitle">
-                                <span class="text-theme"><?php echo $jobcount; ?></span>  jobs Shareded in the last
+                                <span class="text-theme"><?php echo $jobcount; ?></span>  jobs Shared in the last
                             </p>
                         </div>
                     </div>
@@ -271,7 +271,7 @@ $jobcount1=$querycat1 ->num_rows;
                                                 <?php
                                                 }
                                                 else{
-                                                    echo "No job Shareded";
+                                                    echo "No job Shared";
                                                 }
                                                 ?>
 
@@ -325,7 +325,16 @@ if(sizeof($jobids)){
     if($query ->num_rows==1){
         $row1 = $query->fetch_assoc();
         $applied=$applied+1;
+        $curr_status='';
         // $i=$i+1;
+        // var_dump($row1['is_closed']);
+        if($row1['is_closed']=='1'){ 
+            $curr_status= 'Position closed';
+        
+        } else{
+            $curr_status= $row1['Status'];
+        };
+        
         
        ?>
   
@@ -338,13 +347,13 @@ if(sizeof($jobids)){
                     <td><?php echo $row1['company_name']; ?></td>
                
                     <td><?php echo $row1['Job_location']; ?></td>
-              <td><?php echo $row1['Status']; ?></td>
+              <td><?php echo $curr_status; ?></td>
                     <td>
                     <a href='../site/uploads/jd/<?php echo $jobids[$x];?>/<?php echo $row1["description_file"];?>' target="blank">&nbsp;(View)</a>
                     </td>
 
 
-                    <td><?php echo $row1['Status_update'];?>
+                    <td><?php echo $row1['Status_update']; ?>
                     </td>
                 
                 </tr>
