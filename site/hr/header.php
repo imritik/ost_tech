@@ -13,16 +13,16 @@
               
                <!-- <a href="../../logout/logout.php">Logout</a> -->
 
-   <select class="label label-info" style="font-size: small;background: cadetblue;">
-   <option>
+   <select class="label label-info" style="font-size: small;background: cadetblue;" onchange="location = this.value;">
+   <option value="#">
                <a href="#">My Profile</a>
    
    </option>
-    <option>
+    <option value="../../ChangePassword/setPassword.php">
                <a href="../../ChangePassword/setPassword.php">Change password</a>
    
    </option>
-   <option>
+   <option value="../../logout/logout.php">
                <a href="../../logout/logout.php">Logout</a>
    
    </option>
