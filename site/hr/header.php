@@ -11,8 +11,28 @@
 
                 <a href="../add_admin.php">Add HR Manager(HR)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               
+               <!-- <a href="../../logout/logout.php">Logout</a> -->
+
+   <select class="label label-info" style="font-size: small;background: cadetblue;">
+   <option>
+               <a href="#">My Profile</a>
+   
+   </option>
+    <option>
+               <a href="../../ChangePassword/setPassword.php">Change password</a>
+   
+   </option>
+   <option>
                <a href="../../logout/logout.php">Logout</a>
+   
+   </option>
+   
+   </select>
+
+
+
             </div>
+            
 
         </div>
     </header>

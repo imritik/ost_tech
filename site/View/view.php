@@ -68,7 +68,21 @@ $page="view_mode";
             <div id="menu-open" class="pull-right">
             <a onclick="redirect();">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+               <select class="label label-info" style="font-size: small;background: cadetblue;">
+   <option>
+               <a href="#">My Profile</a>
+   
+   </option>
+    <option>
+               <a href="../../ChangePassword/setPassword.php">Change password</a>
+   
+   </option>
+   <option>
                <a href="../../logout/logout.php">Logout</a>
+   
+   </option>
+   
+   </select>
             </div>
 
         </div>

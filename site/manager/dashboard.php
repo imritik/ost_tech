@@ -57,7 +57,21 @@ $page="job";
                 <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 <a href="../add_admin.php">Add manager</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-               <a href="../../logout/logout.php" class="pull-right">Logout</a>
+               <select class="label label-info" style="font-size: small;background: cadetblue;">
+   <option>
+               <a href="#">My Profile</a>
+   
+   </option>
+    <option>
+               <a href="../../ChangePassword/setPassword.php">Change password</a>
+   
+   </option>
+   <option>
+               <a href="../../logout/logout.php">Logout</a>
+   
+   </option>
+   
+   </select>
             </div>
 
         </div>

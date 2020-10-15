@@ -51,7 +51,21 @@ $page="job";
              <b>Vendor<b> (<?php echo $vendoremail; ?>)
             </div>
             <div id="menu-open" class="pull-right">
+                <select class="label label-info" style="font-size: small;background: cadetblue;">
+   <option>
+               <a href="#">My Profile</a>
+   
+   </option>
+    <option>
+               <a href="../../ChangePassword/setPassword.php">Change password</a>
+   
+   </option>
+   <option>
                <a href="../../logout/logout.php">Logout</a>
+   
+   </option>
+   
+   </select>
             </div>
 
         </div>
