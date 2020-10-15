@@ -1,23 +1,3 @@
-<head>
-		<meta charset="utf-8">
-		<title>Change Password</title>
-	    <link href="../site/css/style.css" rel="stylesheet">
-
-</head>
- <!-- ============ HEADER START ============ -->
- <header>
-        <div id="header-background"></div>
-        <div class="container">
-        <div class="pull-left">
-             <b>TalentChords</b>
-            </div>
-            <div id="menu-open" class="pull-right">
-            <a onclick="redirect();">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                       </div>
-
-        </div>
-    </header>
 <?php 
 include '../dbConfig.php';
 error_reporting(E_ALL & ~E_NOTICE);
@@ -69,6 +49,23 @@ else{
 }
 
 ?>
+<head>
+		<meta charset="utf-8">
+		<title>Change Password</title>
+	    <link href="../site/css/style.css" rel="stylesheet">
+</head>
+ <!-- ============ HEADER START ============ -->
+ <header>
+        <div id="header-background"></div>
+        <div class="container">
+        <div class="pull-left">
+             <b>TalentChords</b>
+            </div>
+            <div id="menu-open" class="pull-right">
+            <a onclick="redirect();">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       </div>
+        </div>
+    </header>
 
 <div  id="text">
         <div  style="padding:20px">
