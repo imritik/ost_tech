@@ -23,9 +23,11 @@ $coordinator=$_POST['cc'];
 $basis=$_POST['duplicates'];
 $levels=$_POST['member'];
 $managers=array();
+$level_description=array();
 // var_dump($levels);
 for($i=0;$i<$levels;$i++){
     array_push($managers,$_POST['managers'][$i]);
+    array_push($level_description,$_POST['level_description'][$i]);
 }
 
 // $new_managers=$_POST['managers'];
@@ -67,6 +69,14 @@ else{
     $managers=json_encode($managers);
 }
 
+if(is_string($level_description)){
+$level_description=explode(",",$level_description);
+$level_description=json_encode($level_description);
+}
+else{
+    $level_description=json_encode($level_description);
+}
+
 // File upload path
 $targetDir = "../uploads/jd/".$postingid."/";
  //Check if the directory already exists.
@@ -100,6 +110,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
             recruiter=IFNULL($recruiters,recruiter),
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
             manager=IFNULL($managers,manager),
+            level_description=IFNull($level_description,level_description),
                     duplicate_basis='$basis'
                      where posting_id='$postingid' and email='$email'");
                 //   var_dump("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',vendor='$vendors',recruiter='$recruiters where posting_id='$postingid' and email='$email'");
@@ -129,6 +140,8 @@ else{
 
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
             manager=IFNULL('$managers',manager),
+            level_description=IFNull($level_description,level_description),
+
             duplicate_basis='$basis'
 
              where posting_id='$postingid' and email='$email'");

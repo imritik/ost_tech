@@ -97,6 +97,7 @@ if(!empty($_GET['status'])){
        $curr_managers='';
        $curr_vendors='';
        $curr_recruiters='';
+       $curr_description='';
 
 if(!empty($_GET['jid'])){
     $jid=$_GET['jid'];
@@ -111,6 +112,7 @@ if(!empty($_GET['jid'])){
                             $curr_managers=json_decode($row22['manager']);
                             $curr_vendors=json_decode($row22['vendor']);
                             $curr_recruiters=json_decode($row22['recruiter']);
+                            $curr_description=json_decode($row22['level_description']);
 
                         // var_dump($curr_managers);
 
@@ -489,6 +491,7 @@ if(isset($_SESSION['emailhr'])){
     $sqlcomp = "SELECT * FROM admins where role='vendors' and company='$hrcompany'";
     $sqlrec = "SELECT * FROM admins where role='recruiters'  and company='$hrcompany'";
     $sqlmanag="SELECT * FROM admins where role='manager'  and company='$hrcompany'";
+
 }
 else{
     $sqlrec = "SELECT * FROM admins where role='recruiters'";
@@ -623,6 +626,7 @@ function addFields(){
             if(number<8){
 
                 var temp=<?php echo json_encode($curr_managers) ?>;
+                var desc=<?php  echo json_encode($curr_description) ?>;
 // console.log(temp);
                 for (i=0;i<number;i++){
                 container.appendChild(document.createTextNode("Level " + (i+1)));
@@ -633,6 +637,12 @@ function addFields(){
                     select.id = "level"+(i+1);
                     select.className="form-control";
 
+                    var level_desc = document.createElement("input");
+                    level_desc.name = "level_description[]";
+                    level_desc.id = "level_description"+(i+1);
+                    level_desc.setAttribute("placeholder", "Add level description");
+                    level_desc.className="form-control";
+
                     for (const val of values) {
                         var option = document.createElement("option");
                         option.value = val;
@@ -640,9 +650,11 @@ function addFields(){
                         // $("#level"+i+" > [value=" + temp + "]").attr("selected", "true");
                         select.appendChild(option);
                     }
-
+                container.appendChild(level_desc);
                 container.appendChild(select);
                 $("#level"+(i+1)).val(temp[i]);
+                $("#level_description"+(i+1)).val(desc[i]);
+
                 container.appendChild(document.createElement("br"));
                 }
             }
