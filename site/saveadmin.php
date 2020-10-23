@@ -61,7 +61,7 @@ $headers .= 'From:TalentChords<rupendra@talentchords.com>' . "\r\n";
 // $headers .= 'Cc: Admin@tc.com' . "\r\n";
  
 mail($to,$subject,$message,$headers);
-echo "We have sent the password reset link to your  email id <b>".$to."</b>"; 
+echo "We have sent the password reset link to email id <b>".$to."</b>"; 
 
 }
 
@@ -76,7 +76,7 @@ $getEmail="SELECT * FROM admins WHERE id=$id";
             if ($result ->num_rows ==1 ) {               
                 while($row1 = $result->fetch_assoc()) {
                         $oldemail=$row1['email'];
-                        var_dump($row1['email']);
+                        // var_dump($row1['email']);
                 }
             }
 

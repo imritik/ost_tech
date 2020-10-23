@@ -86,7 +86,7 @@ else if(isset($_SESSION['emailhr'])){
 
     <th><input type="text" class="form-control width-auto" placeholder="Name"></th>
     <th><input type="text" class="form-control width-auto" placeholder="Email"></th>
-    <th><input type="text" class="form-control width-auto" placeholder="Password" disabled></th>
+    <!-- <th><input type="text" class="form-control width-auto" placeholder="Password" disabled></th> -->
    <th>Companies</th>
     <th>Contact</th>
     <th><input type="text" class="form-control width-auto" placeholder="Role" disabled></th>
@@ -110,7 +110,7 @@ if ($result ->num_rows >0) {
        
         <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
         <td contenteditable="false"><?php echo $row1["email"];?></td>
-        <td contenteditable="false"><?php echo $row1["password"];?></td>
+        <!-- <td contenteditable="false"><?php echo $row1["password"];?></td> -->
    <td contenteditable="false" style="background:cadetblue;color:white">
        <!-- <select  class="multiselect" name="select[]" multiple="multiple"></select> -->
         <?php echo $row1['company']; ?>
@@ -154,7 +154,7 @@ if ($result ->num_rows >0) {
 <tr>
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
-<td><input type="text" id="new_age"></td>
+<!-- <td><input type="text" id="new_age"></td> -->
 <td style="background:cadetblue">
 <select id="companies" class="multiselect" multiple="multiple">
 </select>
@@ -202,7 +202,7 @@ function add_row()
 {
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
- var new_age=document.getElementById("new_age").value;
+//  var new_age=document.getElementById("new_age").value;
  var new_companies=document.getElementById("companies").value;
 
  var new_role=document.getElementById("new_role").value;
@@ -224,7 +224,7 @@ else{
 newadmin={}
 newadmin.name=new_name;
 newadmin.email=new_country;
-newadmin.password=new_age;
+// newadmin.password=new_age;
 newadmin.company=JSON.stringify(new_companies);
 
 newadmin.role=new_role;
