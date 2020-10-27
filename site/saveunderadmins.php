@@ -62,7 +62,7 @@ $message = '
 <title>Update Password</title>
 </head>
 <body>
-<p>Click on the given link to update your password <a href="'.$uri.'/jobs/ChangePassword/setPassword.php?email='.$email.'&fp='.$reset_for.'">Update Password</a></p>
+<p>Click on the given link to update your password <a href="'.$uri.'/jobs/ChangePassword/setPassword.php?email='.$to.'&fp='.$reset_for.'">Update Password</a></p>
  
 </body>
 </html>
@@ -73,7 +73,7 @@ $headers .= 'From:TalentChords<rupendra@talentchords.com>' . "\r\n";
 // $headers .= 'Cc: Admin@tc.com' . "\r\n";
  
 mail($to,$subject,$message,$headers);
-echo "We have sent the password reset link to  email id <b>".$to."</b>"; 
+echo "We have sent the password reset link to  email id ".$to.""; 
 
 }
 
@@ -91,7 +91,7 @@ echo "We have sent the password reset link to  email id <b>".$to."</b>";
      echo "User already found with this email!";
  }else{
      // Insert member data in the database
-     $db->query("INSERT INTO admins (Full_name,email,company,role,contact,managed_by,added_on) VALUES ('$name','$email','$companies','$role','$contact','$coordinator_email',NOW())");
+     $db->query("INSERT IGNORE INTO admins (Full_name,email,company,role,contact,managed_by,added_on) VALUES ('$name','$email','$companies','$role','$contact','$coordinator_email',NOW())");
     // echo "Inserted";
     mailresetlink($email,$reset_for);
 

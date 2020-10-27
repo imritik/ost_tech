@@ -217,7 +217,7 @@ $checkhrsession=!isset($_SESSION['emailhr']);
  new_companies = [new_companies];
 }
 
-if(new_country=='' || new_name=='' || new_age=='' || new_role==''){
+if(new_country=='' || new_name=='' || new_role==''){
     alert("fill details correctly");
 }
 else{
