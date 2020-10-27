@@ -253,7 +253,7 @@ function add_row()
  var new_country=document.getElementById("new_country").value;
 //  var new_age=document.getElementById("new_age").value;
  var new_role=document.getElementById("new_role").value;
-if(new_country=='' || new_name=='' || new_age=='' || new_role==''){
+if(new_country=='' || new_name==''  || new_role==''){
     alert("fill details correctly");
 }
 else{
@@ -325,6 +325,7 @@ $('.editbtn').click(function () {
                             })
                             .done(function(response) {
                                 alert(response);
+                                console.log(response);
                                 //do something with the response
                                 // $('#'+studid).html('<p style="color:white;background:forestgreen">Shorlisted</p>');
                                 location.reload();
