@@ -32,7 +32,7 @@ $role=$_POST['data']['role'];
 $contact=$_POST['data']['contact'];
 $companies=$_POST['data']['company'];
 $managed_by=$_POST['data']['managed_by'];
-$id=$_POST['data']['id'];
+// $id=$_POST['data']['id'];
 $oldemail='';
 
 
@@ -81,9 +81,10 @@ echo "We have sent the password reset link to  email id ".$to."";
 // -----------------------------------------------------------------------------------------------
 
 
- $prevQuery = "SELECT * FROM admins WHERE id = $id";
+ $prevQuery = "SELECT * FROM admins WHERE email='$email'";
+//  var_dump("SELECT * FROM admins WHERE email='$email'");
  $prevResult = $db->query($prevQuery);
- 
+//  var_dump($prevResult);
  if($prevResult->num_rows >0){
      // Update member data in the database
     //  $db->query("UPDATE IGNORE admins SET Full_name = '$name', email = '$email', password = '$password',contact='$contact' WHERE id = $id");
@@ -91,8 +92,9 @@ echo "We have sent the password reset link to  email id ".$to."";
      echo "User already found with this email!";
  }else{
      // Insert member data in the database
-     $db->query("INSERT IGNORE INTO admins (Full_name,email,company,role,contact,managed_by,added_on) VALUES ('$name','$email','$companies','$role','$contact','$coordinator_email',NOW())");
+   $insert_test=$db->query("INSERT IGNORE INTO admins (Full_name,email,company,role,contact,managed_by,added_on) VALUES ('$name','$email','$companies','$role','$contact','$coordinator_email',NOW())");
     // echo "Inserted";
+    // echo $insert_test;
     mailresetlink($email,$reset_for);
 
     }
