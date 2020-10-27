@@ -56,7 +56,7 @@ $recruiters=json_encode($recruiters);
 
 
 
-// var_dump($managers);
+// var_dump($level_description);
 // var_dump($new_managers);
 
 
@@ -110,7 +110,7 @@ if(!empty($_FILES["jobdescriptionfile"]["name"])){
             recruiter=IFNULL($recruiters,recruiter),
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
             manager=IFNULL($managers,manager),
-            level_description=IFNull($level_description,level_description),
+            level_description=IFNull('$level_description',level_description),
                     duplicate_basis='$basis'
                      where posting_id='$postingid' and email='$email'");
                 //   var_dump("UPDATE IGNORE Job_Posting SET job_title='$title',Job_type='$type',Job_location='$location',job_description='$description',description_file='$fileName',company_url='$url',vendor='$vendors',recruiter='$recruiters where posting_id='$postingid' and email='$email'");
@@ -140,7 +140,7 @@ else{
 
             coordinator=Coalesce(NULLIF('$coordinator',''),coordinator),
             manager=IFNULL('$managers',manager),
-            level_description=IFNull($level_description,level_description),
+            level_description=IFNull('$level_description',level_description),
 
             duplicate_basis='$basis'
 
