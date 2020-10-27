@@ -5,6 +5,7 @@ session_start();
 
 $vendoremail='';
 $currpass='';
+$if_isset=0;
  if(isset($_SESSION['emailvendors'])){
      $vendoremail=$_SESSION['emailvendors'];
  }
@@ -125,9 +126,16 @@ else{
     </div>
 
     <script>
+    
     		function updatepassword(){
+    		    
+    		    <?php 
+    		    if(isset($_GET['email'])){
+    		        $if_isset=1;
+    		    }
+    		    ?>
                 
-                if(<?php echo isset($_GET['email']) ?>){
+                if(<?php echo $if_isset ?>){
                     
                     // no need of old password
 
