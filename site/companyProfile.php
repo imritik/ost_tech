@@ -10,10 +10,7 @@ include '../dbConfig.php';
 <html>
 <head>
 <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Jobseek - Job Board Responsive HTML Template">
-    <meta name="author" content="Coffeecream Themes, info@coffeecream.eu">
+
     <title>Profile </title>
     <link rel="shortcut icon" href="images/favicon.png">
 
@@ -48,14 +45,7 @@ include '../dbConfig.php';
                 <a class="fm-button"><i class="fa fa-close fa-2x"></i></a>
             </div>
             <ul class="nav">
-                 <!-- <li><a href="#home">Home</a></li> -->
                
-                 <!-- <li><a href="../admin_jobs/coordinators/login.php" target="blank">Account Manager</a></li> -->
-                 <!-- <li><a href="../admin_jobs/cc/login.php" target="blank">Coordinator</a></li> -->
-                <!-- <li><a class="link-register">Register</a></li> -->
-                <!-- <li><a class="link-register" href="add_cc.php">Add Manager/Coordinator</a></li> -->
-
-                <!-- <li><a class="link-login" href="../logout/logout.php">Logout</a></li> -->
             </ul>
         </div>
         <!-- end Menu -->
@@ -92,7 +82,7 @@ include '../dbConfig.php';
                         
                             while($row1 = $result->fetch_assoc()) {
                                 $compname=$row1['company_name'];
-                                $compdesc=htmlspecialchars($row1['description']);
+                                $compdesc=$row1['description'];
 
                                 ?>
  <section id="title">

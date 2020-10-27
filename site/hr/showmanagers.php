@@ -59,7 +59,7 @@ $page="manager";
 <tr>
 <th>Name</th>
 <th>Email</th>
-<th>Password</th>
+<!-- <th>Password</th> -->
 <th>Contact</th>
 </tr>
 <!-- ---------- -->
@@ -82,7 +82,7 @@ if ($result ->num_rows >0) {
                     <tr id="<?php echo $row1["id"];?>" >
                     <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
                     <td contenteditable="false"><?php echo $row1["email"];?></td>
-                    <td contenteditable="false"><?php echo $row1["password"];?></td>
+                    <!-- <td contenteditable="false"><?php echo $row1["password"];?></td> -->
                     <td contenteditable="false"><?php echo $row1["contact"];?></td>
 
                     <td>
@@ -111,7 +111,7 @@ else {
 <tr>
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
-<td><input type="text" id="new_age"></td>
+<!-- <td><input type="text" id="new_age"></td> -->
 <td><input type="text" id="new_contact"></td>
 <td><input type="button" class="add btn btn-primary btn-sm" onclick="add_row();" value="Add"></td>
 </tr>
@@ -129,7 +129,7 @@ function add_row()
 {
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
- var new_age=document.getElementById("new_age").value;
+//  var new_age=document.getElementById("new_age").value;
  var new_role="manager";
  var new_contact=document.getElementById("new_contact").value;
 
@@ -143,7 +143,7 @@ else{
 newadmin={}
 newadmin.name=new_name;
 newadmin.email=new_country;
-newadmin.password=new_age;
+// newadmin.password=new_age;
 newadmin.role=new_role;
 newadmin.company='<?php echo $hrcompany;?>';
 newadmin.contact=new_contact;

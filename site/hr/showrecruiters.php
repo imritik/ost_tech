@@ -56,7 +56,7 @@ $page="recruiter";
 <tr>
 <th>Name</th>
 <th>Email</th>
-<th>Password</th>
+<!-- <th>Password</th> -->
 <!-- <th>Companies</th> -->
 <th>Contact</th>
 <!-- <th>Role</th> -->
@@ -80,7 +80,7 @@ if ($result ->num_rows >0) {
        
         <td  contenteditable="false"> <?php echo $row1["Full_name"];?></td>
         <td contenteditable="false"><?php echo $row1["email"];?></td>
-        <td contenteditable="false"><?php echo $row1["password"];?></td>
+        <!-- <td contenteditable="false"><?php echo $row1["password"];?></td> -->
         <!-- <td contenteditable="false" style="background:cadetblue">
        <select  class="multiselect" name="select[]" multiple="multiple"></select>
         </td> -->
@@ -114,7 +114,7 @@ if ($result ->num_rows >0) {
 <tr>
 <td><input type="text" id="new_name"></td>
 <td><input type="email" id="new_country"></td>
-<td><input type="text" id="new_age"></td>
+<!-- <td><input type="text" id="new_age"></td> -->
 <!-- <td style="background:cadetblue"><select id="companies" class="multiselect" multiple="multiple"></select></td> -->
 <td><input type="text" id="new_contact"></td>
 <!-- <td><select id="new_role" class="btn btn-success btn-sm"><option value="1">Account Manager</option><option value="0">Coordinator</option></select></td> -->
@@ -131,7 +131,7 @@ function add_row()
 {
  var new_name=document.getElementById("new_name").value;
  var new_country=document.getElementById("new_country").value;
- var new_age=document.getElementById("new_age").value;
+//  var new_age=document.getElementById("new_age").value;
 //  var new_companies=document.getElementById("companies").value;
  var new_role="recruiters";
  var new_contact=document.getElementById("new_contact").value;
@@ -146,7 +146,7 @@ else{
 newadmin={}
 newadmin.name=new_name;
 newadmin.email=new_country;
-newadmin.password=new_age;
+// newadmin.password=new_age;
 newadmin.role=new_role;
 newadmin.company='<?php echo $hrcompany;?>';
 newadmin.contact=new_contact;

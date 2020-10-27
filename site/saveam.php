@@ -15,7 +15,7 @@ include '../dbConfig.php';
 <?php 
 $name=$_POST['data']['name'];
 $email=$_POST['data']['email'];
-$password=$_POST['data']['password'];
+// $password=$_POST['data']['password'];
 $role=$_POST['data']['role'];
 $contact=$_POST['data']['contact'];
 $companies=$_POST['data']['company'];
@@ -29,12 +29,12 @@ $oldemail='';
  
  if($prevResult->num_rows >0){
      // Update member data in the database
-     $db->query("UPDATE IGNORE admins SET Full_name = '$name', email = '$email', password = '$password',contact='$contact' WHERE id = $id");
+     $db->query("UPDATE IGNORE admins SET Full_name = '$name', email = '$email',contact='$contact' WHERE id = $id");
     //  $db->query("UPDATE to_admin SET ")
      echo "Updated";
  }else{
      // Insert member data in the database
-     $db->query("INSERT INTO admins (Full_name,email,password,company,role,contact,added_on) VALUES ('$name','$email','$password','$companies','$role','$contact',NOW())");
+     $db->query("INSERT INTO admins (Full_name,email,company,role,contact,added_on) VALUES ('$name','$email','$companies','$role','$contact',NOW())");
     echo "Inserted";
     }
 
