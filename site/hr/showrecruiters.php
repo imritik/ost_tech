@@ -139,7 +139,7 @@ function add_row()
 // if(typeof(new_companies)=='string'){
 //  new_companies = [new_companies];
 // }
-if(new_country=='' || new_name=='' || new_age=='' ){
+if(new_country=='' || new_name=='' || new_role=='' ){
     alert("fill details correctly");
 }
 else{
