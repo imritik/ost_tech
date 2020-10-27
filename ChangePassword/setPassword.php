@@ -34,7 +34,7 @@ $currpass='';
     // echo "alert('no session exist')";
     header("location: ../index.php");
   }
-if($vendoremail!=''){
+if($vendoremail!='' && !isset($_GET['email'])){
     // change password form and fetch old password here
       $query = $db->query("SELECT * FROM admins WHERE email='$vendoremail'");
 
@@ -71,7 +71,7 @@ else{
         <div  style="padding:20px">
         <?php 
 
-if($vendoremail!=''){
+if($vendoremail!='' && !isset($_GET['email'])){
     // change password form
 ?>
  <div >
@@ -98,7 +98,7 @@ else{
             <div class="col-md-6 col-md-offset-3" style="text-align:center" >
             <form >
             <?php
-            if($vendoremail!=''){
+            if($vendoremail!='' && !isset($_GET['email'])){
 ?>
   <label for=""> OLD PASSWORD</label>
             <input class="form-control" id="det1" type="password" required>
@@ -126,7 +126,9 @@ else{
 
     <script>
     		function updatepassword(){
-                if(isset($_GET['email'])){
+                
+                if(<?php echo isset($_GET['email']) ?>){
+                    
                     // no need of old password
 
                       $.ajax({
@@ -138,7 +140,7 @@ else{
                                             })
                                             .done(function(response) {
                                     alert(response);
-                                    off();
+                                    // off();
                                             });
 
                 }
@@ -155,7 +157,7 @@ else{
                                             })
                                             .done(function(response) {
                                     alert(response);
-                                    off();
+                                    // off();
                                             });
 
                             }
@@ -185,3 +187,36 @@ else{
 			}
 }
 	</script>
+     <script src="../site/js/modernizr.custom.79639.js"></script>
+    <!-- jQuery (./nsite/ecessary for Bootstrap's JavaScript plugins) -->
+    <script src="../site/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstra../site/p Plugins -->
+    <script src="../site/js/bootstrap.min.js"></script>
+    <!-- Retina P../site/lugin -->
+    <script src="../site/js/retina.min.js"></script>
+    <!-- ScrollRe../site/veal Plugin -->
+    <script src="../site/js/scrollReveal.min.js"></script>
+    <!-- Flex Men../site/u Plugin -->
+    <script src="../site/js/jquery.flexmenu.js"></script>
+    <!-- Slider P../site/lugin -->
+    <script src="../site/js/jquery.ba-cond.min.js"></script>
+    <script src="../site/js/jquery.slitslider.js"></script>
+    <!-- Carousel../site/ Plugin -->
+    <script src="../site/js/owl.carousel.min.js"></script>
+    <!-- Parallax../site/ Plugin -->
+    <script src="../site/js/parallax.js"></script>
+    <!-- Counteru../site/p Plugin -->
+    <script src="../site/js/jquery.counterup.min.js"></script>
+    <script src="../site/js/waypoints.min.js"></script>
+    <!-- No UI Sl../site/ider Plugin -->
+    <script src="../site/js/jquery.nouislider.all.min.js"></script>
+    <!-- Bootstra../site/p Wysiwyg Plugin -->
+    <script src="../site/js/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Flickr P../site/lugin -->
+    <script src="../site/js/jflickrfeed.min.js"></script>
+    <!-- Fancybox../site/ Plugin -->
+    <script src="../site/js/fancybox.pack.js"></script>
+    <!-- Magic Fo../site/rm Processing -->
+    <script src="../site/js/magic.js"></script>
+    <!-- jQuery S../site/ettings -->
+    <script src="../site/js/settings.js"></script>
