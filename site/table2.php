@@ -411,7 +411,20 @@ $vendoremail='';
 
                     else if($status=='shortlist'){
                     
-                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status NOT IN('rejected','hold','Shared','processed','Offered') and Student.resume!='' and applied_table.level='$levelofstudent' ORDER BY applied_table.Status_update DESC";
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status IN('shortlist','schedule_interview','interview_scheduled','feedback_awaited','offer_discussion') and Student.resume!='' and applied_table.level='$levelofstudent' ORDER BY applied_table.Status_update DESC";
+                        
+
+
+                    }
+                     else if($status=='Offered'){
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status IN('Offered','Joined') and Student.resume!='' and applied_table.level='$levelofstudent' ORDER BY applied_table.Status_update DESC";
+                        
+
+                    }
+                     else if($status=='rejected'){
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status IN('rejected','backed_out') and Student.resume!='' and applied_table.level='$levelofstudent' ORDER BY applied_table.Status_update DESC";
                         
 
 
@@ -441,9 +454,21 @@ $vendoremail='';
 
                     }
 
-                    else if($status=='shortlist'){
+                  else if($status=='shortlist'){
                     
-                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status NOT IN('rejected','hold','Shared','processed','Offered') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status IN('shortlist','schedule_interview','interview_scheduled','feedback_awaited','offer_discussion') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
+                        
+
+
+                    }
+                     else if($status=='Offered'){
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status IN('Offered','Joined') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
+
+                    }
+                     else if($status=='rejected'){
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND applied_table.Status IN('rejected','backed_out') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
                         
 
 
@@ -468,6 +493,7 @@ $vendoremail='';
             $vendorcomment=array();
              $coordinatorcomment=array();
              $level=array();
+             $status_stored=array();
             
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -480,6 +506,7 @@ $vendoremail='';
                     array_push($vendorcomment,$row['vendor_note']);
                     array_push($amcomment,$row['Note']);
                     array_push($level,$row['level']);
+                    array_push($status_stored,$row['Status']);
 
 
 
@@ -606,11 +633,20 @@ $vendoremail='';
                         </td>
                     <td style="border-right: 1px solid #E7E7E7;">
                         <select id="updatenotebtn<?php echo $ssid;?>" class="form-control">
-                            <option value="Shared"  <?php if ( $status== 'Shared')  echo 'selected = "selected"'; ?>   >Shared</option>
-                            <option value="hold" <?php if (   $status== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
-                            <option value="Offered" <?php if (   $status== 'Offered')  echo 'selected = "selected"'; ?>>Offered</option>
-                            <option value="shortlist"<?php if($status== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
-                            <option value="rejected"<?php if ($status== 'rejected')  echo 'selected = "selected"'; ?> >Close</option>
+                            <option value="Shared"  <?php if ( $status_stored[$x]== 'Shared')  echo 'selected = "selected"'; ?>   >To Process</option>
+                            <option value="hold" <?php if (   $status_stored[$x]== 'hold')  echo 'selected = "selected"'; ?>>Hold</option>
+                            <option value="shortlist"<?php if($status_stored[$x]== 'shortlist')  echo 'selected = "selected"'; ?> >Shortlist</option>
+                            <option value="schedule_interview"<?php if($status_stored[$x]== 'schedule_interview')  echo 'selected = "selected"'; ?> >Schedule Interview</option>
+                            <option value="interview_scheduled"<?php if($status_stored[$x]== 'interview_scheduled')  echo 'selected = "selected"'; ?> >Interview Scheduled</option>
+                            <option value="feedback_awaited"<?php if($status_stored[$x]== 'feedback_awaited')  echo 'selected = "selected"'; ?> >Feedback Awaited</option>
+                            <option value="offer_discussion"<?php if($status_stored[$x]== 'offer_discussion')  echo 'selected = "selected"'; ?> >Offer Discussion</option>
+
+                            <option value="Offered" <?php if (   $status_stored[$x]== 'Offered')  echo 'selected = "selected"'; ?>>Offered</option>
+                            <option value="Joined" <?php if (   $status_stored[$x]== 'Joined')  echo 'selected = "selected"'; ?>>Joined</option>
+
+                            <option value="rejected"<?php if ($status_stored[$x]== 'rejected')  echo 'selected = "selected"'; ?> >Not Shortlisted</option>
+                            <option value="backed_out"<?php if ($status_stored[$x]== 'backed_out')  echo 'selected = "selected"'; ?> >Backed Out</option>
+
                         </select>
                     </td>
                     <?php
