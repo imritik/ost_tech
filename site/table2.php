@@ -385,10 +385,17 @@ $vendoremail='';
                 if($status=='uploaded'){
                     $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' and Student.resume='' and(applied_table.Status='shortlist' or applied_table.duplicate_status='probable')";
                 }
-                else{
+                else if($status=='shortlist'){
 
-                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail'and Student.resume!='' and applied_table.Status='$status'";
+                    $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail'and Student.resume!='' and applied_table.Status IN('shortlist','schedule_interview','interview_scheduled','feedback_awaited','offer_discussion')";
                 }
+                  else if($status=='rejected'){
+                    
+                            $query="SELECT Student.*, applied_table.* FROM Student INNER JOIN applied_table ON Student.student_id = applied_table.student_id AND applied_table.posting_id='$jid' AND Student.Uploaded_by='$vendoremail' AND applied_table.Status IN('rejected','backed_out') and Student.resume!='' ORDER BY applied_table.Status_update DESC";
+                        
+
+
+                    }
 
 
         }
