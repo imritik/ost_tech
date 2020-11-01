@@ -10,7 +10,6 @@ if(isset($_SESSION['emailemp'])){
   }
 // $cname=$_SESSION['company'];
 include '../dbConfig.php';
-
 ?>
 <?php 
 $name=$_POST['data']['name'];

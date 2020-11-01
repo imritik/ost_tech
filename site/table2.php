@@ -249,7 +249,7 @@ else{
 <?php
 if(isset($_SESSION['emailhr'])){
     ?>
-    <li class='new_arrival'><a  onclick="setstatus('new_arrival')">Probable duplicates&nbsp;<span></span></a></li>
+    <!-- <li class='new_arrival'><a  onclick="setstatus('new_arrival')">Probable duplicates&nbsp;<span></span></a></li> -->
 <?php
 }
 if(!isset($_SESSION['emailvendors'])){
