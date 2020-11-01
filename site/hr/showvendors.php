@@ -166,6 +166,7 @@ console.log(newadmin);
                             })
                             .done(function(response) {
                                 alert(response);
+                                // console.log(response);
                                 location.reload();
                             })
                             .fail(function() {

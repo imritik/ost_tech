@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['emailemp'])){
+if(isset($_SESSION['emailemp'])|| isset($_SESSION['emailhr'])){
     // echo $_SESSION['company'];
   }
   else{
@@ -24,7 +24,6 @@ $oldemail='';
 
 // ---------------------for emails--------------------------------------
 
-$reset_for=getRandomString(10);
 // var_dump($_POST['data']['name']);
  // Check whether member already exists in the database with the same email
 function getRandomString($length) 
@@ -37,7 +36,10 @@ function getRandomString($length)
         $index = mt_rand(0, $validCharNumber - 1);
         $result .= $validCharacters[$index];
     }
-	return $result;}
+    return $result;}
+    
+$reset_for=getRandomString(10);
+
   function mailresetlink($to,$reset_for){
 	//  var_dump($reset_for);
 $subject = "Update Password ";
@@ -72,14 +74,11 @@ echo "We have sent the password reset link to  email id ".$to."";
  $prevResult = $db->query($prevQuery);
  
  if($prevResult->num_rows >0){
-     // Update member data in the database
-    //  $db->query("UPDATE IGNORE admins SET Full_name = '$name', email = '$email',contact='$contact' WHERE id = $id");
-    //  $db->query("UPDATE to_admin SET ")
+    
      echo "User already exists!";
  }else{
      // Insert member data in the database
      $db->query("INSERT INTO admins (Full_name,email,company,role,contact,added_on) VALUES ('$name','$email','$companies','$role','$contact',NOW())");
-    // echo "Inserted";
     mailresetlink($email,$reset_for);
 
     }
