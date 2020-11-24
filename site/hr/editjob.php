@@ -163,7 +163,7 @@ if(!empty($_GET['jid'])){
                          <div style="width:30%;text-align: center;list-style: none;">
                                     <label for="job-description">Autofill job</label>
                                     <?php
-                                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail' and is_closed=1";
+                                    $sqljob="SELECT * FROM Job_Posting where email='$hrcompany' and hr='$hremail'";
                                     $resultjob = $db->query($sqljob);
                                     if ($resultjob ->num_rows > 0) {
                                         while($rowjob = $resultjob->fetch_assoc()) {

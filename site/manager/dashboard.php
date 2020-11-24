@@ -49,14 +49,14 @@ $page="job";
  <!-- ============ HEADER START ============ -->
  <header>
         <div id="header-background"></div>
-        <div class="container">
+        <div class="container pull-right">
             <div class="pull-left">
              <b>Manager<b> (<?php echo $hremail; ?>)
             </div>
-            <!-- <div id="menu-open" class="pull-right">
-                <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <div id="menu-open" class="pull-right"> 
+                <!-- <a href="../View/view.php">Monitor</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                <a href="../add_admin.php">Add manager</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                <a href="../add_admin.php">Add manager</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --> 
              <select class="label label-info" style="font-size: small;background: cadetblue;" onchange="location = this.value;">
    <option value="#">
                <a href="#">My Profile</a>
