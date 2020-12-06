@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['emailemp'])||isset($_SESSION['emailhr'])){
+if(isset($_SESSION['emailemp'])||isset($_SESSION['emailhr'])||isset($_SESSION['coordinatoremp'])){
   }
   else{
     header("location: ../../admin_jobs/admin_home.php");
@@ -9,7 +9,7 @@ if(isset($_SESSION['emailemp'])||isset($_SESSION['emailhr'])){
 include '../../dbConfig.php';
 // $coordinator_email=$_SESSION['coordinatoremp'];
 $coordinator_email='';
-
+$company='';
 // if(isset($_SESSION['emailmanager'])){
 //     $coordinator_email=$_SESSION['emailmanager'];
 // }
@@ -19,11 +19,15 @@ $coordinator_email='';
 // else
  if(isset($_SESSION['emailhr'])){
     $coordinator_email=$_SESSION['emailhr'];
+    $company=$_SESSION['companyhr'];
 }
 else if($_SESSION['emailemp']){
     $coordinator_email=$_SESSION['emailemp'];
 }
-// var_dump($coordinator_email,"emil");
+else if($_SESSION['coordinatoremp']){
+    $coordinator_email=$_SESSION['coordinatoremp'];
+}
+// var_dump($company,"emil");
 
 $page="view_mode";
   ?>
@@ -148,12 +152,12 @@ $page="view_mode";
 //     }
 // }
 $sql='';
- if($_SESSION['emailemp']){
+ if($_SESSION['emailemp']||$_SESSION['coordinatoremp']){
  $sql="SELECT Job_Posting.*, applied_table.*,count(Job_Posting.posting_id) as numRows FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id group by Job_Posting.company_name";
 
  }
- else{
- $sql="SELECT Job_Posting.*, applied_table.*,count(Job_Posting.posting_id) as numRows FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id AND Job_Posting.hr='$coordinator_email' group by Job_Posting.posting_id";
+ else if($_SESSION['emailhr']){
+ $sql="SELECT Job_Posting.*, applied_table.*,count(Job_Posting.posting_id) as numRows FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id AND Job_Posting.email='$company' group by Job_Posting.posting_id";
 
  }
 $result = $db->query($sql);
