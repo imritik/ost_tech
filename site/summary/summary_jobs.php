@@ -10,15 +10,17 @@ include '../../dbConfig.php';
 // $coordinator_email=$_SESSION['coordinatoremp'];
 $coordinator_email='';
 
-if(isset($_SESSION['emailmanager'])){
-    $coordinator_email=$_SESSION['emailmanager'];
-}
-else if(isset($_SESSION['coordinatoremp'])){
-    $coordinator_email=$_SESSION['coordinatoremp'];
-}
-else if(isset($_SESSION['emailhr'])){
+// if(isset($_SESSION['emailmanager'])){
+//     $coordinator_email=$_SESSION['emailmanager'];
+// }
+// else if(isset($_SESSION['coordinatoremp'])){
+//     $coordinator_email=$_SESSION['coordinatoremp'];
+// }
+// else
+ if(isset($_SESSION['emailhr'])){
     $coordinator_email=$_SESSION['emailhr'];
 }
+// var_dump($coordinator_email,"emil");
 
 $page="view_mode";
   ?>
@@ -100,231 +102,7 @@ $page="view_mode";
     <div class="col-md-2 fixed-top">
 <h3>Jobs</h3>
 
-<ul class="nav nav-pills nav-stacked">
-
-<!-- ----jobs using php -->
- <?php
- $sql="SELECT * FROM admins WHERE managed_by='$coordinator_email'";
-$result = $db->query($sql);
-$companies=array();
-$jobs=array();
-$jobs_details=array();
-$to_admin_data=array();
-$company_names=array();
-$currentCompEmail='';
-if ($result ->num_rows>0) {
-    $i=0;
-    while($row1 = $result->fetch_assoc()) {
-        $thisunique_id=uniqid();
-        // var_dump($row1['email']);
-        $under_email=$row1['email'];
-        $under_name=$row1['Full_name'];
-        ?>
-        <div class="panel-group">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <!-- <a data-toggle="collapse" href="#<?php echo $thisunique_id; ?>"><?php echo $under_name; ?><span class='<?php echo $thisunique_id; ?>'></span></a> -->
-        </h4>
-      </div>
-      <div id="<?php echo $thisunique_id;?>" class="panel-collapse collapse">
-        <div class="panel-body">
-        
-
-        <!-- level 2 managers....scaling upto 2 level -->
-                    <?php
-            $sqlunder="SELECT * FROM admins WHERE managed_by='$under_email'";
-            $resultunder = $db->query($sqlunder);
-
-            if ($resultunder ->num_rows>0) {
-                $i=0;
-                while($rowunder = $resultunder->fetch_assoc()) {
-                    $secondunique_id=uniqid();
-                      $under2_email=$rowunder['email'];
-                    $under2_name=$rowunder['Full_name'];
-                            ?>
-                            <div class="panel-group">
-                        <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#<?php echo $secondunique_id; ?>"><?php echo $under2_name; ?><span class='<?php echo $secondunique_id; ?>'></span></a>
-                            </h4>
-                        </div>
-                        <div id="<?php echo $secondunique_id; ?>" class="panel-collapse collapse">
-                            <div class="panel-body">
-
-
-                                    <ul class="nav nav-pills nav-stacked">
-
-                                    <!-- ----jobs using php -->
-                                    <?php
-                                    $sqlcomp2="SELECT * FROM admins WHERE email='$under2_email'";
-                                    $resultcomp2 = $db->query($sqlcomp2);
-                                    $companies=array();
-                                    $jobs=array();
-                                    $jobs_details=array();
-                                    $to_admin_data=array();
-                                    $company_names=array();
-                                    $currentCompEmail='';
-                                    if ($resultcomp2 ->num_rows ==1) {
-                                        while($row1comp2 = $resultcomp2->fetch_assoc()) {
-                                             if(isset($_SESSION['coordinatoremp'])){
-                                                $companies=json_decode(stripslashes($row1['company']));
-
-                                                }
-                                                else{
-                                                // $companies=json_decode($row1comp['company']);
-                                                 array_push($companies,$row1comp['company']);
-
-
-                                                }
-                                            // var_dump(array_unique($companies));
-                                            $companies=array_unique($companies);
-                                            if(sizeof($companies)){
-                                                $arrlen=count($companies);
-                                                    for($x=0;$x<$arrlen;$x++){
-                                                        // var_dump($companies[$x]);
-                                                        $sqljob='';
-
-                                                        // ------collect all jobs of company here
-                                                        if(isset($_SESSION['coordinatoremp'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-
-                                                        }
-                                                        
-                                                        else if(isset($_SESSION['emailmanager'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-
-                                                        } 
-
-                                                        else if(isset($_SESSION['emailhr'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x]  and is_closed='0' AND hr='$under2_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-
-                                                        }
-
-                                                        
-                                                        
-                                                        $resultjob = $db->query($sqljob);
-                                                        // if ($resultjob ->num_rows > 0) {
-                                                            ?>
-                                                            <script>
-                                                            $('.<?php echo $secondunique_id; ?>').html('(<?php echo $resultjob ->num_rows; ?>)');
-                                                            </script>
-                                                            <?php                                                            while($rowjob = $resultjob->fetch_assoc()) {
-                                                                $postid=$rowjob['posting_id'];
-                                                                $jobtitle=$rowjob['job_title'];
-                                                                $cname=$rowjob['company_name'];
-                                                                // echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'</a></li>';
-                                                                }
-                                                        // }
-                                                    
-                                                    }
-                                                }
-                                                else{
-                                                            echo '<li><a>No Job(s)</a></li>';
-                                                        }
-                                            }
-                                        }
-                                                ?>
-                                    </ul>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                <?php
-                }
-                }
-
-                // showing this manager jobs
-
-?>
-<ul class="nav nav-pills nav-stacked">
-
-<!-- ----jobs using php -->
- <?php
- $sqlcomp="SELECT * FROM admins WHERE email='$under_email'";
-$resultcomp = $db->query($sqlcomp);
-$companies=array();
-$jobs=array();
-$jobs_details=array();
-$to_admin_data=array();
-$company_names=array();
-$currentCompEmail='';
-if ($resultcomp ->num_rows ==1) {
-    while($row1comp = $resultcomp->fetch_assoc()) {
-        if(isset($_SESSION['coordinatoremp'])){
-        $companies=json_decode(stripslashes($row1['company']));
-
-        }
-        else{
-        // $companies=json_decode($row1comp['company']);
-        array_push($companies,$row1comp['company']);
-
-        }
-        // var_dump($companies);
-        // var_dump(array_unique($companies));
-        $companies=array_unique($companies);
-        // var_dump(sizeof($companies));
-        if(sizeof($companies)){
-            $arrlen=count($companies);
-                for($x=0;$x<$arrlen;$x++){
-                                                                     $sqljob='';
-
-                                                        // ------collect all jobs of company here
-                                                        if(isset($_SESSION['coordinatoremp'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-
-                                                        }
-                                                        else if(isset($_SESSION['emailmanager'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email='$companies[$x]'  and is_closed='0' and manager='$under_email' AND posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-
-                                                        } 
-
-                                                        else if(isset($_SESSION['emailhr'])){
-                                                        $sqljob="SELECT * FROM Job_Posting WHERE email=$companies[$x]  and is_closed='0' AND hr='$under_email' and posting_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
-
-                                                        }
-                                                        // var_dump($sqljob);
-                                                        
-                                                        $resultjob = $db->query($sqljob);
-                    // if ($resultjob ->num_rows > 0) {
-                        ?>
-                        <script>
-                        $('.<?php echo $thisunique_id; ?>').html('(<?php echo $resultjob ->num_rows; ?>)');
-                        </script>
-                        <?php
-                        while($rowjob = $resultjob->fetch_assoc()) {
-                            $postid=$rowjob['posting_id'];
-                            $jobtitle=$rowjob['job_title'];
-                            $cname=$rowjob['company_name'];
-                          
-                            // echo '<li id="'.$postid.'" onclick="showpage(\''.$postid.'\')"><a href="#tab_b" data-toggle="pill">'.$jobtitle.'</a></li>';
-                          
-                        }
-                    // }
-                   
-                }
-            }
-             else{
-                        echo '<li><a>No Job(s)</a></li>';
-                    }
-        }
-    }
-               ?>
-</ul>
-     
-        </div>
-      </div>
-    </div>
-  </div>
-        <?php
-       
-        }
-?>
-
-
-
-        <table id="example" class="table table-striped table-condensed"> 
+ <table id="example" class="table table-striped table-condensed"> 
 
             <thead class="header">
             <tr class="filters" style="background: white">
@@ -336,25 +114,91 @@ if ($resultcomp ->num_rows ==1) {
             <th style="color:black;">Vendor </th>
             <th style="color:black;">Profile Received </th>
             <th style="color:black;">To Process </th>
-            <th style="color:black;">Select level </th>
-            <th style="color:black;">To Process </th>
+            <th style="color:black;">UnderDiscussion </th>
+           
+            <th style="color:black;">Offered </th>
+            </tr>
+            </thead>
+            <tbody>
+<!-- ----jobs using php -->
+ <?php
+//  $getJobsQuery="SELECT * FROM Job_Posting where hr='$coordinator_email'";
+//  $resultGetQuery=$db->query($getJobsQuery);
+// $uniqueJobs=array();
+// if ($resultGetQuery ->num_rows>0) {
+//     while($rowgetjobs = $resultGetQuery->fetch_assoc()) {
+//         array_push($uniqueJobs,$rowgetjobs['posting_id']);
+//     }
+// }
+
+ $sql="SELECT Job_Posting.*, applied_table.*,count(Job_Posting.posting_id) as numRows FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id AND Job_Posting.hr='$coordinator_email' group by Job_Posting.posting_id";
+$result = $db->query($sql);
+// var_dump($sql);
+// var_dump($sql);
+// $companies=array();
+// $jobs=array();
+// $jobs_details=array();
+// $to_admin_data=array();
+// $company_names=array();
+// $currentCompEmail='';
+// $uniqueJobs=array();
 
 
+ $i=0;
+if ($result ->num_rows>0) {
+    while($row1 = $result->fetch_assoc()) {
+        $postingID=$row1['posting_id'];
+//query to get offered candidates count
+$offeredQuery="SELECT * FROM applied_table where posting_id='$postingID' and Status='Offered'";
+$offeredQueryResult=$db->query($offeredQuery);
+$offeredQueryCount=$offeredQueryResult->num_rows;    
+      
+//query to get shared candidates count
+$sharedQuery="SELECT * FROM applied_table where posting_id='$postingID' and Status='Shared'";
+$sharedQueryResult=$db->query($sharedQuery);
+$sharedQueryCount=$sharedQueryResult->num_rows;
+
+//query to get under discussion candidates count
+$shortlistQuery="SELECT * FROM applied_table where posting_id='$postingID' and Status='shortlist'";
+$shortlistQueryResult=$db->query($shortlistQuery);
+$shortlistQueryCount=$shortlistQueryResult->num_rows;
+
+$i=$i+1;?>
+
+<tr>
+<td><?php echo $i;?></td>
+<td><?php echo $row1['job_title'];?></td>
+
+<td><?php echo $row1['hr'];?></td>
+
+<td><?php echo $row1['recruiter'];?></td>
+<td><?php echo $row1['vendor'];?></td>
+
+<td><?php echo $row1['numRows'];?></td>
+<td>
+<?php echo $sharedQueryCount; ?>
+</td>
+<td>
+<?php echo $shortlistQueryCount;?>
+</td>
+<td>
+<?php echo $offeredQueryCount; ?>
+</td>
 
 
-
-
+</tr>
 
 <?php
-
         // ----------------------------------
     }
+}
     else{
         echo "Nothing to see";
         }
                ?>
+               </tbody>
+               </table>
 
-</ul>
 </div>
 <div class="tab-content col-md-10">
 <div style="display:none"  class="text-center tobe-reused">
