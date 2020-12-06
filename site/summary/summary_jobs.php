@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
-if(isset($_SESSION['coordinatoremp'])||isset($_SESSION['emailmanager'])||isset($_SESSION['emailhr'])){
+if(isset($_SESSION['emailemp'])||isset($_SESSION['emailhr'])){
   }
   else{
     header("location: ../../admin_jobs/admin_home.php");
@@ -19,6 +19,9 @@ $coordinator_email='';
 // else
  if(isset($_SESSION['emailhr'])){
     $coordinator_email=$_SESSION['emailhr'];
+}
+else if($_SESSION['emailemp']){
+    $coordinator_email=$_SESSION['emailemp'];
 }
 // var_dump($coordinator_email,"emil");
 
@@ -75,10 +78,16 @@ $page="view_mode";
                <a href="#">My Profile</a>
    
    </option>
+   <?php
+ if(isset($_SESSION['emailhr'])){
+?>   
     <option value="../../ChangePassword/setPassword.php">
                <a href="../../ChangePassword/setPassword.php">Change password</a>
    
    </option>
+   <?php
+   }
+   ?>
    <option value="../../logout/logout.php">
                <a href="../../logout/logout.php">Logout</a>
    
@@ -99,7 +108,7 @@ $page="view_mode";
 </div>
    <br>
     <div class="row">
-    <div class="col-md-2 fixed-top">
+    <div class="col-md-10 fixed-top">
 <h3>Jobs</h3>
 
  <table id="example" class="table table-striped table-condensed"> 
@@ -108,6 +117,14 @@ $page="view_mode";
             <tr class="filters" style="background: white">
 
             <th style="color:black;">Sr.No </th>
+            <?php
+            if($_SESSION['emailemp']){
+                ?>
+            <th style="color:black;">Company </th>
+
+               <?php 
+            }
+            ?>
             <th style="color:black;">Position </th>
             <th style="color:black;">HR Manager </th>
             <th style="color:black;">Recruiter </th>
@@ -130,8 +147,15 @@ $page="view_mode";
 //         array_push($uniqueJobs,$rowgetjobs['posting_id']);
 //     }
 // }
+$sql='';
+ if($_SESSION['emailemp']){
+ $sql="SELECT Job_Posting.*, applied_table.*,count(Job_Posting.posting_id) as numRows FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id group by Job_Posting.company_name";
 
+ }
+ else{
  $sql="SELECT Job_Posting.*, applied_table.*,count(Job_Posting.posting_id) as numRows FROM Job_Posting INNER JOIN applied_table ON Job_Posting.posting_id = applied_table.posting_id AND Job_Posting.hr='$coordinator_email' group by Job_Posting.posting_id";
+
+ }
 $result = $db->query($sql);
 // var_dump($sql);
 // var_dump($sql);
@@ -167,6 +191,14 @@ $i=$i+1;?>
 
 <tr>
 <td><?php echo $i;?></td>
+  <?php
+            if($_SESSION['emailemp']){
+                ?>
+            <td><?php echo $row1['company_name'];?> </td>
+
+               <?php 
+            }
+            ?>
 <td><?php echo $row1['job_title'];?></td>
 
 <td><?php echo $row1['hr'];?></td>
@@ -200,7 +232,7 @@ $i=$i+1;?>
                </table>
 
 </div>
-<div class="tab-content col-md-10">
+<div class="tab-content col-md-2">
 <div style="display:none"  class="text-center tobe-reused">
 <div style="display:flex;justify-content: center;">
 
